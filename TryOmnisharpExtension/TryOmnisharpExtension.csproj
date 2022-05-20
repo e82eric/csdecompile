@@ -135,13 +135,16 @@
           <HintPath>..\packages\NuGet.Versioning.6.0.0\lib\net472\NuGet.Versioning.dll</HintPath>
         </Reference>
         <Reference Include="OmniSharp.Abstractions">
-          <HintPath>..\..\omnisharp-clean\bin\Debug\OmniSharp.Stdio.Driver\net472\OmniSharp.Abstractions.dll</HintPath>
+            <HintPath>..\packages\OmniSharp.Abstractions.1.38.2\lib\net472\OmniSharp.Abstractions.dll</HintPath>
+<!--          <HintPath>..\..\omnisharp-clean\bin\Debug\OmniSharp.Stdio.Driver\net472\OmniSharp.Abstractions.dll</HintPath>-->
         </Reference>
         <Reference Include="OmniSharp.Roslyn">
-          <HintPath>..\..\omnisharp-clean\bin\Debug\OmniSharp.Stdio.Driver\net472\OmniSharp.Roslyn.dll</HintPath>
+          <HintPath>..\packages\OmniSharp.Roslyn.1.38.2\lib\net472\OmniSharp.Roslyn.dll</HintPath>
+<!--            <HintPath>..\..\omnisharp-clean\bin\Debug\OmniSharp.Stdio.Driver\net472\OmniSharp.Roslyn.dll</HintPath>-->
         </Reference>
         <Reference Include="OmniSharp.Shared">
-          <HintPath>..\..\omnisharp-clean\bin\Debug\OmniSharp.Stdio.Driver\net472\OmniSharp.Shared.dll</HintPath>
+            <HintPath>..\packages\OmniSharp.Shared.1.38.2\lib\net472\OmniSharp.Shared.dll</HintPath>
+<!--          <HintPath>..\..\omnisharp-clean\bin\Debug\OmniSharp.Stdio.Driver\net472\OmniSharp.Shared.dll</HintPath>-->
         </Reference>
         <Reference Include="System" />
         <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
