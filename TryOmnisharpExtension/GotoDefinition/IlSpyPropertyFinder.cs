@@ -1,18 +1,17 @@
-﻿using System;
-using System.Composition;
+﻿using System.Composition;
 using System.Threading.Tasks;
 using ICSharpCode.Decompiler.TypeSystem;
 
 namespace TryOmnisharpExtension.IlSpy
 {
     [Export]
-    public class IlSpyPropertyFinder2
+    public class IlSpyPropertyFinder
     {
         private readonly IlSpyTypeSystemFactory _typeSystemFactory;
         private readonly PropertyInTypeFinder2 _propertyInTypeFinder;
 
         [ImportingConstructor]
-        public IlSpyPropertyFinder2(
+        public IlSpyPropertyFinder(
             IlSpyTypeSystemFactory typeSystemFactory,
             PropertyInTypeFinder2 propertyInTypeFinder)
         {

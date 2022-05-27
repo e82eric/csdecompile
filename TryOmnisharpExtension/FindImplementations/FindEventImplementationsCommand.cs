@@ -4,26 +4,26 @@ using TryOmnisharpExtension.IlSpy;
 
 namespace TryOmnisharpExtension;
 
-internal class FindMethodImplementationsCommand : IFindImplementationsCommand
+internal class FindEventImplementationsCommand : IFindImplementationsCommand
 {
-    private readonly IlSpyMethodImplementationFinder _ilSpyTypeFinder;
+    private readonly IlSpyEventImplementationFinder _ilSpyImplementationFinder;
     private readonly string _projectAssemblyFilePath;
-    private readonly IMethod _typeDefinition;
+    private readonly IEvent _symbol;
 
-    public FindMethodImplementationsCommand(
+    public FindEventImplementationsCommand(
         string projectAssemblyFilePath,
-        IMethod typeDefinition,
-        IlSpyMethodImplementationFinder ilSpyTypeFinder)
+        IEvent symbol,
+        IlSpyEventImplementationFinder ilSpyImplementationFinder)
     {
         _projectAssemblyFilePath = projectAssemblyFilePath;
-        _typeDefinition = typeDefinition;
-        _ilSpyTypeFinder = ilSpyTypeFinder;
+        _symbol = symbol;
+        _ilSpyImplementationFinder = ilSpyImplementationFinder;
     }
         
     public async Task<FindImplementationsResponse> Execute()
     {
-        var metadataSources = await _ilSpyTypeFinder.Run(
-            _typeDefinition,
+        var metadataSources = await _ilSpyImplementationFinder.Run(
+            _symbol,
             _projectAssemblyFilePath);
 
         var result = new FindImplementationsResponse();

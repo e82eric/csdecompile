@@ -48,7 +48,13 @@ public class TypeUsedByAnalyzer2
 
         foreach (var bt in type.DirectBaseTypes)
         {
-            bt.AcceptVisitor(visitor);
+            if (bt.FullName == analyzedEntity.FullName)
+            {
+                yield return type;
+            }
+            
+            //Skipping PEFile file name comparison
+            // bt.AcceptVisitor(visitor);
         }
 
         if (visitor.Found || ScanAttributes(visitor, type.GetAttributes()))

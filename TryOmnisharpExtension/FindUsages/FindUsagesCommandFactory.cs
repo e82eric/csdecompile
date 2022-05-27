@@ -51,6 +51,11 @@ public class FindUsagesCommandFactory : ICommandFactory<INavigationCommand<FindU
         return result;
     }
 
+    public INavigationCommand<FindUsagesResponse> GetForEvent(IEvent eventSymbol, string projectAssemblyFilePath)
+    {
+        throw new System.NotImplementedException();
+    }
+
     public INavigationCommand<FindUsagesResponse> GetForInSource(ISymbol roslynSymbol)
     {
         var result = new RoslynFindUsagesCommand(roslynSymbol, _omniSharpWorkspace);

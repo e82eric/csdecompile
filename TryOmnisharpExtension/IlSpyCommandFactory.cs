@@ -39,6 +39,12 @@ namespace TryOmnisharpExtension
                 var result = _commandCommandFactory.GetForProperty(property, request.AssemblyFilePath);
                 return result;
             }
+            
+            if (symbolAtLocation is IEvent eventSymbol)
+            {
+                var result = _commandCommandFactory.GetForEvent(eventSymbol, request.AssemblyFilePath);
+                return result;
+            }
 
             if(symbolAtLocation is IMethod method)
             {

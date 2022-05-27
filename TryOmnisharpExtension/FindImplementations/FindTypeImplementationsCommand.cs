@@ -1,8 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using ICSharpCode.Decompiler.TypeSystem;
-using OmniSharp;
 using TryOmnisharpExtension.IlSpy;
 
 namespace TryOmnisharpExtension

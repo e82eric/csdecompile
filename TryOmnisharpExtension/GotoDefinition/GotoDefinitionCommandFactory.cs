@@ -1,7 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Composition;
+﻿using System.Composition;
 using ICSharpCode.Decompiler.TypeSystem;
-using Microsoft.CodeAnalysis;
 using TryOmnisharpExtension.IlSpy;
 
 namespace TryOmnisharpExtension
@@ -9,17 +7,20 @@ namespace TryOmnisharpExtension
     [Export(typeof(ICommandFactory<IGotoDefinitionCommand>))]
     public class GotoDefinitionCommandFactory : ICommandFactory<IGotoDefinitionCommand>
     {
-        private readonly IlSpyTypeFinder2 _typeFinder;
-        private readonly IlSpyMemberFinder2 _memberFinder;
-        private readonly IlSpyPropertyFinder2 _propertyFinder;
+        private readonly IlSpyTypeFinder _typeFinder;
+        private readonly IlSpyMemberFinder _memberFinder;
+        private readonly IlSpyPropertyFinder _propertyFinder;
+        private readonly IlSpyEventFinder _eventFinder;
 
         [ImportingConstructor]
         public GotoDefinitionCommandFactory(
-            IlSpyTypeFinder2 typeFinder,
-            IlSpyMemberFinder2 memberFinder,
-            IlSpyPropertyFinder2 propertyFinder)
+            IlSpyTypeFinder typeFinder,
+            IlSpyMemberFinder memberFinder,
+            IlSpyPropertyFinder propertyFinder,
+            IlSpyEventFinder eventFinder)
         {
             _propertyFinder = propertyFinder;
+            _eventFinder = eventFinder;
             _memberFinder = memberFinder;
             _typeFinder = typeFinder;
         }
@@ -29,12 +30,19 @@ namespace TryOmnisharpExtension
             return new RosylynGotoDefinitionCommand(roslynSymbol);
         }
 
+        public IGotoDefinitionCommand GetForEvent(IEvent eventSymbol, string projectAssemblyFilePath)
+        {
+            var result = new GotoEventDefintionCommand(eventSymbol,_eventFinder, projectAssemblyFilePath);
+            return result;
+        }
+
         public IGotoDefinitionCommand GetForType(ITypeDefinition typeDefinition, string assemblyFilePath)
         {
-            return new GotoTypeDefintionCommand(
+            var result = new GotoTypeDefintionCommand(
                 typeDefinition,
                 _typeFinder,
                 assemblyFilePath);
+            return result;
         }
 
         public IGotoDefinitionCommand GetForMethod(IMethod method, string assemblyFilePath)

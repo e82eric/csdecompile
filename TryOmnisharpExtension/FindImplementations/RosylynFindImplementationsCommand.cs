@@ -32,7 +32,7 @@ public class RosylynFindImplementationsCommand : IFindImplementationsCommand
             {
                 if (!implementation.Locations.First().IsInSource)
                 {
-                    //Skip since this ill get covered by IlSpy
+                    //Skip since this will get covered by IlSpy
                 }
                 else
                 {

@@ -154,14 +154,29 @@ public class IlSpyFindImplementationsCommandFactory2<ResponseType> where Respons
             var result = new EverywhereImplementationsCommand2<ResponseType>(roslynCommand, ilSpyCommand);
             return result;
         }
-
-        if(symbolAtLocation is IMethod method)
+        
+        if (symbolAtLocation is IEvent eventSymbol)
         {
-            var symbol = GetSymbol(method.DeclaringType.FullName);
+            var symbol = GetSymbol(eventSymbol.DeclaringType.FullName);
 
             var roslynCommand = _commandCommandFactory.GetForInSource(symbol);
                 // new RosylynFindImplementationsCommand(symbol, _omniSharpWorkspace, request.AssemblyFilePath);
                 
+            var ilSpyCommand = _commandCommandFactory.GetForEvent(eventSymbol, request.AssemblyFilePath);
+            var result = new EverywhereImplementationsCommand2<ResponseType>(roslynCommand, ilSpyCommand);
+            return result;
+        }
+
+        if(symbolAtLocation is IMethod method)
+        {
+            var symbol = GetSymbol(method.DeclaringType.FullName);
+            INavigationCommand<ResponseType> roslynCommand = null;
+            if (symbol is INamedTypeSymbol)
+            {
+                var methodSymbol = ((INamedTypeSymbol)symbol).GetMembers().FirstOrDefault(m => m.Name == method.Name);
+                roslynCommand = _commandCommandFactory.GetForInSource(methodSymbol);
+                    
+            }
             var ilSpyCommand = _commandCommandFactory.GetForMethod(method, request.AssemblyFilePath);
             var result = new EverywhereImplementationsCommand2<ResponseType>(roslynCommand, ilSpyCommand);
             return result;

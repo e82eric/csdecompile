@@ -6,5 +6,7 @@ namespace TryOmnisharpExtension
         public string AssemblyFilePath { get; set; }
         public string ContainingTypeFullName { get; set; }
         public string SourceText { get; set; }
+        public int Line { get; set; }
+        public int Column { get; set; }
     }
 }

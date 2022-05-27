@@ -6,26 +6,26 @@ using ICSharpCode.Decompiler.TypeSystem;
 namespace TryOmnisharpExtension.IlSpy;
 
 [Export]
-public class IlSpyMethodImplementationFinder
+public class IlSpyEventImplementationFinder
 {
-    private readonly MethodImplementedByAnalyzer _methodImplementedByAnalyzer;
+    private readonly EventImplementedByAnalyzer _implementedByAnalyzer;
 
     [ImportingConstructor]
-    public IlSpyMethodImplementationFinder(
-        MethodImplementedByAnalyzer methodImplementedByAnalyzer)
+    public IlSpyEventImplementationFinder(
+        EventImplementedByAnalyzer implementedByAnalyzer)
     {
-        _methodImplementedByAnalyzer = methodImplementedByAnalyzer;
+        _implementedByAnalyzer = implementedByAnalyzer;
     }
     
-    public async Task<IEnumerable<IlSpyMetadataSource2>> Run(IMethod method, string projectName)
+    public async Task<IEnumerable<IlSpyMetadataSource2>> Run(IEvent symbol, string projectName)
     {
         var result = new List<IlSpyMetadataSource2>();
 
-        var implementations = await _methodImplementedByAnalyzer.Analyze(method);
+        var implementations = await _implementedByAnalyzer.Analyze(symbol);
 
         foreach (var implementation in implementations)
         {
-            await AddToResult((ITypeDefinition)implementation.DeclaringType, implementation, method.Name, projectName, result);
+            await AddToResult((ITypeDefinition)implementation.DeclaringType, implementation, symbol.Name, projectName, result);
         }
 
         return result;
@@ -33,7 +33,7 @@ public class IlSpyMethodImplementationFinder
 
     private async Task AddToResult(
         ITypeDefinition symbol,
-        IMethod method,
+        IEvent eventSymbol,
         string methodName,
         string projectName,
         IList<IlSpyMetadataSource2> result)
@@ -41,10 +41,10 @@ public class IlSpyMethodImplementationFinder
         var parentType = SymbolHelper.FindContainingType(symbol);
         var assemblyFullName = symbol.ParentModule.PEFile.FullName;
         var dotNetVersion = symbol.ParentModule.PEFile.Metadata.MetadataVersion;
-        var sourceText = $"{method.FullName} ({assemblyFullName}, .net: {dotNetVersion})";
+        var sourceText = $"{eventSymbol.FullName} ({assemblyFullName}, .net: {dotNetVersion})";
         
         var assemblyVersion = symbol.ParentModule.PEFile.Metadata.GetAssemblyDefinition().Version.ToString();
-        var typeFullName = GetTypeFullName(method);
+        var typeFullName = GetTypeFullName(eventSymbol);
 
         if (symbol.ParentModule.AssemblyName != projectName)
         {
@@ -66,11 +66,10 @@ public class IlSpyMethodImplementationFinder
         }
     }
     
-    private string GetTypeFullName(IMethod method)
+    private string GetTypeFullName(IEvent symbol)
     {
-        var methodSignaurePart = GetMethodSignatureDisplayString(method);
-        var result = $"{method.DeclaringType.Name}.{method.Name}{methodSignaurePart}";
-        var ittr = method.DeclaringType;
+        var result = $"{symbol.DeclaringType.Name}.{symbol.Name}";
+        var ittr = symbol.DeclaringType;
         
         while (ittr.DeclaringType != null)
         {
@@ -78,18 +77,6 @@ public class IlSpyMethodImplementationFinder
             ittr = (ITypeDefinition)ittr.DeclaringType;
         }
 
-        return result;
-    }
-
-    private string GetMethodSignatureDisplayString(IMethod method)
-    {
-        var paramTypes = new List<string>();
-        foreach (var methodParameter in method.Parameters)
-        {
-            paramTypes.Add(methodParameter.Type.Name);
-        }
-
-        var result = $"({string.Join(",", paramTypes)})";
         return result;
     }
 }

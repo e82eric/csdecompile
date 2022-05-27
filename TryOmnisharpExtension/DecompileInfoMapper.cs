@@ -15,7 +15,15 @@ namespace TryOmnisharpExtension
                 StartColumn = ilSpyMetadataSource.StartColumn,
                 EndColumn = ilSpyMetadataSource.EndColumn,
                 ContainingTypeFullName = ilSpyMetadataSource.ContainingTypeFullName,
-                AssemblyFilePath = ilSpyMetadataSource.AssemblyFilePath
+                AssemblyFilePath = ilSpyMetadataSource.AssemblyFilePath,
+                UsageType = ilSpyMetadataSource.UsageType,
+                NamespaceName = ilSpyMetadataSource.NamespaceName,
+                TypeName = ilSpyMetadataSource.TypeName,
+                BaseTypeName = ilSpyMetadataSource.BaseTypeName,
+                MethodName = ilSpyMetadataSource.MethodName,
+                DotNetVersion = ilSpyMetadataSource.DotNetVersion,
+                AssemblyVersion = ilSpyMetadataSource.AssemblyVersion,
+                TypeFullName = ilSpyMetadataSource.TypeFullName
             };
             return decompileInfo;
         }

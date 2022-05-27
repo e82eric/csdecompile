@@ -22,8 +22,8 @@ public class RosylynGotoDefinitionCommand : IGotoDefinitionCommand
             Location = new SourceFileInfo
             {
                 FileName = lineSpan.Path,
-                Column = lineSpan.StartLinePosition.Character,
-                Line = lineSpan.StartLinePosition.Line,
+                Column = lineSpan.StartLinePosition.Character + 1,
+                Line = lineSpan.StartLinePosition.Line + 1,
             },
             IsDecompiled = false,
         };

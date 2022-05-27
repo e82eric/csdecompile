@@ -36,6 +36,8 @@ public class RoslynFindUsagesCommand : INavigationCommand<FindUsagesResponse>
         foreach (var location in locations)
         {
             var sourceFileInfo = location.GetSourceLineInfo(_workspace);
+            sourceFileInfo.TypeFullName = _symbol.Name;
+            sourceFileInfo.NamespaceName = _symbol.ContainingNamespace.Name;
             result.Implementations.Add(sourceFileInfo);
         }
 

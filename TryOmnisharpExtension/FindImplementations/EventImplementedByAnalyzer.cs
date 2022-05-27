@@ -7,19 +7,19 @@ using ICSharpCode.Decompiler.TypeSystem;
 namespace TryOmnisharpExtension.IlSpy;
 
 [Export]
-public class MethodImplementedByAnalyzer
+public class EventImplementedByAnalyzer
 {
     private readonly AnalyzerScope _analyzerScope;
 
     [ImportingConstructor]
-    public MethodImplementedByAnalyzer(AnalyzerScope analyzerScope)
+    public EventImplementedByAnalyzer(AnalyzerScope analyzerScope)
     {
         _analyzerScope = analyzerScope;
     }
     
-    public async Task<IEnumerable<IMethod>> Analyze(IMethod analyzedSymbol)
+    public async Task<IEnumerable<IEvent>> Analyze(IEvent analyzedSymbol)
     {
-        var result = new List<IMethod>();
+        var result = new List<IEvent>();
         foreach (var type in await _analyzerScope.GetTypesInScope(analyzedSymbol))
         {
             foreach (var typeInScope in AnalyzeType(analyzedSymbol, type))
@@ -31,22 +31,24 @@ public class MethodImplementedByAnalyzer
         return result;
     }
 
-    IEnumerable<IMethod> AnalyzeType(IMethod analyzedEntity, ITypeDefinition type)
+    IEnumerable<IEvent> AnalyzeType(IEvent analyzedEntity, ITypeDefinition type)
     {
-        var result = new List<IMethod>();
+        var result = new List<IEvent>();
         var token = analyzedEntity.MetadataToken;
         var declaringTypeToken = analyzedEntity.DeclaringTypeDefinition.MetadataToken;
         var module = analyzedEntity.DeclaringTypeDefinition.ParentModule.PEFile;
         var allTypes = type.GetAllBaseTypeDefinitions();
         if (!allTypes.Any(t => t.MetadataToken == declaringTypeToken && t.ParentModule.PEFile == module))
-            return result;
-
-        foreach (var method in type.Methods)
         {
-            var baseMembers = InheritanceHelper.GetBaseMembers(method, true);
+            return result;
+        }
+
+        foreach (var property in type.Events)
+        {
+            var baseMembers = InheritanceHelper.GetBaseMembers(property, true);
             if (baseMembers.Any(m => m.MetadataToken == token && m.ParentModule.PEFile == module))
             {
-                result.Add(method);
+                result.Add(property);
             }
         }
 

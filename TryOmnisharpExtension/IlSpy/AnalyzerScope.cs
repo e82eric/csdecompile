@@ -52,6 +52,47 @@ namespace TryOmnisharpExtension.IlSpy
             return result;
         }
 
+        private async void GetReferencingModules(
+            PEFile pefile,
+            string typeScopeNamespace,
+            string reflectionTypeScopeName,
+            List<PEFile> result,
+            HashSet<string> alreadyChecked,
+            IAssemblyResolver assemblyResolver)
+        {
+            foreach (var assemblyReference in pefile.AssemblyReferences)
+            {
+                var resolved = await assemblyResolver.ResolveAsync(assemblyReference);
+                if (resolved != null)
+                {
+                    var uniqueness = GetPeFileUniqueness(resolved);
+                    if (!alreadyChecked.Contains(uniqueness))
+                    {
+                        alreadyChecked.Add(uniqueness);
+                        var moduleReferencesScopeType = ModuleReferencesScopeType(resolved.Metadata, reflectionTypeScopeName, typeScopeNamespace);
+                        if (moduleReferencesScopeType)
+                        {
+                            result.Add(resolved);
+                        }
+                        
+                        GetReferencingModules(
+                            resolved,
+                            typeScopeNamespace,
+                            reflectionTypeScopeName,
+                            result,
+                            alreadyChecked,
+                            assemblyResolver);
+                    }
+                }
+            }
+        }
+
+        private static string GetPeFileUniqueness(PEFile resolved)
+        {
+            var uniqueness = resolved.FullName + "|" + resolved.Metadata.MetadataVersion;
+            return uniqueness;
+        }
+
         private (ITypeDefinition, Accessibility) DetermineEffectiveAccessibility(IEntity entity)
         {
             Accessibility effectiveAccessibility;
@@ -91,7 +132,6 @@ namespace TryOmnisharpExtension.IlSpy
                 var modulesInScope = await GetModulesInScope(typeScope);
                 foreach (var module in modulesInScope)
                 {
-
                     var assemblyResolver = await _assemblyResolverFactory.GetAssemblyResolver(module);
                     var typeSystem = new DecompilerTypeSystem(module, assemblyResolver);
                     foreach (var type in typeSystem.MainModule.TypeDefinitions)
@@ -122,47 +162,28 @@ namespace TryOmnisharpExtension.IlSpy
         async Task<IEnumerable<PEFile>> GetReferencingModules(PEFile self, ITypeDefinition typeScope)
         {
             var result = new List<PEFile>();
+            var alreadyChecked = new HashSet<string>();
+            //This feels like a hack but we already know that we are going to want to search the assembly that the type belongs to
             result.Add(self);
-
+            var selfUniqueness = GetPeFileUniqueness(self);
+            alreadyChecked.Add(selfUniqueness);
+            
             string reflectionTypeScopeName = typeScope.Name;
             if (typeScope.TypeParameterCount > 0)
                 reflectionTypeScopeName += "`" + typeScope.TypeParameterCount;
 
-            var toWalkFiles = new Stack<PEFile>();
-            var checkedFiles = new HashSet<PEFile>();
-
-            toWalkFiles.Push(self);
-            checkedFiles.Add(self);
-
-            do
+            var projectPeFiles = await _workspace.GetAssemblies();
+            foreach (var projectAssembly in projectPeFiles)
             {
-                PEFile curFile = toWalkFiles.Pop();
-                var modules = await _workspace.GetAssemblies();
-                foreach (var module in modules)
-                {
-                    bool found = false;
-                    if (module == null || !module.IsAssembly)
-                        continue;
-                    if (checkedFiles.Contains(module))
-                        continue;
-                    var resolver = await _assemblyResolverFactory.GetAssemblyResolver(module);
-                    foreach (var reference in module.AssemblyReferences)
-                    {
-                        if (await resolver.ResolveAsync(reference) == curFile)
-                        {
-                            found = true;
-                            break;
-                        }
-                    }
-                    if (found && checkedFiles.Add(module))
-                    {
-                        if (ModuleReferencesScopeType(module.Metadata, reflectionTypeScopeName, typeScope.Namespace))
-                            result.Add(module);
-                        if (ModuleForwardsScopeType(module.Metadata, reflectionTypeScopeName, typeScope.Namespace))
-                            toWalkFiles.Push(module);
-                    }
-                }
-            } while (toWalkFiles.Count > 0);
+                var resolver = await _assemblyResolverFactory.GetAssemblyResolver(projectAssembly);
+                GetReferencingModules(
+                    projectAssembly,
+                    typeScope.Namespace,
+                    reflectionTypeScopeName,
+                    result,
+                    alreadyChecked,
+                    resolver);
+            }
 
             return result;
         }

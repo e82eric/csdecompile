@@ -19,16 +19,233 @@ public class TypeUsedInTypeFinder
         _decompilerFactory = decompilerFactory;
     }
     
-    public async Task<IEnumerable<UsageAsTextLocation>> Find2(ITypeDefinition symbol, EntityHandle typeEntityHandle)
+    public async Task<IEnumerable<UsageAsTextLocation>> Find2(ITypeDefinition rootTypeSymbol, EntityHandle typeEntityHandle)
     {
-        var assemblyFilePath = symbol.ParentModule.PEFile.FileName;
+        var assemblyFilePath = rootTypeSymbol.ParentModule.PEFile.FileName;
         var decompiler = await _decompilerFactory.Get(assemblyFilePath);
-        var (syntaxTree, source) = decompiler.Run(symbol);
+        var (syntaxTree, source) = decompiler.Run(rootTypeSymbol);
 
         var result = new List<UsageAsTextLocation>();
         Find2(syntaxTree, typeEntityHandle, result);
 
         return result;
+    }
+    
+    public async Task<UsageAsTextLocation> FindType(ITypeDefinition rootTypeSymbol, string typeNamespace, string typeName, string baseTypeName)
+    {
+        var assemblyFilePath = rootTypeSymbol.ParentModule.PEFile.FileName;
+        var decompiler = await _decompilerFactory.Get(assemblyFilePath);
+        var (syntaxTree, source) = decompiler.Run(rootTypeSymbol);
+
+        var namespaceNode = FindNamespace(syntaxTree, typeNamespace);
+        var typeNode = FindType(namespaceNode, typeName);
+        var baseTypeNode = FindBaseType(typeNode, baseTypeName);
+
+        var result = new UsageAsTextLocation
+        {
+            StartLocation = baseTypeNode.StartLocation,
+            EndLocation = baseTypeNode.EndLocation
+        };
+
+        return result;
+    }
+    
+    public async Task<UsageAsTextLocation> FindMethod(ITypeDefinition rootTypeSymbol, string typeNamespace, string typeName, string methodName)
+    {
+        var assemblyFilePath = rootTypeSymbol.ParentModule.PEFile.FileName;
+        var decompiler = await _decompilerFactory.Get(assemblyFilePath);
+        var (syntaxTree, source) = decompiler.Run(rootTypeSymbol);
+
+        var namespaceNode = FindNamespace(syntaxTree, typeNamespace);
+        var typeNode = FindType(namespaceNode, typeName);
+        var baseTypeNode = FindMethod(typeNode, methodName);
+
+        var result = new UsageAsTextLocation
+        {
+            StartLocation = baseTypeNode.StartLocation,
+            EndLocation = baseTypeNode.EndLocation
+        };
+
+        return result;
+    }
+    
+    public async Task<UsageAsTextLocation> FindProperty(ITypeDefinition rootTypeSymbol, string typeNamespace, string typeName, string methodName)
+    {
+        var assemblyFilePath = rootTypeSymbol.ParentModule.PEFile.FileName;
+        var decompiler = await _decompilerFactory.Get(assemblyFilePath);
+        var (syntaxTree, source) = decompiler.Run(rootTypeSymbol);
+
+        var namespaceNode = FindNamespace(syntaxTree, typeNamespace);
+        var typeNode = FindType(namespaceNode, typeName);
+        var baseTypeNode = FindProperty(typeNode, methodName);
+
+        var result = new UsageAsTextLocation
+        {
+            StartLocation = baseTypeNode.StartLocation,
+            EndLocation = baseTypeNode.EndLocation
+        };
+
+        return result;
+    }
+    
+    public async Task<UsageAsTextLocation> FindEvent(ITypeDefinition rootTypeSymbol, string typeNamespace, string typeName, string methodName)
+    {
+        var assemblyFilePath = rootTypeSymbol.ParentModule.PEFile.FileName;
+        var decompiler = await _decompilerFactory.Get(assemblyFilePath);
+        var (syntaxTree, source) = decompiler.Run(rootTypeSymbol);
+
+        var namespaceNode = FindNamespace(syntaxTree, typeNamespace);
+        var typeNode = FindType(namespaceNode, typeName);
+        var baseTypeNode = FindEvent(typeNode, methodName);
+
+        var result = new UsageAsTextLocation
+        {
+            StartLocation = baseTypeNode.StartLocation,
+            EndLocation = baseTypeNode.EndLocation
+        };
+
+        return result;
+    }
+    
+    private AstNode FindType(AstNode node, string typeName)
+    {
+        foreach (var child in node.Children)
+        {
+            if (child is TypeDeclaration)
+            {
+                var namespaceNode = (TypeDeclaration)child;
+                if (namespaceNode.Name == typeName)
+                {
+                    return child;
+                }
+            }
+    
+            var result = FindType(child, typeName);
+            if (result != null)
+            {
+                return result;
+            }
+        }
+    
+        return null;
+    }
+    
+    private SimpleType FindBaseType(AstNode node, string baseTypeName)
+    {
+        foreach (var child in node.Children)
+        {
+            if (child is SimpleType)
+            {
+                var simpleTypeNode = (SimpleType)child;
+                if (simpleTypeNode.Identifier == baseTypeName)
+                {
+                    return simpleTypeNode;
+                }
+            }
+    
+            var result = FindBaseType(child, baseTypeName);
+            if (result != null)
+            {
+                return result;
+            }
+        }
+    
+        return null;
+    }
+    
+    private MethodDeclaration FindMethod(AstNode node, string methodName)
+    {
+        foreach (var child in node.Children)
+        {
+            MethodDeclaration result;
+            if (child is MethodDeclaration)
+            {
+                result = (MethodDeclaration)child;
+                if (result.Name == methodName)
+                {
+                    return result;
+                }
+            }
+    
+            result = FindMethod(child, methodName);
+            if (result != null)
+            {
+                return result;
+            }
+        }
+    
+        return null;
+    }
+    
+    private PropertyDeclaration FindProperty(AstNode node, string methodName)
+    {
+        foreach (var child in node.Children)
+        {
+            PropertyDeclaration result;
+            if (child is PropertyDeclaration)
+            {
+                result = (PropertyDeclaration)child;
+                if (result.Name == methodName)
+                {
+                    return result;
+                }
+            }
+    
+            result = FindProperty(child, methodName);
+            if (result != null)
+            {
+                return result;
+            }
+        }
+    
+        return null;
+    }
+    
+    private EventDeclaration FindEvent(AstNode node, string methodName)
+    {
+        foreach (var child in node.Children)
+        {
+            EventDeclaration result;
+            if (child is EventDeclaration)
+            {
+                result = (EventDeclaration)child;
+                if (result.Name == methodName)
+                {
+                    return result;
+                }
+            }
+    
+            result = FindEvent(child, methodName);
+            if (result != null)
+            {
+                return result;
+            }
+        }
+    
+        return null;
+    }
+    
+    private AstNode FindNamespace(AstNode node, string typeNamespace)
+    {
+        foreach (var child in node.Children)
+        {
+            if (child is NamespaceDeclaration)
+            {
+                var namespaceNode = (NamespaceDeclaration)child;
+                if (namespaceNode.Name == typeNamespace)
+                {
+                    return child;
+                }
+            }
+
+            var result = FindNamespace(child, typeNamespace);
+            if (result != null)
+            {
+                return result;
+            }
+        }
+
+        return null;
     }
 
     private void Find2(AstNode node, EntityHandle entityHandleToSearchFor, IList<UsageAsTextLocation> found)

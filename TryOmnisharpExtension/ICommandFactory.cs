@@ -9,4 +9,5 @@ public interface ICommandFactory<T>
     T GetForMethod(IMethod method, string projectAssemblyFilePath);
     T GetForProperty(IProperty property, string projectAssemblyFilePath);
     T GetForInSource(Microsoft.CodeAnalysis.ISymbol roslynSymbol);
+    T GetForEvent(IEvent eventSymbol, string projectAssemblyFilePath);
 }

@@ -7,25 +7,25 @@ using TryOmnisharpExtension.FindUsages;
 namespace TryOmnisharpExtension;
 
 [Export(typeof(INavigationCommand<FindImplementationsResponse>))]
-internal class FindPropertyUsagesCommand : INavigationCommand<FindUsagesResponse>
+internal class FindEventUsagesCommand : INavigationCommand<FindUsagesResponse>
 {
-    private readonly IProperty _method;
-    private readonly IlSpyPropertyUsagesFinder _usagesFinder;
+    private readonly IEvent _symbol;
+    private readonly IlSpyEventUsagesFinder _usagesFinder;
         
     [ImportingConstructor]
-    public FindPropertyUsagesCommand(
+    public FindEventUsagesCommand(
         string projectAssemblyFilePath,
-        IProperty method,
-        IlSpyPropertyUsagesFinder usagesFinder)
+        IEvent symbol,
+        IlSpyEventUsagesFinder usagesFinder)
     {
-        _method = method;
+        _symbol = symbol;
         _usagesFinder = usagesFinder;
     }
         
     public async Task<FindUsagesResponse> Execute()
     {
         var metadataSources = await _usagesFinder.Run(
-            _method);
+            _symbol);
 
         var result = new FindUsagesResponse();
             

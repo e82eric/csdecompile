@@ -11,16 +11,22 @@ namespace TryOmnisharpExtension
     {
         private readonly IlSpyBaseTypeUsageFinder2 _typeFinder;
         private readonly IlSpyMethodImplementationFinder _methodImplementationFinder;
+        private readonly IlSpyPropertyImplementationFinder _propertyImplementationFinder;
+        private readonly IlSpyEventImplementationFinder _eventImplementationFinder;
         private readonly OmniSharpWorkspace _omniSharpWorkspace;
 
         [ImportingConstructor]
         public FindImplementationsCommandFactory(
             IlSpyBaseTypeUsageFinder2 typeFinder,
             IlSpyMethodImplementationFinder methodImplementationFinder,
+            IlSpyPropertyImplementationFinder propertyImplementationFinder,
+            IlSpyEventImplementationFinder eventImplementationFinder,
             OmniSharpWorkspace omniSharpWorkspace)
         {
             _typeFinder = typeFinder;
             _methodImplementationFinder = methodImplementationFinder;
+            _propertyImplementationFinder = propertyImplementationFinder;
+            _eventImplementationFinder = eventImplementationFinder;
             _omniSharpWorkspace = omniSharpWorkspace;
         }
 
@@ -42,7 +48,18 @@ namespace TryOmnisharpExtension
 
         public INavigationCommand<FindImplementationsResponse> GetForProperty(IProperty property, string projectAssemblyFilePath)
         {
-            throw new System.NotImplementedException();
+            return new FindPropertyImplementationsCommand(
+                projectAssemblyFilePath,
+                property,
+                _propertyImplementationFinder);
+        }
+        
+        public INavigationCommand<FindImplementationsResponse> GetForEvent(IEvent eventSymbol, string projectAssemblyFilePath)
+        {
+            return new FindEventImplementationsCommand(
+                projectAssemblyFilePath,
+                eventSymbol,
+                _eventImplementationFinder);
         }
 
         public INavigationCommand<FindImplementationsResponse> GetForInSource(ISymbol roslynSymbol)

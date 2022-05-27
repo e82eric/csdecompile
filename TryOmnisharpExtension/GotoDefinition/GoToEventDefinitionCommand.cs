@@ -4,26 +4,26 @@ using TryOmnisharpExtension.IlSpy;
 
 namespace TryOmnisharpExtension
 {
-    public class GotoTypeDefintionCommand : IGotoDefinitionCommand
+    public class GotoEventDefintionCommand : IGotoDefinitionCommand
     {
-        private readonly ITypeDefinition _typeDefinition;
-        private readonly IlSpyTypeFinder _ilSpyTypeFinder;
+        private readonly IEvent _eventSymbol;
+        private readonly IlSpyEventFinder _ilSpyFinder;
         private readonly string _assemblyFilePath;
 
-        public GotoTypeDefintionCommand(
-            ITypeDefinition typeDefinition,
-            IlSpyTypeFinder ilSpyTypeFinder,
+        public GotoEventDefintionCommand(
+            IEvent eventSymbol,
+            IlSpyEventFinder ilSpyFinder,
             string assemblyFilePath)
         {
-            _typeDefinition = typeDefinition;
-            _ilSpyTypeFinder = ilSpyTypeFinder;
+            _eventSymbol = eventSymbol;
+            _ilSpyFinder = ilSpyFinder;
             _assemblyFilePath = assemblyFilePath;
         }
         
         public async Task<DecompileGotoDefinitionResponse> Execute()
         {
-            var (ilSpyMetadataSource, sourceText) = await _ilSpyTypeFinder.FindDefinitionFromSymbolName(
-                _typeDefinition);
+            var (ilSpyMetadataSource, sourceText) = await _ilSpyFinder.Find(
+                _eventSymbol);
             
             var decompileInfo = DecompileInfoMapper.MapFromMetadataSource(ilSpyMetadataSource);
             decompileInfo.AssemblyFilePath = _assemblyFilePath;

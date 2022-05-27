@@ -5,12 +5,12 @@ using ICSharpCode.Decompiler.TypeSystem;
 namespace TryOmnisharpExtension.IlSpy
  {
      [Export]
-     public class IlSpyTypeFinder2
+     public class IlSpyTypeFinder
      {
          private readonly TypenFinder2 _typeInFinder;
 
          [ImportingConstructor]
-         public IlSpyTypeFinder2(TypenFinder2 typeInFinder)
+         public IlSpyTypeFinder(TypenFinder2 typeInFinder)
          {
              _typeInFinder = typeInFinder;
          }

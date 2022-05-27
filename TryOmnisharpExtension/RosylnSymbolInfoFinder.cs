@@ -63,6 +63,15 @@ namespace TryOmnisharpExtension
                         propertyName);
                     result = _gotoDefinitionCommandFactory.GetForProperty(ilspyProperty, projectOutputFilePath);
                     break;
+                case SymbolKind.Event:
+                    var eventSymbol = (IEventSymbol)roslynSymbol;
+                    var eventName = $"{eventSymbol.ContainingType.GetSymbolName()}.{eventSymbol.Name}";
+                    var ilspyEvent = await _ilSpySymbolFinder.FindEvent(
+                        assemblyFilePath,
+                        eventSymbol.ContainingType.GetSymbolName(),
+                        eventName);
+                    result = _gotoDefinitionCommandFactory.GetForEvent(ilspyEvent, projectOutputFilePath);
+                    break;
                 case SymbolKind.Method:
                     var method = (IMethodSymbol)roslynSymbol;
                     var methodParameters = new List<string>();

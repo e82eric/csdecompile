@@ -8,5 +8,10 @@ namespace TryOmnisharpExtension
     {
         public string AssemblyFilePath { get; set; }
         public string ContainingTypeFullName { get; set; }
+        public string UsageType { get; set; }
+        public string NamespaceName { get; set; }
+        public string TypeName { get; set; }
+        public string BaseTypeName { get; set; }
+        public string MethodName { get; set; }
     }
 }
