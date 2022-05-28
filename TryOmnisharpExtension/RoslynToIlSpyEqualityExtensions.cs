@@ -44,14 +44,14 @@ public static class RoslynToIlSpyEqualityExtensions
         
         if(roslynTypeSymbol is INamedTypeSymbol roslynNamedType)
         {
-            if (roslynNamedType.TypeParameters.Length != ilSpyTypeSymbol.TypeParameterCount)
+            if (roslynNamedType.TypeArguments.Length != ilSpyTypeSymbol.TypeArguments.Count)
             {
                 return false;
             }
 
-            for (int i = 0; i < roslynNamedType.TypeParameters.Length; i++)
+            for (int i = 0; i < roslynNamedType.TypeArguments.Length; i++)
             {
-                var areEqual = AreSameType(roslynNamedType.TypeParameters[i], ilSpyTypeSymbol.TypeParameters[i]);
+                var areEqual = AreSameType(roslynNamedType.TypeArguments[i], ilSpyTypeSymbol.TypeArguments[i]);
                 if (!areEqual)
                 {
                     return false;

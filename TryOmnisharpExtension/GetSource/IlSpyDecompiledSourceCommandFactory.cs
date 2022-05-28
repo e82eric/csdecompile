@@ -41,7 +41,7 @@ namespace TryOmnisharpExtension
                     request.TypeName,
                     request.MethodName);
             }
-            if (request.UsageType == UsageTypes.PropertyImplementation)
+            else if (request.UsageType == UsageTypes.PropertyImplementation)
             {
                 usage = await _typeUsedInTypeFinder.FindProperty(
                     symbol,
@@ -49,7 +49,7 @@ namespace TryOmnisharpExtension
                     request.TypeName,
                     request.MethodName);
             }
-            if (request.UsageType == UsageTypes.EventImplementation)
+            else if (request.UsageType == UsageTypes.EventImplementation)
             {
                 usage = await _typeUsedInTypeFinder.FindEvent(
                     symbol,
