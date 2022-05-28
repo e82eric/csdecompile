@@ -1,11 +1,15 @@
-﻿using System.Collections.Generic;
-using System.Composition;
+﻿using System.Composition;
 using System.Linq;
 using System.Threading.Tasks;
 using ICSharpCode.Decompiler.CSharp;
 using ICSharpCode.Decompiler.CSharp.Syntax;
+using ICSharpCode.Decompiler.Metadata;
 using ICSharpCode.Decompiler.TypeSystem;
+using Microsoft.CodeAnalysis;
+using OmniSharp.Extensions;
 using TryOmnisharpExtension.IlSpy;
+using ISymbol = ICSharpCode.Decompiler.TypeSystem.ISymbol;
+using SyntaxTree = ICSharpCode.Decompiler.CSharp.Syntax.SyntaxTree;
 
 namespace TryOmnisharpExtension;
 
@@ -39,10 +43,12 @@ public class IlSpySymbolFinder
 
         return tempFile;
     }
-    public async Task<IMethod> FindMethod(string projectAssemblyFilePath, string typeName, string methodName, IReadOnlyList<string> methodParameterTypes)
+    
+    public async Task<IMethod> FindMethod(string projectAssemblyFilePath, IMethodSymbol roslynMethod)
     {
-        var typeDefinitionSymbol = await FindTypeDefinition(projectAssemblyFilePath, typeName);
-        var method = FindMethod(typeDefinitionSymbol, methodName, methodParameterTypes);
+        var typeFullName = roslynMethod.ContainingType.GetSymbolName();
+        var typeDefinitionSymbol = await FindTypeDefinition(projectAssemblyFilePath, typeFullName);
+        var method = FindMethod(typeDefinitionSymbol, roslynMethod);
         return method;
     }
     
@@ -106,50 +112,20 @@ public class IlSpySymbolFinder
         return null;
     }
     
-    private IMethod FindMethod(ITypeDefinition type, string methodName, IReadOnlyList<string> methodParameterTypes)
+    private IMethod FindMethod(ITypeDefinition type, IMethodSymbol roslynMethod)
     {
-        var methods = new List<IMember>();
-
         foreach (var member in type.Members)
         {
-            if (member.FullName == methodName)
+            if (member is IMethod ilSpyMethod)
             {
-                var method = member as IMethod;
-
-                if (method != null)
+                if (RoslynToIlSpyEqualityExtensions.AreSameMethod(roslynMethod, ilSpyMethod))
                 {
-                    if (method.Parameters.Count == methodParameterTypes.Count)
-                    {
-                        var paramsMatch = true;
-                        for (int i = 0; i < methodParameterTypes.Count; i++)
-                        {
-                            if (method.Parameters[i].Type.ReflectionName != methodParameterTypes[i])
-                            {
-                                paramsMatch = false;
-                            }
-                        }
-
-                        if (paramsMatch)
-                        {
-                            methods.Add(member);
-                        }
-                    }
+                    return ilSpyMethod;
                 }
             }
         }
 
-        if (methods.Count > 1)
-        {
-            foreach (var method in methods)
-            {
-                if (method.DeclaringType?.Name == type.Name)
-                {
-                    return method as IMethod;
-                }
-            }
-        }
-
-        return methods.FirstOrDefault() as IMethod;
+        return null;
     }
     
     private static IProperty FindProperty(IType type, string methodName)

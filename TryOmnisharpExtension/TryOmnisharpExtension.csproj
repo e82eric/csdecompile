@@ -327,6 +327,7 @@
         <Compile Include="LocationRequest.cs" />
         <Compile Include="MoreSymboleHelpers.cs" />
         <Compile Include="OmnisharpWorkspaceWrapper.cs" />
+        <Compile Include="RoslynToIlSpyEqualityExtensions.cs" />
         <Compile Include="RosylnSymbolInfoFinder.cs" />
         <Compile Include="Languages.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />

@@ -91,13 +91,9 @@ namespace TryOmnisharpExtension
                         }
                     }
 
-                    var fullName = $"{method.ContainingType.GetSymbolName()}.{method.Name}";
-
                     var ilSpyMethod = await _ilSpySymbolFinder.FindMethod(
                         assemblyFilePath,
-                        method.ContainingType.GetSymbolName(),
-                        fullName,
-                        methodParameters);
+                        method);
 
                     result = _gotoDefinitionCommandFactory.GetForMethod(ilSpyMethod, projectOutputFilePath);
                     break;

@@ -4,25 +4,6 @@ using OmniSharp.Mef;
 
 namespace TryOmnisharpExtension
 {
-    // [OmniSharpHandler(Endpoints.DecompileGotoDefinition, Languages.Csharp), Shared]
-    // public class DecompileGotoDefinitionHandler : IRequestHandler<DecompileGotoDefinitionRequest, DecompileGotoDefinitionResponse>
-    // {
-    //     private readonly RosylnSymbolInfoFinder<IGotoDefinitionCommand> _rosylnGotoDefinitionCommandFactory;
-    //
-    //     [ImportingConstructor]
-    //     public DecompileGotoDefinitionHandler(RosylnSymbolInfoFinder<IGotoDefinitionCommand> rosylnSymbolInfoFinder)
-    //     {
-    //         _rosylnGotoDefinitionCommandFactory = rosylnSymbolInfoFinder;
-    //     }
-    //     
-    //     public async Task<DecompileGotoDefinitionResponse> Handle(DecompileGotoDefinitionRequest request)
-    //     {
-    //         var command = await _rosylnGotoDefinitionCommandFactory.Get(request);
-    //         var result = await command.Execute();
-    //         return result;
-    //     }
-    // }
-    
     [OmniSharpHandler(Endpoints.DecompileGotoDefinition, Languages.Csharp), Shared]
     public class DecompileGotoDefinitionHandler : IRequestHandler<DecompileGotoDefinitionRequest, DecompileGotoDefinitionResponse>
     {

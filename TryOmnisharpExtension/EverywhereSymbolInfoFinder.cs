@@ -86,9 +86,7 @@ public class EverywhereSymbolInfoFinder
 
                 var ilSpyMethod = await _ilSpySymbolFinder.FindMethod(
                     assemblyFilePath,
-                    method.ContainingType.GetSymbolName(),
-                    fullName,
-                    methodParameters);
+                    method);
 
                 ilSpyCommand = _commandFactory.GetForMethod(ilSpyMethod, projectOutputFilePath);
                 break;
@@ -197,9 +195,7 @@ public class EverywhereSymbolInfoFinder2<CommandResponseType> where CommandRespo
 
                 var ilSpyMethod = await _ilSpySymbolFinder.FindMethod(
                     assemblyFilePath,
-                    method.ContainingType.GetSymbolName(),
-                    fullName,
-                    methodParameters);
+                    method);
 
                 ilSpyCommand = _commandFactory.GetForMethod(ilSpyMethod, projectOutputFilePath);
                 break;
