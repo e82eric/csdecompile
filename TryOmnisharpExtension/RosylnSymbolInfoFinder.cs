@@ -74,22 +74,6 @@ namespace TryOmnisharpExtension
                     break;
                 case SymbolKind.Method:
                     var method = (IMethodSymbol)roslynSymbol;
-                    var methodParameters = new List<string>();
-
-                    if (method.ReducedFrom != null)
-                    {
-                        foreach (var parameter in method.ReducedFrom.Parameters)
-                        {
-                            methodParameters.Add(parameter.Type.GetMetadataName());
-                        }
-                    }
-                    else
-                    {
-                        foreach (var parameter in method.Parameters)
-                        {
-                            methodParameters.Add(parameter.Type.GetMetadataName());
-                        }
-                    }
 
                     var ilSpyMethod = await _ilSpySymbolFinder.FindMethod(
                         assemblyFilePath,

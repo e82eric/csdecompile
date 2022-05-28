@@ -26,6 +26,9 @@ namespace TryOmnisharpExtension
             
             var decompileInfo = DecompileInfoMapper.MapFromMetadataSource(ilSpyMetadataSource);
             decompileInfo.AssemblyFilePath = _projectAssemblyPath;
+
+            decompileInfo.Line = decompileInfo.Line - 1;
+            decompileInfo.Column = decompileInfo.Column - 1;
             
             var result = new DecompileGotoDefinitionResponse
             {

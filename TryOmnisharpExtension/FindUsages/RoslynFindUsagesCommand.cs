@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.FindSymbols;
 using OmniSharp;
@@ -22,23 +21,27 @@ public class RoslynFindUsagesCommand : INavigationCommand<FindUsagesResponse>
     {
         var definition = await SymbolFinder.FindSourceDefinitionAsync(_symbol, _workspace.CurrentSolution);
         var usages = await SymbolFinder.FindReferencesAsync(definition ?? _symbol, _workspace.CurrentSolution);
-        var locations = usages.SelectMany(u => u.Locations).Select(l => l.Location).ToList();
-
-        // always skip get/set methods of properties from the list of definition locations.
-        var definitionLocations = usages.Select(u => u.Definition)
-            .Where(def => !(def is IMethodSymbol method && method.AssociatedSymbol is IPropertySymbol))
-            .SelectMany(def => def.Locations)
-            .Where(loc => loc.IsInSource);
-
-        locations.AddRange(definitionLocations);
 
         var result = new FindUsagesResponse();
-        foreach (var location in locations)
+        foreach (var usage in usages)
         {
-            var sourceFileInfo = location.GetSourceLineInfo(_workspace);
-            sourceFileInfo.TypeFullName = _symbol.Name;
-            sourceFileInfo.NamespaceName = _symbol.ContainingNamespace.Name;
-            result.Implementations.Add(sourceFileInfo);
+            foreach (var location in usage.Locations)
+            {
+                var sourceFileInfo = location.Location.GetSourceLineInfo(_workspace);
+                result.Implementations.Add(sourceFileInfo);
+            }
+
+            if (!(usage.Definition is IMethodSymbol methodSymbol && methodSymbol.AssociatedSymbol is IPropertySymbol))
+            {
+                foreach (var location in usage.Definition.Locations)
+                {
+                    if (location.IsInSource)
+                    {
+                        var sourceFileInfo = location.GetSourceLineInfo(_workspace);
+                        result.Implementations.Add(sourceFileInfo);
+                    }
+                }
+            }
         }
 
         return result;

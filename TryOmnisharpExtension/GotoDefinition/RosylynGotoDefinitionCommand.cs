@@ -17,7 +17,7 @@ public class RosylynGotoDefinitionCommand : IGotoDefinitionCommand
     public Task<DecompileGotoDefinitionResponse> Execute()
     {
         var lineSpan = _symbol.Locations.First().GetMappedLineSpan();
-        var result = new DecompileGotoDefinitionResponse()
+        var result = new DecompileGotoDefinitionResponse
         { 
             Location = new SourceFileInfo
             {
