@@ -32,7 +32,8 @@ public static class RoslynToIlSpyEqualityExtensions
 
     public static bool AreSameType(ITypeSymbol roslynTypeSymbol, IType ilSpyTypeSymbol)
     {
-        if (roslynTypeSymbol.ContainingNamespace.Name != ilSpyTypeSymbol.Namespace)
+        var roslynNamespace = roslynTypeSymbol.ContainingNamespace.ToDisplayString();
+        if (roslynNamespace != ilSpyTypeSymbol.Namespace)
         {
             return false;
         }
