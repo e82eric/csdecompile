@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Composition;
 using System.Threading.Tasks;
 using ICSharpCode.Decompiler.TypeSystem;
+using TryOmnisharpExtension;
 using TryOmnisharpExtension.FindUsages;
 using TryOmnisharpExtension.IlSpy;
 
@@ -46,7 +47,7 @@ namespace IlSpy.Analyzer.Extraction
                             var parentType = SymbolHelper.FindContainingType(methodSymbolToSearch);
                             if (parentType != null)
                             {
-                                var metadataSource = new IlSpyMetadataSource2()
+                                var metadataSource = new IlSpyMetadataSource2
                                 {
                                     AssemblyName = parentType.ParentModule.AssemblyName,
                                     Column = foundUse.StartLocation.Column,
@@ -55,7 +56,8 @@ namespace IlSpy.Analyzer.Extraction
                                     StartColumn = foundUse.StartLocation.Column,
                                     EndColumn = foundUse.EndLocation.Column,
                                     ContainingTypeFullName = parentType.ReflectionName,
-                                    AssemblyFilePath = methodSymbolToSearch.Compilation.MainModule.PEFile.FileName
+                                    AssemblyFilePath = methodSymbolToSearch.Compilation.MainModule.PEFile.FileName,
+                                    UsageType = UsageTypes.InMethodBody
                                 };
 
                                 result.Add(metadataSource);

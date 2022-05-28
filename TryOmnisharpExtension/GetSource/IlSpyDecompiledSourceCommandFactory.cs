@@ -33,7 +33,15 @@ namespace TryOmnisharpExtension
             (SyntaxTree syntaxTree, string source) = decompiler.Run(symbol);
 
             UsageAsTextLocation usage;
-            if (request.UsageType == UsageTypes.MethodImplementation)
+            if (request.UsageType == UsageTypes.InMethodBody)
+            {
+                usage = new UsageAsTextLocation
+                {
+                    StartLocation = new TextLocation(request.Line, request.Column),
+                    EndLocation = new TextLocation(request.Line, request.Column),
+                };
+            }
+            else if (request.UsageType == UsageTypes.MethodImplementation)
             {
                 usage = await _typeUsedInTypeFinder.FindMethod(
                     symbol,

@@ -13,5 +13,7 @@ namespace TryOmnisharpExtension
         public string TypeName { get; set; }
         public string BaseTypeName { get; set; }
         public string MethodName { get; set; }
+        public int Line { get; set; }
+        public int Column { get; set; }
     }
 }

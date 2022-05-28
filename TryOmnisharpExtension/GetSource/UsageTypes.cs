@@ -9,4 +9,5 @@ public class UsageTypes
     public const string PropertyImplementation = "PropertyImplementation";
     public const string Parameter = "Parameter";
     public const string Return = "Return";
+    public const string InMethodBody = "InMethodBody";
 }
