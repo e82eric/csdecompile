@@ -133,7 +133,6 @@ public class IlSpyFindImplementationsCommandFactory2<ResponseType> where Respons
             var symbol = GetSymbol(entity.FullName);
 
             var roslynCommand = _commandCommandFactory.GetForInSource(symbol);
-                // new RosylynFindImplementationsCommand(symbol, _omniSharpWorkspace, request.AssemblyFilePath);
                 
             var ilSpyCommand = _commandCommandFactory.GetForType(
                 entity,
@@ -148,7 +147,6 @@ public class IlSpyFindImplementationsCommandFactory2<ResponseType> where Respons
             var symbol = GetSymbol(property.DeclaringType.FullName);
 
             var roslynCommand = _commandCommandFactory.GetForInSource(symbol);
-                // new RosylynFindImplementationsCommand(symbol, _omniSharpWorkspace, request.AssemblyFilePath);
                 
             var ilSpyCommand = _commandCommandFactory.GetForProperty(property, request.AssemblyFilePath);
             var result = new EverywhereImplementationsCommand2<ResponseType>(roslynCommand, ilSpyCommand);
@@ -160,7 +158,6 @@ public class IlSpyFindImplementationsCommandFactory2<ResponseType> where Respons
             var symbol = GetSymbol(eventSymbol.DeclaringType.FullName);
 
             var roslynCommand = _commandCommandFactory.GetForInSource(symbol);
-                // new RosylynFindImplementationsCommand(symbol, _omniSharpWorkspace, request.AssemblyFilePath);
                 
             var ilSpyCommand = _commandCommandFactory.GetForEvent(eventSymbol, request.AssemblyFilePath);
             var result = new EverywhereImplementationsCommand2<ResponseType>(roslynCommand, ilSpyCommand);
@@ -171,10 +168,22 @@ public class IlSpyFindImplementationsCommandFactory2<ResponseType> where Respons
         {
             var symbol = GetSymbol(method.DeclaringType.FullName);
             INavigationCommand<ResponseType> roslynCommand = null;
-            if (symbol is INamedTypeSymbol)
+            if (symbol is INamedTypeSymbol roslynType)
             {
-                var methodSymbol = ((INamedTypeSymbol)symbol).GetMembers().FirstOrDefault(m => m.Name == method.Name);
-                roslynCommand = _commandCommandFactory.GetForInSource(methodSymbol);
+                IMethodSymbol foundRoslynMethod = null;
+                foreach (var roslynMember in roslynType.GetMembers())
+                {
+                    if (roslynMember is IMethodSymbol roslynMethod)
+                    {
+                        var areSame = RoslynToIlSpyEqualityExtensions.AreSameMethod(roslynMethod, method);
+                        if (areSame)
+                        {
+                            foundRoslynMethod = roslynMethod;
+                            break;
+                        }
+                    }
+                }
+                roslynCommand = _commandCommandFactory.GetForInSource(foundRoslynMethod);
                     
             }
             var ilSpyCommand = _commandCommandFactory.GetForMethod(method, request.AssemblyFilePath);
