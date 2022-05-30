@@ -12,16 +12,13 @@ namespace TryOmnisharpExtension
         private readonly DecompilerFactory _decompilerFactory;
         private readonly TypeUsedInTypeFinder _typeUsedInTypeFinder;
         private readonly IlSpySymbolFinder _ilSpySymbolFinder;
-        private readonly ExternalAssemblyTypeSystemFactory _externalAssemblyTypeSystemFactory;
 
         [ImportingConstructor]
         public IlSpyDecompiledSourceCommandFactory(
             DecompilerFactory decompilerFactory,
             TypeUsedInTypeFinder typeUsedInTypeFinder,
-            IlSpySymbolFinder ilSpySymbolFinder,
-            ExternalAssemblyTypeSystemFactory externalAssemblyTypeSystemFactory)
+            IlSpySymbolFinder ilSpySymbolFinder)
         {
-            _externalAssemblyTypeSystemFactory = externalAssemblyTypeSystemFactory;
             _decompilerFactory = decompilerFactory;
             _typeUsedInTypeFinder = typeUsedInTypeFinder;
             _ilSpySymbolFinder = ilSpySymbolFinder;
@@ -29,26 +26,10 @@ namespace TryOmnisharpExtension
         
         public async Task<DecompiledSourceResponse> Find(DecompiledSourceRequest request)
         {
-            ITypeDefinition symbol;
-            Decompiler decompiler;
-            if (request.IsFromExternalAssembly)
-            {
-                var typeSystem = await _externalAssemblyTypeSystemFactory.GetTypeSystem(
-                    request.AssemblyFilePath);
-                
-                symbol = await _ilSpySymbolFinder.FindTypeDefinition(
-                    request.ContainingTypeFullName,
-                    typeSystem);
-                
-                decompiler = await _decompilerFactory.Get(typeSystem);
-            }
-            else
-            {
-                symbol = await _ilSpySymbolFinder.FindTypeDefinition(
-                    request.AssemblyFilePath,
-                    request.ContainingTypeFullName);
-                decompiler = await _decompilerFactory.Get(request.AssemblyFilePath);
-            }
+            var symbol = await _ilSpySymbolFinder.FindTypeDefinition(
+                request.AssemblyFilePath,
+                request.ContainingTypeFullName);
+            var decompiler = await _decompilerFactory.Get(request.AssemblyFilePath);
             
             (SyntaxTree syntaxTree, string source) = decompiler.Run(symbol);
 
@@ -106,6 +87,7 @@ namespace TryOmnisharpExtension
                 AssemblyFilePath = request.AssemblyFilePath,
                 ContainingTypeFullName = request.ContainingTypeFullName,
                 IsDecompiled = true,
+                IsFromExternalAssemblies = request.IsFromExternalAssembly,
                 SourceText = source,
                 Line = usage.StartLocation.Line,
                 Column = usage.StartLocation.Column

@@ -34,6 +34,9 @@
         <WarningLevel>4</WarningLevel>
     </PropertyGroup>
     <ItemGroup>
+        <Reference Include="Autofac, Version=4.9.4.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+          <HintPath>..\packages\Autofac.4.9.4\lib\net45\Autofac.dll</HintPath>
+        </Reference>
         <Reference Include="Humanizer, Version=2.2.0.0, Culture=neutral, PublicKeyToken=979442b78dfc278e, processorArchitecture=MSIL">
           <HintPath>..\packages\Humanizer.Core.2.2.0\lib\netstandard1.0\Humanizer.dll</HintPath>
         </Reference>
@@ -233,6 +236,7 @@
         <Compile Include="DecompileInfoMapper.cs" />
         <Compile Include="Endpoints.cs" />
         <Compile Include="EverywhereSymbolInfoFinder.cs" />
+        <Compile Include="ExtensionContainer.cs" />
         <Compile Include="ExternalAssembliesWorkspace.cs" />
         <Compile Include="ExternalAssemblies\AddExternalAssemblyDirectoryHandler.cs" />
         <Compile Include="ExternalAssemblies\AddExternalAssemblyDirectoryRequest.cs" />
@@ -323,6 +327,7 @@
         <Compile Include="IlSpy\DecompileWorkspace.cs" />
         <Compile Include="IlSpy\AssemblyResolverFactory.cs" />
         <Compile Include="IlSpy\ExternalAssemblyTypeSystemFactory.cs" />
+        <Compile Include="IlSpy\IDecompilerTypeSystemFactory.cs" />
         <Compile Include="IlSpy\IlSpyMetadataSource2.cs" />
         <Compile Include="IlSpy\IlSpyMethodExtensions.cs" />
         <Compile Include="IlSpy\IlSpyTypeSystemFactory.cs" />

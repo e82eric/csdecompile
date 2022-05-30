@@ -7,15 +7,12 @@ namespace TryOmnisharpExtension.IlSpy
     [Export]
     public class IlSpyPropertyFinder
     {
-        private readonly IlSpyTypeSystemFactory _typeSystemFactory;
         private readonly PropertyInTypeFinder2 _propertyInTypeFinder;
 
         [ImportingConstructor]
         public IlSpyPropertyFinder(
-            IlSpyTypeSystemFactory typeSystemFactory,
             PropertyInTypeFinder2 propertyInTypeFinder)
         {
-            _typeSystemFactory = typeSystemFactory;
             _propertyInTypeFinder = propertyInTypeFinder;
         }
         

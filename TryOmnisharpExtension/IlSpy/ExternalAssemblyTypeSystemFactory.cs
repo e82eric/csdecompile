@@ -8,12 +8,10 @@ using TryOmnisharpExtension.IlSpy;
 
 namespace TryOmnisharpExtension;
 
-[System.Composition.Export]
-public class ExternalAssemblyTypeSystemFactory
+public class ExternalAssemblyTypeSystemFactory : IDecompilerTypeSystemFactory
 {
     private readonly AssemblyResolverFactory _resolverFactory;
 
-    [System.Composition.ImportingConstructor]
     public ExternalAssemblyTypeSystemFactory(
         AssemblyResolverFactory resolverFactory)
     {

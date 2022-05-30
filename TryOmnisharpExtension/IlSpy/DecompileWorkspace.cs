@@ -18,13 +18,13 @@ namespace TryOmnisharpExtension.IlSpy
         private readonly Task _loadTask;
 
         [ImportingConstructor]
-        public DecompileWorkspace(IOmnisharpWorkspace workspace, IlSpyTypeSystemFactory typeSystemFactory)
+        public DecompileWorkspace(IOmnisharpWorkspace workspace, IDecompilerTypeSystemFactory typeSystemFactory)
         {
             var projectAssemblyPaths = workspace.GetProjectAssemblyPaths();
             _loadTask = LoadProjects(projectAssemblyPaths, typeSystemFactory);
         }
 
-        private async Task LoadProjects(IEnumerable<string> projectAssemblyPaths, IlSpyTypeSystemFactory typeSystemFactory)
+        private async Task LoadProjects(IEnumerable<string> projectAssemblyPaths, IDecompilerTypeSystemFactory typeSystemFactory)
         {
             foreach (var path in projectAssemblyPaths)
             {

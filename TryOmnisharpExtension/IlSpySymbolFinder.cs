@@ -15,12 +15,12 @@ namespace TryOmnisharpExtension;
 [Export]
 public class IlSpySymbolFinder
 {
-    private readonly IlSpyTypeSystemFactory _typeSystemFactory;
+    private readonly IDecompilerTypeSystemFactory _typeSystemFactory;
     private readonly DecompilerFactory _decompilerFactory;
 
     [ImportingConstructor]
     public IlSpySymbolFinder(
-        IlSpyTypeSystemFactory typeSystemFactory,
+        IDecompilerTypeSystemFactory typeSystemFactory,
         DecompilerFactory decompilerFactory)
     {
         _typeSystemFactory = typeSystemFactory;

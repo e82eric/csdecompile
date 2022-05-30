@@ -7,10 +7,11 @@ namespace TryOmnisharpExtension.IlSpy;
 [Export]
 public class DecompilerFactory
 {
-    private readonly IlSpyTypeSystemFactory _typeSystemFactory;
+    private readonly IDecompilerTypeSystemFactory _typeSystemFactory;
 
     [ImportingConstructor]
-    public DecompilerFactory(IlSpyTypeSystemFactory typeSystemFactory)
+    public DecompilerFactory(
+        IDecompilerTypeSystemFactory typeSystemFactory)
     {
         _typeSystemFactory = typeSystemFactory;
     }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Composition;
 using System.IO;
 using System.Reflection.Metadata;
 using System.Reflection.PortableExecutable;
@@ -9,9 +10,9 @@ using TryOmnisharpExtension.IlSpy;
 
 namespace TryOmnisharpExtension
 {
-    [System.Composition.Shared]
-    [System.Composition.Export]
-    public class IlSpyTypeSystemFactory
+    [Shared]
+    [Export(typeof(IDecompilerTypeSystemFactory))]
+    public class IlSpyTypeSystemFactory : IDecompilerTypeSystemFactory
     {
         private readonly Dictionary<string, DecompilerTypeSystem> _projectTypeSystemCache = new();
         private readonly AssemblyResolverFactory _resolverFactory;
