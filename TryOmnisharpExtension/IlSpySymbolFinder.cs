@@ -3,7 +3,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using ICSharpCode.Decompiler.CSharp;
 using ICSharpCode.Decompiler.CSharp.Syntax;
-using ICSharpCode.Decompiler.Metadata;
 using ICSharpCode.Decompiler.TypeSystem;
 using Microsoft.CodeAnalysis;
 using OmniSharp.Extensions;
@@ -39,6 +38,22 @@ public class IlSpySymbolFinder
                 .Where(d => d.FullName == symbolFullName).FirstOrDefault();
 
             tempFile = tempFile2 as ITypeDefinition;
+        }
+
+        return tempFile;
+    }
+    
+    public async Task<ITypeDefinition> FindTypeDefinition(string symbolFullName, DecompilerTypeSystem typeSystem)
+    {
+        var tempFile = typeSystem.FindType(new FullTypeName(symbolFullName)) as ITypeDefinition;
+
+        if (tempFile == null)
+        {
+            var tempFile2 = typeSystem
+                .GetAllTypeDefinitions()
+                .FirstOrDefault(d => d.FullName == symbolFullName);
+
+            tempFile = tempFile2;
         }
 
         return tempFile;

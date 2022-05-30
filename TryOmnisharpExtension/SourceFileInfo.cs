@@ -18,6 +18,6 @@ public abstract class ResponseLocation
 
 public enum ResponseLocationType
 {
-    Decompiled,
-    SourceCode
+    Decompiled = 0,
+    SourceCode = 1
 }

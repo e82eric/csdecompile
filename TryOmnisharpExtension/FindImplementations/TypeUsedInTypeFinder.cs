@@ -31,6 +31,24 @@ public class TypeUsedInTypeFinder
         return result;
     }
     
+    public async Task<UsageAsTextLocation> FindType(
+        string typeNamespace,
+        string typeName,
+        SyntaxTree syntaxTree)
+    {
+        var namespaceNode = FindNamespace(syntaxTree, typeNamespace);
+        var typeNode = FindType(namespaceNode, typeName);
+        var typeIdentifier = FindTypeIdentifier(typeNode, typeName);
+
+        var result = new UsageAsTextLocation
+        {
+            StartLocation = typeIdentifier.StartLocation,
+            EndLocation = typeIdentifier.EndLocation
+        };
+
+        return result;
+    }
+    
     public async Task<UsageAsTextLocation> FindType(ITypeDefinition rootTypeSymbol, string typeNamespace, string typeName, string baseTypeName)
     {
         var assemblyFilePath = rootTypeSymbol.ParentModule.PEFile.FileName;
@@ -121,6 +139,28 @@ public class TypeUsedInTypeFinder
             }
     
             var result = FindType(child, typeName);
+            if (result != null)
+            {
+                return result;
+            }
+        }
+    
+        return null;
+    }
+    
+    private AstNode FindTypeIdentifier(AstNode typeNode, string typeName)
+    {
+        foreach (var child in typeNode.Children)
+        {
+            if (child is Identifier identifierNode)
+            {
+                if (identifierNode.Name == typeName)
+                {
+                    return child;
+                }
+            }
+    
+            var result = FindTypeIdentifier(child, typeName);
             if (result != null)
             {
                 return result;

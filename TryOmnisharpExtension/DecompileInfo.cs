@@ -15,6 +15,7 @@ namespace TryOmnisharpExtension
         public string DotNetVersion { get; set; }
         public string AssemblyVersion{ get; set; }
         public string TypeFullName{ get; set; }
+        public bool IsFromExternalAssembly { get; set; }
         
         public override ResponseLocationType Type => ResponseLocationType.Decompiled;
     }

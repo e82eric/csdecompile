@@ -3,6 +3,7 @@ namespace TryOmnisharpExtension;
 public class UsageTypes
 {
     public const string None = "None";
+    public const string Type = "Type";
     public const string BaseType = "BaseType";
     public const string MethodImplementation = "MethodImplementation";
     public const string EventImplementation = "EventImplementation";

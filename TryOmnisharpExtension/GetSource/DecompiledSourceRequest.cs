@@ -15,5 +15,7 @@ namespace TryOmnisharpExtension
         public string MethodName { get; set; }
         public int Line { get; set; }
         public int Column { get; set; }
+        
+        public bool IsFromExternalAssembly { get; set; }
     }
 }
