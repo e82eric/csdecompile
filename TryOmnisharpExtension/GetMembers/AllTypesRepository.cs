@@ -10,12 +10,12 @@ namespace TryOmnisharpExtension.IlSpy;
 [Export]
 public class AllTypesRepository
 {
-    private readonly DecompileWorkspace _workspace;
+    private readonly IDecompileWorkspace _workspace;
     private readonly AssemblyResolverFactory _assemblyResolverFactory;
 
     [ImportingConstructor]
     public AllTypesRepository(
-        DecompileWorkspace workspace,
+        IDecompileWorkspace workspace,
         AssemblyResolverFactory assemblyResolverFactory)
     {
         _workspace = workspace;

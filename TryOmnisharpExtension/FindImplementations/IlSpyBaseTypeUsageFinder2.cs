@@ -2,7 +2,6 @@
 using System.Composition;
 using System.Linq;
 using System.Threading.Tasks;
-using ICSharpCode.Decompiler.Metadata;
 using ICSharpCode.Decompiler.TypeSystem;
 using TryOmnisharp.Decompiler.IlSpy2;
 

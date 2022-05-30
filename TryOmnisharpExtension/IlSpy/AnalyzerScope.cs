@@ -14,12 +14,12 @@ namespace TryOmnisharpExtension.IlSpy
     public class AnalyzerScope
     {
         private readonly AssemblyResolverFactory _assemblyResolverFactory;
-        private readonly DecompileWorkspace _workspace;
+        private readonly IDecompileWorkspace _workspace;
 
         [ImportingConstructor]
         public AnalyzerScope(
             AssemblyResolverFactory assemblyResolverFactory,
-            DecompileWorkspace workspace)
+            IDecompileWorkspace workspace)
         {
             _workspace = workspace;
             _assemblyResolverFactory = assemblyResolverFactory;

@@ -5,13 +5,68 @@ using System.Threading.Tasks;
 using ICSharpCode.Decompiler.TypeSystem;
 using Microsoft.CodeAnalysis;
 using OmniSharp;
+using TryOmnisharpExtension.IlSpy;
 using ISymbol = Microsoft.CodeAnalysis.ISymbol;
 
 namespace TryOmnisharpExtension;
 
+public class IlSpyFindImplementationsCommandFactory : IDecompilerCommandFactory<INavigationCommand<FindImplementationsResponse>>
+{
+    private readonly IlSpyBaseTypeUsageFinder2 _typeFinder;
+    private readonly IlSpyMethodImplementationFinder _methodImplementationFinder;
+    private readonly IlSpyPropertyImplementationFinder _propertyImplementationFinder;
+    private readonly IlSpyEventImplementationFinder _eventImplementationFinder;
+
+    [ImportingConstructor]
+    public IlSpyFindImplementationsCommandFactory(
+        IlSpyBaseTypeUsageFinder2 typeFinder,
+        IlSpyMethodImplementationFinder methodImplementationFinder,
+        IlSpyPropertyImplementationFinder propertyImplementationFinder,
+        IlSpyEventImplementationFinder eventImplementationFinder)
+    {
+        _typeFinder = typeFinder;
+        _methodImplementationFinder = methodImplementationFinder;
+        _propertyImplementationFinder = propertyImplementationFinder;
+        _eventImplementationFinder = eventImplementationFinder;
+    }
+
+    public INavigationCommand<FindImplementationsResponse> GetForType(ITypeDefinition typeDefinition, string projectAssemblyFilePath)
+    {
+        return new FindTypeImplementationsCommand(
+            projectAssemblyFilePath,
+            typeDefinition,
+            _typeFinder);
+    }
+
+    public INavigationCommand<FindImplementationsResponse> GetForMethod(IMethod method, string projectAssemblyFilePath)
+    {
+        return new FindMethodImplementationsCommand(
+            projectAssemblyFilePath,
+            method,
+            _methodImplementationFinder);
+    }
+
+    public INavigationCommand<FindImplementationsResponse> GetForProperty(IProperty property, string projectAssemblyFilePath)
+    {
+        return new FindPropertyImplementationsCommand(
+            projectAssemblyFilePath,
+            property,
+            _propertyImplementationFinder);
+    }
+        
+    public INavigationCommand<FindImplementationsResponse> GetForEvent(IEvent eventSymbol, string projectAssemblyFilePath)
+    {
+        return new FindEventImplementationsCommand(
+            projectAssemblyFilePath,
+            eventSymbol,
+            _eventImplementationFinder);
+    }
+}
+
 [Shared]
 [Export]
-public class IlSpyFindImplementationsCommandFactory2<ResponseType> where ResponseType : FindImplementationsResponse, new()
+public class IlSpyFindImplementationsCommandFactory2<ResponseType>
+    where ResponseType : FindImplementationsResponse, new()
 {
     private readonly ICommandFactory<INavigationCommand<ResponseType>> _commandCommandFactory;
     private readonly OmniSharpWorkspace _omniSharpWorkspace;
@@ -28,7 +83,7 @@ public class IlSpyFindImplementationsCommandFactory2<ResponseType> where Respons
         _symbolFinder = symbolFinder;
         _commandCommandFactory = commandCommandFactory;
     }
-        
+
     public async Task<INavigationCommand<ResponseType>> Find(DecompiledLocationRequest request)
     {
         var symbolAtLocation = await _symbolFinder.FindSymbolAtLocation(
@@ -58,7 +113,7 @@ public class IlSpyFindImplementationsCommandFactory2<ResponseType> where Respons
             var symbol = GetSymbol(entity.FullName);
 
             var roslynCommand = _commandCommandFactory.GetForInSource(symbol);
-                
+
             var ilSpyCommand = _commandCommandFactory.GetForType(
                 entity,
                 request.AssemblyFilePath);
@@ -66,30 +121,30 @@ public class IlSpyFindImplementationsCommandFactory2<ResponseType> where Respons
             var result = new EverywhereImplementationsCommand2<ResponseType>(roslynCommand, ilSpyCommand);
             return result;
         }
-            
+
         if (symbolAtLocation is IProperty property)
         {
             var symbol = GetSymbol(property.DeclaringType.FullName);
 
             var roslynCommand = _commandCommandFactory.GetForInSource(symbol);
-                
+
             var ilSpyCommand = _commandCommandFactory.GetForProperty(property, request.AssemblyFilePath);
             var result = new EverywhereImplementationsCommand2<ResponseType>(roslynCommand, ilSpyCommand);
             return result;
         }
-        
+
         if (symbolAtLocation is IEvent eventSymbol)
         {
             var symbol = GetSymbol(eventSymbol.DeclaringType.FullName);
 
             var roslynCommand = _commandCommandFactory.GetForInSource(symbol);
-                
+
             var ilSpyCommand = _commandCommandFactory.GetForEvent(eventSymbol, request.AssemblyFilePath);
             var result = new EverywhereImplementationsCommand2<ResponseType>(roslynCommand, ilSpyCommand);
             return result;
         }
 
-        if(symbolAtLocation is IMethod method)
+        if (symbolAtLocation is IMethod method)
         {
             var symbol = GetSymbol(method.DeclaringType.FullName);
             INavigationCommand<ResponseType> roslynCommand = null;
@@ -108,9 +163,10 @@ public class IlSpyFindImplementationsCommandFactory2<ResponseType> where Respons
                         }
                     }
                 }
+
                 roslynCommand = _commandCommandFactory.GetForInSource(foundRoslynMethod);
-                    
             }
+
             var ilSpyCommand = _commandCommandFactory.GetForMethod(method, request.AssemblyFilePath);
             var result = new EverywhereImplementationsCommand2<ResponseType>(roslynCommand, ilSpyCommand);
             return result;

@@ -11,8 +11,8 @@ using ICSharpCode.Decompiler.Metadata;
 namespace TryOmnisharpExtension.IlSpy
 {
     [Shared]
-    [Export]
-    public class DecompileWorkspace
+    [Export(typeof(IDecompileWorkspace))]
+    public class DecompileWorkspace : IDecompileWorkspace
     {
         private readonly Dictionary<string, PEFile> _byFilename = new(StringComparer.OrdinalIgnoreCase);
         private readonly Task _loadTask;

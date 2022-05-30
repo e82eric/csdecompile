@@ -256,6 +256,7 @@
         <Compile Include="FindImplementations\FindTypeImplementationsCommand.cs" />
         <Compile Include="FindImplementations\IFindImplementationsCommand.cs" />
         <Compile Include="FindImplementations\IlSpyBaseTypeUsageFinder2.cs" />
+        <Compile Include="FindImplementations\IlSpyExternalAssembliesCommandFactory.cs" />
         <Compile Include="FindImplementations\IlSpyFindImplementationsCommandFactory.cs" />
         <Compile Include="FindImplementations\IlSpyMethodImplementationsFinder.cs" />
         <Compile Include="FindImplementations\IlSpyPropertyImplementationFinder.cs" />
@@ -270,6 +271,7 @@
         <Compile Include="FindUsages\DecompileFindUsagesRequest.cs" />
         <Compile Include="FindUsages\EventInMethodBodyFinder.cs" />
         <Compile Include="FindUsages\EventUsedByAnalyzer.cs" />
+        <Compile Include="FindUsages\ExternalAssembliesFindUsagesCommandFactory.cs" />
         <Compile Include="FindUsages\FindEventUsagesCommand.cs" />
         <Compile Include="FindUsages\FindMethodUsagesCommand.cs" />
         <Compile Include="FindUsages\FindPropertyUsagesCommand.cs" />
@@ -317,6 +319,7 @@
         <Compile Include="GotoDefinition\RosylynGotoDefinitionCommand.cs" />
         <Compile Include="GotoDefinition\TypenFinder2.cs" />
         <Compile Include="ICommandFactory.cs" />
+        <Compile Include="IDecompilerCommandFactory.cs" />
         <Compile Include="IlSpyCommandFactory.cs" />
         <Compile Include="IlSpyEventImplementationFinder.cs" />
         <Compile Include="IlSpySymbolFinder.cs" />
@@ -326,8 +329,10 @@
         <Compile Include="IlSpy\DecompilerFactory.cs" />
         <Compile Include="IlSpy\DecompileWorkspace.cs" />
         <Compile Include="IlSpy\AssemblyResolverFactory.cs" />
+        <Compile Include="IlSpy\ExternalAssembliesDecompileWorkspace.cs" />
         <Compile Include="IlSpy\ExternalAssemblyTypeSystemFactory.cs" />
         <Compile Include="IlSpy\IDecompilerTypeSystemFactory.cs" />
+        <Compile Include="IlSpy\IDecompileWorkspace.cs" />
         <Compile Include="IlSpy\IlSpyMetadataSource2.cs" />
         <Compile Include="IlSpy\IlSpyMethodExtensions.cs" />
         <Compile Include="IlSpy\IlSpyTypeSystemFactory.cs" />

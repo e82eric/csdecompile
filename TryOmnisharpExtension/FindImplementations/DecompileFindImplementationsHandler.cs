@@ -1,5 +1,6 @@
 ﻿using System.Composition;
 using System.Threading.Tasks;
+using Autofac;
 using OmniSharp.Mef;
 
 namespace TryOmnisharpExtension;
@@ -9,14 +10,18 @@ public class DecompileFindImplementationsHandler : IRequestHandler<DecompileFind
 {
     private readonly EverywhereSymbolInfoFinder2<FindImplementationsResponse> _everywhereSymbolInfoFinder2;
     private readonly IlSpyFindImplementationsCommandFactory2<FindImplementationsResponse> _ilSpyFindImplementationsCommandFactory2;
+    private IlSpyExternalAssembliesCommandFactory<FindImplementationsResponse> _externalAssemblyCommandFactory;
 
     [ImportingConstructor]
     public DecompileFindImplementationsHandler(
         EverywhereSymbolInfoFinder2<FindImplementationsResponse> everywhereSymbolInfoFinder2,
-        IlSpyFindImplementationsCommandFactory2<FindImplementationsResponse> ilSpyFindImplementationsCommandFactory2)
+        IlSpyFindImplementationsCommandFactory2<FindImplementationsResponse> ilSpyFindImplementationsCommandFactory2,
+        ExtensionContainer extensionContainer)
     {
         _everywhereSymbolInfoFinder2 = everywhereSymbolInfoFinder2;
         _ilSpyFindImplementationsCommandFactory2 = ilSpyFindImplementationsCommandFactory2;
+        _externalAssemblyCommandFactory = extensionContainer.Container
+            .Resolve<IlSpyExternalAssembliesCommandFactory<FindImplementationsResponse>>();
     }
         
     public async Task<FindImplementationsResponse> Handle(DecompileFindImplementationsRequest request)
@@ -28,7 +33,14 @@ public class DecompileFindImplementationsHandler : IRequestHandler<DecompileFind
         }
         else
         {
-            command = await _ilSpyFindImplementationsCommandFactory2.Find(request);
+            if (request.IsFromExternalAssembly)
+            {
+                command = await _externalAssemblyCommandFactory.Find(request);
+            }
+            else
+            {
+                command = await _ilSpyFindImplementationsCommandFactory2.Find(request);
+            }
         }
         
         var result = await command.Execute();
