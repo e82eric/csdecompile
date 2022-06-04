@@ -15,36 +15,56 @@ namespace TryOmnisharpExtension.IlSpy
     public class DecompileWorkspace : IDecompileWorkspace
     {
         private readonly Dictionary<string, PEFile> _byFilename = new(StringComparer.OrdinalIgnoreCase);
-        private readonly Task _loadTask;
+        private readonly IOmnisharpWorkspace _workspace;
 
         [ImportingConstructor]
-        public DecompileWorkspace(IOmnisharpWorkspace workspace, IDecompilerTypeSystemFactory typeSystemFactory)
+        public DecompileWorkspace(IOmnisharpWorkspace workspace)
         {
-            var projectAssemblyPaths = workspace.GetProjectAssemblyPaths();
-            _loadTask = LoadProjects(projectAssemblyPaths, typeSystemFactory);
+            _workspace = workspace;
         }
 
-        private async Task LoadProjects(IEnumerable<string> projectAssemblyPaths, IDecompilerTypeSystemFactory typeSystemFactory)
+        public async Task LoadDlls()
         {
+            var projectAssemblyPaths = _workspace.GetProjectAssemblyPaths();
             foreach (var path in projectAssemblyPaths)
             {
-                var projectPeFile = await OpenAssembly(path);
-                _byFilename.Add(path, projectPeFile);
+                var projectDllFile = new FileInfo(path);
+                var projectBinDir = projectDllFile.Directory;
+                var binDirDlls = projectBinDir.GetFiles("*.dll", SearchOption.AllDirectories);
+
+                foreach (var dllFilePath in binDirDlls)
+                {
+                    var dllPEFile = await OpenAssembly(path);
+                    if (dllFilePath != null)
+                    {
+                        var uniqueness = dllFilePath.FullName + "|" + dllPEFile.Metadata.MetadataVersion;
+                        if (!_byFilename.ContainsKey(uniqueness))
+                        {
+                            _byFilename.Add(uniqueness, dllPEFile);
+                        }
+                    }
+                }
             }
         }
 
 		public async Task<PEFile[]> GetAssemblies()
         {
-            await _loadTask;
             return _byFilename.Values.ToArray();
         }
 
-        private async Task<PEFile> OpenAssembly(string file, bool isAutoLoaded = false)
+        private async Task<PEFile> OpenAssembly(string file)
         {
-            using (var fileStream = new FileStream(file, FileMode.Open, FileAccess.Read))
+            try
             {
-                var result = LoadAssembly(fileStream, PEStreamOptions.PrefetchEntireImage, file);
-                return result;
+                using (var fileStream = new FileStream(file, FileMode.Open, FileAccess.Read))
+                {
+                    var result = LoadAssembly(fileStream, PEStreamOptions.PrefetchEntireImage, file);
+                    return result;
+                }
+            }
+            catch (Exception)
+            {
+                return null;
             }
         }
         

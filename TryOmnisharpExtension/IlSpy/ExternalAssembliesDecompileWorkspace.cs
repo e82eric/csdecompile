@@ -16,4 +16,9 @@ public class ExternalAssembliesDecompileWorkspace : IDecompileWorkspace
     {
         return new PEFile[] { };
     }
+
+    public async Task LoadDlls()
+    {
+        
+    }
 }

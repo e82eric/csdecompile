@@ -51,7 +51,7 @@ namespace TryOmnisharpExtension.IlSpy
             var result = await GetReferencingModules(typeScope.ParentModule.PEFile, typeScope);
             return result;
         }
-
+        
         private async void GetReferencingModules(
             PEFile pefile,
             string typeScopeNamespace,
@@ -60,21 +60,21 @@ namespace TryOmnisharpExtension.IlSpy
             HashSet<string> alreadyChecked,
             IAssemblyResolver assemblyResolver)
         {
-            foreach (var assemblyReference in pefile.AssemblyReferences)
+            var uniqueness = GetPeFileUniqueness(pefile);
+            if (!alreadyChecked.Contains(uniqueness))
             {
-                var resolved = await assemblyResolver.ResolveAsync(assemblyReference);
-                if (resolved != null)
+                alreadyChecked.Add(uniqueness);
+                var moduleReferencesScopeType = ModuleReferencesScopeType(pefile.Metadata, reflectionTypeScopeName, typeScopeNamespace);
+                if (moduleReferencesScopeType)
                 {
-                    var uniqueness = GetPeFileUniqueness(resolved);
-                    if (!alreadyChecked.Contains(uniqueness))
+                    result.Add(pefile);
+                }
+
+                foreach (var assemblyReference in pefile.AssemblyReferences)
+                {
+                    var resolved = await assemblyResolver.ResolveAsync(assemblyReference);
+                    if (resolved != null)
                     {
-                        alreadyChecked.Add(uniqueness);
-                        var moduleReferencesScopeType = ModuleReferencesScopeType(resolved.Metadata, reflectionTypeScopeName, typeScopeNamespace);
-                        if (moduleReferencesScopeType)
-                        {
-                            result.Add(resolved);
-                        }
-                        
                         GetReferencingModules(
                             resolved,
                             typeScopeNamespace,
@@ -236,21 +236,6 @@ namespace TryOmnisharpExtension.IlSpy
                 }
             }
             return hasRef;
-        }
-
-        bool ModuleForwardsScopeType(MetadataReader metadata, string typeScopeName, string typeScopeNamespace)
-        {
-            bool hasForward = false;
-            foreach (var h in metadata.ExportedTypes)
-            {
-                var exportedType = metadata.GetExportedType(h);
-                if (exportedType.IsForwarder && metadata.StringComparer.Equals(exportedType.Name, typeScopeName) && metadata.StringComparer.Equals(exportedType.Namespace, typeScopeNamespace))
-                {
-                    hasForward = true;
-                    break;
-                }
-            }
-            return hasForward;
         }
         #endregion
     }
