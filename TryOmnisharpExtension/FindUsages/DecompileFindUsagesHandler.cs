@@ -9,18 +9,18 @@ namespace TryOmnisharpExtension;
 [OmniSharpHandler(Endpoints.DecompileFindUsages, Languages.Csharp), Shared]
 public class DecompileFindUsagesHandler : IRequestHandler<DecompileFindUsagesRequest, FindUsagesResponse>
 {
-    private readonly EverywhereSymbolInfoFinder2<FindUsagesResponse> _everywhereSymbolInfoFinder2;
-    private readonly IlSpyFindImplementationsCommandFactory2<FindUsagesResponse> _ilSpyFindImplementationsCommandFactory2;
+    private readonly EverywhereSymbolInfoFinder2<FindUsagesResponse> _everywhereSymbolInfoFinder;
+    private readonly IlSpyFindImplementationsCommandFactory2<FindUsagesResponse> _ilSpyFindImplementationsCommandFactory;
     private IlSpyExternalAssembliesCommandFactory<FindUsagesResponse> _externalAssembliesSybolFinder;
 
     [ImportingConstructor]
     public DecompileFindUsagesHandler(
-        EverywhereSymbolInfoFinder2<FindUsagesResponse> everywhereSymbolInfoFinder2,
-        IlSpyFindImplementationsCommandFactory2<FindUsagesResponse> ilSpyFindImplementationsCommandFactory2,
+        EverywhereSymbolInfoFinder2<FindUsagesResponse> everywhereSymbolInfoFinder,
+        IlSpyFindImplementationsCommandFactory2<FindUsagesResponse> ilSpyFindImplementationsCommandFactory,
         ExtensionContainer extensionContainer)
     {
-        _everywhereSymbolInfoFinder2 = everywhereSymbolInfoFinder2;
-        _ilSpyFindImplementationsCommandFactory2 = ilSpyFindImplementationsCommandFactory2;
+        _everywhereSymbolInfoFinder = everywhereSymbolInfoFinder;
+        _ilSpyFindImplementationsCommandFactory = ilSpyFindImplementationsCommandFactory;
         _externalAssembliesSybolFinder = extensionContainer.Container
             .Resolve<IlSpyExternalAssembliesCommandFactory<FindUsagesResponse>>();
         
@@ -31,7 +31,7 @@ public class DecompileFindUsagesHandler : IRequestHandler<DecompileFindUsagesReq
         INavigationCommand<FindUsagesResponse> command;
         if (!request.IsDecompiled)
         {
-            command = await _everywhereSymbolInfoFinder2.Get(request);
+            command = await _everywhereSymbolInfoFinder.Get(request);
         }
         else
         {
@@ -41,7 +41,7 @@ public class DecompileFindUsagesHandler : IRequestHandler<DecompileFindUsagesReq
             }
             else
             {
-                command = await _ilSpyFindImplementationsCommandFactory2.Find(request);
+                command = await _ilSpyFindImplementationsCommandFactory.Find(request);
             }
         }
         

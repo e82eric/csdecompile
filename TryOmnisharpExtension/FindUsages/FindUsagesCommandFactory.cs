@@ -1,10 +1,8 @@
 ﻿using System.Composition;
 using ICSharpCode.Decompiler.TypeSystem;
 using IlSpy.Analyzer.Extraction;
-using Microsoft.CodeAnalysis;
 using OmniSharp;
 using TryOmnisharpExtension.FindUsages;
-using TryOmnisharpExtension.IlSpy;
 using ISymbol = Microsoft.CodeAnalysis.ISymbol;
 
 namespace TryOmnisharpExtension;
@@ -16,14 +14,17 @@ public class FindUsagesCommandFactory : ICommandFactory<INavigationCommand<FindU
     private readonly IlSpyMethodUsagesFinder _methodUsagesFinder;
     private readonly IlSpyPropertyUsagesFinder _propertyUsagesFinder;
     private readonly OmniSharpWorkspace _omniSharpWorkspace;
+    private readonly IlSpyFieldUsagesFinder _fieldUsagesFinder;
 
     [ImportingConstructor]
     public FindUsagesCommandFactory(
         IlSpyUsagesFinder usagesFinder,
         IlSpyMethodUsagesFinder methodUsagesFinder,
         IlSpyPropertyUsagesFinder propertyUsagesFinder,
+        IlSpyFieldUsagesFinder fieldUsagesFinder,
         OmniSharpWorkspace omniSharpWorkspace)
     {
+        _fieldUsagesFinder = fieldUsagesFinder;
         _usagesFinder = usagesFinder;
         _methodUsagesFinder = methodUsagesFinder;
         _propertyUsagesFinder = propertyUsagesFinder;
@@ -47,7 +48,8 @@ public class FindUsagesCommandFactory : ICommandFactory<INavigationCommand<FindU
 
     public INavigationCommand<FindUsagesResponse> GetForField(IField field, string projectAssemblyFilePath)
     {
-        throw new System.NotImplementedException();
+        var result = new FindFieldUsagesCommand(projectAssemblyFilePath, field, _fieldUsagesFinder);
+        return result;
     }
 
     public INavigationCommand<FindUsagesResponse> GetForProperty(IProperty property, string projectAssemblyFilePath)

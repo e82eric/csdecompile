@@ -172,6 +172,13 @@ public class EverywhereSymbolInfoFinder2<CommandResponseType> where CommandRespo
                     propertyName);
                 ilSpyCommand = _commandFactory.GetForProperty(ilspyProperty, projectOutputFilePath);
                 break;
+            case SymbolKind.Field:
+                var fieldSymbol = (IFieldSymbol)roslynSymbol;
+                var ilspyField = await _ilSpySymbolFinder.FindField(
+                    assemblyFilePath,
+                    fieldSymbol);
+                ilSpyCommand = _commandFactory.GetForField(ilspyField, projectOutputFilePath);
+                break;
             case SymbolKind.Method:
                 var method = (IMethodSymbol)roslynSymbol;
                 var methodParameters = new List<string>();

@@ -13,22 +13,21 @@ using TryOmnisharpExtension.IlSpy;
 namespace TryOmnisharpExtension.FindUsages;
 
 [Export]
-public class PropertyUsedByAnalyzer
+public class FieldUsedByAnalyzer
 {
     private readonly AnalyzerScope _analyzerScope;
     const GetMemberOptions Options = GetMemberOptions.IgnoreInheritedMembers | GetMemberOptions.ReturnMemberDefinitions;
 
     [ImportingConstructor]
-    public PropertyUsedByAnalyzer(AnalyzerScope analyzerScope)
+    public FieldUsedByAnalyzer(AnalyzerScope analyzerScope)
     {
         _analyzerScope = analyzerScope;
     }
 
-    public async Task<IEnumerable<ISymbol>> Analyze(IProperty analyzedSymbol)
+    public async Task<IEnumerable<ISymbol>> Analyze(IField analyzedSymbol)
     {
-        var analyzedMethod = (IProperty)analyzedSymbol;
-        var mapping = GetCodeMappingInfo(analyzedMethod.ParentModule.PEFile,
-            analyzedMethod.DeclaringTypeDefinition.MetadataToken);
+        var mapping = GetCodeMappingInfo(analyzedSymbol.ParentModule.PEFile,
+             analyzedSymbol.DeclaringTypeDefinition.MetadataToken);
 
         var result = new List<ISymbol>();
         var typesInScope = await _analyzerScope.GetTypesInScope(analyzedSymbol);
@@ -39,7 +38,7 @@ public class PropertyUsedByAnalyzer
             var methods = type.GetMembers(m => m is IMethod, Options).OfType<IMethod>();
             foreach (var method in methods)
             {
-                if (IsUsedInMethod((IProperty)analyzedSymbol, method))
+                if (IsUsedInMethod(analyzedSymbol, method))
                 {
                     var parent = mapping.GetParentMethod((MethodDefinitionHandle)method.MetadataToken);
                     var definition = parentModule.GetDefinition(parent);
@@ -49,13 +48,13 @@ public class PropertyUsedByAnalyzer
 
             foreach (var property in type.Properties)
             {
-                if (property.CanGet && IsUsedInMethod((IProperty)analyzedSymbol, property.Getter))
+                if (property.CanGet && IsUsedInMethod(analyzedSymbol, property.Getter))
                 {
                     result.Add(property);
                     continue;
                 }
 
-                if (property.CanSet && IsUsedInMethod((IProperty)analyzedSymbol, property.Setter))
+                if (property.CanSet && IsUsedInMethod(analyzedSymbol, property.Setter))
                 {
                     result.Add(property);
                     continue;
@@ -64,19 +63,19 @@ public class PropertyUsedByAnalyzer
 
             foreach (var @event in type.Events)
             {
-                if (@event.CanAdd && IsUsedInMethod((IProperty)analyzedSymbol, @event.AddAccessor))
+                if (@event.CanAdd && IsUsedInMethod(analyzedSymbol, @event.AddAccessor))
                 {
                     result.Add(@event);
                     continue;
                 }
 
-                if (@event.CanRemove && IsUsedInMethod((IProperty)analyzedSymbol, @event.RemoveAccessor))
+                if (@event.CanRemove && IsUsedInMethod(analyzedSymbol, @event.RemoveAccessor))
                 {
                     result.Add(@event);
                     continue;
                 }
 
-                if (@event.CanInvoke && IsUsedInMethod((IProperty)analyzedSymbol, @event.InvokeAccessor))
+                if (@event.CanInvoke && IsUsedInMethod(analyzedSymbol, @event.InvokeAccessor))
                 {
                     result.Add(@event);
                     continue;
@@ -99,12 +98,12 @@ public class PropertyUsedByAnalyzer
         return new CodeMappingInfo(module, declaringType);
     }
 
-    bool IsUsedInMethod(IProperty analyzedEntity, IMethod method)
+    bool IsUsedInMethod(IField analyzedEntity, IMethod method)
     {
         return ScanMethodBody(analyzedEntity, method, method.GetMethodBody());
     }
 
-    static bool ScanMethodBody(IProperty analyzedMethod, IMethod method, MethodBodyBlock methodBody)
+    static bool ScanMethodBody(IField analyzedMethod, IMethod method, MethodBodyBlock methodBody)
     {
         if (methodBody == null)
             return false;
@@ -174,6 +173,8 @@ public class PropertyUsedByAnalyzer
         switch (opCode)
         {
             case ILOpCode.Call:
+            case ILOpCode.Ldfld:
+            case ILOpCode.Ldflda:
             case ILOpCode.Callvirt:
             case ILOpCode.Ldtoken:
             case ILOpCode.Ldftn:

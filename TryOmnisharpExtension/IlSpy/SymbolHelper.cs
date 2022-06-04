@@ -24,7 +24,7 @@ public static class SymbolHelper
         return (ITypeDefinition)result;
     }
 
-    public static ITypeDefinition FindContainingType(IMethod symbol)
+    public static ITypeDefinition FindContainingType(IMember symbol)
     {
         IType result = symbol.DeclaringType;
 

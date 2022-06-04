@@ -93,6 +93,11 @@ public class ExtensionContainer
 
         externalAssembliesContainerBuilder.RegisterType<FieldInTypeFinder>();
         externalAssembliesContainerBuilder.RegisterType<IlSpyFieldFinder>();
+        
+        externalAssembliesContainerBuilder.RegisterType<FieldInMethodBodyFinder>();
+        externalAssembliesContainerBuilder.RegisterType<FieldUsedByAnalyzer>();
+        externalAssembliesContainerBuilder.RegisterType<IlSpyFieldUsagesFinder>();
+        
         Container = externalAssembliesContainerBuilder.Build();
     }
 

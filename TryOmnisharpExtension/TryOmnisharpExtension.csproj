@@ -272,13 +272,17 @@
         <Compile Include="FindUsages\EventInMethodBodyFinder.cs" />
         <Compile Include="FindUsages\EventUsedByAnalyzer.cs" />
         <Compile Include="FindUsages\ExternalAssembliesFindUsagesCommandFactory.cs" />
+        <Compile Include="FindUsages\FieldInMethodBodyFinder.cs" />
+        <Compile Include="FindUsages\FieldUsedByAnalyzer.cs" />
         <Compile Include="FindUsages\FindEventUsagesCommand.cs" />
+        <Compile Include="FindUsages\FindFieldUsagesCommand.cs" />
         <Compile Include="FindUsages\FindMethodUsagesCommand.cs" />
         <Compile Include="FindUsages\FindPropertyUsagesCommand.cs" />
         <Compile Include="FindUsages\FindUsagesCommand.cs" />
         <Compile Include="FindUsages\FindUsagesCommandFactory.cs" />
         <Compile Include="FindUsages\FindUsagesResponse.cs" />
         <Compile Include="FindUsages\IlSpyEventUsagesFinder.cs" />
+        <Compile Include="FindUsages\IlSpyFieldUsagesFinder.cs" />
         <Compile Include="FindUsages\IlSpyFindMethodUsageFinder.cs" />
         <Compile Include="FindUsages\IlSpyPropertyUsageFinder.cs" />
         <Compile Include="FindUsages\IlSpyUsagesFinder.cs" />

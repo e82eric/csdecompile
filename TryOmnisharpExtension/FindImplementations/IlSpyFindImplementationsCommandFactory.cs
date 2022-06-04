@@ -7,6 +7,7 @@ using Microsoft.CodeAnalysis;
 using OmniSharp;
 using TryOmnisharpExtension.IlSpy;
 using ISymbol = Microsoft.CodeAnalysis.ISymbol;
+using SymbolKind = ICSharpCode.Decompiler.TypeSystem.SymbolKind;
 
 namespace TryOmnisharpExtension;
 
@@ -132,6 +133,22 @@ public class IlSpyFindImplementationsCommandFactory2<ResponseType>
             var result = new EverywhereImplementationsCommand2<ResponseType>(roslynCommand, ilSpyCommand);
             return result;
         }
+        
+        if (symbolAtLocation is IField field)
+        {
+            var ilSpyCommand = _commandCommandFactory.GetForField(field, request.AssemblyFilePath);
+            var symbol = GetSymbol(field.DeclaringType.FullName);
+
+            var roslynField = GetFieldSymbol(field);
+            if (roslynField != null)
+            {
+                var roslynCommand = _commandCommandFactory.GetForInSource(symbol);
+
+                var result = new EverywhereImplementationsCommand2<ResponseType>(roslynCommand, ilSpyCommand);
+                return result;
+            }
+            return ilSpyCommand;
+        }
 
         if (symbolAtLocation is IEvent eventSymbol)
         {
@@ -170,6 +187,24 @@ public class IlSpyFindImplementationsCommandFactory2<ResponseType>
             var ilSpyCommand = _commandCommandFactory.GetForMethod(method, request.AssemblyFilePath);
             var result = new EverywhereImplementationsCommand2<ResponseType>(roslynCommand, ilSpyCommand);
             return result;
+        }
+
+        return null;
+    }
+
+    private IFieldSymbol GetFieldSymbol(IField ilSpyField)
+    {
+        var typePublicMembers = ilSpyField.DeclaringType.GetMembers();
+        foreach (var publicMember in typePublicMembers)
+        {
+            if (publicMember is IFieldSymbol roslynField)
+            {
+                var sameField = RoslynToIlSpyEqualityExtensions.AreSameField(roslynField, ilSpyField);
+                if (sameField)
+                {
+                    return roslynField;
+                }
+            }
         }
 
         return null;
