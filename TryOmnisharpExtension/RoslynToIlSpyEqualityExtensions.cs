@@ -29,6 +29,16 @@ public static class RoslynToIlSpyEqualityExtensions
 
         return true;
     }
+    
+    public static bool AreSameField(IFieldSymbol roslynSymbol, IField ilSpySymbol)
+    {
+        if (roslynSymbol.Name != ilSpySymbol.Name)
+        {
+            return false;
+        }
+
+        return true;
+    }
 
     public static bool AreSameType(ITypeSymbol roslynTypeSymbol, IType ilSpyTypeSymbol)
     {

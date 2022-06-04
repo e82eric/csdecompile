@@ -81,6 +81,15 @@ namespace TryOmnisharpExtension
 
                     result = _gotoDefinitionCommandFactory.GetForMethod(ilSpyMethod, projectOutputFilePath);
                     break;
+                case SymbolKind.Field:
+                    //I guess the field could be defined in a base class defined in a base assembly
+                    var field = (IFieldSymbol)roslynSymbol;
+                    var ilSpyField = await _ilSpySymbolFinder.FindField(
+                        assemblyFilePath,
+                        field);
+
+                    result = _gotoDefinitionCommandFactory.GetForField(ilSpyField, projectOutputFilePath);
+                    break;
                 default:
                     throw new Exception();
             }

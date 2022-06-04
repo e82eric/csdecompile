@@ -46,6 +46,11 @@ namespace TryOmnisharpExtension
                 _methodImplementationFinder);
         }
 
+        public INavigationCommand<FindImplementationsResponse> GetForField(IField field, string projectAssemblyFilePath)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public INavigationCommand<FindImplementationsResponse> GetForProperty(IProperty property, string projectAssemblyFilePath)
         {
             return new FindPropertyImplementationsCommand(

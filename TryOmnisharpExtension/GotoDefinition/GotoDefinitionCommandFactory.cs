@@ -11,14 +11,17 @@ namespace TryOmnisharpExtension
         private readonly IlSpyMemberFinder _memberFinder;
         private readonly IlSpyPropertyFinder _propertyFinder;
         private readonly IlSpyEventFinder _eventFinder;
+        private IlSpyFieldFinder _fieldFinder;
 
         [ImportingConstructor]
         public GotoDefinitionCommandFactory(
             IlSpyTypeFinder typeFinder,
             IlSpyMemberFinder memberFinder,
             IlSpyPropertyFinder propertyFinder,
-            IlSpyEventFinder eventFinder)
+            IlSpyEventFinder eventFinder,
+            IlSpyFieldFinder fieldFinder)
         {
+            _fieldFinder = fieldFinder;
             _propertyFinder = propertyFinder;
             _eventFinder = eventFinder;
             _memberFinder = memberFinder;
@@ -48,6 +51,12 @@ namespace TryOmnisharpExtension
         public IGotoDefinitionCommand GetForMethod(IMethod method, string assemblyFilePath)
         {
             var result = new GotoMethodDefintionCommand(method, _memberFinder, assemblyFilePath);
+            return result;
+        }
+        
+        public IGotoDefinitionCommand GetForField(IField field, string assemblyFilePath)
+        {
+            var result = new GotoFieldDefintionCommand(field, _fieldFinder, assemblyFilePath);
             return result;
         }
 

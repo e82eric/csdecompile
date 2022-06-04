@@ -45,6 +45,11 @@ public class FindUsagesCommandFactory : ICommandFactory<INavigationCommand<FindU
         return result;
     }
 
+    public INavigationCommand<FindUsagesResponse> GetForField(IField field, string projectAssemblyFilePath)
+    {
+        throw new System.NotImplementedException();
+    }
+
     public INavigationCommand<FindUsagesResponse> GetForProperty(IProperty property, string projectAssemblyFilePath)
     {
         var result = new FindPropertyUsagesCommand(projectAssemblyFilePath, property, _propertyUsagesFinder);

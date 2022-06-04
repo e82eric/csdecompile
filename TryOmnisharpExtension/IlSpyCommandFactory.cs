@@ -51,8 +51,14 @@ namespace TryOmnisharpExtension
                 var result = _commandCommandFactory.GetForMethod(method, request.AssemblyFilePath);
                 return result;
             }
+            
+            if(symbolAtLocation is IField field)
+            {
+                var result = _commandCommandFactory.GetForField(field, request.AssemblyFilePath);
+                return result;
+            }
 
-            return default(CommandType);
+            return default;
         }
     }
 }

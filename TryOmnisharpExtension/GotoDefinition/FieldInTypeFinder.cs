@@ -9,12 +9,12 @@ using ICSharpCode.Decompiler.TypeSystem;
 namespace TryOmnisharpExtension.IlSpy;
 
 [Export]
-public class MethodInTypeFinder2
+public class FieldInTypeFinder
 {
     private readonly DecompilerFactory _decompilerFactory;
 
     [ImportingConstructor]
-    public MethodInTypeFinder2(DecompilerFactory decompilerFactory)
+    public FieldInTypeFinder(DecompilerFactory decompilerFactory)
     {
         _decompilerFactory = decompilerFactory;
     }
@@ -38,9 +38,9 @@ public class MethodInTypeFinder2
 
         if (symbol != null)
         {
-            if(symbol is IEntity entity)
+            if(symbol is IField entity)
             {
-                if ( handleToSearchFor == entity.MetadataToken && node.NodeType == NodeType.Member)
+                if (handleToSearchFor == entity.MetadataToken && node.NodeType == NodeType.Member)
                 {
                     var identifier = node.Children.Where(n =>
                     {
@@ -58,7 +58,7 @@ public class MethodInTypeFinder2
 
                     if (identifier != null)
                     {
-                        var usage = new UsageAsTextLocation()
+                        var usage = new UsageAsTextLocation
                         {
                             TypeEntityHandle = handleToSearchFor,
                             StartLocation = identifier.StartLocation,
@@ -70,7 +70,7 @@ public class MethodInTypeFinder2
                     }
                     else
                     {
-                        var usage = new UsageAsTextLocation()
+                        var usage = new UsageAsTextLocation
                         {
                             TypeEntityHandle = handleToSearchFor,
                             StartLocation = node.StartLocation,

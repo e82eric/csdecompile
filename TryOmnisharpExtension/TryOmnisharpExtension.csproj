@@ -302,14 +302,17 @@
         <Compile Include="GotoDefinition\DecompileGotoDefinitionHandler.cs" />
         <Compile Include="GotoDefinition\DecompileGotoDefinitionRequest.cs" />
         <Compile Include="GotoDefinition\DecompileGotoDefinitionResponse.cs" />
+        <Compile Include="GotoDefinition\FieldInTypeFinder.cs" />
         <Compile Include="GotoDefinition\GotoDefinitionCommandFactory.cs" />
         <Compile Include="GotoDefinition\GoToEventDefinitionCommand.cs" />
+        <Compile Include="GotoDefinition\GotoFieldDefintionCommand.cs" />
         <Compile Include="GotoDefinition\GotoMethodDefintionCommand.cs" />
         <Compile Include="GotoDefinition\GotoPropertyDefintionCommand.cs" />
         <Compile Include="GotoDefinition\GotoTypeDefintionCommand.cs" />
         <Compile Include="GotoDefinition\IGotoDefinitionCommand.cs" />
         <Compile Include="GotoDefinition\IlSpyEventFinder.cs" />
         <Compile Include="GotoDefinition\EventInTypeFinder.cs" />
+        <Compile Include="GotoDefinition\IlSpyFieldFinder.cs" />
         <Compile Include="GotoDefinition\IlSpyGotoDefinitionCommandFactory.cs" />
         <Compile Include="GotoDefinition\IlSpyMemberFinder.cs" />
         <Compile Include="GotoDefinition\IlSpyPropertyFinder.cs" />

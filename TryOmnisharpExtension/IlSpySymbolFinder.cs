@@ -67,6 +67,14 @@ public class IlSpySymbolFinder
         return method;
     }
     
+    public async Task<IField> FindField(string projectAssemblyFilePath, IFieldSymbol roslynMethod)
+    {
+        var typeFullName = roslynMethod.ContainingType.GetSymbolName();
+        var typeDefinitionSymbol = await FindTypeDefinition(projectAssemblyFilePath, typeFullName);
+        var result = FindField(typeDefinitionSymbol, roslynMethod);
+        return result;
+    }
+    
     public async Task<IProperty> FindProperty(string projectAssemblyFilePath, string typeName, string propertyName)
     {
         var typeDefinitionSymbol = await FindTypeDefinition(projectAssemblyFilePath, typeName);
@@ -136,6 +144,22 @@ public class IlSpySymbolFinder
                 if (RoslynToIlSpyEqualityExtensions.AreSameMethod(roslynMethod, ilSpyMethod))
                 {
                     return ilSpyMethod;
+                }
+            }
+        }
+
+        return null;
+    }
+    
+    private IField FindField(ITypeDefinition type, IFieldSymbol roslynField)
+    {
+        foreach (var member in type.Members)
+        {
+            if (member is IField ilSpySymbol)
+            {
+                if (RoslynToIlSpyEqualityExtensions.AreSameField(roslynField, ilSpySymbol))
+                {
+                    return ilSpySymbol;
                 }
             }
         }
