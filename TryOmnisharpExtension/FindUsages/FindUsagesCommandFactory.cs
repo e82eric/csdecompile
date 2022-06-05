@@ -1,4 +1,5 @@
 ﻿using System.Composition;
+using ICSharpCode.Decompiler.CSharp.Syntax;
 using ICSharpCode.Decompiler.TypeSystem;
 using IlSpy.Analyzer.Extraction;
 using OmniSharp;
@@ -15,6 +16,7 @@ public class FindUsagesCommandFactory : ICommandFactory<INavigationCommand<FindU
     private readonly IlSpyPropertyUsagesFinder _propertyUsagesFinder;
     private readonly OmniSharpWorkspace _omniSharpWorkspace;
     private readonly IlSpyFieldUsagesFinder _fieldUsagesFinder;
+    private IlSpyVariableUsagesFinder _variableUsagesFinder;
 
     [ImportingConstructor]
     public FindUsagesCommandFactory(
@@ -22,8 +24,10 @@ public class FindUsagesCommandFactory : ICommandFactory<INavigationCommand<FindU
         IlSpyMethodUsagesFinder methodUsagesFinder,
         IlSpyPropertyUsagesFinder propertyUsagesFinder,
         IlSpyFieldUsagesFinder fieldUsagesFinder,
+        IlSpyVariableUsagesFinder variableUsagesFinder,
         OmniSharpWorkspace omniSharpWorkspace)
     {
+        _variableUsagesFinder = variableUsagesFinder;
         _fieldUsagesFinder = fieldUsagesFinder;
         _usagesFinder = usagesFinder;
         _methodUsagesFinder = methodUsagesFinder;
@@ -66,6 +70,12 @@ public class FindUsagesCommandFactory : ICommandFactory<INavigationCommand<FindU
     public INavigationCommand<FindUsagesResponse> GetForInSource(ISymbol roslynSymbol)
     {
         var result = new RoslynFindUsagesCommand(roslynSymbol, _omniSharpWorkspace);
+        return result;
+    }
+    
+    public INavigationCommand<FindUsagesResponse> GetForVariable(ITypeDefinition containingTypeDefinition, AstNode variableNode)
+    {
+        var result = new FindVariableUsagesCommand(containingTypeDefinition, variableNode, _variableUsagesFinder);
         return result;
     }
 }

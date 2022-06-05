@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Composition;
 using System.Threading.Tasks;
+using ICSharpCode.Decompiler.CSharp;
+using ICSharpCode.Decompiler.CSharp.Syntax;
 using ICSharpCode.Decompiler.TypeSystem;
 using Microsoft.CodeAnalysis;
 using OmniSharp;
@@ -87,11 +89,24 @@ public class IlSpyFindImplementationsCommandFactory2<ResponseType>
 
     public async Task<INavigationCommand<ResponseType>> Find(DecompiledLocationRequest request)
     {
-        var symbolAtLocation = await _symbolFinder.FindSymbolAtLocation(
+        var containingTypeDefinition = await _symbolFinder.FindTypeDefinition(
             request.AssemblyFilePath,
-            request.ContainingTypeFullName,
+            request.ContainingTypeFullName);
+        
+        var node = await _symbolFinder.FindNode(
+            containingTypeDefinition,
             request.Line,
             request.Column);
+
+        var parentResolveResult = node.Parent.GetResolveResult();
+
+        if (parentResolveResult is ILVariableResolveResult variableResolveResult)
+        {
+            var command = ((FindUsagesCommandFactory)_commandCommandFactory).GetForVariable(containingTypeDefinition, node);
+            return (INavigationCommand<ResponseType>)command;
+        }
+
+        var symbolAtLocation = await _symbolFinder.FindSymbolFromNode(node);
 
         if (_projectCompilations == null)
         {
@@ -163,6 +178,7 @@ public class IlSpyFindImplementationsCommandFactory2<ResponseType>
 
         if (symbolAtLocation is IMethod method)
         {
+            var ilSpyCommand = _commandCommandFactory.GetForMethod(method, request.AssemblyFilePath);
             var symbol = GetSymbol(method.DeclaringType.FullName);
             INavigationCommand<ResponseType> roslynCommand = null;
             if (symbol is INamedTypeSymbol roslynType)
@@ -181,10 +197,16 @@ public class IlSpyFindImplementationsCommandFactory2<ResponseType>
                     }
                 }
 
-                roslynCommand = _commandCommandFactory.GetForInSource(foundRoslynMethod);
+                if (foundRoslynMethod != null)
+                {
+                    roslynCommand = _commandCommandFactory.GetForInSource(foundRoslynMethod);
+                }
+                else
+                {
+                    return ilSpyCommand;
+                }
             }
 
-            var ilSpyCommand = _commandCommandFactory.GetForMethod(method, request.AssemblyFilePath);
             var result = new EverywhereImplementationsCommand2<ResponseType>(roslynCommand, ilSpyCommand);
             return result;
         }

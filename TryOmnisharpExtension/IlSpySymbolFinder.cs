@@ -88,6 +88,29 @@ public class IlSpySymbolFinder
         var eventSymbol = FindEvent(typeDefinitionSymbol, eventName);
         return eventSymbol;
     }
+    
+    
+    public async Task<AstNode> FindNode(ITypeDefinition typeDefinition, int line, int column)
+    {
+        var decompiler = await _decompilerFactory.Get(typeDefinition.ParentModule.PEFile.FileName);
+        (SyntaxTree syntaxTree, string source) = decompiler.Run(typeDefinition);
+            
+        var node = GetNodeAt(syntaxTree, line, column);
+        return node;
+    }
+    
+    public async Task<ISymbol> FindSymbolFromNode(AstNode node)
+    {
+        var symbolAtLocation = node.GetSymbol();
+
+        while (symbolAtLocation == null && node.Parent != null)
+        {
+            node = node.Parent;
+            symbolAtLocation = node?.GetSymbol();
+        }
+
+        return symbolAtLocation;
+    }
 
     public async Task<ISymbol> FindSymbolAtLocation(string projectAssemblyFilePath, string containingTypeFullName, int line, int column)
     {
