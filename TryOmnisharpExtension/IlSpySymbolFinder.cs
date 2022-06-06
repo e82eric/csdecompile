@@ -180,7 +180,7 @@ public class IlSpySymbolFinder
         {
             if (member is IField ilSpySymbol)
             {
-                if (RoslynToIlSpyEqualityExtensions.AreSameField(roslynField, ilSpySymbol))
+                if (RoslynToIlSpyEqualityExtensions.AreMemberSymbol(roslynField, ilSpySymbol))
                 {
                     return ilSpySymbol;
                 }

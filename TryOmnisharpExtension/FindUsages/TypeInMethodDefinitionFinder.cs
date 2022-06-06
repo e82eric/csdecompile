@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Composition;
 using System.Linq;
 using System.Reflection.Metadata;
@@ -32,7 +33,13 @@ public class TypeInMethodDefinitionFinder
         var methodNode = FindMethod(syntaxTree, symbol.MetadataToken);
         if (methodNode != null)
         {
+            var lines = sourceText.Split(new []{"\r\n"}, StringSplitOptions.None);
             Find(methodNode, typeEntityHandle, result);
+            foreach (var usageAsTextLocation in result)
+            {
+                var line = lines[usageAsTextLocation.StartLocation.Line - 1].Trim();
+                usageAsTextLocation.Statement = line;
+            }
         }
 
         return result;

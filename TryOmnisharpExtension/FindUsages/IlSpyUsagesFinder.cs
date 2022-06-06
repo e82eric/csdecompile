@@ -112,12 +112,14 @@ namespace IlSpy.Analyzer.Extraction
                     AssemblyName = symbol.ParentModule.AssemblyName,
                     Column = usage.StartLocation.Column,
                     Line = usage.StartLocation.Line,
-                    SourceText = symbol.ReflectionName,
+                    SourceText = usage.Statement,
                     StartColumn = usage.StartLocation.Column,
                     EndColumn = usage.EndLocation.Column,
                     ContainingTypeFullName = parentType.ReflectionName,
                     AssemblyFilePath = symbol.Compilation.MainModule.PEFile.FileName,
-                    UsageType = UsageTypes.InMethodBody
+                    UsageType = UsageTypes.Type,
+                    TypeName = symbol.ReflectionName,
+                    NamespaceName = symbol.Namespace
                 };
 
                 result.Add(metadataSource);
@@ -139,12 +141,14 @@ namespace IlSpy.Analyzer.Extraction
                         AssemblyName = symbol.ParentModule.AssemblyName,
                         Column = r.StartLocation.Column,
                         Line = r.StartLocation.Line,
-                        SourceText = symbol.ReflectionName,
+                        SourceText = r.Statement,
                         StartColumn = r.StartLocation.Column,
                         EndColumn = r.EndLocation.Column,
                         ContainingTypeFullName = parentType.ReflectionName,
                         AssemblyFilePath = symbol.Compilation.MainModule.PEFile.FileName,
-                        UsageType = UsageTypes.InMethodBody
+                        UsageType = UsageTypes.InMethodBody,
+                        TypeName = symbol.ReflectionName,
+                        NamespaceName = symbol.Namespace
                     };
 
                     result.Add(metadataSource);

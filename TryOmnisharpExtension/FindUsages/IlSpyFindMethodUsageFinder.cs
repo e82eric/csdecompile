@@ -23,53 +23,41 @@ namespace IlSpy.Analyzer.Extraction
             _methodUsedByAnalyzer = methodUsedByAnalyzer;
             _methodInMethodBodyFinder = methodInMethodBodyFinder;
         }
-        public async Task<IEnumerable<IlSpyMetadataSource2>> Run(IMethod meth)
+        public async Task<IEnumerable<IlSpyMetadataSource2>> Run(IMethod methodToFindUsesOf)
         {
             var result = new List<IlSpyMetadataSource2>();
 
-            try
+            var usedByResult = await _methodUsedByAnalyzer.Analyze(methodToFindUsesOf);
+
+            foreach (var methodToSearch in usedByResult)
             {
-                var typeUsedByResult = await _methodUsedByAnalyzer.Analyze(meth);
-
-                foreach (var methodToSearch in typeUsedByResult)
+                if (methodToSearch is IMethod methodSymbolToSearch)
                 {
-                    var methodSymbolToSearch = methodToSearch as IMethod;
                     var rootType = SymbolHelper.FindContainingType(methodSymbolToSearch);
-                    if (methodSymbolToSearch != null)
+                    var foundUses = await _methodInMethodBodyFinder.Find(
+                        methodSymbolToSearch,
+                        methodToFindUsesOf.MetadataToken,
+                        rootType);
+
+                    foreach (var foundUse in foundUses)
                     {
-                        var foundUses = await _methodInMethodBodyFinder.Find(
-                            methodSymbolToSearch,
-                            meth.MetadataToken,
-                            rootType);
-
-                        foreach (var foundUse in foundUses)
+                        var metadataSource = new IlSpyMetadataSource2
                         {
-                            var parentType = SymbolHelper.FindContainingType(methodSymbolToSearch);
-                            if (parentType != null)
-                            {
-                                var metadataSource = new IlSpyMetadataSource2
-                                {
-                                    AssemblyName = parentType.ParentModule.AssemblyName,
-                                    Column = foundUse.StartLocation.Column,
-                                    Line = foundUse.StartLocation.Line,
-                                    SourceText = $"{methodSymbolToSearch.ReflectionName} {foundUse.Statement.Replace("\r\n", "")}",
-                                    StartColumn = foundUse.StartLocation.Column,
-                                    EndColumn = foundUse.EndLocation.Column,
-                                    ContainingTypeFullName = parentType.ReflectionName,
-                                    AssemblyFilePath = methodSymbolToSearch.Compilation.MainModule.PEFile.FileName,
-                                    UsageType = UsageTypes.InMethodBody
-                                };
+                            AssemblyName = rootType.ParentModule.AssemblyName,
+                            Column = foundUse.StartLocation.Column,
+                            Line = foundUse.StartLocation.Line,
+                            SourceText =
+                                $"{methodSymbolToSearch.ReflectionName} {foundUse.Statement.Replace("\r\n", "")}",
+                            StartColumn = foundUse.StartLocation.Column,
+                            EndColumn = foundUse.EndLocation.Column,
+                            ContainingTypeFullName = rootType.ReflectionName,
+                            AssemblyFilePath = methodSymbolToSearch.Compilation.MainModule.PEFile.FileName,
+                            UsageType = UsageTypes.InMethodBody
+                        };
 
-                                result.Add(metadataSource);
-                            }
-                        }
+                        result.Add(metadataSource);
                     }
                 }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
             }
 
             return result;

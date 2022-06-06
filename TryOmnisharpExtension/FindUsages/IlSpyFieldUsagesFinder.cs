@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Composition;
 using System.Threading.Tasks;
-using ICSharpCode.Decompiler.CSharp.Syntax;
 using ICSharpCode.Decompiler.TypeSystem;
 using TryOmnisharpExtension;
 using TryOmnisharpExtension.FindUsages;
@@ -56,61 +55,14 @@ public class IlSpyFieldUsagesFinder
                                 EndColumn = foundUse.EndLocation.Column,
                                 ContainingTypeFullName = parentType.ReflectionName,
                                 AssemblyFilePath = fieldUsage.Compilation.MainModule.PEFile.FileName,
-                                UsageType = UsageTypes.InMethodBody
+                                UsageType = UsageTypes.InMethodBody,
+                                TypeName = parentType.Name
                             };
 
                             result.Add(metadataSource);
                         }
                     }
                 }
-            }
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            throw;
-        }
-
-        return result;
-    }
-}
-
-[Export]
-public class IlSpyVariableUsagesFinder
-{
-    private readonly VariableInMethodBodyFinder _variableInMethodBodyFinder;
-
-    [ImportingConstructor]
-    public IlSpyVariableUsagesFinder(
-        VariableInMethodBodyFinder variableInMethodBodyFinder)
-    {
-        _variableInMethodBodyFinder = variableInMethodBodyFinder;
-    }
-        
-    public async Task<IEnumerable<IlSpyMetadataSource2>> Run(ITypeDefinition containingTypeDefinition, AstNode variable)
-    {
-        var result = new List<IlSpyMetadataSource2>();
-
-        try
-        {
-            var foundUses = await _variableInMethodBodyFinder.Find((Identifier)variable);
-
-            foreach (var foundUse in foundUses)
-            {
-                var metadataSource = new IlSpyMetadataSource2
-                {
-                    AssemblyName = containingTypeDefinition.ParentModule.AssemblyName,
-                    Column = foundUse.StartLocation.Column,
-                    Line = foundUse.StartLocation.Line,
-                    SourceText = foundUse.Statement.Replace("\r\n", ""),
-                    StartColumn = foundUse.StartLocation.Column,
-                    EndColumn = foundUse.EndLocation.Column,
-                    ContainingTypeFullName = containingTypeDefinition.ReflectionName,
-                    AssemblyFilePath = containingTypeDefinition.ParentModule.PEFile.FileName,
-                    UsageType = UsageTypes.InMethodBody
-                };
-
-                result.Add(metadataSource);
             }
         }
         catch (Exception e)

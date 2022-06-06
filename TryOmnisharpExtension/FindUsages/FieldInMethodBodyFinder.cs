@@ -27,13 +27,65 @@ public class FieldInMethodBodyFinder
 
         var (syntaxTree, source) = cachingDecompiler.Run(rootType);
 
-        var methodBodyNode = FindMethodBody(syntaxTree, symbol.MetadataToken);
-        if (methodBodyNode != null)
+        if (symbol is IProperty propertyDeclaration)
         {
-            Find(methodBodyNode, field.MetadataToken, result);
+            var declarationNode = FindPropertyDeclaration(syntaxTree, symbol.MetadataToken);
+            var getterBody = declarationNode?.Getter?.Body;
+            if (getterBody != null)
+            {
+                Find(getterBody, field.MetadataToken, result);
+            }
+            var setterBody = declarationNode?.Setter?.Body;
+            if (setterBody != null)
+            {
+                Find(setterBody, field.MetadataToken, result);
+            }
+        }
+        else
+        {
+            var methodBodyNode = FindMethodBody(syntaxTree, symbol.MetadataToken);
+            if (methodBodyNode != null)
+            {
+                Find(methodBodyNode, field.MetadataToken, result);
+            }
         }
 
         return result;
+    }
+    
+    private PropertyDeclaration FindPropertyDeclaration(AstNode node, EntityHandle entityHandle)
+    {
+        if (node.NodeType == NodeType.Member)
+        {
+            var symbol = node.GetSymbol();
+            if (symbol != null)
+            {
+                if (symbol is IEntity entity)
+                {
+                    if (entity.MetadataToken == entityHandle)
+                    {
+                        if (node is PropertyDeclaration propertyDeclaration)
+                        {
+                            return propertyDeclaration;
+                        }
+                    }
+                }
+            }
+        }
+
+        if (node.HasChildren)
+        {
+            foreach (var child in node.Children)
+            {
+                var result = FindPropertyDeclaration(child, entityHandle);
+                if (result != null)
+                {
+                    return result;
+                }
+            }
+        }
+
+        return null;
     }
 
     private AstNode FindMethodBody(AstNode node, EntityHandle entityHandle)

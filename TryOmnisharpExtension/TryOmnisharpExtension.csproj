@@ -258,6 +258,7 @@
         <Compile Include="FindImplementations\IlSpyBaseTypeUsageFinder2.cs" />
         <Compile Include="FindImplementations\IlSpyExternalAssembliesCommandFactory.cs" />
         <Compile Include="FindImplementations\IlSpyFindImplementationsCommandFactory.cs" />
+        <Compile Include="FindImplementations\IlSpyFindImplementationsCommandFactory2.cs" />
         <Compile Include="FindImplementations\IlSpyMethodImplementationsFinder.cs" />
         <Compile Include="FindImplementations\IlSpyPropertyImplementationFinder.cs" />
         <Compile Include="FindImplementations\IlSpyTypeUsedByAnalyzer.cs" />
@@ -287,6 +288,7 @@
         <Compile Include="FindUsages\IlSpyFindMethodUsageFinder.cs" />
         <Compile Include="FindUsages\IlSpyPropertyUsageFinder.cs" />
         <Compile Include="FindUsages\IlSpyUsagesFinder.cs" />
+        <Compile Include="FindUsages\IlSpyVariableUsagesFinder.cs" />
         <Compile Include="FindUsages\MethodInMethodBodyFinder.cs" />
         <Compile Include="FindUsages\MethodUsedByAnalyzer.cs" />
         <Compile Include="FindUsages\PropertyInMethodBodyFinder.cs" />

@@ -15,7 +15,7 @@ internal static class MoreSymboleHelpers
 
         var documents = workspace.GetDocuments(lineSpan.Path);
         var sourceText = GetSourceText(location, documents, lineSpan.HasMappedPath);
-        var text = GetLineText(location, sourceText, lineSpan.StartLinePosition.Line);
+        var text = GetLineText(location, sourceText, lineSpan.StartLinePosition.Line).Trim();
 
         var sourceLineInfo = new SourceFileInfo
         {

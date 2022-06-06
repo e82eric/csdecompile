@@ -17,7 +17,7 @@ public class GetTypesHandler : IRequestHandler<GetTypesRequest, GetTypesResponse
     
     public async Task<GetTypesResponse> Handle(GetTypesRequest request)
     {
-        var types = await _typesRepository.GetAllTypes();
+        var types = await _typesRepository.GetAllTypes(request.SearchString);
         var response = new GetTypesResponse {};
         foreach (var type in types)
         {

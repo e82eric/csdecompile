@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Composition;
 using System.Reflection.Metadata;
 using System.Threading.Tasks;
@@ -27,6 +28,13 @@ public class TypeUsedInTypeFinder
 
         var result = new List<UsageAsTextLocation>();
         Find2(syntaxTree, typeEntityHandle, result);
+
+        var lines = source.Split(new []{"\r\n"}, StringSplitOptions.None);
+        foreach (var usageAsTextLocation in result)
+        {
+            var line = lines[usageAsTextLocation.StartLocation.Line - 1].Trim();
+            usageAsTextLocation.Statement = line;
+        }
 
         return result;
     }

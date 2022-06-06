@@ -35,7 +35,7 @@ public class FieldUsedByAnalyzer
         {
             var parentModule = (MetadataModule)type.ParentModule;
             mapping = GetCodeMappingInfo(parentModule.PEFile, type.MetadataToken);
-            var methods = type.GetMembers(m => m is IMethod, Options).OfType<IMethod>();
+            var methods = type.Members.OfType<IMethod>();
             foreach (var method in methods)
             {
                 if (IsUsedInMethod(analyzedSymbol, method))
@@ -175,6 +175,10 @@ public class FieldUsedByAnalyzer
             case ILOpCode.Call:
             case ILOpCode.Ldfld:
             case ILOpCode.Ldflda:
+            case ILOpCode.Stfld:
+            case ILOpCode.Ldsfld:
+            case ILOpCode.Ldsflda:
+            case ILOpCode.Stsfld:
             case ILOpCode.Callvirt:
             case ILOpCode.Ldtoken:
             case ILOpCode.Ldftn:

@@ -11,66 +11,55 @@ namespace TryOmnisharpExtension.IlSpy;
 public class AllTypesRepository
 {
     private readonly IDecompileWorkspace _workspace;
-    private readonly AssemblyResolverFactory _assemblyResolverFactory;
 
     [ImportingConstructor]
     public AllTypesRepository(
-        IDecompileWorkspace workspace,
-        AssemblyResolverFactory assemblyResolverFactory)
+        IDecompileWorkspace workspace)
     {
         _workspace = workspace;
-        _assemblyResolverFactory = assemblyResolverFactory;
     }
 
-    private async Task CollectPeFiles(PEFile currentFile, List<PEFile> result, IAssemblyResolver assemblyResolver)
-    {
-        if (currentFile.AssemblyReferences.Any())
-        {
-            foreach (var assemblyReference in currentFile.AssemblyReferences)
-            {
-                var peFile = await assemblyResolver.ResolveAsync(assemblyReference);
-                if (!result.Contains(peFile))
-                {
-                    result.Add(peFile);
-                }
-
-                await CollectPeFiles(peFile, result, assemblyResolver);
-            }
-        }
-    }
-
-    public async Task<IEnumerable<DecompileInfo>> GetAllTypes()
+    public async Task<IEnumerable<DecompileInfo>> GetAllTypes(string searchString)
     {
         var projectPeFiles = await _workspace.GetAssemblies();
 
-        var flatModules = new List<PEFile>();
-        foreach (var projectPeFile in projectPeFiles)
-        {
-            var assemblyResolver = await _assemblyResolverFactory.GetAssemblyResolver(projectPeFile);
-            await CollectPeFiles(projectPeFile, flatModules, assemblyResolver);
-        }
-
+        var alreadyAdded = new HashSet<string>();
         var result = new List<DecompileInfo>();
-        foreach (var peFile in flatModules)
+        foreach (var peFile in projectPeFiles)
         {
             var typeDefinitions = peFile.Metadata.TypeDefinitions;
             foreach (var typeDefinitionHandle in typeDefinitions)
             {
-                var fullTypeName = typeDefinitionHandle.GetFullTypeName(peFile.Metadata);
-                var fullName = fullTypeName.ReflectionName;
-
-                var decompileInfo = new DecompileInfo()
+                var typeDef = peFile.Metadata.GetTypeDefinition(typeDefinitionHandle);
+                var foundTypeName = peFile.Metadata.GetString(typeDef.Name);
+                if (foundTypeName != null)
                 {
-                    AssemblyFilePath = peFile.FileName,
-                    AssemblyName = peFile.FullName,
-                    Column = 1,
-                    ContainingTypeFullName = fullName,
-                    EndColumn = 1,
-                    Line = 1,
-                    SourceText = fullName,
-                    StartColumn = 1
-                };
-                result.Add(decompileInfo);
+                    if (foundTypeName.Contains(searchString))
+                    {
+                        var fullTypeName = typeDefinitionHandle.GetFullTypeName(peFile.Metadata);
+                        var fullName = fullTypeName.ReflectionName;
+
+                        if (!alreadyAdded.Contains(fullName))
+                        {
+                            var namespaceName = peFile.Metadata.GetString(typeDef.Namespace);
+                            var decompileInfo = new DecompileInfo()
+                            {
+                                AssemblyFilePath = peFile.FileName,
+                                AssemblyName = peFile.FullName,
+                                Column = 1,
+                                ContainingTypeFullName = fullName,
+                                EndColumn = 1,
+                                Line = 1,
+                                SourceText = fullName,
+                                NamespaceName = namespaceName,
+                                StartColumn = 1,
+                                UsageType = UsageTypes.Type
+                            };
+                            result.Add(decompileInfo);
+                            alreadyAdded.Add(fullName);
+                        }
+                    }
+                }
             }
         }
         
