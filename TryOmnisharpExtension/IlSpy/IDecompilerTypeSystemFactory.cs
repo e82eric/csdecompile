@@ -5,5 +5,5 @@ namespace TryOmnisharpExtension;
 
 public interface IDecompilerTypeSystemFactory
 {
-    Task<DecompilerTypeSystem> GetTypeSystem(string projectDllFilePath);
+    DecompilerTypeSystem GetTypeSystem(string projectDllFilePath);
 }

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace TryOmnisharpExtension
+namespace TryOmnisharpExtension.FindImplementations
 {
     public class FindImplementationsResponse
     {

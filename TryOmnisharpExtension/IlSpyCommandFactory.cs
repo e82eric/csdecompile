@@ -19,9 +19,9 @@ namespace TryOmnisharpExtension
             _commandCommandFactory = commandCommandFactory;
         }
         
-        public async Task<CommandType> Find(DecompiledLocationRequest request)
+        public CommandType Find(DecompiledLocationRequest request)
         {
-            var symbolAtLocation = await _symbolFinder.FindSymbolAtLocation(
+            var symbolAtLocation = _symbolFinder.FindSymbolAtLocation(
                 request.AssemblyFilePath,
                 request.ContainingTypeFullName,
                 request.Line,

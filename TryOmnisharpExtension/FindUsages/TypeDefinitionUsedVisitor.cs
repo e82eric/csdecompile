@@ -1,6 +1,6 @@
 ﻿using ICSharpCode.Decompiler.TypeSystem;
 
-namespace TryOmnisharpExtension.IlSpy;
+namespace TryOmnisharpExtension.FindUsages;
 
 class TypeDefinitionUsedVisitor : TypeVisitor
 {

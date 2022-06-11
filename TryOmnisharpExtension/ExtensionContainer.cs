@@ -1,7 +1,6 @@
 ﻿using System.Composition;
 using Autofac;
-using IlSpy.Analyzer.Extraction;
-using TryOmnisharp.Decompiler.IlSpy2;
+using TryOmnisharpExtension.FindImplementations;
 using TryOmnisharpExtension.FindUsages;
 using TryOmnisharpExtension.IlSpy;
 
@@ -25,7 +24,7 @@ public class ExtensionContainer
 
         externalAssembliesContainerBuilder.RegisterType<DecompilerFactory>();
 
-        externalAssembliesContainerBuilder.RegisterType<TypeUsedInTypeFinder>();
+        // externalAssembliesContainerBuilder.RegisterType<TypeUsedInTypeFinder>();
 
         externalAssembliesContainerBuilder.RegisterType<IlSpySymbolFinder>();
 
@@ -52,17 +51,17 @@ public class ExtensionContainer
         externalAssembliesContainerBuilder
             .RegisterType<IlSpyExternalAssembliesCommandFactory<FindImplementationsResponse>>();
 
-        externalAssembliesContainerBuilder.RegisterType<IlSpyBaseTypeUsageFinder2>();
-        externalAssembliesContainerBuilder.RegisterType<IlSpyMethodImplementationFinder>();
-        externalAssembliesContainerBuilder.RegisterType<IlSpyPropertyImplementationFinder>();
-        externalAssembliesContainerBuilder.RegisterType<IlSpyEventImplementationFinder>();
+        externalAssembliesContainerBuilder.RegisterType<IlSpyBaseTypeUsageFinder>();
+        externalAssembliesContainerBuilder.RegisterType<IlSpyMemberImplementationFinder>();
+        // externalAssembliesContainerBuilder.RegisterType<IlSpyPropertyImplementationFinder>();
+        // externalAssembliesContainerBuilder.RegisterType<IlSpyEventImplementationFinder>();
 
         externalAssembliesContainerBuilder.RegisterType<AnalyzerScope>();
         
-        externalAssembliesContainerBuilder.RegisterType<TypeUsedByAnalyzer2>();
-        externalAssembliesContainerBuilder.RegisterType<MethodImplementedByAnalyzer>();
-        externalAssembliesContainerBuilder.RegisterType<PropertyImplementedByAnalyzer>();
-        externalAssembliesContainerBuilder.RegisterType<EventImplementedByAnalyzer>();
+        externalAssembliesContainerBuilder.RegisterType<TypesThatUseTypeAsBaseTypeMetadataScanner>();
+        // externalAssembliesContainerBuilder.RegisterType<MethodImplementedByAnalyzer>();
+        // externalAssembliesContainerBuilder.RegisterType<PropertyImplementedByAnalyzer>();
+        // externalAssembliesContainerBuilder.RegisterType<EventImplementedByAnalyzer>();
         
         externalAssembliesContainerBuilder.RegisterType<ExternalAssembliesDecompileWorkspace>()
             .As<IDecompileWorkspace>();
@@ -74,29 +73,46 @@ public class ExtensionContainer
         externalAssembliesContainerBuilder.RegisterType<ExternalAssembliesFindUsagesCommandFactory>()
             .As<IDecompilerCommandFactory<INavigationCommand<FindUsagesResponse>>>();
         
-        externalAssembliesContainerBuilder.RegisterType<IlSpyUsagesFinder>();
+        externalAssembliesContainerBuilder.RegisterType<IlSpyTypeUsagesFinder>();
         externalAssembliesContainerBuilder.RegisterType<IlSpyMethodUsagesFinder>();
         externalAssembliesContainerBuilder.RegisterType<IlSpyPropertyUsagesFinder>();
         externalAssembliesContainerBuilder.RegisterType<IlSpyEventUsagesFinder>();
 
-        externalAssembliesContainerBuilder.RegisterType<MethodUsedByAnalyzer>();
-        externalAssembliesContainerBuilder.RegisterType<MethodInMethodBodyFinder>();
+        // externalAssembliesContainerBuilder.RegisterType<MethodUsedByAnalyzer>();
+        // externalAssembliesContainerBuilder.RegisterType<MethodInMethodBodyFinder>();
 
-        externalAssembliesContainerBuilder.RegisterType<PropertyUsedByAnalyzer>();
-        externalAssembliesContainerBuilder.RegisterType<PropertyInMethodBodyFinder>();
+        // externalAssembliesContainerBuilder.RegisterType<PropertyUsedByAnalyzer>();
+        // externalAssembliesContainerBuilder.RegisterType<PropertyInMethodBodyFinder>();
                 
-        externalAssembliesContainerBuilder.RegisterType<EventUsedByAnalyzer>();
-        externalAssembliesContainerBuilder.RegisterType<EventInMethodBodyFinder>();
+        // externalAssembliesContainerBuilder.RegisterType<EventUsedByAnalyzer>();
+        // externalAssembliesContainerBuilder.RegisterType<EventInMethodBodyFinder>();
         
-        externalAssembliesContainerBuilder.RegisterType<TypeInMethodDefinitionFinder>();
-        externalAssembliesContainerBuilder.RegisterType<TypeInMethodBodyFinder>();
+        // externalAssembliesContainerBuilder.RegisterType<TypeInMethodDefinitionFinder>();
+        // externalAssembliesContainerBuilder.RegisterType<TypeInMethodBodyFinder>();
 
         externalAssembliesContainerBuilder.RegisterType<FieldInTypeFinder>();
         externalAssembliesContainerBuilder.RegisterType<IlSpyFieldFinder>();
         
-        externalAssembliesContainerBuilder.RegisterType<FieldInMethodBodyFinder>();
-        externalAssembliesContainerBuilder.RegisterType<FieldUsedByAnalyzer>();
+        // externalAssembliesContainerBuilder.RegisterType<FieldInMethodBodyFinder>();
+        // externalAssembliesContainerBuilder.RegisterType<FieldUsedByAnalyzer>();
         externalAssembliesContainerBuilder.RegisterType<IlSpyFieldUsagesFinder>();
+
+        externalAssembliesContainerBuilder.RegisterType<TypeUsedByTypeIlScanner>();
+        // externalAssembliesContainerBuilder.RegisterType<TypeUsedInTypeFinder2>();
+        
+        externalAssembliesContainerBuilder.RegisterType<MethodUsedByMetadataScanner>();
+        // externalAssembliesContainerBuilder.RegisterType<MemberUsedByMetadataScanner>();
+        externalAssembliesContainerBuilder.RegisterType<TypeUsedInTypeFinder3>();
+        externalAssembliesContainerBuilder.RegisterType<MemberUsedInTypeFinder>();
+        externalAssembliesContainerBuilder.RegisterType<EventUsedByMetadataScanner>();
+        externalAssembliesContainerBuilder.RegisterType<FieldUsedByMetadataScanner>();
+        externalAssembliesContainerBuilder.RegisterType<PropertyUsedByMetadataScanner>();
+        
+        externalAssembliesContainerBuilder.RegisterType<TypeUsedAsBaseTypeFinder>();
+        externalAssembliesContainerBuilder.RegisterType<TypesThatUseMemberAsBaseTypeMetadataScanner>();
+        externalAssembliesContainerBuilder.RegisterType<MemberOverrideInTypeFinder>();
+        externalAssembliesContainerBuilder.RegisterType<IlSpyVariableUsagesFinder>();
+        externalAssembliesContainerBuilder.RegisterType<VariableInMethodBodyFinder>();
         
         Container = externalAssembliesContainerBuilder.Build();
     }

@@ -21,19 +21,19 @@ namespace TryOmnisharpExtension
                 extensionContainer.Container.Resolve<IlSpyDecompiledSourceCommandFactory>();
         }
         
-        public async Task<DecompiledSourceResponse> Handle(DecompiledSourceRequest request)
+        public Task<DecompiledSourceResponse> Handle(DecompiledSourceRequest request)
         {
             DecompiledSourceResponse response;
             if (request.IsFromExternalAssembly)
             {
-                response = await _externalAssembliesCommandFactory.Find(request);
+                response = _externalAssembliesCommandFactory.Find(request);
             }
             else
             {
-                response = await _commandFactory.Find(request);
+                response = _commandFactory.Find(request);
             }
 
-            return response;
+            return Task.FromResult(response);
         }
     }
 }

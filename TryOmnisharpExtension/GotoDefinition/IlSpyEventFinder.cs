@@ -15,11 +15,11 @@ namespace TryOmnisharpExtension.IlSpy
             _eventInTypeFinder = eventInTypeFinder;
         }
         
-        public async Task<(IlSpyMetadataSource2, string)> Find(IEvent eventSymbol)
+        public (IlSpyMetadataSource2, string) Find(IEvent eventSymbol)
         {
             var rootType = SymbolHelper.FindContainingType(eventSymbol.DeclaringTypeDefinition);
 
-            var (foundUse, sourceText) = await _eventInTypeFinder.Find(
+            var (foundUse, sourceText) = _eventInTypeFinder.Find(
                 eventSymbol.MetadataToken,
                 rootType);
 

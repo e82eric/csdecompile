@@ -2,17 +2,16 @@
 using System.Threading.Tasks;
 using ICSharpCode.Decompiler.CSharp.Syntax;
 using ICSharpCode.Decompiler.TypeSystem;
-using IlSpy.Analyzer.Extraction;
-using TryOmnisharpExtension.FindUsages;
+using TryOmnisharpExtension.FindImplementations;
 
-namespace TryOmnisharpExtension;
+namespace TryOmnisharpExtension.FindUsages;
 
 [Export(typeof(INavigationCommand<FindImplementationsResponse>))]
 internal class FindVariableUsagesCommand : INavigationCommand<FindUsagesResponse>
 {
     private readonly IlSpyVariableUsagesFinder _usagesFinder;
-    private AstNode _variable;
-    private ITypeDefinition _containingTypeDefinition;
+    private readonly AstNode _variable;
+    private readonly ITypeDefinition _containingTypeDefinition;
 
     [ImportingConstructor]
     public FindVariableUsagesCommand(
@@ -25,9 +24,9 @@ internal class FindVariableUsagesCommand : INavigationCommand<FindUsagesResponse
         _usagesFinder = usagesFinder;
     }
         
-    public async Task<FindUsagesResponse> Execute()
+    public Task<FindUsagesResponse> Execute()
     {
-        var metadataSources = await _usagesFinder.Run(
+        var metadataSources = _usagesFinder.Run(
             _containingTypeDefinition,
             _variable);
 
@@ -39,6 +38,6 @@ internal class FindVariableUsagesCommand : INavigationCommand<FindUsagesResponse
             result.Implementations.Add(decompileInfo);
         }
             
-        return result;
+        return Task.FromResult(result);
     }
 }

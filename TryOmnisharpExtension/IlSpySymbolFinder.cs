@@ -27,9 +27,9 @@ public class IlSpySymbolFinder
         _decompilerFactory = decompilerFactory;
     }
     
-    public async Task<ITypeDefinition> FindTypeDefinition(string projectAssemblyFilePath, string symbolFullName)
+    public ITypeDefinition FindTypeDefinition(string projectAssemblyFilePath, string symbolFullName)
     {
-        var typeSystem = await _typeSystemFactory.GetTypeSystem(projectAssemblyFilePath);
+        var typeSystem = _typeSystemFactory.GetTypeSystem(projectAssemblyFilePath);
         var tempFile = typeSystem.FindType(new FullTypeName(symbolFullName)) as ITypeDefinition;
 
         if (tempFile == null)
@@ -43,7 +43,7 @@ public class IlSpySymbolFinder
         return tempFile;
     }
     
-    public async Task<ITypeDefinition> FindTypeDefinition(string symbolFullName, DecompilerTypeSystem typeSystem)
+    public ITypeDefinition FindTypeDefinition(string symbolFullName, DecompilerTypeSystem typeSystem)
     {
         var tempFile = typeSystem.FindType(new FullTypeName(symbolFullName)) as ITypeDefinition;
 
@@ -59,47 +59,46 @@ public class IlSpySymbolFinder
         return tempFile;
     }
     
-    public async Task<IMethod> FindMethod(string projectAssemblyFilePath, IMethodSymbol roslynMethod)
+    public IMethod FindMethod(string projectAssemblyFilePath, IMethodSymbol roslynMethod)
     {
         var typeFullName = roslynMethod.ContainingType.GetSymbolName();
-        var typeDefinitionSymbol = await FindTypeDefinition(projectAssemblyFilePath, typeFullName);
+        var typeDefinitionSymbol = FindTypeDefinition(projectAssemblyFilePath, typeFullName);
         var method = FindMethod(typeDefinitionSymbol, roslynMethod);
         return method;
     }
     
-    public async Task<IField> FindField(string projectAssemblyFilePath, IFieldSymbol roslynMethod)
+    public IField FindField(string projectAssemblyFilePath, IFieldSymbol roslynMethod)
     {
         var typeFullName = roslynMethod.ContainingType.GetSymbolName();
-        var typeDefinitionSymbol = await FindTypeDefinition(projectAssemblyFilePath, typeFullName);
+        var typeDefinitionSymbol = FindTypeDefinition(projectAssemblyFilePath, typeFullName);
         var result = FindField(typeDefinitionSymbol, roslynMethod);
         return result;
     }
     
-    public async Task<IProperty> FindProperty(string projectAssemblyFilePath, string typeName, string propertyName)
+    public IProperty FindProperty(string projectAssemblyFilePath, string typeName, string propertyName)
     {
-        var typeDefinitionSymbol = await FindTypeDefinition(projectAssemblyFilePath, typeName);
+        var typeDefinitionSymbol = FindTypeDefinition(projectAssemblyFilePath, typeName);
         var property = FindProperty(typeDefinitionSymbol, propertyName);
         return property;
     }
     
-    public async Task<IEvent> FindEvent(string projectAssemblyFilePath, string typeName, string eventName)
+    public IEvent FindEvent(string projectAssemblyFilePath, string typeName, string eventName)
     {
-        var typeDefinitionSymbol = await FindTypeDefinition(projectAssemblyFilePath, typeName);
+        var typeDefinitionSymbol = FindTypeDefinition(projectAssemblyFilePath, typeName);
         var eventSymbol = FindEvent(typeDefinitionSymbol, eventName);
         return eventSymbol;
     }
     
-    
-    public async Task<AstNode> FindNode(ITypeDefinition typeDefinition, int line, int column)
+    public AstNode FindNode(ITypeDefinition typeDefinition, int line, int column)
     {
-        var decompiler = await _decompilerFactory.Get(typeDefinition.ParentModule.PEFile.FileName);
+        var decompiler = _decompilerFactory.Get(typeDefinition.ParentModule.PEFile.FileName);
         (SyntaxTree syntaxTree, string source) = decompiler.Run(typeDefinition);
             
         var node = GetNodeAt(syntaxTree, line, column);
         return node;
     }
     
-    public async Task<ISymbol> FindSymbolFromNode(AstNode node)
+    public ISymbol FindSymbolFromNode(AstNode node)
     {
         var symbolAtLocation = node.GetSymbol();
 
@@ -112,10 +111,10 @@ public class IlSpySymbolFinder
         return symbolAtLocation;
     }
 
-    public async Task<ISymbol> FindSymbolAtLocation(string projectAssemblyFilePath, string containingTypeFullName, int line, int column)
+    public ISymbol FindSymbolAtLocation(string projectAssemblyFilePath, string containingTypeFullName, int line, int column)
     {
-        var tempFile = await FindTypeDefinition(projectAssemblyFilePath, containingTypeFullName);
-        var decompiler = await _decompilerFactory.Get(tempFile.ParentModule.PEFile.FileName);
+        var tempFile = FindTypeDefinition(projectAssemblyFilePath, containingTypeFullName);
+        var decompiler = _decompilerFactory.Get(tempFile.ParentModule.PEFile.FileName);
         (SyntaxTree syntaxTree, string source) = decompiler.Run(containingTypeFullName);
             
         var node = GetNodeAt(syntaxTree, line, column);

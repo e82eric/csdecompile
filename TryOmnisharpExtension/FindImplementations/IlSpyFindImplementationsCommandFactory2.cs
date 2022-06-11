@@ -6,6 +6,8 @@ using ICSharpCode.Decompiler.CSharp;
 using ICSharpCode.Decompiler.TypeSystem;
 using Microsoft.CodeAnalysis;
 using OmniSharp;
+using TryOmnisharpExtension.FindImplementations;
+using TryOmnisharpExtension.FindUsages;
 using ISymbol = Microsoft.CodeAnalysis.ISymbol;
 
 namespace TryOmnisharpExtension;
@@ -33,24 +35,25 @@ public class IlSpyFindImplementationsCommandFactory2<ResponseType>
 
     public async Task<INavigationCommand<ResponseType>> Find(DecompiledLocationRequest request)
     {
-        var containingTypeDefinition = await _symbolFinder.FindTypeDefinition(
+        var containingTypeDefinition = _symbolFinder.FindTypeDefinition(
             request.AssemblyFilePath,
             request.ContainingTypeFullName);
         
-        var node = await _symbolFinder.FindNode(
+        var node = _symbolFinder.FindNode(
             containingTypeDefinition,
             request.Line,
             request.Column);
 
         var parentResolveResult = node.Parent.GetResolveResult();
 
+        //TODO: This should be in a usages specific context
         if (parentResolveResult is ILVariableResolveResult)
         {
             var command = ((FindUsagesCommandFactory)_commandCommandFactory).GetForVariable(containingTypeDefinition, node);
             return (INavigationCommand<ResponseType>)command;
         }
 
-        var symbolAtLocation = await _symbolFinder.FindSymbolFromNode(node);
+        var symbolAtLocation = _symbolFinder.FindSymbolFromNode(node);
 
         //TODO: Can I move this to /loadassemblies
         if (_projectCompilations == null)
@@ -151,36 +154,7 @@ public class IlSpyFindImplementationsCommandFactory2<ResponseType>
 
             return ilSpyCommand;
         }
-        //     INavigationCommand<ResponseType> roslynCommand = null;
-        //     if (symbol is INamedTypeSymbol roslynType)
-        //     {
-        //         IMethodSymbol foundRoslynMethod = null;
-        //         foreach (var roslynMember in roslynType.GetMembers())
-        //         {
-        //             if (roslynMember is IMethodSymbol roslynMethod)
-        //             {
-        //                 var areSame = RoslynToIlSpyEqualityExtensions.AreSameMethod(roslynMethod, method);
-        //                 if (areSame)
-        //                 {
-        //                     foundRoslynMethod = roslynMethod;
-        //                     break;
-        //                 }
-        //             }
-        //         }
-        //
-        //         if (foundRoslynMethod != null)
-        //         {
-        //             roslynCommand = _commandCommandFactory.GetForInSource(foundRoslynMethod);
-        //         }
-        //         else
-        //         {
-        //             return ilSpyCommand;
-        //         }
-        //     }
-        //
-        //     var result = new EverywhereImplementationsCommand2<ResponseType>(roslynCommand, ilSpyCommand);
-        //     return result;
-        // }
+        
         return null;
     }
     
@@ -192,30 +166,6 @@ public class IlSpyFindImplementationsCommandFactory2<ResponseType>
             return sameField;
         });
         return result;
-        // var declaringTypeFullName = ilSpySymbol?.DeclaringType?.FullName;
-        // if (declaringTypeFullName == null)
-        // {
-        //     return default;
-        // }
-        // var roslynTypeSymbol = GetTypeSymbol(declaringTypeFullName);
-        // if (roslynTypeSymbol == null)
-        // {
-        //     return default;
-        // }
-        // var typePublicMembers = roslynTypeSymbol.GetMembers();
-        // foreach (var publicMember in typePublicMembers)
-        // {
-        //     if (publicMember is TRoslyn roslynMember)
-        //     {
-        //         var sameField = RoslynToIlSpyEqualityExtensions.AreMemberSymbol(publicMember, ilSpySymbol);
-        //         if (sameField)
-        //         {
-        //             return roslynMember;
-        //         }
-        //     }
-        // }
-        //
-        // return default;
     }
     
     private TRoslyn GetRoslynMemberSymbol<TRoslyn>(IMember ilSpySymbol, Predicate<TRoslyn> areSame)

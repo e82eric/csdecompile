@@ -16,10 +16,10 @@ public class AddExternalAssemblyDirectoryHandler : IRequestHandler<AddExternalAs
         _externalAssembliesWorkspace = externalAssembliesWorkspace;
     }
     
-    public async Task<AddExternalAssemblyDirectoryResponse> Handle(AddExternalAssemblyDirectoryRequest request)
+    public Task<AddExternalAssemblyDirectoryResponse> Handle(AddExternalAssemblyDirectoryRequest request)
     {
         _externalAssembliesWorkspace.AddDirectory(request.DirectoryFilePath);
         var response = new AddExternalAssemblyDirectoryResponse() { Success = true };
-        return response;
+        return Task.FromResult(response);
     }
 }

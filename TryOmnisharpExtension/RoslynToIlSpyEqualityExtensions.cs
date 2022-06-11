@@ -28,9 +28,10 @@ public static class RoslynToIlSpyEqualityExtensions
 
         for (int i = 0; i < roslynMethodSymbol.Parameters.Count(); i++)
         {
-            var sameType = AreSameType(
-                roslynMethodSymbol.Parameters[i].Type,
-                ilSpySymbol.Parameters[i].Type.GetDefinition());
+            var roslynParameterType = roslynMethodSymbol.Parameters[i].Type;
+            var ilSpyParameterTYpe = ilSpySymbol.Parameters[i].Type;
+            
+            var sameType = AreSameType(roslynParameterType, ilSpyParameterTYpe);
             if (!sameType)
             {
                 return false;
@@ -46,6 +47,11 @@ public static class RoslynToIlSpyEqualityExtensions
     //This can be done as an initial check and then fallback to check stuff using names
     private static bool AreSameUsingToken(ISymbol roslynSymbol, IEntity ilSpySymbol)
     {
+        // if (roslynSymbol == null || roslynSymbol.ContainingAssembly == null || ilSpySymbol == null ||
+        //     ilSpySymbol.ParentModule == null)
+        // {
+        //     
+        // }
         var sameAssembly = roslynSymbol.ContainingAssembly.Name == ilSpySymbol.ParentModule.AssemblyName;
         if (!sameAssembly)
         {
@@ -112,5 +118,20 @@ public static class RoslynToIlSpyEqualityExtensions
         }
         
         return true;
+    }
+    
+    public static bool AreSameType(ITypeSymbol roslynSymbol, IType ilSpySymbol)
+    {
+        ITypeDefinition typeDefinition = ilSpySymbol.GetDefinition();
+        if (typeDefinition is null)
+        {
+            if (ilSpySymbol is ByReferenceType byReferenceType)
+            {
+                typeDefinition = byReferenceType.ElementType.GetDefinition();
+            }
+        }
+
+        var result = AreSameType(roslynSymbol, typeDefinition);
+        return result;
     }
 }

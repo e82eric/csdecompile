@@ -2,8 +2,8 @@
 using System.Threading.Tasks;
 using ICSharpCode.Decompiler.TypeSystem;
 using NUnit.Framework;
-using TryOmnisharp.Decompiler.IlSpy2;
 using TryOmnisharpExtension;
+using TryOmnisharpExtension.FindImplementations;
 using TryOmnisharpExtension.IlSpy;
 
 namespace Tests
@@ -102,8 +102,8 @@ namespace Tests
             var type = typeSystem.FindType(new FullTypeName("LibraryThatJustReferencesFramework.Class1"));
             
             var analyzerScope = new AnalyzerScope(resolverFactory, assemblyList);
-            var typeUsedByAnalyzer = new TypeUsedByAnalyzer2(analyzerScope);
-            var finder = new IlSpyBaseTypeUsageFinder2(typeSystemFactory, typeUsedByAnalyzer, new TypeUsedInTypeFinder(new DecompilerFactory(typeSystemFactory)));
+            var typeUsedByAnalyzer = new TypesThatUseTypeAsBaseTypeMetadataScanner(analyzerScope);
+            var finder = new IlSpyBaseTypeUsageFinder(typeSystemFactory, typeUsedByAnalyzer, new TypeUsedInTypeFinder(new DecompilerFactory(typeSystemFactory)));
             var commandFactory = new IlSpyCommandFactory<>(new DecompilerFactory(typeSystemFactory),
                 new FindImplementationsCommandFactory(finder));
 

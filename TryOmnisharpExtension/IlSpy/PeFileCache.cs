@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection.Metadata;
 using System.Reflection.PortableExecutable;
-using System.Threading.Tasks;
 using ICSharpCode.Decompiler.Metadata;
 
 namespace TryOmnisharpExtension.IlSpy;
@@ -45,7 +44,7 @@ public class PeFileCache
         return false;
     }
         
-    public async Task<PEFile> OpenAsync(string fileName)
+    public PEFile Open(string fileName)
     {
         if (_byFileName.TryGetValue(fileName, out var result))
         {

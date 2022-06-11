@@ -1,76 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Composition;
-using System.Threading.Tasks;
+﻿using System.Composition;
 using ICSharpCode.Decompiler.TypeSystem;
-using TryOmnisharpExtension;
-using TryOmnisharpExtension.FindUsages;
 using TryOmnisharpExtension.IlSpy;
 
-namespace IlSpy.Analyzer.Extraction;
+namespace TryOmnisharpExtension.FindUsages;
 
 [Export]
-public class IlSpyFieldUsagesFinder
+public class IlSpyFieldUsagesFinder : IlSpyUsagesFinderBase<IMember>
 {
-    private readonly FieldUsedByAnalyzer _fieldUsedByAnalyzer;
-    private readonly FieldInMethodBodyFinder _fieldInMethodBodyFinder;
-
     [ImportingConstructor]
     public IlSpyFieldUsagesFinder(
-        FieldUsedByAnalyzer fieldUsedByAnalyzer,
-        FieldInMethodBodyFinder fieldInMethodBodyFinder)
+        FieldUsedByMetadataScanner fieldUsedByAnalyzer,
+        MemberUsedInTypeFinder fieldInMemberBodyFinder,
+        DecompilerFactory decompilerFactory) : base(
+        decompilerFactory, fieldUsedByAnalyzer, fieldInMemberBodyFinder)
     {
-        _fieldUsedByAnalyzer = fieldUsedByAnalyzer;
-        _fieldInMethodBodyFinder = fieldInMethodBodyFinder;
-    }
-        
-    public async Task<IEnumerable<IlSpyMetadataSource2>> Run(IField field)
-    {
-        var result = new List<IlSpyMetadataSource2>();
-
-        try
-        {
-            var typeUsedByResult = await _fieldUsedByAnalyzer.Analyze(field);
-
-            foreach (var usageToSearch in typeUsedByResult)
-            {
-                var fieldUsage = usageToSearch as IMember;
-                if (fieldUsage != null)
-                {
-                    var rootType = SymbolHelper.FindContainingType(fieldUsage);
-                    var foundUses = await _fieldInMethodBodyFinder.Find(fieldUsage, rootType, field);
-
-                    foreach (var foundUse in foundUses)
-                    {
-                        var parentType = SymbolHelper.FindContainingType(fieldUsage);
-                        if (parentType != null)
-                        {
-                            var metadataSource = new IlSpyMetadataSource2
-                            {
-                                AssemblyName = parentType.ParentModule.AssemblyName,
-                                Column = foundUse.StartLocation.Column,
-                                Line = foundUse.StartLocation.Line,
-                                SourceText = $"{fieldUsage.ReflectionName} {foundUse.Statement.ToString().Replace("\r\n", "")}",
-                                StartColumn = foundUse.StartLocation.Column,
-                                EndColumn = foundUse.EndLocation.Column,
-                                ContainingTypeFullName = parentType.ReflectionName,
-                                AssemblyFilePath = fieldUsage.Compilation.MainModule.PEFile.FileName,
-                                UsageType = UsageTypes.InMethodBody,
-                                TypeName = parentType.Name
-                            };
-
-                            result.Add(metadataSource);
-                        }
-                    }
-                }
-            }
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            throw;
-        }
-
-        return result;
     }
 }

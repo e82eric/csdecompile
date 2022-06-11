@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Composition;
-using System.Threading.Tasks;
 using ICSharpCode.Decompiler.CSharp.Syntax;
 using TryOmnisharpExtension.IlSpy;
 
@@ -9,7 +8,7 @@ namespace TryOmnisharpExtension.FindUsages;
 [Export]
 public class VariableInMethodBodyFinder
 {
-    public async Task<IEnumerable<UsageAsTextLocation>> Find(Identifier variableNode)
+    public IEnumerable<UsageAsTextLocation> Find(Identifier variableNode)
     {
         var result = new List<UsageAsTextLocation>();
 

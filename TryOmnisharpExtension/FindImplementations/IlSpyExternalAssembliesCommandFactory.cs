@@ -1,26 +1,25 @@
 ﻿using System.Composition;
-using System.Threading.Tasks;
 using ICSharpCode.Decompiler.TypeSystem;
 
-namespace TryOmnisharpExtension;
+namespace TryOmnisharpExtension.FindImplementations;
 
-public class IlSpyExternalAssembliesCommandFactory<ResponseType> where ResponseType : FindImplementationsResponse, new()
+public class IlSpyExternalAssembliesCommandFactory<TResponseType> where TResponseType : FindImplementationsResponse, new()
 {
-    private readonly IDecompilerCommandFactory<INavigationCommand<ResponseType>> _commandCommandFactory;
+    private readonly IDecompilerCommandFactory<INavigationCommand<TResponseType>> _commandCommandFactory;
     private readonly IlSpySymbolFinder _symbolFinder;
 
     [ImportingConstructor]
     public IlSpyExternalAssembliesCommandFactory(
         IlSpySymbolFinder symbolFinder,
-        IDecompilerCommandFactory<INavigationCommand<ResponseType>> commandCommandFactory)
+        IDecompilerCommandFactory<INavigationCommand<TResponseType>> commandCommandFactory)
     {
         _symbolFinder = symbolFinder;
         _commandCommandFactory = commandCommandFactory;
     }
         
-    public async Task<INavigationCommand<ResponseType>> Find(DecompiledLocationRequest request)
+    public INavigationCommand<TResponseType> Find(DecompiledLocationRequest request)
     {
-        var symbolAtLocation = await _symbolFinder.FindSymbolAtLocation(
+        var symbolAtLocation = _symbolFinder.FindSymbolAtLocation(
             request.AssemblyFilePath,
             request.ContainingTypeFullName,
             request.Line,

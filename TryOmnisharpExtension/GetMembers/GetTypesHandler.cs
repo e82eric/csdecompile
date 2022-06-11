@@ -15,14 +15,14 @@ public class GetTypesHandler : IRequestHandler<GetTypesRequest, GetTypesResponse
         _typesRepository = typesRepository;
     }
     
-    public async Task<GetTypesResponse> Handle(GetTypesRequest request)
+    public Task<GetTypesResponse> Handle(GetTypesRequest request)
     {
-        var types = await _typesRepository.GetAllTypes(request.SearchString);
+        var types = _typesRepository.GetAllTypes(request.SearchString);
         var response = new GetTypesResponse {};
         foreach (var type in types)
         {
             response.Implementations.Add(type);
         }
-        return response;
+        return Task.FromResult(response);
     }
 }

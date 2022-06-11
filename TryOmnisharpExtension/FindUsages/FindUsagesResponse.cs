@@ -1,6 +1,7 @@
-﻿namespace TryOmnisharpExtension.FindUsages;
+﻿using TryOmnisharpExtension.FindImplementations;
+
+namespace TryOmnisharpExtension.FindUsages;
 
 public class FindUsagesResponse : FindImplementationsResponse
 {
-    
 }

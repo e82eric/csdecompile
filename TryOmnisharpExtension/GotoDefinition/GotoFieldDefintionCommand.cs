@@ -20,9 +20,9 @@ internal class GotoFieldDefintionCommand : IGotoDefinitionCommand
         _field = field;
     }
         
-    public async Task<DecompileGotoDefinitionResponse> Execute()
+    public Task<DecompileGotoDefinitionResponse> Execute()
     {
-        var (ilSpyMetadataSource, sourceText) = await _ilSpyFieldFinder.Run(_field);
+        var (ilSpyMetadataSource, sourceText) = _ilSpyFieldFinder.Run(_field);
             
         var decompileInfo = DecompileInfoMapper.MapFromMetadataSource(ilSpyMetadataSource);
         decompileInfo.AssemblyFilePath = _projectAssemblyPath;
@@ -37,6 +37,6 @@ internal class GotoFieldDefintionCommand : IGotoDefinitionCommand
             IsDecompiled = true
         };
 
-        return result;
+        return Task.FromResult(result);
     }
 }

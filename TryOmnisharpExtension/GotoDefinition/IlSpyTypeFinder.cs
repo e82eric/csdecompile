@@ -15,19 +15,19 @@ namespace TryOmnisharpExtension.IlSpy
              _typeInFinder = typeInFinder;
          }
          
-         public async Task<(IlSpyMetadataSource2, string source)> FindDefinitionFromSymbolName(ITypeDefinition typeToFindDefinitionFor)
+         public (IlSpyMetadataSource2, string source) FindDefinitionFromSymbolName(ITypeDefinition typeToFindDefinitionFor)
          {
              var rootTypeOfTypeToFindDefinitionFor = SymbolHelper.FindContainingType(typeToFindDefinitionFor);
 
-             var result = await FindTypeDefinition( typeToFindDefinitionFor, rootTypeOfTypeToFindDefinitionFor);
+             var result = FindTypeDefinition( typeToFindDefinitionFor, rootTypeOfTypeToFindDefinitionFor);
              return result;
          }
 
-         private async Task<(IlSpyMetadataSource2, string source)> FindTypeDefinition(
+         private (IlSpyMetadataSource2, string source) FindTypeDefinition(
              ITypeDefinition typeToFindDefinitionFor,
              ITypeDefinition rootTypeOfTypeToFindDefinitionFor)
          {
-             var (locationOfDefinition, sourceOfDefinition) = await _typeInFinder.Find(
+             var (locationOfDefinition, sourceOfDefinition) = _typeInFinder.Find(
                 typeToFindDefinitionFor,
                 typeToFindDefinitionFor.MetadataToken,
                 rootTypeOfTypeToFindDefinitionFor);

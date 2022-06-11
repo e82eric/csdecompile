@@ -1,8 +1,6 @@
 ﻿using OmniSharp.Mef;
-using OmniSharp.Models.FindUsages;
-using TryOmnisharpExtension.FindUsages;
 
-namespace TryOmnisharpExtension;
+namespace TryOmnisharpExtension.FindUsages;
 
 [OmniSharpEndpoint(Endpoints.DecompileFindUsages, typeof(DecompileFindUsagesRequest), typeof(FindUsagesResponse))]
 public class DecompileFindUsagesRequest : DecompiledLocationRequest

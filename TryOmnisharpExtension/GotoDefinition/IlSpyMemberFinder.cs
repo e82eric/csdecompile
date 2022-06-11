@@ -15,11 +15,11 @@ public class IlSpyMemberFinder
         _methodInTypeFinder = methodInTypeFinder;
     } 
     
-    public async Task<(IlSpyMetadataSource2, string sourceText)> Run(IMethod method)
+    public (IlSpyMetadataSource2, string sourceText) Run(IMethod method)
     {
         var rootType = SymbolHelper.FindContainingType(method.DeclaringTypeDefinition);
 
-        var (foundUse, sourceText) = await _methodInTypeFinder.Find(method.MetadataToken, rootType);
+        var (foundUse, sourceText) = _methodInTypeFinder.Find(method.MetadataToken, rootType);
 
         var metadataSource = new IlSpyMetadataSource2
         {

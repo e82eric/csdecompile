@@ -1,59 +1,53 @@
 ﻿using System.Composition;
 using ICSharpCode.Decompiler.TypeSystem;
+using TryOmnisharpExtension.FindUsages;
 using TryOmnisharpExtension.IlSpy;
-using ISymbol = ICSharpCode.Decompiler.TypeSystem.ISymbol;
 
-namespace TryOmnisharpExtension;
+namespace TryOmnisharpExtension.FindImplementations;
 
 public class IlSpyFindImplementationsCommandFactory : IDecompilerCommandFactory<INavigationCommand<FindImplementationsResponse>>
 {
-    private readonly IlSpyBaseTypeUsageFinder2 _typeFinder;
-    private readonly IlSpyMethodImplementationFinder _methodImplementationFinder;
-    private readonly IlSpyPropertyImplementationFinder _propertyImplementationFinder;
-    private readonly IlSpyEventImplementationFinder _eventImplementationFinder;
+    private readonly IlSpyBaseTypeUsageFinder _typeFinder;
+    private readonly IlSpyMemberImplementationFinder _memberImplementationFinder;
 
     [ImportingConstructor]
     public IlSpyFindImplementationsCommandFactory(
-        IlSpyBaseTypeUsageFinder2 typeFinder,
-        IlSpyMethodImplementationFinder methodImplementationFinder,
-        IlSpyPropertyImplementationFinder propertyImplementationFinder,
-        IlSpyEventImplementationFinder eventImplementationFinder)
+        IlSpyBaseTypeUsageFinder typeFinder,
+        IlSpyMemberImplementationFinder memberImplementationFinder)
     {
         _typeFinder = typeFinder;
-        _methodImplementationFinder = methodImplementationFinder;
-        _propertyImplementationFinder = propertyImplementationFinder;
-        _eventImplementationFinder = eventImplementationFinder;
+        _memberImplementationFinder = memberImplementationFinder;
     }
 
     public INavigationCommand<FindImplementationsResponse> GetForType(ITypeDefinition typeDefinition, string projectAssemblyFilePath)
     {
-        return new FindTypeImplementationsCommand(
-            projectAssemblyFilePath,
+        var result = new IlSpyUsagesCommand<ITypeDefinition, FindImplementationsResponse>(
             typeDefinition,
             _typeFinder);
+        return result;
     }
 
     public INavigationCommand<FindImplementationsResponse> GetForMethod(IMethod method, string projectAssemblyFilePath)
     {
-        return new FindMethodImplementationsCommand(
-            projectAssemblyFilePath,
+        var result = new IlSpyUsagesCommand<IMember, FindImplementationsResponse>(
             method,
-            _methodImplementationFinder);
+            _memberImplementationFinder);
+        return result;
     }
 
     public INavigationCommand<FindImplementationsResponse> GetForProperty(IProperty property, string projectAssemblyFilePath)
     {
-        return new FindPropertyImplementationsCommand(
-            projectAssemblyFilePath,
+        var result = new IlSpyUsagesCommand<IMember, FindImplementationsResponse>(
             property,
-            _propertyImplementationFinder);
+            _memberImplementationFinder);
+        return result;
     }
         
     public INavigationCommand<FindImplementationsResponse> GetForEvent(IEvent eventSymbol, string projectAssemblyFilePath)
     {
-        return new FindEventImplementationsCommand(
-            projectAssemblyFilePath,
+        var result = new IlSpyUsagesCommand<IMember, FindImplementationsResponse>(
             eventSymbol,
-            _eventImplementationFinder);
+            _memberImplementationFinder);
+        return result;
     }
 }

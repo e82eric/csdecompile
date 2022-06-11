@@ -18,13 +18,13 @@ public class PropertyInTypeFinder2
         _decompilerFactory = decompilerFactory;
     }
     
-    public async Task<(UsageAsTextLocation, string)> Find(
+    public (UsageAsTextLocation, string) Find(
         EntityHandle? setterEntityHandle,
         EntityHandle? getterEntityHandle,
         ITypeDefinition rootType)
     {
         var assemblyFilePath = rootType.ParentModule.PEFile.FileName;
-        var decompiler = await _decompilerFactory.Get(assemblyFilePath);
+        var decompiler = _decompilerFactory.Get(assemblyFilePath);
         var (syntaxTree, sourceText) = decompiler.Run(rootType);
 
         var result = Find(syntaxTree, setterEntityHandle, getterEntityHandle, rootType.MetadataToken);

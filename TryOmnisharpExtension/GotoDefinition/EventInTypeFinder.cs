@@ -18,12 +18,12 @@ public class EventInTypeFinder
         _decompilerFactory = decompilerFactory;
     }
     
-    public async Task<(UsageAsTextLocation, string)> Find(
+    public (UsageAsTextLocation, string) Find(
         EntityHandle? eventEntityHandle,
         ITypeDefinition rootType)
     {
         var assemblyFilePath = rootType.ParentModule.PEFile.FileName;
-        var decompiler = await _decompilerFactory.Get(assemblyFilePath);
+        var decompiler = _decompilerFactory.Get(assemblyFilePath);
         var (syntaxTree, sourceText) = decompiler.Run(rootType);
 
         var result = Find(syntaxTree, eventEntityHandle, rootType.MetadataToken);

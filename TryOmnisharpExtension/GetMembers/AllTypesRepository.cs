@@ -19,9 +19,9 @@ public class AllTypesRepository
         _workspace = workspace;
     }
 
-    public async Task<IEnumerable<DecompileInfo>> GetAllTypes(string searchString)
+    public IEnumerable<DecompileInfo> GetAllTypes(string searchString)
     {
-        var projectPeFiles = await _workspace.GetAssemblies();
+        var projectPeFiles = _workspace.GetAssemblies();
 
         var alreadyAdded = new HashSet<string>();
         var result = new List<DecompileInfo>();

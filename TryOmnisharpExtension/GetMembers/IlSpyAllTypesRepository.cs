@@ -19,7 +19,7 @@ public class IlSpyAllTypesRepository
         _externalAssembliesWorkspace = externalAssembliesWorkspace;
     }
 
-    public async Task<IEnumerable<DecompileInfo>> GetAllTypes(string typeName)
+    public IEnumerable<DecompileInfo> GetAllTypes(string typeName)
     {
         var directoriesToSearch = _externalAssembliesWorkspace.GetDirectories();
         var result = new List<DecompileInfo>();
@@ -35,7 +35,7 @@ public class IlSpyAllTypesRepository
                     var apeFile = new PEFile(dll.FullName);
                     flatModules.Add(apeFile);
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                 }
             }

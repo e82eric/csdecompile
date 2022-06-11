@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Composition;
 using System.IO;
 using System.Reflection.Metadata;
@@ -14,36 +15,34 @@ namespace TryOmnisharpExtension
     [Export(typeof(IDecompilerTypeSystemFactory))]
     public class IlSpyTypeSystemFactory : IDecompilerTypeSystemFactory
     {
-        private readonly Dictionary<string, DecompilerTypeSystem> _projectTypeSystemCache = new();
+        private readonly ConcurrentDictionary<string, DecompilerTypeSystem> _projectTypeSystemCache = new();
         private readonly AssemblyResolverFactory _resolverFactory;
-        private readonly IOmnisharpWorkspace _omnisharpWorkspace;
         private readonly PeFileCache _peFileCache;
-        private Task _loadingTask;
 
-        [System.Composition.ImportingConstructor]
+        [ImportingConstructor]
         public IlSpyTypeSystemFactory(
             AssemblyResolverFactory resolverFactory,
             IOmnisharpWorkspace omnisharpWorkspace,
             PeFileCache peFileCache)
         {
             _resolverFactory = resolverFactory;
-            _omnisharpWorkspace = omnisharpWorkspace;
             _peFileCache = peFileCache;
 
-            var paths = _omnisharpWorkspace.GetProjectAssemblyPaths();
-            _loadingTask = LoadProjects(paths);
+            var paths = omnisharpWorkspace.GetProjectAssemblyPaths();
+            //TODO: This should be somewhere else
+            LoadProjects(paths);
         }
         
-        private async Task LoadProjects(IEnumerable<string> projectAssemblyPaths)
+        private void LoadProjects(IEnumerable<string> projectAssemblyPaths)
         {
             foreach (var path in projectAssemblyPaths)
             {
-                var projectPeFile = await OpenAssembly(path);
-                await Add(projectPeFile);
+                var projectPeFile = OpenAssembly(path);
+                Add(projectPeFile);
             }
         }
 
-        private async Task<PEFile> OpenAssembly(string file)
+        private PEFile OpenAssembly(string file)
         {
             using (var fileStream = new FileStream(file, FileMode.Open, FileAccess.Read))
             {
@@ -61,23 +60,22 @@ namespace TryOmnisharpExtension
             return module;
         }
 
-        private async Task<DecompilerTypeSystem> Add(PEFile module)
+        private DecompilerTypeSystem Add(PEFile module)
         {
-            var resolver = await _resolverFactory.GetAssemblyResolver(module);
+            var resolver = _resolverFactory.GetAssemblyResolver(module);
             var typeSystem = new DecompilerTypeSystem(module, resolver);
-            _projectTypeSystemCache.Add(module.FileName, typeSystem);
+            _projectTypeSystemCache.TryAdd(module.FileName, typeSystem);
             return typeSystem;
         }
         
-        public async Task<DecompilerTypeSystem> GetTypeSystem(string projectDllFilePath)
+        public DecompilerTypeSystem GetTypeSystem(string projectDllFilePath)
         {
-            await _loadingTask;
             if(_projectTypeSystemCache.TryGetValue(projectDllFilePath, out var result))
             {
                 return result;
             }
-            var peFile = await _peFileCache.OpenAsync(projectDllFilePath);
-            result = await Add(peFile);
+            var peFile = _peFileCache.Open(projectDllFilePath);
+            result = Add(peFile);
 
             return result;
         }

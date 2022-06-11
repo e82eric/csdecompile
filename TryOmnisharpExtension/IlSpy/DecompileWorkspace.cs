@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection.Metadata;
 using System.Reflection.PortableExecutable;
-using System.Threading.Tasks;
 using ICSharpCode.Decompiler.Metadata;
 
 namespace TryOmnisharpExtension.IlSpy
@@ -23,7 +22,7 @@ namespace TryOmnisharpExtension.IlSpy
             _workspace = workspace;
         }
 
-        public async Task LoadDlls()
+        public void LoadDlls()
         {
             var projectAssemblyPaths = _workspace.GetProjectAssemblyPaths();
             foreach (var path in projectAssemblyPaths)
@@ -34,7 +33,7 @@ namespace TryOmnisharpExtension.IlSpy
 
                 foreach (var dllFilePath in binDirDlls)
                 {
-                    var dllPEFile = await OpenAssembly(path);
+                    var dllPEFile = OpenAssembly(dllFilePath.FullName);
                     if (dllFilePath != null)
                     {
                         var uniqueness = dllFilePath.FullName + "|" + dllPEFile.Metadata.MetadataVersion;
@@ -47,12 +46,16 @@ namespace TryOmnisharpExtension.IlSpy
             }
         }
 
-		public async Task<PEFile[]> GetAssemblies()
+		public PEFile[] GetAssemblies()
         {
+            if (!_byFilename.Any())
+            {
+                LoadDlls();
+            }
             return _byFilename.Values.ToArray();
         }
 
-        private async Task<PEFile> OpenAssembly(string file)
+        private PEFile OpenAssembly(string file)
         {
             try
             {

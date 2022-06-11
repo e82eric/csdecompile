@@ -3,23 +3,23 @@ using System.Threading.Tasks;
 using Autofac;
 using OmniSharp.Mef;
 
-namespace TryOmnisharpExtension;
+namespace TryOmnisharpExtension.FindImplementations;
 
 [OmniSharpHandler(Endpoints.DecompileFindImplementations, Languages.Csharp), Shared]
 public class DecompileFindImplementationsHandler : IRequestHandler<DecompileFindImplementationsRequest, FindImplementationsResponse>
 {
     private readonly EverywhereSymbolInfoFinder2<FindImplementationsResponse> _everywhereSymbolInfoFinder2;
-    private readonly IlSpyFindImplementationsCommandFactory2<FindImplementationsResponse> _ilSpyFindImplementationsCommandFactory2;
+    private readonly IlSpyFindImplementationsCommandFactory2<FindImplementationsResponse> _ilSpyFindImplementationsCommandFactory;
     private IlSpyExternalAssembliesCommandFactory<FindImplementationsResponse> _externalAssemblyCommandFactory;
 
     [ImportingConstructor]
     public DecompileFindImplementationsHandler(
         EverywhereSymbolInfoFinder2<FindImplementationsResponse> everywhereSymbolInfoFinder2,
-        IlSpyFindImplementationsCommandFactory2<FindImplementationsResponse> ilSpyFindImplementationsCommandFactory2,
+        IlSpyFindImplementationsCommandFactory2<FindImplementationsResponse> ilSpyFindImplementationsCommandFactory,
         ExtensionContainer extensionContainer)
     {
         _everywhereSymbolInfoFinder2 = everywhereSymbolInfoFinder2;
-        _ilSpyFindImplementationsCommandFactory2 = ilSpyFindImplementationsCommandFactory2;
+        _ilSpyFindImplementationsCommandFactory = ilSpyFindImplementationsCommandFactory;
         _externalAssemblyCommandFactory = extensionContainer.Container
             .Resolve<IlSpyExternalAssembliesCommandFactory<FindImplementationsResponse>>();
     }
@@ -35,11 +35,11 @@ public class DecompileFindImplementationsHandler : IRequestHandler<DecompileFind
         {
             if (request.IsFromExternalAssembly)
             {
-                command = await _externalAssemblyCommandFactory.Find(request);
+                command = _externalAssemblyCommandFactory.Find(request);
             }
             else
             {
-                command = await _ilSpyFindImplementationsCommandFactory2.Find(request);
+                command = await _ilSpyFindImplementationsCommandFactory.Find(request);
             }
         }
         

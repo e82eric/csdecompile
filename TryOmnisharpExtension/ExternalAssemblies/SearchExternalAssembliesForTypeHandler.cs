@@ -17,10 +17,10 @@ public class SearchExternalAssembliesForTypeHandler : IRequestHandler<SearchExte
         _allTypesRepository = allTypesRepository;
     }
     
-    public async Task<SearchExternalAssembliesForTypeResponse> Handle(SearchExternalAssembliesForTypeRequest request)
+    public Task<SearchExternalAssembliesForTypeResponse> Handle(SearchExternalAssembliesForTypeRequest request)
     {
-        var decompileInfos = await _allTypesRepository.GetAllTypes(request.TypeName);
+        var decompileInfos = _allTypesRepository.GetAllTypes(request.TypeName);
         var response = new SearchExternalAssembliesForTypeResponse { FoundTypes = decompileInfos };
-        return response;
+        return Task.FromResult(response);
     }
 }

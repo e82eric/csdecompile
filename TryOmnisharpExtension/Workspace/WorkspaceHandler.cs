@@ -16,9 +16,10 @@ public class WorkspaceHandler : IRequestHandler<LoadAssembliesRequest, LoadAssem
         _workspace = workspace;
     }
     
-    public async Task<LoadAssembliesResponse> Handle(LoadAssembliesRequest request)
+    public Task<LoadAssembliesResponse> Handle(LoadAssembliesRequest request)
     {
-        await _workspace.LoadDlls();
-        return new LoadAssembliesResponse();
+        _workspace.LoadDlls();
+        var result = new LoadAssembliesResponse();
+        return Task.FromResult(result);
     }
 }

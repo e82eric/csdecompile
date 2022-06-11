@@ -16,11 +16,11 @@ namespace TryOmnisharpExtension.IlSpy
             _propertyInTypeFinder = propertyInTypeFinder;
         }
         
-        public async Task<(IlSpyMetadataSource2, string)> Run(IProperty property)
+        public (IlSpyMetadataSource2, string) Run(IProperty property)
         {
             var rootType = SymbolHelper.FindContainingType(property.DeclaringTypeDefinition);
 
-            var (foundUse, sourceText) = await _propertyInTypeFinder.Find(
+            var (foundUse, sourceText) = _propertyInTypeFinder.Find(
                 property.Setter?.MetadataToken,
                 property.Getter?.MetadataToken,
                 rootType);

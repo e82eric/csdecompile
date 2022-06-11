@@ -12,12 +12,12 @@ public class ExternalAssembliesDecompileWorkspace : IDecompileWorkspace
     {
     }
 
-    public async Task<PEFile[]> GetAssemblies()
+    public PEFile[] GetAssemblies()
     {
         return new PEFile[] { };
     }
 
-    public async Task LoadDlls()
+    public void LoadDlls()
     {
         
     }

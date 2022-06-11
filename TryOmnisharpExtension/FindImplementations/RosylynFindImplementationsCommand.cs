@@ -5,9 +5,9 @@ using Microsoft.CodeAnalysis.FindSymbols;
 using OmniSharp;
 using OmniSharp.Extensions;
 
-namespace TryOmnisharpExtension;
+namespace TryOmnisharpExtension.FindImplementations;
 
-public class RosylynFindImplementationsCommand : IFindImplementationsCommand
+public class RosylynFindImplementationsCommand : INavigationCommand<FindImplementationsResponse>
 {
     private readonly ISymbol _symbol;
     private readonly OmniSharpWorkspace _workspace;

@@ -48,7 +48,7 @@ namespace TryOmnisharpExtension
             switch (roslynSymbol.Kind)
             {
                 case SymbolKind.NamedType:
-                    var ilSpyTypeDefinition = await _ilSpySymbolFinder.FindTypeDefinition(
+                    var ilSpyTypeDefinition = _ilSpySymbolFinder.FindTypeDefinition(
                         assemblyFilePath,
                         roslynSymbol.GetSymbolName());
                     
@@ -57,7 +57,7 @@ namespace TryOmnisharpExtension
                 case SymbolKind.Property:
                     var property = (IPropertySymbol)roslynSymbol;
                     var propertyName = $"{property.ContainingType.GetSymbolName()}.{property.Name}";
-                    var ilspyProperty = await _ilSpySymbolFinder.FindProperty(
+                    var ilspyProperty = _ilSpySymbolFinder.FindProperty(
                         assemblyFilePath,
                         property.ContainingType.GetSymbolName(),
                         propertyName);
@@ -66,7 +66,7 @@ namespace TryOmnisharpExtension
                 case SymbolKind.Event:
                     var eventSymbol = (IEventSymbol)roslynSymbol;
                     var eventName = $"{eventSymbol.ContainingType.GetSymbolName()}.{eventSymbol.Name}";
-                    var ilspyEvent = await _ilSpySymbolFinder.FindEvent(
+                    var ilspyEvent = _ilSpySymbolFinder.FindEvent(
                         assemblyFilePath,
                         eventSymbol.ContainingType.GetSymbolName(),
                         eventName);
@@ -75,7 +75,7 @@ namespace TryOmnisharpExtension
                 case SymbolKind.Method:
                     var method = (IMethodSymbol)roslynSymbol;
 
-                    var ilSpyMethod = await _ilSpySymbolFinder.FindMethod(
+                    var ilSpyMethod = _ilSpySymbolFinder.FindMethod(
                         assemblyFilePath,
                         method);
 
@@ -84,7 +84,7 @@ namespace TryOmnisharpExtension
                 case SymbolKind.Field:
                     //I guess the field could be defined in a base class defined in a base assembly
                     var field = (IFieldSymbol)roslynSymbol;
-                    var ilSpyField = await _ilSpySymbolFinder.FindField(
+                    var ilSpyField = _ilSpySymbolFinder.FindField(
                         assemblyFilePath,
                         field);
 

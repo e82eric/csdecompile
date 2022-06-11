@@ -2,9 +2,9 @@
 using System.Threading.Tasks;
 using Autofac;
 using OmniSharp.Mef;
-using TryOmnisharpExtension.FindUsages;
+using TryOmnisharpExtension.FindImplementations;
 
-namespace TryOmnisharpExtension;
+namespace TryOmnisharpExtension.FindUsages;
 
 [OmniSharpHandler(Endpoints.DecompileFindUsages, Languages.Csharp), Shared]
 public class DecompileFindUsagesHandler : IRequestHandler<DecompileFindUsagesRequest, FindUsagesResponse>
@@ -37,7 +37,7 @@ public class DecompileFindUsagesHandler : IRequestHandler<DecompileFindUsagesReq
         {
             if (request.IsFromExternalAssembly)
             {
-                command = await _externalAssembliesSybolFinder.Find(request);
+                command = _externalAssembliesSybolFinder.Find(request);
             }
             else
             {

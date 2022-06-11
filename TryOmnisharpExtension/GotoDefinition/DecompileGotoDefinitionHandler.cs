@@ -34,11 +34,11 @@ namespace TryOmnisharpExtension
             {
                 if (request.IsFromExternalAssembly)
                 {
-                    command = await _externalAssembliesCommandFactory.Find(request);
+                    command = _externalAssembliesCommandFactory.Find(request);
                 }
                 else
                 {
-                    command = await _ilSpySymbolInfoFinder.Find(request);
+                    command = _ilSpySymbolInfoFinder.Find(request);
                 }
             }
             

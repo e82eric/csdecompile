@@ -2,7 +2,6 @@
 using System.Composition;
 using System.Linq;
 using System.Reflection.Metadata;
-using System.Threading.Tasks;
 using ICSharpCode.Decompiler;
 using ICSharpCode.Decompiler.Metadata;
 using ICSharpCode.Decompiler.TypeSystem;
@@ -25,7 +24,7 @@ namespace TryOmnisharpExtension.IlSpy
             _assemblyResolverFactory = assemblyResolverFactory;
         }
 
-        public async Task<IEnumerable<PEFile>> GetModulesInScope(IEntity entity)
+        public IEnumerable<PEFile> GetModulesInScope(IEntity entity)
         {
             Accessibility effectiveAccessibility;
             ITypeDefinition typeScope;
@@ -46,13 +45,13 @@ namespace TryOmnisharpExtension.IlSpy
                 return new[] { typeScope.ParentModule.PEFile };
 
             if (effectiveAccessibility.LessThanOrEqual(Accessibility.Internal))
-                return await GetModuleAndAnyFriends(typeScope);
+                return GetModuleAndAnyFriends(typeScope);
 
-            var result = await GetReferencingModules(typeScope.ParentModule.PEFile, typeScope);
+            var result = GetReferencingModules(typeScope.ParentModule.PEFile, typeScope);
             return result;
         }
         
-        private async void GetReferencingModules(
+        private void GetReferencingModules(
             PEFile pefile,
             string typeScopeNamespace,
             string reflectionTypeScopeName,
@@ -72,7 +71,7 @@ namespace TryOmnisharpExtension.IlSpy
 
                 foreach (var assemblyReference in pefile.AssemblyReferences)
                 {
-                    var resolved = await assemblyResolver.ResolveAsync(assemblyReference);
+                    var resolved = assemblyResolver.Resolve(assemblyReference);
                     if (resolved != null)
                     {
                         GetReferencingModules(
@@ -111,7 +110,7 @@ namespace TryOmnisharpExtension.IlSpy
             return (typeScope, effectiveAccessibility);
         }
 
-        public async Task<IEnumerable<ITypeDefinition>> GetTypesInScope(IEntity entity)
+        public IEnumerable<ITypeDefinition> GetTypesInScope(IEntity entity)
         {
             var (typeScope, effectiveAccessibility) = DetermineEffectiveAccessibility(entity);
             var isLocal = effectiveAccessibility.LessThanOrEqual(Accessibility.Private);
@@ -129,10 +128,10 @@ namespace TryOmnisharpExtension.IlSpy
             else
             {
                 var result = new List<ITypeDefinition>();
-                var modulesInScope = await GetModulesInScope(typeScope);
+                var modulesInScope = GetModulesInScope(typeScope);
                 foreach (var module in modulesInScope)
                 {
-                    var assemblyResolver = await _assemblyResolverFactory.GetAssemblyResolver(module);
+                    var assemblyResolver = _assemblyResolverFactory.GetAssemblyResolver(module);
                     var typeSystem = new DecompilerTypeSystem(module, assemblyResolver);
                     foreach (var type in typeSystem.MainModule.TypeDefinitions)
                     {
@@ -159,7 +158,7 @@ namespace TryOmnisharpExtension.IlSpy
         }
 
         #region Find modules
-        async Task<IEnumerable<PEFile>> GetReferencingModules(PEFile self, ITypeDefinition typeScope)
+        private IEnumerable<PEFile> GetReferencingModules(PEFile self, ITypeDefinition typeScope)
         {
             var result = new List<PEFile>();
             var alreadyChecked = new HashSet<string>();
@@ -172,10 +171,10 @@ namespace TryOmnisharpExtension.IlSpy
             if (typeScope.TypeParameterCount > 0)
                 reflectionTypeScopeName += "`" + typeScope.TypeParameterCount;
 
-            var projectPeFiles = await _workspace.GetAssemblies();
+            var projectPeFiles = _workspace.GetAssemblies();
             foreach (var projectAssembly in projectPeFiles)
             {
-                var resolver = await _assemblyResolverFactory.GetAssemblyResolver(projectAssembly);
+                var resolver = _assemblyResolverFactory.GetAssemblyResolver(projectAssembly);
                 GetReferencingModules(
                     projectAssembly,
                     typeScope.Namespace,
@@ -188,7 +187,7 @@ namespace TryOmnisharpExtension.IlSpy
             return result;
         }
 
-        async Task<IEnumerable<PEFile>> GetModuleAndAnyFriends(ITypeDefinition typeScope)
+        private IEnumerable<PEFile> GetModuleAndAnyFriends(ITypeDefinition typeScope)
         {
             var result = new List<PEFile>();
             
@@ -208,7 +207,7 @@ namespace TryOmnisharpExtension.IlSpy
 
             if (friendAssemblies.Count > 0)
             {
-                IEnumerable<PEFile> modules = await _workspace.GetAssemblies();
+                IEnumerable<PEFile> modules = _workspace.GetAssemblies();
 
                 foreach (var module in modules)
                 {

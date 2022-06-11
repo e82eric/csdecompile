@@ -1,6 +1,6 @@
 using OmniSharp.Mef;
 
-namespace TryOmnisharpExtension;
+namespace TryOmnisharpExtension.FindImplementations;
 
 [OmniSharpEndpoint(Endpoints.DecompileFindImplementations, typeof(DecompileFindImplementationsRequest), typeof(FindImplementationsResponse))]
 public class DecompileFindImplementationsRequest : DecompiledLocationRequest

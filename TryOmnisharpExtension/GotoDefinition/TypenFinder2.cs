@@ -19,10 +19,10 @@ public class TypenFinder2
         _decompiler = decompiler;
     }
     
-    public async Task<(UsageAsTextLocation, string)> Find(ITypeDefinition symbol, EntityHandle handleToSearchFor, ITypeDefinition rootType)
+    public (UsageAsTextLocation, string) Find(ITypeDefinition symbol, EntityHandle handleToSearchFor, ITypeDefinition rootType)
     {
         var assemblyFilePath = symbol.ParentModule.PEFile.FileName;
-        var decompiler = await _decompiler.Get(assemblyFilePath);
+        var decompiler = _decompiler.Get(assemblyFilePath);
         (SyntaxTree syntaxTree, string source) = decompiler.Run(rootType);
 
         var usage = Find(syntaxTree, handleToSearchFor);

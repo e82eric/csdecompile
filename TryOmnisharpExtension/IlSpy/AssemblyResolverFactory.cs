@@ -2,7 +2,6 @@
 using System.IO;
 using System.Reflection.Metadata;
 using System.Reflection.PortableExecutable;
-using System.Threading.Tasks;
 using ICSharpCode.Decompiler.Metadata;
 
 namespace TryOmnisharpExtension.IlSpy
@@ -18,14 +17,14 @@ namespace TryOmnisharpExtension.IlSpy
             _peFileCache = peFileCache;
         }
         
-        public async Task<IAssemblyResolver> GetAssemblyResolver(PEFile peFile)
+        public IAssemblyResolver GetAssemblyResolver(PEFile peFile)
         {
             var targetFrameworkId = peFile.DetectTargetFrameworkId();
-            var universalResolver = await GetUniversalResolver(targetFrameworkId, peFile);
+            var universalResolver = GetUniversalResolver(targetFrameworkId, peFile);
             return new MyAssemblyResolver(_peFileCache, targetFrameworkId, universalResolver);
         }
         
-        private async Task<UniversalAssemblyResolver> GetUniversalResolver(string targetFrameworkId, PEFile peFile)
+        private UniversalAssemblyResolver GetUniversalResolver(string targetFrameworkId, PEFile peFile)
         {
             var runtimePack = peFile.DetectRuntimePack();  
 

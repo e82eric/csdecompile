@@ -20,9 +20,9 @@ namespace TryOmnisharpExtension
             _assemblyFilePath = assemblyFilePath;
         }
 
-        public async Task<DecompileGotoDefinitionResponse> Execute()
+        public Task<DecompileGotoDefinitionResponse> Execute()
         {
-            var (ilSpyMetadataSource, sourceText) = await _ilSpyPropertyFinder.Run(
+            var (ilSpyMetadataSource, sourceText) = _ilSpyPropertyFinder.Run(
                 _property);
             
             var decompileInfo = DecompileInfoMapper.MapFromMetadataSource(ilSpyMetadataSource);
@@ -30,7 +30,7 @@ namespace TryOmnisharpExtension
             
             var result = new DecompileGotoDefinitionResponse { Location = decompileInfo, SourceText = sourceText, IsDecompiled = true };
 
-            return result;
+            return Task.FromResult(result);
         }
     }
 }

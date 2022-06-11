@@ -19,12 +19,12 @@ public class FieldInTypeFinder
         _decompilerFactory = decompilerFactory;
     }
     
-    public async Task<(UsageAsTextLocation, string)> Find(
+    public (UsageAsTextLocation, string) Find(
         EntityHandle handleToSearchFor,
         ITypeDefinition rootTypeHandle)
     {
         var assemblyFilePath = rootTypeHandle.ParentModule.PEFile.FileName;
-        var decompiler = await _decompilerFactory.Get(assemblyFilePath);
+        var decompiler = _decompilerFactory.Get(assemblyFilePath);
         var (syntaxTree, sourceText) = decompiler.Run(rootTypeHandle);
 
         var usage = Find(syntaxTree, handleToSearchFor);
