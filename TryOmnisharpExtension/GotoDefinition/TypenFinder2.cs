@@ -58,7 +58,6 @@ public class TypenFinder2
                     {
                         var usage = new UsageAsTextLocation()
                         {
-                            TypeEntityHandle = handleToSearchFor,
                             StartLocation = identifier.StartLocation,
                             EndLocation = identifier.EndLocation,
                             Statement = identifier.ToString()

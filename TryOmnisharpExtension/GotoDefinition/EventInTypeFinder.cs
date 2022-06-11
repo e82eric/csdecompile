@@ -43,7 +43,6 @@ public class EventInTypeFinder
                 {
                     var usage = new UsageAsTextLocation()
                     {
-                        TypeEntityHandle = rootTypeEntityHandle,
                         StartLocation = node.StartLocation,
                         EndLocation = node.EndLocation,
                         Statement = node.Parent.ToString()

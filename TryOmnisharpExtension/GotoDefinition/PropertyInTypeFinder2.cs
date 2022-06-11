@@ -46,7 +46,6 @@ public class PropertyInTypeFinder2
                     {
                         var usage = new UsageAsTextLocation()
                         {
-                            TypeEntityHandle = rootTypeEntityHandle,
                             StartLocation = node.StartLocation,
                             EndLocation = node.EndLocation,
                             Statement = node.Parent.ToString()
@@ -62,7 +61,6 @@ public class PropertyInTypeFinder2
                     {
                         var usage = new UsageAsTextLocation()
                         {
-                            TypeEntityHandle = rootTypeEntityHandle,
                             StartLocation = node.StartLocation,
                             EndLocation = node.EndLocation,
                             Statement = node.Parent.ToString()

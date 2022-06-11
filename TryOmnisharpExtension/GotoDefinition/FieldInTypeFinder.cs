@@ -60,7 +60,6 @@ public class FieldInTypeFinder
                     {
                         var usage = new UsageAsTextLocation
                         {
-                            TypeEntityHandle = handleToSearchFor,
                             StartLocation = identifier.StartLocation,
                             EndLocation = identifier.EndLocation,
                             Statement = identifier.ToString()
@@ -72,7 +71,6 @@ public class FieldInTypeFinder
                     {
                         var usage = new UsageAsTextLocation
                         {
-                            TypeEntityHandle = handleToSearchFor,
                             StartLocation = node.StartLocation,
                             EndLocation = node.StartLocation,
                             Statement = "node.ToString()"

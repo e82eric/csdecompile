@@ -60,7 +60,6 @@ public class MethodInTypeFinder2
                     {
                         var usage = new UsageAsTextLocation()
                         {
-                            TypeEntityHandle = handleToSearchFor,
                             StartLocation = identifier.StartLocation,
                             EndLocation = identifier.EndLocation,
                             Statement = identifier.ToString()
@@ -70,9 +69,8 @@ public class MethodInTypeFinder2
                     }
                     else
                     {
-                        var usage = new UsageAsTextLocation()
+                        var usage = new UsageAsTextLocation
                         {
-                            TypeEntityHandle = handleToSearchFor,
                             StartLocation = node.StartLocation,
                             EndLocation = node.StartLocation,
                             Statement = "node.ToString()"
