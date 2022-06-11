@@ -1,7 +1,6 @@
-﻿using System.Threading.Tasks;
-using ICSharpCode.Decompiler.TypeSystem;
+﻿using ICSharpCode.Decompiler.TypeSystem;
 
-namespace TryOmnisharpExtension;
+namespace TryOmnisharpExtension.IlSpy;
 
 public interface IDecompilerTypeSystemFactory
 {

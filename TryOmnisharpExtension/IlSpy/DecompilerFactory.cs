@@ -1,5 +1,4 @@
 ﻿using System.Composition;
-using ICSharpCode.Decompiler.TypeSystem;
 
 namespace TryOmnisharpExtension.IlSpy;
 
@@ -20,11 +19,5 @@ public class DecompilerFactory
         var typeSystem = _typeSystemFactory.GetTypeSystem(projectAssemblyFilePath);
         var result = new Decompiler(typeSystem);
         return result;
-    }
-    
-    public Decompiler Get(DecompilerTypeSystem typeSystem)
-    {
-        var result = new Decompiler(typeSystem);
-        return result;                                            
     }
 }

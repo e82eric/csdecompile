@@ -8,6 +8,7 @@ using Microsoft.CodeAnalysis;
 using OmniSharp;
 using TryOmnisharpExtension.FindImplementations;
 using TryOmnisharpExtension.FindUsages;
+using TryOmnisharpExtension.IlSpy;
 using ISymbol = Microsoft.CodeAnalysis.ISymbol;
 
 namespace TryOmnisharpExtension;

@@ -1,6 +1,6 @@
 ﻿using System.Composition;
-using System.Threading.Tasks;
 using ICSharpCode.Decompiler.TypeSystem;
+using TryOmnisharpExtension.IlSpy;
 
 namespace TryOmnisharpExtension
 {

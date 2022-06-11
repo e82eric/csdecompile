@@ -7,7 +7,7 @@ using OmniSharp.Extensions;
 
 namespace TryOmnisharpExtension;
 
-internal static class MoreSymboleHelpers
+internal static class RoslynSymbolHelpers
 {
     public static SourceFileInfo GetSourceLineInfo(this Location location, OmniSharpWorkspace workspace)
     {

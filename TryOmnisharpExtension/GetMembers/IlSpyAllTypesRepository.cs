@@ -5,6 +5,7 @@ using System.IO;
 using System.Threading.Tasks;
 using ICSharpCode.Decompiler;
 using ICSharpCode.Decompiler.Metadata;
+using TryOmnisharpExtension.ExternalAssemblies;
 
 namespace TryOmnisharpExtension.GetMembers;
 

@@ -1,53 +1,40 @@
-﻿using ICSharpCode.Decompiler.CSharp.Syntax;
+﻿using System.Reflection.Metadata;
+using ICSharpCode.Decompiler.CSharp;
+using ICSharpCode.Decompiler.CSharp.Syntax;
+using ICSharpCode.Decompiler.TypeSystem;
 
 namespace TryOmnisharpExtension.IlSpy;
 
 public static class AstExtensions
 {
-    public static AstNode FindTypeDeclaration(this AstNode node, string typeName)
+    public static AstNode FindChildType(this AstNode node, EntityHandle entityHandle)
     {
-        foreach (var child in node.Children)
+        var symbol = node.GetSymbol();
+        if (symbol is IEntity entity)
         {
-            if (child is TypeDeclaration)
+            if (entity.MetadataToken == entityHandle)
             {
-                var namespaceNode = (TypeDeclaration)child;
-                if (namespaceNode.Name == typeName)
+                if (node.NodeType == NodeType.TypeDeclaration)
                 {
-                    return child;
+                    return node;
                 }
-            }
-    
-            var result = child.FindTypeDeclaration(typeName);
-            if (result != null)
-            {
-                return result;
+                
+                return null;
             }
         }
-    
-        return null;
-    }
-    
-    public static MethodDeclaration FindMethodDeclaration(this AstNode node, string methodName)
-    {
-        foreach (var child in node.Children)
+
+        if (node.HasChildren)
         {
-            MethodDeclaration result;
-            if (child is MethodDeclaration)
+            foreach (var child in node.Children)
             {
-                result = (MethodDeclaration)child;
-                if (result.Name == methodName)
+                var method = FindChildType(child, entityHandle);
+                if (method != null)
                 {
-                    return result;
+                    return method;
                 }
             }
-    
-            result = child.FindMethodDeclaration(methodName);
-            if (result != null)
-            {
-                return result;
-            }
         }
-    
+
         return null;
     }
 }

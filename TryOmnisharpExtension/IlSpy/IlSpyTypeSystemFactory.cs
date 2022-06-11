@@ -4,12 +4,10 @@ using System.Composition;
 using System.IO;
 using System.Reflection.Metadata;
 using System.Reflection.PortableExecutable;
-using System.Threading.Tasks;
 using ICSharpCode.Decompiler.Metadata;
 using ICSharpCode.Decompiler.TypeSystem;
-using TryOmnisharpExtension.IlSpy;
 
-namespace TryOmnisharpExtension
+namespace TryOmnisharpExtension.IlSpy
 {
     [Shared]
     [Export(typeof(IDecompilerTypeSystemFactory))]

@@ -1,12 +1,10 @@
 ﻿using System.IO;
 using System.Reflection.Metadata;
 using System.Reflection.PortableExecutable;
-using System.Threading.Tasks;
 using ICSharpCode.Decompiler.Metadata;
 using ICSharpCode.Decompiler.TypeSystem;
-using TryOmnisharpExtension.IlSpy;
 
-namespace TryOmnisharpExtension;
+namespace TryOmnisharpExtension.IlSpy;
 
 public class ExternalAssemblyTypeSystemFactory : IDecompilerTypeSystemFactory
 {

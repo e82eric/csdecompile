@@ -1,16 +1,14 @@
 ﻿using System.Composition;
 using System.Linq;
-using System.Threading.Tasks;
 using ICSharpCode.Decompiler.CSharp;
 using ICSharpCode.Decompiler.CSharp.Syntax;
 using ICSharpCode.Decompiler.TypeSystem;
 using Microsoft.CodeAnalysis;
 using OmniSharp.Extensions;
-using TryOmnisharpExtension.IlSpy;
 using ISymbol = ICSharpCode.Decompiler.TypeSystem.ISymbol;
 using SyntaxTree = ICSharpCode.Decompiler.CSharp.Syntax.SyntaxTree;
 
-namespace TryOmnisharpExtension;
+namespace TryOmnisharpExtension.IlSpy;
 
 [Export]
 public class IlSpySymbolFinder
@@ -38,22 +36,6 @@ public class IlSpySymbolFinder
                 .Where(d => d.FullName == symbolFullName).FirstOrDefault();
 
             tempFile = tempFile2 as ITypeDefinition;
-        }
-
-        return tempFile;
-    }
-    
-    public ITypeDefinition FindTypeDefinition(string symbolFullName, DecompilerTypeSystem typeSystem)
-    {
-        var tempFile = typeSystem.FindType(new FullTypeName(symbolFullName)) as ITypeDefinition;
-
-        if (tempFile == null)
-        {
-            var tempFile2 = typeSystem
-                .GetAllTypeDefinitions()
-                .FirstOrDefault(d => d.FullName == symbolFullName);
-
-            tempFile = tempFile2;
         }
 
         return tempFile;

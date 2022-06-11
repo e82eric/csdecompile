@@ -232,16 +232,15 @@
         <Reference Include="System.Xml" />
     </ItemGroup>
     <ItemGroup>
-        <Compile Include="AstExtensions.cs" />
         <Compile Include="DecompileInfo.cs" />
         <Compile Include="DecompileInfoMapper.cs" />
         <Compile Include="Endpoints.cs" />
         <Compile Include="EverywhereSymbolInfoFinder.cs" />
         <Compile Include="ExtensionContainer.cs" />
-        <Compile Include="ExternalAssembliesWorkspace.cs" />
         <Compile Include="ExternalAssemblies\AddExternalAssemblyDirectoryHandler.cs" />
         <Compile Include="ExternalAssemblies\AddExternalAssemblyDirectoryRequest.cs" />
         <Compile Include="ExternalAssemblies\AddExternalAssemblyDirectoryResponse.cs" />
+        <Compile Include="ExternalAssemblies\ExternalAssembliesWorkspace.cs" />
         <Compile Include="ExternalAssemblies\SearchExternalAssembliesForTypeHandler.cs" />
         <Compile Include="ExternalAssemblies\SearchExternalAssembliesForTypeRequest.cs" />
         <Compile Include="ExternalAssemblies\SearchExternalAssembliesForTypeResponse.cs" />
@@ -266,6 +265,7 @@
         <Compile Include="FindUsages\ExternalAssembliesFindUsagesCommandFactory.cs" />
         <Compile Include="FindUsages\FieldUsedByMetadataScanner.cs" />
         <Compile Include="FindUsages\IEntityUsedInTypeFinder.cs" />
+        <Compile Include="FindUsages\IlSpyMethodExtensions.cs" />
         <Compile Include="FindUsages\IlSpyUsagesCommand.cs" />
         <Compile Include="FindUsages\FindUsagesCommandFactory.cs" />
         <Compile Include="FindUsages\FindUsagesResponse.cs" />
@@ -322,7 +322,6 @@
         <Compile Include="ICommandFactory.cs" />
         <Compile Include="IDecompilerCommandFactory.cs" />
         <Compile Include="IlSpyCommandFactory.cs" />
-        <Compile Include="IlSpySymbolFinder.cs" />
         <Compile Include="IlSpy\AnalyzerScope.cs" />
         <Compile Include="IlSpy\AstExtensions.cs" />
         <Compile Include="IlSpy\Decompiler.cs" />
@@ -334,7 +333,7 @@
         <Compile Include="IlSpy\IDecompilerTypeSystemFactory.cs" />
         <Compile Include="IlSpy\IDecompileWorkspace.cs" />
         <Compile Include="IlSpy\IlSpyMetadataSource2.cs" />
-        <Compile Include="IlSpy\IlSpyMethodExtensions.cs" />
+        <Compile Include="IlSpy\IlSpySymbolFinder.cs" />
         <Compile Include="IlSpy\IlSpyTypeSystemFactory.cs" />
         <Compile Include="IlSpy\IOmnisharpWorkspace.cs" />
         <Compile Include="IlSpy\MyAssemblyResolver.cs" />
@@ -344,8 +343,9 @@
         <Compile Include="INavigationCommand.cs" />
         <Compile Include="DecompiledLocationRequest.cs" />
         <Compile Include="LocationRequest.cs" />
-        <Compile Include="MoreSymboleHelpers.cs" />
-        <Compile Include="OmnisharpWorkspaceWrapper.cs" />
+        <Compile Include="ResponseLocation.cs" />
+        <Compile Include="ResponseLocationType.cs" />
+        <Compile Include="RoslynSymbolHelpers.cs" />
         <Compile Include="RoslynToIlSpyEqualityExtensions.cs" />
         <Compile Include="RosylnSymbolInfoFinder.cs" />
         <Compile Include="Languages.cs" />

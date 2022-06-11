@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using ICSharpCode.Decompiler.Metadata;
+﻿using ICSharpCode.Decompiler.Metadata;
 
 namespace TryOmnisharpExtension.IlSpy;
 

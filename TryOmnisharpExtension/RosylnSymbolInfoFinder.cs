@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Composition;
 using System.Linq;
 using System.Threading;
@@ -9,35 +8,36 @@ using Microsoft.CodeAnalysis.FindSymbols;
 using Microsoft.CodeAnalysis.Text;
 using OmniSharp;
 using OmniSharp.Extensions;
+using TryOmnisharpExtension.IlSpy;
 
 namespace TryOmnisharpExtension
 {
     [Export]
-    public class RosylnSymbolInfoFinder<CommandType>
+    public class RosylnSymbolInfoFinder<TCommandType>
     {
         private readonly OmniSharpWorkspace _workspace;
         private readonly IlSpySymbolFinder _ilSpySymbolFinder;
-        private readonly ICommandFactory<CommandType> _gotoDefinitionCommandFactory;
+        private readonly ICommandFactory<TCommandType> _gotoDefinitionCommandFactory;
 
         [ImportingConstructor]
         public RosylnSymbolInfoFinder(
             OmniSharpWorkspace workspace,
             IlSpySymbolFinder ilSpySymbolFinder,
-            ICommandFactory<CommandType> gotoDefinitionCommandFactory)
+            ICommandFactory<TCommandType> gotoDefinitionCommandFactory)
         {
             _gotoDefinitionCommandFactory = gotoDefinitionCommandFactory;
             _workspace = workspace;
             _ilSpySymbolFinder = ilSpySymbolFinder;
         }
         
-        public async Task<CommandType> Get(LocationRequest request)
+        public async Task<TCommandType> Get(LocationRequest request)
         {
             var document = _workspace.GetDocument(request.FileName);
             var projectOutputFilePath = document.Project.OutputFilePath;
             var assemblyFilePath = projectOutputFilePath;
             var roslynSymbol = await GetDefinitionSymbol(document, request.Line, request.Column);
 
-            CommandType result = default;
+            TCommandType result = default;
             
             if (roslynSymbol.Locations.First().IsInSource)
             {

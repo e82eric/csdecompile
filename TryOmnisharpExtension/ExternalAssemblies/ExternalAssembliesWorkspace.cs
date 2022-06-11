@@ -2,7 +2,7 @@
 using System.Composition;
 using System.IO;
 
-namespace TryOmnisharpExtension;
+namespace TryOmnisharpExtension.ExternalAssemblies;
 
 [Shared]
 [Export]

@@ -10,6 +10,7 @@ using Microsoft.CodeAnalysis.Text;
 using OmniSharp;
 using OmniSharp.Extensions;
 using TryOmnisharpExtension.FindImplementations;
+using TryOmnisharpExtension.IlSpy;
 
 namespace TryOmnisharpExtension;
 
