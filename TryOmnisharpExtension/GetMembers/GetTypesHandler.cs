@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using OmniSharp.Mef;
 
-namespace TryOmnisharpExtension.IlSpy;
+namespace TryOmnisharpExtension.GetMembers;
 
 [OmniSharpHandler(Endpoints.GetTypes, Languages.Csharp), Shared]
 public class GetTypesHandler : IRequestHandler<GetTypesRequest, GetTypesResponse>

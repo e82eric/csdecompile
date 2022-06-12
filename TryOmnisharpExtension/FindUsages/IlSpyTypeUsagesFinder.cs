@@ -11,10 +11,10 @@ namespace TryOmnisharpExtension.FindUsages
         public IlSpyTypeUsagesFinder(
             DecompilerFactory decompilerFactory,
             TypeUsedByTypeIlScanner typeUsedByTypeIlScanner,
-            TypeUsedInTypeFinder3 typeUsedInTypeFinder2):base(
+            TypeUsedInTypeFinder3 usageFinder):base(
             decompilerFactory,
             typeUsedByTypeIlScanner,
-            typeUsedInTypeFinder2) 
+            usageFinder) 
         {
         }
     }

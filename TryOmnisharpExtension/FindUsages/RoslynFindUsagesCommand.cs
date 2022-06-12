@@ -1,7 +1,11 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
+using ICSharpCode.Decompiler.TypeSystem;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.FindSymbols;
 using OmniSharp;
+using OmniSharp.Extensions;
+using ISymbol = Microsoft.CodeAnalysis.ISymbol;
 
 namespace TryOmnisharpExtension.FindUsages;
 
@@ -31,10 +35,15 @@ public class RoslynFindUsagesCommand : INavigationCommand<FindUsagesResponse>
                 result.Implementations.Add(sourceFileInfo);
             }
 
-            if (!(usage.Definition is IMethodSymbol methodSymbol && methodSymbol.AssociatedSymbol is IPropertySymbol))
+            //IsImplicitlyDeclared gets rid of auto generated stuff
+            //The associated symbol check gets rid of getters and setters
+            if (!usage.Definition.IsImplicitlyDeclared &&
+                !(usage.Definition is IMethodSymbol methodSymbol && methodSymbol.AssociatedSymbol is IPropertySymbol)
+                )
             {
                 foreach (var location in usage.Definition.Locations)
                 {
+                    //Note that this will return the location that was searched from and the definition of the symbol
                     if (location.IsInSource)
                     {
                         var sourceFileInfo = location.GetSourceLineInfo(_workspace);

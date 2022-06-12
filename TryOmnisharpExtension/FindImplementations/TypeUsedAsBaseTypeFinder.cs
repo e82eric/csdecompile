@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Composition;
 using System.Reflection.Metadata;
 using ICSharpCode.Decompiler.CSharp;
@@ -13,34 +12,19 @@ namespace TryOmnisharpExtension.FindImplementations;
 [Export]
 public class TypeUsedAsBaseTypeFinder : IEntityUsedInTypeFinder<ITypeDefinition>
 {
-    public IEnumerable<UsageAsTextLocation> Find(
-        (SyntaxTree SyntaxTree, string SourceText) decompiledTypeDefinition,
+    public IEnumerable<AstNode> Find(
+        SyntaxTree syntaxTree,
         ITypeDefinition typeToSearchEntityHandle,
         ITypeDefinition usageToFind)
     {
-        var result = new List<UsageAsTextLocation>();
-        var typeNode = decompiledTypeDefinition.SyntaxTree.FindChildType(typeToSearchEntityHandle.MetadataToken);
+        var usageNodes = new List<AstNode>();
+        var typeNode = syntaxTree.FindChildType(typeToSearchEntityHandle.MetadataToken);
         if (typeNode != null)
         {
-            var usageNodes = new List<AstNode>();
             FindUsages(typeNode, usageToFind.MetadataToken, usageNodes);
-
-            var lines = decompiledTypeDefinition.SourceText.Split(new []{"\r\n"}, StringSplitOptions.None);
-            foreach (var node in usageNodes)
-            {
-                var line = lines[node.StartLocation.Line - 1].Trim();
-                var usage = new UsageAsTextLocation
-                {
-                    StartLocation = node.StartLocation,
-                    EndLocation = node.EndLocation,
-                    Node = node
-                };
-                usage.Statement = line;
-                result.Add(usage);
-            }
         }
 
-        return result;
+        return usageNodes;
     }
     
     private void FindUsages(AstNode node, EntityHandle entityHandleToSearchFor, IList<AstNode> found)

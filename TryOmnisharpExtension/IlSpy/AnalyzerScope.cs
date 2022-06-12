@@ -121,6 +121,14 @@ namespace TryOmnisharpExtension.IlSpy
                 foreach (var type in TreeTraversal.PreOrder(typeScope, t => t.NestedTypes))
                 {
                     result.Add(type);
+                    if (type.DeclaringType != null)
+                    {
+                        var typeDefinition = type.DeclaringType.GetDefinition();
+                        if (typeDefinition != null)
+                        {
+                            result.Add(typeDefinition);
+                        }
+                    }
                 }
 
                 return result;

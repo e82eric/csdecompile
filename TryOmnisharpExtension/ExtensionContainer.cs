@@ -2,6 +2,8 @@
 using Autofac;
 using TryOmnisharpExtension.FindImplementations;
 using TryOmnisharpExtension.FindUsages;
+using TryOmnisharpExtension.GetSource;
+using TryOmnisharpExtension.GotoDefinition;
 using TryOmnisharpExtension.IlSpy;
 
 namespace TryOmnisharpExtension;
@@ -30,9 +32,9 @@ public class ExtensionContainer
 
         externalAssembliesContainerBuilder.RegisterType<IlSpyDecompiledSourceCommandFactory>();
 
-        externalAssembliesContainerBuilder.RegisterType<TypenFinder2>();
-        externalAssembliesContainerBuilder.RegisterType<MethodInTypeFinder2>();
-        externalAssembliesContainerBuilder.RegisterType<PropertyInTypeFinder2>();
+        externalAssembliesContainerBuilder.RegisterType<TypeInTypeFinder>();
+        externalAssembliesContainerBuilder.RegisterType<MethodInTypeFinder>();
+        externalAssembliesContainerBuilder.RegisterType<PropertyInTypeFinder>();
         externalAssembliesContainerBuilder.RegisterType<EventInTypeFinder>();
 
         externalAssembliesContainerBuilder.RegisterType<IlSpyTypeFinder>();

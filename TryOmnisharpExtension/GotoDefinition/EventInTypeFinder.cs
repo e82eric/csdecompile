@@ -1,37 +1,25 @@
 ﻿using System.Composition;
 using System.Reflection.Metadata;
-using System.Threading.Tasks;
 using ICSharpCode.Decompiler.CSharp;
 using ICSharpCode.Decompiler.CSharp.Syntax;
 using ICSharpCode.Decompiler.TypeSystem;
+using TryOmnisharpExtension.IlSpy;
 
-namespace TryOmnisharpExtension.IlSpy;
+namespace TryOmnisharpExtension.GotoDefinition;
 
 [Export]
-public class EventInTypeFinder
+public class EventInTypeFinder : IDefinitionInDecompiledSyntaxTreeFinder<IEvent>
 {
-    private readonly DecompilerFactory _decompilerFactory;
-
-    [ImportingConstructor]
-    public EventInTypeFinder(DecompilerFactory decompilerFactory)
+    public AstNode Find(
+        IEvent @event,
+        SyntaxTree rootTypeSyntaxTree)
     {
-        _decompilerFactory = decompilerFactory;
-    }
-    
-    public (UsageAsTextLocation, string) Find(
-        EntityHandle? eventEntityHandle,
-        ITypeDefinition rootType)
-    {
-        var assemblyFilePath = rootType.ParentModule.PEFile.FileName;
-        var decompiler = _decompilerFactory.Get(assemblyFilePath);
-        var (syntaxTree, sourceText) = decompiler.Run(rootType);
+        var result = Find(rootTypeSyntaxTree, @event.MetadataToken);
 
-        var result = Find(syntaxTree, eventEntityHandle, rootType.MetadataToken);
-
-        return (result, sourceText);
+        return result;
     }
 
-    private UsageAsTextLocation Find(AstNode node, EntityHandle? eventEntityHandle,  EntityHandle rootTypeEntityHandle)
+    private AstNode Find(AstNode node, EntityHandle? eventEntityHandle)
     {
         var symbol = node.GetSymbol();
 
@@ -41,21 +29,14 @@ public class EventInTypeFinder
             {
                 if (entity.MetadataToken == eventEntityHandle)
                 {
-                    var usage = new UsageAsTextLocation()
-                    {
-                        StartLocation = node.StartLocation,
-                        EndLocation = node.EndLocation,
-                        Statement = node.Parent.ToString()
-                    };
-
-                    return usage;
+                    return node;
                 }
             }
         }
 
         foreach (var child in node.Children)
         {
-            var usage = Find(child, eventEntityHandle, rootTypeEntityHandle);
+            var usage = Find(child, eventEntityHandle);
             if (usage != null)
             {
                 return usage;

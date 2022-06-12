@@ -7,8 +7,8 @@ namespace TryOmnisharpExtension.FindUsages;
 
 public interface IEntityUsedInTypeFinder<T>
 {
-    IEnumerable<UsageAsTextLocation> Find(
-        (SyntaxTree SyntaxTree, string SourceText) decompiledTypeDefinition,
+    IEnumerable<AstNode> Find(
+        SyntaxTree syntaxTree,
         ITypeDefinition typeToSearchEntityHandle,
         T usageToFind);
 }

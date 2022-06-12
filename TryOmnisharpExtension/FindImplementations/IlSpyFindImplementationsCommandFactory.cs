@@ -21,6 +21,11 @@ public class IlSpyFindImplementationsCommandFactory : IDecompilerCommandFactory<
 
     public INavigationCommand<FindImplementationsResponse> GetForType(ITypeDefinition typeDefinition, string projectAssemblyFilePath)
     {
+        if (typeDefinition.IsSealed)
+        {
+            return new NoOpCommand<FindImplementationsResponse>();
+        }
+        
         var result = new IlSpyUsagesCommand<ITypeDefinition, FindImplementationsResponse>(
             typeDefinition,
             _typeFinder);

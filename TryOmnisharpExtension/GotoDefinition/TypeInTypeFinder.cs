@@ -1,36 +1,25 @@
 ﻿using System.Composition;
 using System.Linq;
 using System.Reflection.Metadata;
-using System.Threading.Tasks;
 using ICSharpCode.Decompiler.CSharp;
 using ICSharpCode.Decompiler.CSharp.Syntax;
 using ICSharpCode.Decompiler.TypeSystem;
 
-namespace TryOmnisharpExtension.IlSpy;
+namespace TryOmnisharpExtension.GotoDefinition;
 
 [Export]
-public class TypenFinder2
+public class TypeInTypeFinder : IDefinitionInDecompiledSyntaxTreeFinder<ITypeDefinition>
 {
-    private readonly DecompilerFactory _decompiler;
-
-    [ImportingConstructor]
-    public TypenFinder2(DecompilerFactory decompiler)
+    public AstNode Find(
+        ITypeDefinition symbol,
+        SyntaxTree rootTypeSyntaxTree)
     {
-        _decompiler = decompiler;
-    }
-    
-    public (UsageAsTextLocation, string) Find(ITypeDefinition symbol, EntityHandle handleToSearchFor, ITypeDefinition rootType)
-    {
-        var assemblyFilePath = symbol.ParentModule.PEFile.FileName;
-        var decompiler = _decompiler.Get(assemblyFilePath);
-        (SyntaxTree syntaxTree, string source) = decompiler.Run(rootType);
+        var usage = Find(rootTypeSyntaxTree, symbol.MetadataToken);
 
-        var usage = Find(syntaxTree, handleToSearchFor);
-
-        return (usage, source);
+        return usage;
     }
 
-    private UsageAsTextLocation Find(AstNode node, EntityHandle handleToSearchFor)
+    private AstNode Find(AstNode node, EntityHandle handleToSearchFor)
     {
         var symbol = node.GetSymbol();
 
@@ -56,14 +45,7 @@ public class TypenFinder2
 
                     if (identifier != null)
                     {
-                        var usage = new UsageAsTextLocation()
-                        {
-                            StartLocation = identifier.StartLocation,
-                            EndLocation = identifier.EndLocation,
-                            Statement = identifier.ToString()
-                        };
-
-                        return usage;
+                        return identifier;
                     }
                 }
             }

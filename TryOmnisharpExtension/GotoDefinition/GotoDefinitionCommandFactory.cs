@@ -1,8 +1,7 @@
 ﻿using System.Composition;
 using ICSharpCode.Decompiler.TypeSystem;
-using TryOmnisharpExtension.IlSpy;
 
-namespace TryOmnisharpExtension
+namespace TryOmnisharpExtension.GotoDefinition
 {
     [Export(typeof(ICommandFactory<IGotoDefinitionCommand>))]
     public class GotoDefinitionCommandFactory : ICommandFactory<IGotoDefinitionCommand>
@@ -11,7 +10,7 @@ namespace TryOmnisharpExtension
         private readonly IlSpyMemberFinder _memberFinder;
         private readonly IlSpyPropertyFinder _propertyFinder;
         private readonly IlSpyEventFinder _eventFinder;
-        private IlSpyFieldFinder _fieldFinder;
+        private readonly IlSpyFieldFinder _fieldFinder;
 
         [ImportingConstructor]
         public GotoDefinitionCommandFactory(
@@ -35,34 +34,31 @@ namespace TryOmnisharpExtension
 
         public IGotoDefinitionCommand GetForEvent(IEvent eventSymbol, string projectAssemblyFilePath)
         {
-            var result = new GotoEventDefintionCommand(eventSymbol,_eventFinder, projectAssemblyFilePath);
+            var result = new GoToDefintionCommand<IEvent>(eventSymbol, _eventFinder, projectAssemblyFilePath);
             return result;
         }
 
         public IGotoDefinitionCommand GetForType(ITypeDefinition typeDefinition, string assemblyFilePath)
         {
-            var result = new GotoTypeDefintionCommand(
-                typeDefinition,
-                _typeFinder,
-                assemblyFilePath);
+            var result = new GoToDefintionCommand<ITypeDefinition>(typeDefinition, _typeFinder, assemblyFilePath);
             return result;
         }
 
         public IGotoDefinitionCommand GetForMethod(IMethod method, string assemblyFilePath)
         {
-            var result = new GotoMethodDefintionCommand(method, _memberFinder, assemblyFilePath);
+            var result = new GoToDefintionCommand<IMethod>(method, _memberFinder, assemblyFilePath);
             return result;
         }
         
         public IGotoDefinitionCommand GetForField(IField field, string assemblyFilePath)
         {
-            var result = new GotoFieldDefintionCommand(field, _fieldFinder, assemblyFilePath);
+            var result = new GoToDefintionCommand<IField>(field, _fieldFinder, assemblyFilePath);
             return result;
         }
 
         public IGotoDefinitionCommand GetForProperty(IProperty property, string assemblyFilePath)
         {
-            var result = new GotoPropertyDefintionCommand(property,_propertyFinder, assemblyFilePath);
+            var result = new GoToDefintionCommand<IProperty>(property, _propertyFinder, assemblyFilePath);
             return result;
         }
     }

@@ -1,49 +1,16 @@
 ﻿using System.Composition;
-using System.Threading.Tasks;
 using ICSharpCode.Decompiler.TypeSystem;
+using TryOmnisharpExtension.IlSpy;
 
-namespace TryOmnisharpExtension.IlSpy
+namespace TryOmnisharpExtension.GotoDefinition
  {
      [Export]
-     public class IlSpyTypeFinder
+     public class IlSpyTypeFinder : IlSpyDefinitionFinderBase<ITypeDefinition>
      {
-         private readonly TypenFinder2 _typeInFinder;
-
          [ImportingConstructor]
-         public IlSpyTypeFinder(TypenFinder2 typeInFinder)
+         public IlSpyTypeFinder(TypeInTypeFinder typeInFinder, DecompilerFactory decompilerFactory) : base(
+             typeInFinder, decompilerFactory)
          {
-             _typeInFinder = typeInFinder;
-         }
-         
-         public (IlSpyMetadataSource2, string source) FindDefinitionFromSymbolName(ITypeDefinition typeToFindDefinitionFor)
-         {
-             var rootTypeOfTypeToFindDefinitionFor = SymbolHelper.FindContainingType(typeToFindDefinitionFor);
-
-             var result = FindTypeDefinition( typeToFindDefinitionFor, rootTypeOfTypeToFindDefinitionFor);
-             return result;
-         }
-
-         private (IlSpyMetadataSource2, string source) FindTypeDefinition(
-             ITypeDefinition typeToFindDefinitionFor,
-             ITypeDefinition rootTypeOfTypeToFindDefinitionFor)
-         {
-             var (locationOfDefinition, sourceOfDefinition) = _typeInFinder.Find(
-                typeToFindDefinitionFor,
-                typeToFindDefinitionFor.MetadataToken,
-                rootTypeOfTypeToFindDefinitionFor);
- 
-             var metadataSource = new IlSpyMetadataSource2
-             {
-                 AssemblyName = rootTypeOfTypeToFindDefinitionFor.ParentModule.AssemblyName,
-                 Column = locationOfDefinition.StartLocation.Column,
-                 Line = locationOfDefinition.StartLocation.Line,
-                 SourceText = $"{typeToFindDefinitionFor.ReflectionName} {locationOfDefinition.Statement.ToString().Replace("\r\n", "")}",
-                 StartColumn = locationOfDefinition.StartLocation.Column,
-                 EndColumn = locationOfDefinition.EndLocation.Column,
-                 ContainingTypeFullName = rootTypeOfTypeToFindDefinitionFor.ReflectionName,
-             };
- 
-             return (metadataSource, sourceOfDefinition);
          }
      }
  }

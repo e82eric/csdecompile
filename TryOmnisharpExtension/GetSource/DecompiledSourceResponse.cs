@@ -1,4 +1,4 @@
-namespace TryOmnisharpExtension
+namespace TryOmnisharpExtension.GetSource
 {
     public class DecompiledSourceResponse
     {

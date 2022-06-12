@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection.Metadata;
 using System.Reflection.PortableExecutable;
 using ICSharpCode.Decompiler.Metadata;
+using AssemblyReference = ICSharpCode.Decompiler.Metadata.AssemblyReference;
 
 namespace TryOmnisharpExtension.IlSpy
 {
@@ -15,11 +16,13 @@ namespace TryOmnisharpExtension.IlSpy
     {
         private readonly Dictionary<string, PEFile> _byFilename = new(StringComparer.OrdinalIgnoreCase);
         private readonly IOmnisharpWorkspace _workspace;
+        private readonly AssemblyResolverFactory _assemblyResolverFactory;
 
         [ImportingConstructor]
-        public DecompileWorkspace(IOmnisharpWorkspace workspace)
+        public DecompileWorkspace(IOmnisharpWorkspace workspace, AssemblyResolverFactory assemblyResolverFactory)
         {
             _workspace = workspace;
+            _assemblyResolverFactory = assemblyResolverFactory;
         }
 
         public void LoadDlls()

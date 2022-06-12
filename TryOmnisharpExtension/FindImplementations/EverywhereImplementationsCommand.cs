@@ -2,20 +2,20 @@
 
 namespace TryOmnisharpExtension.FindImplementations;
 
-public class EverywhereImplementationsCommand2<ResponseType> : INavigationCommand<ResponseType> where ResponseType : FindImplementationsResponse, new()
+public class EverywhereImplementationsCommand2<TResponseType> : INavigationCommand<TResponseType> where TResponseType : FindImplementationsResponse, new()
 {
-    private readonly INavigationCommand<ResponseType> _rosylynFindImplementationsCommand;
-    private readonly INavigationCommand<ResponseType> _ilSpyCommand;
+    private readonly INavigationCommand<TResponseType> _rosylynFindImplementationsCommand;
+    private readonly INavigationCommand<TResponseType> _ilSpyCommand;
 
     public EverywhereImplementationsCommand2(
-        INavigationCommand<ResponseType> rosylynFindImplementationsCommand,
-        INavigationCommand<ResponseType> ilSpyCommand)
+        INavigationCommand<TResponseType> rosylynFindImplementationsCommand,
+        INavigationCommand<TResponseType> ilSpyCommand)
     {
         _rosylynFindImplementationsCommand = rosylynFindImplementationsCommand;
         _ilSpyCommand = ilSpyCommand;
     }
         
-    public async Task<ResponseType> Execute()
+    public async Task<TResponseType> Execute()
     {
         var rosylynImplementationsTask = Task.Run(() => _rosylynFindImplementationsCommand.Execute());
         var ilSpyImplementationsTask = Task.Run(() => _ilSpyCommand.Execute());
@@ -24,7 +24,7 @@ public class EverywhereImplementationsCommand2<ResponseType> : INavigationComman
         var rosylynImplementations = rosylynImplementationsTask.Result;
         var ilSpyImplementations = ilSpyImplementationsTask.Result;
 
-        var result = new ResponseType();
+        var result = new TResponseType();
 
         foreach (var rosylynImplementation in rosylynImplementations.Implementations)
         {

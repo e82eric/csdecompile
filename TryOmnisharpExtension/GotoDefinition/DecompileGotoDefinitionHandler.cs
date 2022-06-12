@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Autofac;
 using OmniSharp.Mef;
 
-namespace TryOmnisharpExtension
+namespace TryOmnisharpExtension.GotoDefinition
 {
     [OmniSharpHandler(Endpoints.DecompileGotoDefinition, Languages.Csharp), Shared]
     public class DecompileGotoDefinitionHandler : IRequestHandler<DecompileGotoDefinitionRequest, DecompileGotoDefinitionResponse>

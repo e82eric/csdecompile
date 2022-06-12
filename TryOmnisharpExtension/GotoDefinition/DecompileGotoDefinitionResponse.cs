@@ -1,4 +1,4 @@
-namespace TryOmnisharpExtension
+namespace TryOmnisharpExtension.GotoDefinition
 {
     public class DecompileGotoDefinitionResponse
     {

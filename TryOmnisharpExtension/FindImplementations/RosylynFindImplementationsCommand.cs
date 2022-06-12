@@ -24,6 +24,11 @@ public class RosylynFindImplementationsCommand : INavigationCommand<FindImplemen
     {
         var response = new FindImplementationsResponse();
 
+        if (_symbol.IsSealed)
+        {
+            return response;
+        }
+
         if (_symbol.IsInterfaceType() || _symbol.IsImplementableMember())
         {
             // SymbolFinder.FindImplementationsAsync will not include the method overrides

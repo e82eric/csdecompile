@@ -1,4 +1,5 @@
-﻿using ICSharpCode.Decompiler.Metadata;
+﻿using System.Collections.Generic;
+using ICSharpCode.Decompiler.Metadata;
 
 namespace TryOmnisharpExtension.IlSpy;
 
@@ -12,5 +13,10 @@ public class ExternalAssembliesDecompileWorkspace : IDecompileWorkspace
     public void LoadDlls()
     {
         
+    }
+
+    public IEnumerable<PEFile> GetWithReferenceAssemblies()
+    {
+        throw new System.NotImplementedException();
     }
 }

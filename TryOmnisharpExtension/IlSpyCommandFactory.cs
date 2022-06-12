@@ -5,21 +5,21 @@ using TryOmnisharpExtension.IlSpy;
 namespace TryOmnisharpExtension
 {
     [Export]
-    public class IlSpyCommandFactory<CommandType>
+    public class IlSpyCommandFactory<TCommandType>
     {
-        private readonly ICommandFactory<CommandType> _commandCommandFactory;
+        private readonly ICommandFactory<TCommandType> _commandCommandFactory;
         private readonly IlSpySymbolFinder _symbolFinder;
 
         [ImportingConstructor]
         public IlSpyCommandFactory(
             IlSpySymbolFinder symbolFinder,
-            ICommandFactory<CommandType> commandCommandFactory)
+            ICommandFactory<TCommandType> commandCommandFactory)
         {
             _symbolFinder = symbolFinder;
             _commandCommandFactory = commandCommandFactory;
         }
         
-        public CommandType Find(DecompiledLocationRequest request)
+        public TCommandType Find(DecompiledLocationRequest request)
         {
             var symbolAtLocation = _symbolFinder.FindSymbolAtLocation(
                 request.AssemblyFilePath,

@@ -1,37 +1,15 @@
 ﻿using System.Composition;
-using System.Threading.Tasks;
 using ICSharpCode.Decompiler.TypeSystem;
+using TryOmnisharpExtension.IlSpy;
 
-namespace TryOmnisharpExtension.IlSpy;
+namespace TryOmnisharpExtension.GotoDefinition;
 
 [Export]
-public class IlSpyMemberFinder
+public class IlSpyMemberFinder : IlSpyDefinitionFinderBase<IMethod>
 {
-    private readonly MethodInTypeFinder2 _methodInTypeFinder;
-
     [ImportingConstructor]
-    public IlSpyMemberFinder(MethodInTypeFinder2 methodInTypeFinder)
+    public IlSpyMemberFinder(MethodInTypeFinder methodInTypeFinder, DecompilerFactory decompilerFactory): base(
+        methodInTypeFinder, decompilerFactory)
     {
-        _methodInTypeFinder = methodInTypeFinder;
     } 
-    
-    public (IlSpyMetadataSource2, string sourceText) Run(IMethod method)
-    {
-        var rootType = SymbolHelper.FindContainingType(method.DeclaringTypeDefinition);
-
-        var (foundUse, sourceText) = _methodInTypeFinder.Find(method.MetadataToken, rootType);
-
-        var metadataSource = new IlSpyMetadataSource2
-        {
-            AssemblyName = rootType.ParentModule.AssemblyName,
-            Column = foundUse.StartLocation.Column,
-            Line = foundUse.StartLocation.Line,
-            SourceText = $"{method.DeclaringType.ReflectionName} {foundUse.Statement.ToString().Replace("\r\n", "")}",
-            StartColumn = foundUse.StartLocation.Column,
-            EndColumn = foundUse.EndLocation.Column,
-            ContainingTypeFullName = rootType.ReflectionName,
-        };
-
-        return (metadataSource, sourceText);
-    }
 }

@@ -80,7 +80,6 @@ namespace TryOmnisharpExtension.IlSpy
             }
             
             return null;
-            throw new NotImplementedException();
         }
         
         public Task<PEFile> ResolveAsync(IAssemblyReference reference)

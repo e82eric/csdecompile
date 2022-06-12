@@ -1,8 +1,7 @@
 ﻿using System.Composition;
-using ICSharpCode.Decompiler.CSharp.Syntax;
 using TryOmnisharpExtension.IlSpy;
 
-namespace TryOmnisharpExtension
+namespace TryOmnisharpExtension.GetSource
 {
     [Export]
     public class IlSpyDecompiledSourceCommandFactory
@@ -24,15 +23,9 @@ namespace TryOmnisharpExtension
             var symbol = _ilSpySymbolFinder.FindTypeDefinition(
                 request.AssemblyFilePath,
                 request.ContainingTypeFullName);
-            var decompiler = _decompilerFactory.Get(request.AssemblyFilePath);
+            var decompiler = _decompilerFactory.Get(symbol.ParentModule.PEFile.FileName);
             
-            (SyntaxTree syntaxTree, string source) = decompiler.Run(symbol);
-
-            var usage = new UsageAsTextLocation
-            {
-                StartLocation = new TextLocation(request.Line, request.Column),
-                EndLocation = new TextLocation(request.Line, request.Column),
-            };
+            (_, string source) = decompiler.Run(symbol);
         
             return new DecompiledSourceResponse
             {
@@ -41,8 +34,8 @@ namespace TryOmnisharpExtension
                 IsDecompiled = true,
                 IsFromExternalAssemblies = request.IsFromExternalAssembly,
                 SourceText = source,
-                Line = usage.StartLocation.Line,
-                Column = usage.StartLocation.Column
+                Line = request.Line,
+                Column = request.Column
             };
         }
     }

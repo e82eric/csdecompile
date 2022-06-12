@@ -2,6 +2,6 @@ using TryOmnisharpExtension.FindImplementations;
 
 namespace TryOmnisharpExtension.GetMembers;
 
-public class GetTypesResponse : FindImplementationsResponse
+public class GetTypeMembersResponse : FindImplementationsResponse
 {
 }

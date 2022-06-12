@@ -3,22 +3,22 @@ using System.Collections.Generic;
 using System.Composition;
 using System.Threading.Tasks;
 using ICSharpCode.Decompiler.CSharp;
+using ICSharpCode.Decompiler.CSharp.Syntax;
 using ICSharpCode.Decompiler.TypeSystem;
 using Microsoft.CodeAnalysis;
 using OmniSharp;
-using TryOmnisharpExtension.FindImplementations;
 using TryOmnisharpExtension.FindUsages;
 using TryOmnisharpExtension.IlSpy;
 using ISymbol = Microsoft.CodeAnalysis.ISymbol;
 
-namespace TryOmnisharpExtension;
+namespace TryOmnisharpExtension.FindImplementations;
 
 [Shared]
 [Export]
-public class IlSpyFindImplementationsCommandFactory2<ResponseType>
-    where ResponseType : FindImplementationsResponse, new()
+public class IlSpyFindImplementationsCommandFactory2<TResponseType>
+    where TResponseType : FindImplementationsResponse, new()
 {
-    private readonly ICommandFactory<INavigationCommand<ResponseType>> _commandCommandFactory;
+    private readonly ICommandFactory<INavigationCommand<TResponseType>> _commandCommandFactory;
     private readonly OmniSharpWorkspace _omniSharpWorkspace;
     private readonly IlSpySymbolFinder _symbolFinder;
     private List<Compilation> _projectCompilations;
@@ -27,34 +27,37 @@ public class IlSpyFindImplementationsCommandFactory2<ResponseType>
     public IlSpyFindImplementationsCommandFactory2(
         OmniSharpWorkspace omniSharpWorkspace,
         IlSpySymbolFinder symbolFinder,
-        ICommandFactory<INavigationCommand<ResponseType>> commandCommandFactory)
+        ICommandFactory<INavigationCommand<TResponseType>> commandCommandFactory)
     {
         _omniSharpWorkspace = omniSharpWorkspace;
         _symbolFinder = symbolFinder;
         _commandCommandFactory = commandCommandFactory;
     }
 
-    public async Task<INavigationCommand<ResponseType>> Find(DecompiledLocationRequest request)
+    public async Task<INavigationCommand<TResponseType>> Find(DecompiledLocationRequest request)
     {
         var containingTypeDefinition = _symbolFinder.FindTypeDefinition(
             request.AssemblyFilePath,
             request.ContainingTypeFullName);
         
-        var node = _symbolFinder.FindNode(
+         (AstNode node, ICSharpCode.Decompiler.CSharp.Syntax.SyntaxTree, string sourceText) findNodeResult = _symbolFinder.FindNode(
             containingTypeDefinition,
             request.Line,
             request.Column);
 
-        var parentResolveResult = node.Parent.GetResolveResult();
+        var parentResolveResult = findNodeResult.node.Parent.GetResolveResult();
 
         //TODO: This should be in a usages specific context
         if (parentResolveResult is ILVariableResolveResult)
         {
-            var command = ((FindUsagesCommandFactory)_commandCommandFactory).GetForVariable(containingTypeDefinition, node);
-            return (INavigationCommand<ResponseType>)command;
+            var command = ((FindUsagesCommandFactory)_commandCommandFactory).GetForVariable(
+                containingTypeDefinition,
+                findNodeResult.node,
+                findNodeResult.sourceText);
+            return (INavigationCommand<TResponseType>)command;
         }
 
-        var symbolAtLocation = _symbolFinder.FindSymbolFromNode(node);
+        var symbolAtLocation = _symbolFinder.FindSymbolFromNode(findNodeResult.node);
 
         //TODO: Can I move this to /loadassemblies
         if (_projectCompilations == null)
@@ -83,7 +86,7 @@ public class IlSpyFindImplementationsCommandFactory2<ResponseType>
             if (symbol != null)
             {
                 var roslynCommand = _commandCommandFactory.GetForInSource(symbol);
-                var result = new EverywhereImplementationsCommand2<ResponseType>(roslynCommand, ilSpyCommand);
+                var result = new EverywhereImplementationsCommand2<TResponseType>(roslynCommand, ilSpyCommand);
 
                 return result;
             }
@@ -98,7 +101,7 @@ public class IlSpyFindImplementationsCommandFactory2<ResponseType>
             if (propertySymbol != null)
             {
                 var roslynCommand = _commandCommandFactory.GetForInSource(propertySymbol);
-                var result = new EverywhereImplementationsCommand2<ResponseType>(roslynCommand, ilSpyCommand);
+                var result = new EverywhereImplementationsCommand2<TResponseType>(roslynCommand, ilSpyCommand);
                 
                 return result;
             }
@@ -115,7 +118,7 @@ public class IlSpyFindImplementationsCommandFactory2<ResponseType>
             {
                 var roslynCommand = _commandCommandFactory.GetForInSource(roslynField);
 
-                var result = new EverywhereImplementationsCommand2<ResponseType>(roslynCommand, ilSpyCommand);
+                var result = new EverywhereImplementationsCommand2<TResponseType>(roslynCommand, ilSpyCommand);
                 return result;
             }
             return ilSpyCommand;
@@ -129,7 +132,7 @@ public class IlSpyFindImplementationsCommandFactory2<ResponseType>
             {
                 var roslynCommand = _commandCommandFactory.GetForInSource(roslynEvent);
 
-                var result = new EverywhereImplementationsCommand2<ResponseType>(roslynCommand, ilSpyCommand);
+                var result = new EverywhereImplementationsCommand2<TResponseType>(roslynCommand, ilSpyCommand);
                 return result;
             }
 
@@ -149,7 +152,7 @@ public class IlSpyFindImplementationsCommandFactory2<ResponseType>
             {
                 var roslynCommand = _commandCommandFactory.GetForInSource(symbol);
 
-                var result = new EverywhereImplementationsCommand2<ResponseType>(roslynCommand, ilSpyCommand);
+                var result = new EverywhereImplementationsCommand2<TResponseType>(roslynCommand, ilSpyCommand);
                 return result;
             }
 

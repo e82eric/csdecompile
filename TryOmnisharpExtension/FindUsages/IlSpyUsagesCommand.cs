@@ -4,7 +4,6 @@ using TryOmnisharpExtension.FindImplementations;
 
 namespace TryOmnisharpExtension.FindUsages;
 
-// [Export(typeof(INavigationCommand<T>))]
 internal class IlSpyUsagesCommand<T, TResponse> : INavigationCommand<TResponse> where TResponse : FindImplementationsResponse, new()
 {
     private readonly T _symbol;
@@ -28,8 +27,7 @@ internal class IlSpyUsagesCommand<T, TResponse> : INavigationCommand<TResponse> 
             
         foreach (var metadataSource in metadataSources)
         {
-            DecompileInfo decompileInfo = DecompileInfoMapper.MapFromMetadataSource(metadataSource);
-            result.Implementations.Add(decompileInfo);
+            result.Implementations.Add(metadataSource);
         }
             
         return Task.FromResult(result);

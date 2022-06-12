@@ -3,11 +3,11 @@
 namespace TryOmnisharpExtension.IlSpy;
 public static class SymbolHelper
 {
-    public static ITypeDefinition FindContainingType(ITypeDefinition symbol)
+    public static ITypeDefinition FindContainingType(IEntity symbol)
     {
         if (symbol.DeclaringType == null)
         {
-            return symbol;
+            return symbol as ITypeDefinition;
         }
         IType result = symbol.DeclaringType;
 

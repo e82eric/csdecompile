@@ -1,7 +1,7 @@
 ﻿using OmniSharp;
 using OmniSharp.Mef;
 
-namespace TryOmnisharpExtension;
+namespace TryOmnisharpExtension.GetMembers;
 
 [OmniSharpEndpoint(Endpoints.GetTypes, typeof(GetTypesRequest), typeof(GetTypesResponse))]
 public class GetTypesRequest : IRequest

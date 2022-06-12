@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Autofac;
 using OmniSharp.Mef;
 
-namespace TryOmnisharpExtension
+namespace TryOmnisharpExtension.GetSource
 {
     [OmniSharpHandler(Endpoints.DecompiledSource, Languages.Csharp), Shared]
     public class DecompiledSourceHandler : IRequestHandler<DecompiledSourceRequest, DecompiledSourceResponse>

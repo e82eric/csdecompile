@@ -15,24 +15,24 @@ using TryOmnisharpExtension.IlSpy;
 namespace TryOmnisharpExtension;
 
 [Export]
-public class EverywhereSymbolInfoFinder2<CommandResponseType> where CommandResponseType : FindImplementationsResponse, new()
+public class EverywhereSymbolInfoFinder2<TCommandResponseType> where TCommandResponseType : FindImplementationsResponse, new()
 {
     private readonly OmniSharpWorkspace _workspace;
     private readonly IlSpySymbolFinder _ilSpySymbolFinder;
-    private readonly ICommandFactory<INavigationCommand<CommandResponseType>> _commandFactory;
+    private readonly ICommandFactory<INavigationCommand<TCommandResponseType>> _commandFactory;
 
     [ImportingConstructor]
     public EverywhereSymbolInfoFinder2(
         OmniSharpWorkspace workspace,
         IlSpySymbolFinder ilSpySymbolFinder,
-        ICommandFactory<INavigationCommand<CommandResponseType>> commandFactory)
+        ICommandFactory<INavigationCommand<TCommandResponseType>> commandFactory)
     {
         _commandFactory = commandFactory;
         _workspace = workspace;
         _ilSpySymbolFinder = ilSpySymbolFinder;
     }
         
-    public async Task<INavigationCommand<CommandResponseType>> Get(LocationRequest request)
+    public async Task<INavigationCommand<TCommandResponseType>> Get(LocationRequest request)
     {
         var document = _workspace.GetDocument(request.FileName);
         var projectOutputFilePath = document.Project.OutputFilePath;
@@ -46,7 +46,7 @@ public class EverywhereSymbolInfoFinder2<CommandResponseType> where CommandRespo
             return rosylnCommand;
         }
             
-        INavigationCommand<CommandResponseType> ilSpyCommand = default;
+        INavigationCommand<TCommandResponseType> ilSpyCommand = default;
         switch (roslynSymbol.Kind)
         {
             case SymbolKind.NamedType:
@@ -101,7 +101,7 @@ public class EverywhereSymbolInfoFinder2<CommandResponseType> where CommandRespo
                 throw new Exception();
         }
 
-        var result = new EverywhereImplementationsCommand2<CommandResponseType>(rosylnCommand, ilSpyCommand);
+        var result = new EverywhereImplementationsCommand2<TCommandResponseType>(rosylnCommand, ilSpyCommand);
         return result;
     }
         

@@ -8,30 +8,30 @@ namespace TryOmnisharpExtension.FindUsages;
 [Export]
 public class VariableInMethodBodyFinder
 {
-    public IEnumerable<UsageAsTextLocation> Find(Identifier variableNode)
+    public IEnumerable<AstNode> Find(Identifier variableNode)
     {
-        var result = new List<UsageAsTextLocation>();
-
+        // var result = new List<UsageAsTextLocation>();
+        var foundUsages = new List<AstNode>();
         var methodBodyNode = FindMethodBody(variableNode);
         if (methodBodyNode != null)
         {
-            var foundUsages = new List<Identifier>();
             FindUsagesOfIdentifier(methodBodyNode, variableNode, foundUsages);
 
-            foreach (var identifier in foundUsages)
-            {
-                var statement = FindIdentifierParentStatement(identifier);
-                var usage = new UsageAsTextLocation
-                {
-                    StartLocation = identifier.StartLocation,
-                    EndLocation = identifier.EndLocation,
-                    Statement = statement.ToString()
-                };
-                result.Add(usage);
-            }
+            // foreach (var identifier in foundUsages)
+            // {
+            //     // var statement = FindIdentifierParentStatement(identifier);
+            //     var usage = new UsageAsTextLocation
+            //     {
+            //         Node = identifier,
+            //         // StartLocation = identifier.StartLocation,
+            //         // EndLocation = identifier.EndLocation,
+            //         // Statement = statement.ToString()
+            //     };
+            //     result.Add(usage);
+            // }
         }
 
-        return result;
+        return foundUsages;
     }
 
     private AstNode FindMethodBody(AstNode node)
@@ -54,7 +54,7 @@ public class VariableInMethodBodyFinder
         return null;
     }
     
-    private void FindUsagesOfIdentifier(AstNode currentNode, Identifier variableNode, IList<Identifier> found)
+    private void FindUsagesOfIdentifier(AstNode currentNode, Identifier variableNode, IList<AstNode> found)
     {
         if (currentNode is Identifier identifier)
         {
@@ -70,22 +70,22 @@ public class VariableInMethodBodyFinder
         }
     }
 
-    private Statement FindIdentifierParentStatement(AstNode currentNode)
-    {
-        if (currentNode is Statement statement)
-        {
-            return statement;
-        }
-
-        if (currentNode.Parent != null)
-        {
-            var result = FindIdentifierParentStatement(currentNode.Parent);
-            if (result != null)
-            {
-                return result;
-            }
-        }
-
-        return null;
-    }
+    // private Statement FindIdentifierParentStatement(AstNode currentNode)
+    // {
+    //     if (currentNode is Statement statement)
+    //     {
+    //         return statement;
+    //     }
+    //
+    //     if (currentNode.Parent != null)
+    //     {
+    //         var result = FindIdentifierParentStatement(currentNode.Parent);
+    //         if (result != null)
+    //         {
+    //             return result;
+    //         }
+    //     }
+    //
+    //     return null;
+    // }
 }

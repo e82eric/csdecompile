@@ -1,38 +1,25 @@
 ﻿using System.Composition;
 using System.Linq;
 using System.Reflection.Metadata;
-using System.Threading.Tasks;
 using ICSharpCode.Decompiler.CSharp;
 using ICSharpCode.Decompiler.CSharp.Syntax;
 using ICSharpCode.Decompiler.TypeSystem;
 
-namespace TryOmnisharpExtension.IlSpy;
+namespace TryOmnisharpExtension.GotoDefinition;
 
 [Export]
-public class MethodInTypeFinder2
+public class MethodInTypeFinder : IDefinitionInDecompiledSyntaxTreeFinder<IMethod>
 {
-    private readonly DecompilerFactory _decompilerFactory;
-
-    [ImportingConstructor]
-    public MethodInTypeFinder2(DecompilerFactory decompilerFactory)
+    public AstNode Find(
+        IMethod handleToSearchFor,
+        SyntaxTree rootTypeSyntaxTree)
     {
-        _decompilerFactory = decompilerFactory;
-    }
-    
-    public (UsageAsTextLocation, string) Find(
-        EntityHandle handleToSearchFor,
-        ITypeDefinition rootTypeHandle)
-    {
-        var assemblyFilePath = rootTypeHandle.ParentModule.PEFile.FileName;
-        var decompiler = _decompilerFactory.Get(assemblyFilePath);
-        var (syntaxTree, sourceText) = decompiler.Run(rootTypeHandle);
+        var usage = Find(rootTypeSyntaxTree, handleToSearchFor.MetadataToken);
 
-        var usage = Find(syntaxTree, handleToSearchFor);
-
-        return (usage, sourceText);
+        return usage;
     }
 
-    private UsageAsTextLocation Find(AstNode node, EntityHandle handleToSearchFor)
+    private AstNode Find(AstNode node, EntityHandle handleToSearchFor)
     {
         var symbol = node.GetSymbol();
 
@@ -58,25 +45,11 @@ public class MethodInTypeFinder2
 
                     if (identifier != null)
                     {
-                        var usage = new UsageAsTextLocation()
-                        {
-                            StartLocation = identifier.StartLocation,
-                            EndLocation = identifier.EndLocation,
-                            Statement = identifier.ToString()
-                        };
-
-                        return usage;
+                        return identifier;
                     }
                     else
                     {
-                        var usage = new UsageAsTextLocation
-                        {
-                            StartLocation = node.StartLocation,
-                            EndLocation = node.StartLocation,
-                            Statement = "node.ToString()"
-                        };
-
-                        return usage;
+                        return node;
                     }
                 }
             }

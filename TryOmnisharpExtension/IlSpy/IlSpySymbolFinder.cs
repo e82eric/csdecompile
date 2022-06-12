@@ -71,13 +71,13 @@ public class IlSpySymbolFinder
         return eventSymbol;
     }
     
-    public AstNode FindNode(ITypeDefinition typeDefinition, int line, int column)
+    public (AstNode, SyntaxTree, string) FindNode(ITypeDefinition typeDefinition, int line, int column)
     {
         var decompiler = _decompilerFactory.Get(typeDefinition.ParentModule.PEFile.FileName);
         (SyntaxTree syntaxTree, string source) = decompiler.Run(typeDefinition);
             
         var node = GetNodeAt(syntaxTree, line, column);
-        return node;
+        return (node, syntaxTree, source);
     }
     
     public ISymbol FindSymbolFromNode(AstNode node)

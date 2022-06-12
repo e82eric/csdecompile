@@ -70,9 +70,12 @@ public class ExternalAssembliesFindUsagesCommandFactory : IDecompilerCommandFact
         return result;
     }
     
-    public INavigationCommand<FindUsagesResponse> GetForVariable(ITypeDefinition containingTypeDefinition, AstNode variableNode)
+    public INavigationCommand<FindUsagesResponse> GetForVariable(
+        ITypeDefinition containingTypeDefinition,
+        AstNode variableNode,
+        string sourceText)
     {
-        var result = new FindVariableUsagesCommand(containingTypeDefinition, variableNode, _variableUsagesFinder);
+        var result = new FindVariableUsagesCommand(containingTypeDefinition, variableNode, _variableUsagesFinder, sourceText);
         return result;
     }
 }

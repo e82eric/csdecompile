@@ -9,72 +9,55 @@ using TryOmnisharpExtension.IlSpy;
 namespace TryOmnisharpExtension.FindUsages;
 
 [Export]
-public class IlSpyUsagesFinderBase<T>
+public class IlSpyUsagesFinderBase<T>: IlSpyToSourceInfoBase
 {
     private readonly DecompilerFactory _decompilerFactory;
     private readonly IMetadataUsagesScanner<T> _typeUsedByTypeIlScanner;
-    private readonly IEntityUsedInTypeFinder<T> _typeUsedInTypeFinder2;
+    private readonly IEntityUsedInTypeFinder<T> _usageFinder;
 
     [ImportingConstructor]
     public IlSpyUsagesFinderBase(
         DecompilerFactory decompilerFactory,
         IMetadataUsagesScanner<T> typeUsedByTypeIlScanner,
-        IEntityUsedInTypeFinder<T> typeUsedInTypeFinder2)
+        IEntityUsedInTypeFinder<T> usageFinder)
     {
-        _typeUsedInTypeFinder2 = typeUsedInTypeFinder2;
+        _usageFinder = usageFinder;
         _typeUsedByTypeIlScanner = typeUsedByTypeIlScanner;
         _decompilerFactory = decompilerFactory;
     }
         
-    public IEnumerable<IlSpyMetadataSource2> Run(T symbol)
+    public IEnumerable<DecompileInfo> Run(T symbol)
     {
-        var result = new List<IlSpyMetadataSource2>();
+        var result = new List<DecompileInfo>();
 
         var typesThatUseType = _typeUsedByTypeIlScanner.GetRootTypesThatUseSymbol(symbol);
             
-        var decompiledTypeDefintions = new ConcurrentDictionary<string, (SyntaxTree, string)>();
+        var decompiledTypeDefinitions = new ConcurrentDictionary<string, (SyntaxTree, string)>();
         Parallel.ForEach(typesThatUseType, new ParallelOptions {MaxDegreeOfParallelism = 25} , typeToDecompile =>
         {
             var decompiledTypeDefinition = DecompileTypeDefinition(typeToDecompile);
-            decompiledTypeDefintions.TryAdd(typeToDecompile.FullName, decompiledTypeDefinition);
+            decompiledTypeDefinitions.TryAdd(typeToDecompile.FullName, decompiledTypeDefinition);
         });
 
         foreach (var typeToSearch in typesThatUseType)
         {
-            if (decompiledTypeDefintions.TryGetValue(
+            if (decompiledTypeDefinitions.TryGetValue(
                     typeToSearch.FullName,
                     out (SyntaxTree syntaxTree, string sourceText) decompiledParentType))
             {
-                var usages = _typeUsedInTypeFinder2.Find(
-                    decompiledParentType,
+                var usages = _usageFinder.Find(
+                    decompiledParentType.syntaxTree,
                     typeToSearch,
                     symbol);
                     
-                foreach (var usage in usages)
-                {
-                    var metadataSource = new IlSpyMetadataSource2
-                    {
-                        AssemblyName = typeToSearch.ParentModule.AssemblyName,
-                        Column = usage.StartLocation.Column,
-                        Line = usage.StartLocation.Line,
-                        SourceText = usage.Statement,
-                        StartColumn = usage.StartLocation.Column,
-                        EndColumn = usage.EndLocation.Column,
-                        ContainingTypeFullName = typeToSearch.ReflectionName,
-                        AssemblyFilePath = typeToSearch.Compilation.MainModule.PEFile.FileName,
-                        UsageType = UsageTypes.Type,
-                        TypeName = typeToSearch.ReflectionName,
-                        NamespaceName = typeToSearch.Namespace
-                    };
-                    result.Add(metadataSource);
-                }
+                MapToSourceInfos(typeToSearch, decompiledParentType.sourceText, usages, result);
             }
         }
                 
         return result;
     }
 
-    private (SyntaxTree, string) DecompileTypeDefinition(ITypeDefinition typeDefinition)
+    protected (SyntaxTree, string) DecompileTypeDefinition(ITypeDefinition typeDefinition)
     {
         var fileName = typeDefinition.Compilation.MainModule.PEFile.FileName;
         var cachingDecompiler = _decompilerFactory.Get(fileName);

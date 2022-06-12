@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Composition;
 using System.IO;
-using System.Threading.Tasks;
 using ICSharpCode.Decompiler;
 using ICSharpCode.Decompiler.Metadata;
 using TryOmnisharpExtension.ExternalAssemblies;
@@ -65,7 +64,6 @@ public class IlSpyAllTypesRepository
                             StartColumn = 1,
                             IsFromExternalAssembly = true,
                             NamespaceName = peFile.Metadata.GetString(typeDef.Namespace),
-                            UsageType = UsageTypes.Type
                         };
                         result.Add(decompileInfo);
                     }

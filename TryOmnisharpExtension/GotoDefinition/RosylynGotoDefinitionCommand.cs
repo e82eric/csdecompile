@@ -2,14 +2,13 @@
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 
-namespace TryOmnisharpExtension;
+namespace TryOmnisharpExtension.GotoDefinition;
 
 public class RosylynGotoDefinitionCommand : IGotoDefinitionCommand
 {
     private readonly ISymbol _symbol;
 
-    public RosylynGotoDefinitionCommand(
-        ISymbol symbol)
+    public RosylynGotoDefinitionCommand(ISymbol symbol)
     {
         _symbol = symbol;
     }

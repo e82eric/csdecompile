@@ -69,11 +69,11 @@ internal static class RoslynSymbolHelpers
         if (symbol is IMethodSymbol)
         {
             var methodName = symbol.ToDisplayParts().FirstOrDefault(p => p.Kind == SymbolDisplayPartKind.MethodName);
-            result.TypeFullName = $"{GetFullTypeName(symbol.ContainingType)}.{methodName}{GetMethodSignature((IMethodSymbol)symbol)}";
+            result.ContainingTypeFullName = $"{GetFullTypeName(symbol.ContainingType)}.{methodName}{GetMethodSignature((IMethodSymbol)symbol)}";
         }
         else
         {
-            result.TypeFullName = GetFullTypeName(symbol);
+            result.ContainingTypeFullName = GetFullTypeName(symbol);
         }
         result.NamespaceName = symbol.ContainingNamespace.GetMetadataName();
         return result;
