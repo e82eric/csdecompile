@@ -1,4 +1,5 @@
-﻿using System.Collections.Concurrent;
+﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Composition;
 using System.IO;
@@ -36,7 +37,10 @@ namespace TryOmnisharpExtension.IlSpy
             foreach (var path in projectAssemblyPaths)
             {
                 var projectPeFile = OpenAssembly(path);
-                Add(projectPeFile);
+                if (projectPeFile != null)
+                {
+                    Add(projectPeFile);
+                }
             }
         }
 

@@ -18,7 +18,7 @@ public class OmnisharpWorkspaceWrapper : IOmnisharpWorkspace
 
     public IEnumerable<string> GetProjectAssemblyPaths()
     {
-        var result = _omniSharpWorkspace.CurrentSolution.Projects.Select(p => p.OutputFilePath).ToList();
+        var result = _omniSharpWorkspace.CurrentSolution.Projects.Select(p => p.OutputFilePath).Where(p => p != null).ToList();
         return result;
     }
 }

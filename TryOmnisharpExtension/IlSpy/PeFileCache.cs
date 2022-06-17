@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Composition;
 using System.IO;
 using System.Linq;
@@ -12,8 +13,8 @@ namespace TryOmnisharpExtension.IlSpy;
 [Export]
 public class PeFileCache
 {
-    private readonly Dictionary<string, Dictionary<string, PEFile>> _peFileCache = new();
-    private readonly  Dictionary<string, PEFile> _byFileName = new();
+    private readonly ConcurrentDictionary<string, Dictionary<string, PEFile>> _peFileCache = new();
+    private readonly  ConcurrentDictionary<string, PEFile> _byFileName = new();
 
     public bool TryGetByNameAndFrameworkId(string fullName, string targetFrameworkId, out PEFile peFile)
     {
@@ -54,7 +55,7 @@ public class PeFileCache
         using (var fileStream = new FileStream(fileName, FileMode.Open, FileAccess.Read))
         {
             result = LoadAssembly(fileStream, PEStreamOptions.PrefetchEntireImage, fileName);
-            _byFileName.Add(fileName, result);
+            _byFileName.TryAdd(fileName, result);
         }
 
         var targetFrameworkId = result.DetectTargetFrameworkId();
@@ -64,7 +65,7 @@ public class PeFileCache
             {
                 { targetFrameworkId, result }
             };
-            _peFileCache.Add(result.FullName, moduleVersions);
+            _peFileCache.TryAdd(result.FullName, moduleVersions);
         }
         else
         {

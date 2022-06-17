@@ -1,5 +1,4 @@
-﻿using System;
-using System.Composition;
+﻿using System.Composition;
 using System.IO;
 using System.Threading.Tasks;
 using ICSharpCode.Decompiler.Metadata;
@@ -27,12 +26,13 @@ namespace TryOmnisharpExtension.IlSpy
 
         public PEFile Resolve(IAssemblyReference reference)
         {
+            // return _universalAssemblyResolver.Resolve(reference);
             PEFile result = null;
             if (_peFileCache.TryGetByNameAndFrameworkId(reference.FullName, _targetFrameworkId, out result))
             {
                 return result;
             }
-
+            
             string file = _universalAssemblyResolver.FindAssemblyFile(reference);
             if (file != null)
             {
@@ -46,12 +46,13 @@ namespace TryOmnisharpExtension.IlSpy
                     return result;
                 }
             }
-
+            
             return null;
         }
 
         public PEFile ResolveModule(PEFile mainModule, string moduleName)
         {
+            // return _universalAssemblyResolver.ResolveModule(mainModule, moduleName);
             PEFile result = null;
             if (_peFileCache.TryGetByNameAndFrameworkId(moduleName, _targetFrameworkId, out result))
             {
@@ -63,7 +64,7 @@ namespace TryOmnisharpExtension.IlSpy
             {
                 return moduleFromResolver;
             }
-
+            
             string file = Path.Combine(Path.GetDirectoryName(mainModule.FileName), moduleName);
             if (File.Exists(file))
             {
@@ -84,31 +85,13 @@ namespace TryOmnisharpExtension.IlSpy
         
         public Task<PEFile> ResolveAsync(IAssemblyReference reference)
         {
-            PEFile result = null;
-            if (_peFileCache.TryGetByNameAndFrameworkId(reference.FullName, _targetFrameworkId, out result))
-            {
-                return Task.FromResult(result);
-            }
-
-            string file = _universalAssemblyResolver.FindAssemblyFile(reference);
-            if (file != null)
-            {
-                result = _peFileCache.Open(file);
-                return Task.FromResult(result);
-            }
-            else
-            {
-                if (_peFileCache.TryGetFirstMatchByName(reference.FullName, out result))
-                {
-                    return Task.FromResult(result);
-                }
-            }
-
-            return null;
+            var result = Task.Run(() => Resolve(reference));
+            return result;
         }
 
         public async Task<PEFile> ResolveModuleAsync(PEFile mainModule, string moduleName)
         {
+            // return _universalAssemblyResolver.ResolveModuleAsync(mainModule, moduleName);
             PEFile result = null;
             if (_peFileCache.TryGetByNameAndFrameworkId(moduleName, _targetFrameworkId, out result))
             {
@@ -120,7 +103,7 @@ namespace TryOmnisharpExtension.IlSpy
             {
                 return moduleFromResolver;
             }
-
+            
             string file = Path.Combine(Path.GetDirectoryName(mainModule.FileName), moduleName);
             if (File.Exists(file))
             {

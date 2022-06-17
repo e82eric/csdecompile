@@ -298,6 +298,8 @@
         <Compile Include="GetMembers\IlSpyGetMembersCommandFactory.cs" />
         <Compile Include="GetMembers\IlSpyTypeMembersCommand.cs" />
         <Compile Include="GetMembers\IlSpyTypeMembersFinder.cs" />
+        <Compile Include="GetMembers\RoslynGetTypeMembersCommand.cs" />
+        <Compile Include="GetMembers\RoslynGetTypeMembersCommandFactory.cs" />
         <Compile Include="GetMembers\TypeMembersFinder.cs" />
         <Compile Include="GetSource\DecompiledSourceHandler.cs" />
         <Compile Include="GetSource\DecompiledSourceRequest.cs" />

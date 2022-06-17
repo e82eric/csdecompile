@@ -37,9 +37,9 @@ namespace TryOmnisharpExtension.IlSpy
                 foreach (var dllFilePath in binDirDlls)
                 {
                     var dllPEFile = OpenAssembly(dllFilePath.FullName);
-                    if (dllFilePath != null)
+                    if (dllFilePath != null && dllPEFile != null)
                     {
-                        var uniqueness = dllFilePath.FullName + "|" + dllPEFile.Metadata.MetadataVersion;
+                        var uniqueness = dllPEFile.FullName + "|" + dllPEFile.Metadata.MetadataVersion;
                         if (!_byFilename.ContainsKey(uniqueness))
                         {
                             _byFilename.Add(uniqueness, dllPEFile);
