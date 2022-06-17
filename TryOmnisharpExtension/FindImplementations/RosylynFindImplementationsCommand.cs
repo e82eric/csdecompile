@@ -62,8 +62,11 @@ public class RosylynFindImplementationsCommand : INavigationCommand<FindImplemen
             var derivedTypes = await SymbolFinder.FindDerivedClassesAsync(namedTypeSymbol, _workspace.CurrentSolution);
             foreach (var derivedType in derivedTypes)
             {
-                var sourceLineInfo = derivedType.GetSourceLineInfo(_workspace);
-                response.Implementations.Add(sourceLineInfo);
+                if (derivedType.Locations.First().IsInSource)
+                {
+                    var sourceLineInfo = derivedType.GetSourceLineInfo(_workspace);
+                    response.Implementations.Add(sourceLineInfo);
+                }
             }
         }
         else if (_symbol.IsOverridable())
@@ -71,13 +74,16 @@ public class RosylynFindImplementationsCommand : INavigationCommand<FindImplemen
             var overrides = await SymbolFinder.FindOverridesAsync(_symbol, _workspace.CurrentSolution);
             foreach (var @override in overrides)
             {
-                var sourceLineInfo = @override.GetSourceLineInfo(_workspace);
-                response.Implementations.Add(sourceLineInfo);
+                if (@override.Locations.First().IsInSource)
+                {
+                    var sourceLineInfo = @override.GetSourceLineInfo(_workspace);
+                    response.Implementations.Add(sourceLineInfo);
+                }
             }
         }
 
         // also include the original declaration of the symbol
-        if (!_symbol.IsAbstract)
+        if (!_symbol.IsAbstract && _symbol.Locations.First().IsInSource)
         {
             // for partial methods, pick the one with body
             if (_symbol is IMethodSymbol method && method.PartialImplementationPart != null)

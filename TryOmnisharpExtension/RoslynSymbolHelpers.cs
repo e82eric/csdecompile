@@ -65,6 +65,10 @@ internal static class RoslynSymbolHelpers
     public static SourceFileInfo GetSourceLineInfo(this ISymbol symbol, OmniSharpWorkspace workspace)
     {
         var location = symbol.Locations.First();
+        if (location.IsInSource == false)
+        {
+            return null;
+        }
         var result = location.GetSourceLineInfo(workspace);
         if (symbol is IMethodSymbol)
         {
