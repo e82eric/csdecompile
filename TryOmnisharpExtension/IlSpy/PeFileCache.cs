@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Composition;
 using System.IO;
 using System.Linq;
@@ -14,93 +13,82 @@ namespace TryOmnisharpExtension.IlSpy;
 [Export]
 public class PeFileCache
 {
-    private readonly ConcurrentDictionary<string, Dictionary<string, PEFile>> _peFileCache = new();
-    private readonly  ConcurrentDictionary<string, PEFile> _byFileName = new();
+    private readonly  ConcurrentDictionary<string, string> _byFileName = new();
+    private readonly ConcurrentDictionary<string, PEFile> _peFileCache = new();
 
     public PEFile[] GetAssemblies()
     {
-        var result = _byFileName.Values.ToArray();
+        var result = _peFileCache.Values.ToArray();
         return result;
     }
     public bool TryGetByNameAndFrameworkId(string fullName, string targetFrameworkId, out PEFile peFile)
     {
-        if (_peFileCache.TryGetValue(fullName, out var moduleVersions))
+        var uniqueness = fullName + '|' + targetFrameworkId;
+        if (_peFileCache.TryGetValue(uniqueness, out peFile))
         {
-            if (moduleVersions.TryGetValue(targetFrameworkId, out peFile))
-            {
-                return true;
-            }
+            return true;
         }
-
-        peFile = null;
+        
         return false;
     }
         
     public bool TryGetFirstMatchByName(string fullName, out PEFile peFile)
     {
-        if (_peFileCache.TryGetValue(fullName, out var moduleVersions))
+        peFile = null;
+        var firstFulNameMatch = _peFileCache.Keys.FirstOrDefault(k => k.StartsWith(fullName));
+        if(firstFulNameMatch == null)
         {
-            if (moduleVersions.Any())
-            {
-                peFile = moduleVersions.First().Value;
-                return true;
-            }
+            return false;
+        }
+        if (_peFileCache.TryGetValue(firstFulNameMatch, out peFile))
+        {
+            return true;
         }
 
-        peFile = null;
         return false;
     }
         
-    public PEFile Open(string fileName)
+    public bool TryOpen(string fileName, out PEFile peFile)
     {
-        if (_byFileName.TryGetValue(fileName, out var result))
+        if (_byFileName.TryGetValue(fileName, out var uniqueness))
         {
-            return result;
+            if (_peFileCache.TryGetValue(uniqueness, out peFile))
+            {
+                return true;
+            }
         }
             
         using (var fileStream = new FileStream(fileName, FileMode.Open, FileAccess.Read))
         {
-            result = LoadAssembly(fileStream, PEStreamOptions.PrefetchEntireImage, fileName);
-            if (result == null)
+            if(TryLoadAssembly(fileStream, PEStreamOptions.PrefetchEntireImage, fileName, out peFile))
             {
-                return null;
+                var targetFrameworkId = peFile.DetectTargetFrameworkId();
+                uniqueness = peFile.FullName + '|' + targetFrameworkId;
+                _byFileName.TryAdd(fileName, uniqueness);
+                _peFileCache.TryAdd(uniqueness, peFile);
+                return true;
             }
-            _byFileName.TryAdd(fileName, result);
-        }
-
-        var targetFrameworkId = result.DetectTargetFrameworkId();
-        if (!_peFileCache.TryGetValue(result.FullName, out var moduleVersions))
-        {
-            moduleVersions = new Dictionary<string, PEFile>
+            else
             {
-                { targetFrameworkId, result }
-            };
-            _peFileCache.TryAdd(result.FullName, moduleVersions);
-        }
-        else
-        {
-            if (!moduleVersions.ContainsKey(targetFrameworkId))
-            {
-                moduleVersions.Add(targetFrameworkId, result);
+                return false;
             }
         }
-
-        return result;
     }
     
-    private PEFile LoadAssembly(Stream stream, PEStreamOptions streamOptions, string fileName)
+    private bool TryLoadAssembly(Stream stream, PEStreamOptions streamOptions, string fileName, out PEFile peFile)
     {
+        peFile = null;
         try
         {
             var options = MetadataReaderOptions.ApplyWindowsRuntimeProjections;
 
-            PEFile module = new PEFile(fileName, stream, streamOptions, metadataOptions: options);
+            peFile = new PEFile(fileName, stream, streamOptions, metadataOptions: options);
 
-            return module;
+            return true;
         }
         catch (Exception e)
         {
-            return null;
+            return false;
         }
     }
 }

@@ -36,14 +36,13 @@ namespace TryOmnisharpExtension.IlSpy
             {
                 return result;
             }
-            var peFile = _peFileCache.Open(projectDllFilePath);
-            if (peFile == null)
+            
+            if(_peFileCache.TryOpen(projectDllFilePath, out var peFile))
             {
-                return null;
+                result = Add(peFile);
+                return result;
             }
-            result = Add(peFile);
-
-            return result;
+            return null;
         }
     }
 }

@@ -36,19 +36,15 @@ namespace TryOmnisharpExtension.IlSpy
             string file = _universalAssemblyResolver.FindAssemblyFile(reference);
             if (file != null)
             {
-                result = _peFileCache.Open(file);
-                if (result == null)
-                {
-                    return null;
-                }
-                return result;
-            }
-            else
-            {
-                if (_peFileCache.TryGetFirstMatchByName(reference.FullName, out result))
+                if (_peFileCache.TryOpen(file, out result))
                 {
                     return result;
                 }
+                return null;
+            }
+            if (_peFileCache.TryGetFirstMatchByName(reference.FullName, out result))
+            {
+                return result;
             }
             
             return null;
@@ -72,20 +68,16 @@ namespace TryOmnisharpExtension.IlSpy
             string file = Path.Combine(Path.GetDirectoryName(mainModule.FileName), moduleName);
             if (File.Exists(file))
             {
-                result = _peFileCache.Open(file);
-                if (result == null)
-                {
-                    return null;
-                }
-                return result;
-            }
-            else
-            {
-                // Module does not exist on disk, look for one with a matching name in the assemblylist:
-                if (_peFileCache.TryGetFirstMatchByName(moduleName, out result))
+                if (_peFileCache.TryOpen(file, out result))
                 {
                     return result;
                 }
+
+                return null;
+            }
+            if (_peFileCache.TryGetFirstMatchByName(moduleName, out result))
+            {
+                return result;
             }
             
             return null;
@@ -97,41 +89,10 @@ namespace TryOmnisharpExtension.IlSpy
             return result;
         }
 
-        public async Task<PEFile> ResolveModuleAsync(PEFile mainModule, string moduleName)
+        public Task<PEFile> ResolveModuleAsync(PEFile mainModule, string moduleName)
         {
-            // return _universalAssemblyResolver.ResolveModuleAsync(mainModule, moduleName);
-            PEFile result = null;
-            if (_peFileCache.TryGetByNameAndFrameworkId(moduleName, _targetFrameworkId, out result))
-            {
-                return result;
-            }
-            
-            var moduleFromResolver = await _universalAssemblyResolver.ResolveModuleAsync(mainModule, moduleName).ConfigureAwait(false);
-            if (moduleFromResolver != null)
-            {
-                return moduleFromResolver;
-            }
-            
-            string file = Path.Combine(Path.GetDirectoryName(mainModule.FileName), moduleName);
-            if (File.Exists(file))
-            {
-                result = _peFileCache.Open(file);
-                if (result == null)
-                {
-                    return null;
-                }
-                return result;
-            }
-            else
-            {
-                // Module does not exist on disk, look for one with a matching name in the assemblylist:
-                if (_peFileCache.TryGetFirstMatchByName(moduleName, out result))
-                {
-                    return result;
-                }
-            }
-            
-            return null;
+            var result = Task.Run(() => ResolveModule(mainModule, moduleName));
+            return result;
         }
     }
 }

@@ -34,7 +34,7 @@ namespace TryOmnisharpExtension.IlSpy
 
                 foreach (var dllFilePath in binDirDlls)
                 {
-                    _peFileCache.Open(dllFilePath.FullName);
+                    _peFileCache.TryOpen(dllFilePath.FullName, out _);
                 }
             }
         }
