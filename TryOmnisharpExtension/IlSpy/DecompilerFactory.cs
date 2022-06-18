@@ -1,4 +1,5 @@
-﻿using System.Composition;
+﻿using System;
+using System.Composition;
 
 namespace TryOmnisharpExtension.IlSpy;
 
@@ -17,6 +18,10 @@ public class DecompilerFactory
     public Decompiler Get(string projectAssemblyFilePath)
     {
         var typeSystem = _typeSystemFactory.GetTypeSystem(projectAssemblyFilePath);
+        if (typeSystem == null)
+        {
+            throw new Exception($"Could not load typbe system for {projectAssemblyFilePath}");
+        }
         var result = new Decompiler(typeSystem);
         return result;
     }

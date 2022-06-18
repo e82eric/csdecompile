@@ -1,7 +1,6 @@
 ﻿using System.Composition;
 using ICSharpCode.Decompiler.TypeSystem;
 using TryOmnisharpExtension.FindUsages;
-using TryOmnisharpExtension.IlSpy;
 
 namespace TryOmnisharpExtension.FindImplementations;
 

@@ -28,6 +28,10 @@ public class IlSpySymbolFinder
     public ITypeDefinition FindTypeDefinition(string projectAssemblyFilePath, string symbolFullName)
     {
         var typeSystem = _typeSystemFactory.GetTypeSystem(projectAssemblyFilePath);
+        if (typeSystem == null)
+        {
+            return null;
+        }
         var tempFile = typeSystem.FindType(new FullTypeName(symbolFullName)) as ITypeDefinition;
 
         if (tempFile == null)

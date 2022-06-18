@@ -6,7 +6,6 @@ using ICSharpCode.Decompiler.CSharp;
 using ICSharpCode.Decompiler.CSharp.Syntax;
 using ICSharpCode.Decompiler.TypeSystem;
 using Microsoft.CodeAnalysis;
-using OmniSharp;
 using TryOmnisharpExtension.FindUsages;
 using TryOmnisharpExtension.IlSpy;
 using ISymbol = Microsoft.CodeAnalysis.ISymbol;
@@ -19,19 +18,18 @@ public class IlSpyFindImplementationsCommandFactory2<TResponseType>
     where TResponseType : FindImplementationsResponse, new()
 {
     private readonly ICommandFactory<INavigationCommand<TResponseType>> _commandCommandFactory;
-    private readonly OmniSharpWorkspace _omniSharpWorkspace;
+    private readonly IDecompileWorkspace _decompileWorkspace;
     private readonly IlSpySymbolFinder _symbolFinder;
-    private List<Compilation> _projectCompilations;
 
     [ImportingConstructor]
     public IlSpyFindImplementationsCommandFactory2(
-        OmniSharpWorkspace omniSharpWorkspace,
         IlSpySymbolFinder symbolFinder,
-        ICommandFactory<INavigationCommand<TResponseType>> commandCommandFactory)
+        ICommandFactory<INavigationCommand<TResponseType>> commandCommandFactory,
+        IDecompileWorkspace decompileWorkspace)
     {
-        _omniSharpWorkspace = omniSharpWorkspace;
         _symbolFinder = symbolFinder;
         _commandCommandFactory = commandCommandFactory;
+        _decompileWorkspace = decompileWorkspace;
     }
 
     public async Task<INavigationCommand<TResponseType>> Find(DecompiledLocationRequest request)
@@ -59,30 +57,13 @@ public class IlSpyFindImplementationsCommandFactory2<TResponseType>
 
         var symbolAtLocation = _symbolFinder.FindSymbolFromNode(findNodeResult.node);
 
-        //TODO: Can I move this to /loadassemblies
-        if (_projectCompilations == null)
-        {
-            _projectCompilations = new List<Compilation>();
-            foreach (var project in _omniSharpWorkspace.CurrentSolution.Projects)
-            {
-                try
-                {
-                    var compilation = await project.GetCompilationAsync();
-                    _projectCompilations.Add(compilation);
-                }
-                catch (Exception)
-                {
-                }
-            }
-        }
-
         if (symbolAtLocation is ITypeDefinition entity)
         {
             var ilSpyCommand = _commandCommandFactory.GetForType(
                 entity,
                 request.AssemblyFilePath);
             
-            var symbol = GetTypeSymbol(entity.FullName);
+            var symbol = await GetTypeSymbol(entity.FullName);
             if (symbol != null)
             {
                 var roslynCommand = _commandCommandFactory.GetForInSource(symbol);
@@ -97,7 +78,7 @@ public class IlSpyFindImplementationsCommandFactory2<TResponseType>
         if (symbolAtLocation is IProperty property)
         {
             var ilSpyCommand = _commandCommandFactory.GetForProperty(property, request.AssemblyFilePath);
-            var propertySymbol = GetRoslynMemberSymbol<IPropertySymbol>(property);
+            var propertySymbol = await GetRoslynMemberSymbol<IPropertySymbol>(property);
             if (propertySymbol != null)
             {
                 var roslynCommand = _commandCommandFactory.GetForInSource(propertySymbol);
@@ -113,7 +94,7 @@ public class IlSpyFindImplementationsCommandFactory2<TResponseType>
         {
             var ilSpyCommand = _commandCommandFactory.GetForField(field, request.AssemblyFilePath);
 
-            var roslynField = GetRoslynMemberSymbol<IFieldSymbol>(field);
+            var roslynField = await GetRoslynMemberSymbol<IFieldSymbol>(field);
             if (roslynField != null)
             {
                 var roslynCommand = _commandCommandFactory.GetForInSource(roslynField);
@@ -127,7 +108,7 @@ public class IlSpyFindImplementationsCommandFactory2<TResponseType>
         if (symbolAtLocation is IEvent eventSymbol)
         {
             var ilSpyCommand = _commandCommandFactory.GetForEvent(eventSymbol, request.AssemblyFilePath);
-            var roslynEvent = GetRoslynMemberSymbol<IEventSymbol>(eventSymbol);
+            var roslynEvent = await GetRoslynMemberSymbol<IEventSymbol>(eventSymbol);
             if (roslynEvent != null)
             {
                 var roslynCommand = _commandCommandFactory.GetForInSource(roslynEvent);
@@ -142,7 +123,7 @@ public class IlSpyFindImplementationsCommandFactory2<TResponseType>
         if (symbolAtLocation is IMethod method)
         {
             var ilSpyCommand = _commandCommandFactory.GetForMethod(method, request.AssemblyFilePath);
-            var symbol = GetRoslynMemberSymbol<IMethodSymbol>(method, methodSymbol =>
+            var symbol = await GetRoslynMemberSymbol<IMethodSymbol>(method, methodSymbol =>
             {
                 var areSame = RoslynToIlSpyEqualityExtensions.AreSameMethod(methodSymbol, method);
                 return areSame;
@@ -162,9 +143,9 @@ public class IlSpyFindImplementationsCommandFactory2<TResponseType>
         return null;
     }
     
-    private TRoslyn GetRoslynMemberSymbol<TRoslyn>(IMember ilSpySymbol) where TRoslyn : ISymbol
+    private async Task<TRoslyn> GetRoslynMemberSymbol<TRoslyn>(IMember ilSpySymbol) where TRoslyn : ISymbol
     {
-        var result = GetRoslynMemberSymbol<TRoslyn>(ilSpySymbol, roslyn =>
+        var result = await GetRoslynMemberSymbol<TRoslyn>(ilSpySymbol, roslyn =>
         {
             var sameField = RoslynToIlSpyEqualityExtensions.AreMemberSymbol(roslyn, ilSpySymbol);
             return sameField;
@@ -172,14 +153,14 @@ public class IlSpyFindImplementationsCommandFactory2<TResponseType>
         return result;
     }
     
-    private TRoslyn GetRoslynMemberSymbol<TRoslyn>(IMember ilSpySymbol, Predicate<TRoslyn> areSame)
+    private async Task<TRoslyn> GetRoslynMemberSymbol<TRoslyn>(IMember ilSpySymbol, Predicate<TRoslyn> areSame)
     {
         var declaringTypeFullName = ilSpySymbol?.DeclaringType?.FullName;
         if (declaringTypeFullName == null)
         {
             return default;
         }
-        var roslynTypeSymbol = GetTypeSymbol(declaringTypeFullName);
+        var roslynTypeSymbol = await GetTypeSymbol(declaringTypeFullName);
         if (roslynTypeSymbol == null)
         {
             return default;
@@ -200,10 +181,11 @@ public class IlSpyFindImplementationsCommandFactory2<TResponseType>
         return default;
     }
 
-    private INamedTypeSymbol GetTypeSymbol(string fullName)
+    private async Task<INamedTypeSymbol> GetTypeSymbol(string fullName)
     {
+        var compilations = await _decompileWorkspace.GetProjectCompilations();
         INamedTypeSymbol symbol = null;
-        foreach (var compilation in _projectCompilations)
+        foreach (var compilation in compilations)
         {
             symbol = compilation.GetTypeByMetadataName(fullName);
             if (symbol != null)

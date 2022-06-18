@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
+﻿using System.Collections.Concurrent;
 using System.Composition;
-using System.IO;
-using System.Reflection.Metadata;
-using System.Reflection.PortableExecutable;
 using ICSharpCode.Decompiler.Metadata;
 using ICSharpCode.Decompiler.TypeSystem;
 
@@ -21,47 +16,12 @@ namespace TryOmnisharpExtension.IlSpy
         [ImportingConstructor]
         public IlSpyTypeSystemFactory(
             AssemblyResolverFactory resolverFactory,
-            IOmnisharpWorkspace omnisharpWorkspace,
             PeFileCache peFileCache)
         {
             _resolverFactory = resolverFactory;
             _peFileCache = peFileCache;
-
-            var paths = omnisharpWorkspace.GetProjectAssemblyPaths();
-            //TODO: This should be somewhere else
-            LoadProjects(paths);
         }
         
-        private void LoadProjects(IEnumerable<string> projectAssemblyPaths)
-        {
-            foreach (var path in projectAssemblyPaths)
-            {
-                var projectPeFile = OpenAssembly(path);
-                if (projectPeFile != null)
-                {
-                    Add(projectPeFile);
-                }
-            }
-        }
-
-        private PEFile OpenAssembly(string file)
-        {
-            using (var fileStream = new FileStream(file, FileMode.Open, FileAccess.Read))
-            {
-                var result = LoadAssembly(fileStream, PEStreamOptions.PrefetchEntireImage, file);
-                return result;
-            }
-        }
-        
-        private PEFile LoadAssembly(Stream stream, PEStreamOptions streamOptions, string fileName)
-        {
-            var options = MetadataReaderOptions.ApplyWindowsRuntimeProjections;
-
-            PEFile module = new PEFile(fileName, stream, streamOptions, metadataOptions: options);
-
-            return module;
-        }
-
         private DecompilerTypeSystem Add(PEFile module)
         {
             var resolver = _resolverFactory.GetAssemblyResolver(module);
@@ -77,6 +37,10 @@ namespace TryOmnisharpExtension.IlSpy
                 return result;
             }
             var peFile = _peFileCache.Open(projectDllFilePath);
+            if (peFile == null)
+            {
+                return null;
+            }
             result = Add(peFile);
 
             return result;

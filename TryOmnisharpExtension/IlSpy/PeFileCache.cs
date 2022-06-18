@@ -1,4 +1,5 @@
-﻿using System.Collections.Concurrent;
+﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Composition;
 using System.IO;
@@ -16,6 +17,11 @@ public class PeFileCache
     private readonly ConcurrentDictionary<string, Dictionary<string, PEFile>> _peFileCache = new();
     private readonly  ConcurrentDictionary<string, PEFile> _byFileName = new();
 
+    public PEFile[] GetAssemblies()
+    {
+        var result = _byFileName.Values.ToArray();
+        return result;
+    }
     public bool TryGetByNameAndFrameworkId(string fullName, string targetFrameworkId, out PEFile peFile)
     {
         if (_peFileCache.TryGetValue(fullName, out var moduleVersions))
@@ -55,6 +61,10 @@ public class PeFileCache
         using (var fileStream = new FileStream(fileName, FileMode.Open, FileAccess.Read))
         {
             result = LoadAssembly(fileStream, PEStreamOptions.PrefetchEntireImage, fileName);
+            if (result == null)
+            {
+                return null;
+            }
             _byFileName.TryAdd(fileName, result);
         }
 
@@ -80,10 +90,17 @@ public class PeFileCache
     
     private PEFile LoadAssembly(Stream stream, PEStreamOptions streamOptions, string fileName)
     {
-        var options = MetadataReaderOptions.ApplyWindowsRuntimeProjections;
+        try
+        {
+            var options = MetadataReaderOptions.ApplyWindowsRuntimeProjections;
 
-        PEFile module = new PEFile(fileName, stream, streamOptions, metadataOptions: options);
+            PEFile module = new PEFile(fileName, stream, streamOptions, metadataOptions: options);
 
-        return module;
+            return module;
+        }
+        catch (Exception e)
+        {
+            return null;
+        }
     }
 }

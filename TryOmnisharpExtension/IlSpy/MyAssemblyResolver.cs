@@ -37,6 +37,10 @@ namespace TryOmnisharpExtension.IlSpy
             if (file != null)
             {
                 result = _peFileCache.Open(file);
+                if (result == null)
+                {
+                    return null;
+                }
                 return result;
             }
             else
@@ -69,6 +73,10 @@ namespace TryOmnisharpExtension.IlSpy
             if (File.Exists(file))
             {
                 result = _peFileCache.Open(file);
+                if (result == null)
+                {
+                    return null;
+                }
                 return result;
             }
             else
@@ -108,6 +116,10 @@ namespace TryOmnisharpExtension.IlSpy
             if (File.Exists(file))
             {
                 result = _peFileCache.Open(file);
+                if (result == null)
+                {
+                    return null;
+                }
                 return result;
             }
             else
