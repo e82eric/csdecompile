@@ -54,7 +54,7 @@ public class TypesThatUseMemberAsBaseTypeMetadataScanner : IMetadataUsagesScanne
                 var entityBaseMembers = InheritanceHelper.GetBaseMembers(typeMember, true);
                 foreach (var entityBaseMember in entityBaseMembers)
                 {
-                    if (entityBaseMember.MetadataToken == analyzedEntity.MetadataToken)
+                    if (entityBaseMember.AreSameUsingToken(analyzedEntity))
                     {
                         return true;
                     }

@@ -18,16 +18,16 @@ public class TypeUsedAsBaseTypeFinder : IEntityUsedInTypeFinder<ITypeDefinition>
         ITypeDefinition usageToFind)
     {
         var usageNodes = new List<AstNode>();
-        var typeNode = syntaxTree.FindChildType(typeToSearchEntityHandle.MetadataToken);
+        var typeNode = syntaxTree.FindChildType(typeToSearchEntityHandle);
         if (typeNode != null)
         {
-            FindUsages(typeNode, usageToFind.MetadataToken, usageNodes);
+            FindUsages(typeNode, usageToFind, usageNodes);
         }
 
         return usageNodes;
     }
     
-    private void FindUsages(AstNode node, EntityHandle entityHandleToSearchFor, IList<AstNode> found)
+    private void FindUsages(AstNode node, IEntity entityHandleToSearchFor, IList<AstNode> found)
     {
         if (node.Role != Roles.TypeMemberRole)
         {
@@ -37,7 +37,7 @@ public class TypeUsedAsBaseTypeFinder : IEntityUsedInTypeFinder<ITypeDefinition>
                 var symbol = node.GetSymbol();
                 if (symbol is IEntity entity)
                 {
-                    if (entity.MetadataToken == entityHandleToSearchFor)
+                    if (entity.AreSameUsingToken(entityHandleToSearchFor))
                     {
                         found.Add(node);
                     }

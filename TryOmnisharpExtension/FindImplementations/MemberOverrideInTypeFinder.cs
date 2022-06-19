@@ -16,7 +16,7 @@ public class MemberOverrideInTypeFinder : IEntityUsedInTypeFinder<IMember>
         ITypeDefinition typeToSearchEntityHandle,
         IMember usageToFind)
     {
-        var typeNode = syntaxTree.FindChildType(typeToSearchEntityHandle.MetadataToken);
+        var typeNode = syntaxTree.FindChildType(typeToSearchEntityHandle);
         var usageNodes = new List<AstNode>();
         if (typeNode != null)
         {
@@ -35,7 +35,7 @@ public class MemberOverrideInTypeFinder : IEntityUsedInTypeFinder<IMember>
             if (symbol is IMember entity)
             {
                 //for now I guess we are ok with self matches being a "override"
-                if (entity.MetadataToken == entityHandleToSearchFor.MetadataToken)
+                if (entity.AreSameUsingToken(entityHandleToSearchFor))
                 {
                     found.Add(node);
                 }
@@ -50,7 +50,7 @@ public class MemberOverrideInTypeFinder : IEntityUsedInTypeFinder<IMember>
                             var entityBaseMembers = InheritanceHelper.GetBaseMembers(entity, true);
                             foreach (var entityBaseMember in entityBaseMembers)
                             {
-                                if (entityBaseMember.MetadataToken == entityHandleToSearchFor.MetadataToken)
+                                if (entityBaseMember.AreSameUsingToken(entityHandleToSearchFor))
                                 {
                                     found.Add(node);
                                     break;

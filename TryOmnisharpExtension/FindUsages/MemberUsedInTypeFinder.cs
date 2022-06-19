@@ -17,7 +17,7 @@ public class MemberUsedInTypeFinder : IEntityUsedInTypeFinder<IMember>
         IMember usageToFind)
     {
         var usageNodes = new List<AstNode>();
-        var typeNode = syntaxTree.FindChildType(typeToSearchEntityHandle.MetadataToken);
+        var typeNode = syntaxTree.FindChildType(typeToSearchEntityHandle);
         if (typeNode != null)
         {
             FindUsages(typeNode, usageToFind, usageNodes);
@@ -32,7 +32,7 @@ public class MemberUsedInTypeFinder : IEntityUsedInTypeFinder<IMember>
         var symbol = node.GetSymbol();
         if (symbol is IMember entity)
         {
-            if (entity.MetadataToken == entityHandleToSearchFor.MetadataToken)
+            if (entity.AreSameUsingToken(entityHandleToSearchFor))
             {
                 found.Add(node);
             }
@@ -47,7 +47,7 @@ public class MemberUsedInTypeFinder : IEntityUsedInTypeFinder<IMember>
                         var entityBaseMembers = InheritanceHelper.GetBaseMembers(entity, true);
                         foreach (var entityBaseMember in entityBaseMembers)
                         {
-                            if (entityBaseMember.MetadataToken == entityHandleToSearchFor.MetadataToken)
+                            if (entityBaseMember.AreSameUsingToken(entityHandleToSearchFor))
                             {
                                 found.Add(node);
                                 break;

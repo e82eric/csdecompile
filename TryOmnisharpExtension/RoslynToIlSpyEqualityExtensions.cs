@@ -47,11 +47,6 @@ public static class RoslynToIlSpyEqualityExtensions
     //This can be done as an initial check and then fallback to check stuff using names
     private static bool AreSameUsingToken(ISymbol roslynSymbol, IEntity ilSpySymbol)
     {
-        // if (roslynSymbol == null || roslynSymbol.ContainingAssembly == null || ilSpySymbol == null ||
-        //     ilSpySymbol.ParentModule == null)
-        // {
-        //     
-        // }
         var sameAssembly = roslynSymbol.ContainingAssembly.Name == ilSpySymbol.ParentModule.AssemblyName;
         if (!sameAssembly)
         {

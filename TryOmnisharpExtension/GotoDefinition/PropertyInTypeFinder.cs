@@ -16,14 +16,13 @@ public class PropertyInTypeFinder : IDefinitionInDecompiledSyntaxTreeFinder<IPro
     {
         var result = Find(
             rootTypeSyntaxTree,
-            property.Setter?.MetadataToken,
-            property.Getter?.MetadataToken,
-            property.MetadataToken);
+            property.Setter,
+            property.Getter);
 
         return result;
     }
 
-    private AstNode Find(AstNode node, EntityHandle? setterEntityHandle, EntityHandle? getterEntityHandle, EntityHandle rootTypeEntityHandle)
+    private AstNode Find(AstNode node, IEntity setterEntityHandle, IEntity getterEntityHandle)
     {
         var symbol = node.GetSymbol();
 
@@ -33,7 +32,7 @@ public class PropertyInTypeFinder : IDefinitionInDecompiledSyntaxTreeFinder<IPro
             {
                 if (entity.Setter != null && setterEntityHandle != null)
                 {
-                    if (entity.Setter.MetadataToken == setterEntityHandle)
+                    if (entity.Setter.AreSameUsingToken(setterEntityHandle))
                     {
                         return node;
                     }
@@ -41,7 +40,7 @@ public class PropertyInTypeFinder : IDefinitionInDecompiledSyntaxTreeFinder<IPro
 
                 if (entity.Getter != null && getterEntityHandle != null)
                 {
-                    if (entity.Getter.MetadataToken == getterEntityHandle)
+                    if (entity.Getter.AreSameUsingToken(getterEntityHandle))
                     {
                         return node;
                     }
@@ -51,7 +50,7 @@ public class PropertyInTypeFinder : IDefinitionInDecompiledSyntaxTreeFinder<IPro
 
         foreach (var child in node.Children)
         {
-            var usage = Find(child, setterEntityHandle, getterEntityHandle, rootTypeEntityHandle);
+            var usage = Find(child, setterEntityHandle, getterEntityHandle);
             if (usage != null)
             {
                 return usage;

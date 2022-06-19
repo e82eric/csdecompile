@@ -26,8 +26,7 @@ public class EventUsedByMetadataScanner : MemberUsedByMetadataScanner
             {
                 if (@event.AddAccessor != null)
                 {
-                    var isSameAdder = m.MetadataToken == @event.AddAccessor.MetadataToken
-                                       && m.ParentModule.PEFile == @event.ParentModule.PEFile;
+                    var isSameAdder = m.AreSameUsingToken(@event.AddAccessor);
 
                     if (isSameAdder)
                     {
@@ -38,8 +37,7 @@ public class EventUsedByMetadataScanner : MemberUsedByMetadataScanner
 
             if (@event.CanRemove)
             {
-                var isSameRemover = m.MetadataToken == @event.RemoveAccessor.MetadataToken
-                                   && m.ParentModule.PEFile == @event.ParentModule.PEFile;
+                var isSameRemover = m.AreSameUsingToken(@event.RemoveAccessor);
 
                 if (isSameRemover)
                 {
@@ -49,8 +47,7 @@ public class EventUsedByMetadataScanner : MemberUsedByMetadataScanner
 
             if (@event.CanInvoke)
             {
-                var isSameInvoker = m.MetadataToken == @event.InvokeAccessor.MetadataToken
-                                   && m.ParentModule.PEFile == @event.ParentModule.PEFile;
+                var isSameInvoker = m.AreSameUsingToken(@event.InvokeAccessor);
 
                 if (isSameInvoker)
                 {

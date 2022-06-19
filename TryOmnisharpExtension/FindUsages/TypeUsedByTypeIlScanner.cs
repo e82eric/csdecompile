@@ -50,8 +50,7 @@ public class TypeUsedByTypeIlScanner : IMetadataUsagesScanner<ITypeDefinition>
 
     private bool ScanType(ITypeDefinition analyzedEntity, ITypeDefinition type)
     {
-        if (analyzedEntity.ParentModule.PEFile == type.ParentModule.PEFile
-            && analyzedEntity.MetadataToken == type.MetadataToken)
+        if (analyzedEntity.AreSameUsingToken(type))
         {
             return false;
         }

@@ -4,6 +4,7 @@ using System.Reflection.Metadata;
 using ICSharpCode.Decompiler.CSharp;
 using ICSharpCode.Decompiler.CSharp.Syntax;
 using ICSharpCode.Decompiler.TypeSystem;
+using TryOmnisharpExtension.IlSpy;
 
 namespace TryOmnisharpExtension.GotoDefinition;
 
@@ -14,12 +15,12 @@ public class MethodInTypeFinder : IDefinitionInDecompiledSyntaxTreeFinder<IMetho
         IMethod handleToSearchFor,
         SyntaxTree rootTypeSyntaxTree)
     {
-        var usage = Find(rootTypeSyntaxTree, handleToSearchFor.MetadataToken);
+        var usage = Find(rootTypeSyntaxTree, handleToSearchFor);
 
         return usage;
     }
 
-    private AstNode Find(AstNode node, EntityHandle handleToSearchFor)
+    private AstNode Find(AstNode node, IEntity handleToSearchFor)
     {
         var symbol = node.GetSymbol();
 
@@ -27,7 +28,7 @@ public class MethodInTypeFinder : IDefinitionInDecompiledSyntaxTreeFinder<IMetho
         {
             if(symbol is IEntity entity)
             {
-                if ( handleToSearchFor == entity.MetadataToken && node.NodeType == NodeType.Member)
+                if (entity.AreSameUsingToken(handleToSearchFor) && node.NodeType == NodeType.Member)
                 {
                     var identifier = node.Children.Where(n =>
                     {

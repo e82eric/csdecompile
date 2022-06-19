@@ -14,12 +14,12 @@ public class EventInTypeFinder : IDefinitionInDecompiledSyntaxTreeFinder<IEvent>
         IEvent @event,
         SyntaxTree rootTypeSyntaxTree)
     {
-        var result = Find(rootTypeSyntaxTree, @event.MetadataToken);
+        var result = Find(rootTypeSyntaxTree, @event);
 
         return result;
     }
 
-    private AstNode Find(AstNode node, EntityHandle? eventEntityHandle)
+    private AstNode Find(AstNode node, IEntity eventEntityHandle)
     {
         var symbol = node.GetSymbol();
 
@@ -27,7 +27,7 @@ public class EventInTypeFinder : IDefinitionInDecompiledSyntaxTreeFinder<IEvent>
         {
             if (symbol is IEvent entity)
             {
-                if (entity.MetadataToken == eventEntityHandle)
+                if (entity.AreSameUsingToken(eventEntityHandle))
                 {
                     return node;
                 }

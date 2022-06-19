@@ -16,7 +16,7 @@ public class TypeMembersFinder
         ITypeDefinition typeToSearchEntityHandle)
     {
         var usageNodes = new List<AstNode>();
-        var typeNode = syntaxTree.FindChildType(typeToSearchEntityHandle.MetadataToken);
+        var typeNode = syntaxTree.FindChildType(typeToSearchEntityHandle);
         if (typeNode != null)
         {
             FindUsages(typeNode, usageNodes);

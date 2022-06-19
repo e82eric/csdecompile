@@ -42,8 +42,7 @@ public class TypesThatUseTypeAsBaseTypeMetadataScanner : IMetadataUsagesScanner<
 
     bool ScanType(ITypeDefinition analyzedEntity, ITypeDefinition type)
     {
-        if (analyzedEntity.ParentModule.PEFile == type.ParentModule.PEFile
-            && analyzedEntity.MetadataToken == type.MetadataToken)
+        if (analyzedEntity.AreSameUsingToken(type))
         {
             return true;
         }

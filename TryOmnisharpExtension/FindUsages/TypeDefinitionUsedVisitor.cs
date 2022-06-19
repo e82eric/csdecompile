@@ -1,4 +1,5 @@
 ﻿using ICSharpCode.Decompiler.TypeSystem;
+using TryOmnisharpExtension.IlSpy;
 
 namespace TryOmnisharpExtension.FindUsages;
 
@@ -18,8 +19,7 @@ class TypeDefinitionUsedVisitor : TypeVisitor
 
     public override IType VisitTypeDefinition(ITypeDefinition type)
     {
-        Found |= TypeDefinition.MetadataToken == type.MetadataToken
-                 && TypeDefinition.ParentModule.PEFile == type.ParentModule.PEFile;
+        Found |= TypeDefinition.AreSameUsingToken(type);
         return base.VisitTypeDefinition(type);
     }
 

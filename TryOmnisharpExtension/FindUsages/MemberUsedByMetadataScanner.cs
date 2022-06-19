@@ -265,8 +265,7 @@ public class MemberUsedByMetadataScanner : IMetadataUsagesScanner<IMember>
     
     protected virtual bool IsSameMember(IMember analyzedMethod, IMember m)
     {
-        var isSameMember = m.MetadataToken == analyzedMethod.MetadataToken
-                           && m.ParentModule.PEFile == analyzedMethod.ParentModule.PEFile;
+        var isSameMember = m.AreSameUsingToken(analyzedMethod);
 
         if (isSameMember)
         {

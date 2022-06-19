@@ -24,8 +24,7 @@ public class PropertyUsedByMetadataScanner : MemberUsedByMetadataScanner
         {
             if (property.Setter != null)
             {
-                var isSameSetter = m.MetadataToken == property.Setter.MetadataToken
-                                   && m.ParentModule.PEFile == property.ParentModule.PEFile;
+                var isSameSetter = m.AreSameUsingToken(property.Setter);
 
                 if (isSameSetter)
                 {
@@ -35,8 +34,7 @@ public class PropertyUsedByMetadataScanner : MemberUsedByMetadataScanner
 
             if (property.CanGet)
             {
-                var isSameGetter = m.MetadataToken == property.Getter.MetadataToken
-                                   && m.ParentModule.PEFile == property.ParentModule.PEFile;
+                var isSameGetter = m.AreSameUsingToken(property.Getter);
 
                 if (isSameGetter)
                 {

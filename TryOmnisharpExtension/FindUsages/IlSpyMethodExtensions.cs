@@ -2,7 +2,7 @@
 using System.Reflection.Metadata;
 using ICSharpCode.Decompiler.TypeSystem;
 
-namespace TryOmnisharpExtension.IlSpy;
+namespace TryOmnisharpExtension.FindUsages;
 
 public static class IlSpyMethodExtensions
 {

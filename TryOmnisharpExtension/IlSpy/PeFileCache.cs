@@ -68,10 +68,7 @@ public class PeFileCache
                 _peFileCache.TryAdd(uniqueness, peFile);
                 return true;
             }
-            else
-            {
-                return false;
-            }
+            return false;
         }
     }
     
