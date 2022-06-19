@@ -66,7 +66,14 @@ namespace TryOmnisharpExtension.IlSpy
                 var moduleReferencesScopeType = ModuleReferencesScopeType(pefile.Metadata, reflectionTypeScopeName, typeScopeNamespace);
                 if (moduleReferencesScopeType)
                 {
-                    result.Add(pefile);
+                    //THe GetAwaiter.GetResult should be ok here since it will only be async once in applications runtime.
+                    //TODO: Better way to do this
+                    var projectAssemblises = _workspace.GetProjectCompilations().GetAwaiter().GetResult()
+                        .Select(r => r.AssemblyName);
+                    if (!projectAssemblises.Contains(pefile.Name))
+                    {
+                        result.Add(pefile);
+                    }
                 }
 
                 foreach (var assemblyReference in pefile.AssemblyReferences)
