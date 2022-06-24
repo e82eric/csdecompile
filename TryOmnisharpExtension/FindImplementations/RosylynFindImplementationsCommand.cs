@@ -4,17 +4,18 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.FindSymbols;
 using OmniSharp;
 using OmniSharp.Extensions;
+using TryOmnisharpExtension.IlSpy;
 
 namespace TryOmnisharpExtension.FindImplementations;
 
 public class RosylynFindImplementationsCommand : INavigationCommand<FindImplementationsResponse>
 {
     private readonly ISymbol _symbol;
-    private readonly OmniSharpWorkspace _workspace;
+    private readonly IOmniSharpWorkspace _workspace;
 
     public RosylynFindImplementationsCommand(
         ISymbol symbol,
-        OmniSharpWorkspace workspace)
+        IOmniSharpWorkspace workspace)
     {
         _symbol = symbol;
         _workspace = workspace;

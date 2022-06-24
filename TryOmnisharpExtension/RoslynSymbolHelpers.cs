@@ -4,12 +4,13 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
 using OmniSharp;
 using OmniSharp.Extensions;
+using TryOmnisharpExtension.IlSpy;
 
 namespace TryOmnisharpExtension;
 
 internal static class RoslynSymbolHelpers
 {
-    public static SourceFileInfo GetSourceLineInfo(this Location location, OmniSharpWorkspace workspace)
+    public static SourceFileInfo GetSourceLineInfo(this Location location, IOmniSharpWorkspace workspace)
     {
         var lineSpan = location.GetMappedLineSpan();
 
@@ -62,7 +63,7 @@ internal static class RoslynSymbolHelpers
             return location.SourceTree.GetText().Lines[fallBackLineSpan.StartLinePosition.Line].ToString();
         }
     }
-    public static SourceFileInfo GetSourceLineInfo(this ISymbol symbol, OmniSharpWorkspace workspace)
+    public static SourceFileInfo GetSourceLineInfo(this ISymbol symbol, IOmniSharpWorkspace workspace)
     {
         var location = symbol.Locations.First();
         if (location.IsInSource == false)

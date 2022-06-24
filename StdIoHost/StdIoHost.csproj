@@ -14,6 +14,7 @@
         <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
         <FileAlignment>512</FileAlignment>
         <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+        <LangVersion>latest</LangVersion>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
         <PlatformTarget>AnyCPU</PlatformTarget>
@@ -38,29 +39,113 @@
         <Reference Include="Humanizer, Version=2.14.0.0, Culture=neutral, PublicKeyToken=979442b78dfc278e, processorArchitecture=MSIL">
           <HintPath>..\packages\Humanizer.Core.2.14.1\lib\netstandard2.0\Humanizer.dll</HintPath>
         </Reference>
-        <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-          <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.6.0.0\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
+        <Reference Include="ICSharpCode.Decompiler, Version=7.1.0.6543, Culture=neutral, PublicKeyToken=d4bfe873e7598c49, processorArchitecture=MSIL">
+          <HintPath>..\packages\ICSharpCode.Decompiler.7.1.0.6543\lib\netstandard2.0\ICSharpCode.Decompiler.dll</HintPath>
+        </Reference>
+        <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+          <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.7.0.0-preview.5.22301.12\lib\net462\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
+        </Reference>
+        <Reference Include="Microsoft.Build, Version=15.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <HintPath>..\packages\Microsoft.Build.17.2.0\lib\net472\Microsoft.Build.dll</HintPath>
+          <Private>False</Private>
         </Reference>
         <Reference Include="Microsoft.Build.Framework, Version=15.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
           <HintPath>..\packages\Microsoft.Build.Framework.17.2.0\lib\net472\Microsoft.Build.Framework.dll</HintPath>
+          <Private>False</Private>
         </Reference>
         <Reference Include="Microsoft.Build.Locator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=9dff12846e04bfbd, processorArchitecture=MSIL">
           <HintPath>..\packages\Microsoft.Build.Locator.1.4.1\lib\net46\Microsoft.Build.Locator.dll</HintPath>
         </Reference>
         <Reference Include="Microsoft.Build.Utilities.Core, Version=15.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
           <HintPath>..\packages\Microsoft.Build.Utilities.Core.17.2.0\lib\net472\Microsoft.Build.Utilities.Core.dll</HintPath>
+          <Private>False</Private>
         </Reference>
         <Reference Include="Microsoft.CodeAnalysis, Version=4.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-          <HintPath>..\packages\Microsoft.CodeAnalysis.Common.4.3.0-1.final\lib\netstandard2.0\Microsoft.CodeAnalysis.dll</HintPath>
+          <HintPath>..\packages\Microsoft.CodeAnalysis.Common.4.3.0-2.22225.6\lib\netstandard2.0\Microsoft.CodeAnalysis.dll</HintPath>
+        </Reference>
+        <Reference Include="Microsoft.CodeAnalysis.AnalyzerUtilities, Version=3.3.2.30504, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+          <HintPath>..\packages\Microsoft.CodeAnalysis.AnalyzerUtilities.3.3.0\lib\netstandard2.0\Microsoft.CodeAnalysis.AnalyzerUtilities.dll</HintPath>
         </Reference>
         <Reference Include="Microsoft.CodeAnalysis.CSharp, Version=4.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-          <HintPath>..\packages\Microsoft.CodeAnalysis.CSharp.4.3.0-1.final\lib\netstandard2.0\Microsoft.CodeAnalysis.CSharp.dll</HintPath>
+          <HintPath>..\packages\Microsoft.CodeAnalysis.CSharp.4.3.0-2.22225.6\lib\netstandard2.0\Microsoft.CodeAnalysis.CSharp.dll</HintPath>
+        </Reference>
+        <Reference Include="Microsoft.CodeAnalysis.CSharp.Features, Version=4.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+          <HintPath>..\packages\Microsoft.CodeAnalysis.CSharp.Features.4.3.0-2.22225.6\lib\netstandard2.0\Microsoft.CodeAnalysis.CSharp.Features.dll</HintPath>
+        </Reference>
+        <Reference Include="Microsoft.CodeAnalysis.CSharp.Workspaces, Version=4.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+          <HintPath>..\packages\Microsoft.CodeAnalysis.CSharp.Workspaces.4.3.0-2.22225.6\lib\netstandard2.0\Microsoft.CodeAnalysis.CSharp.Workspaces.dll</HintPath>
+        </Reference>
+        <Reference Include="Microsoft.CodeAnalysis.Elfie, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+          <HintPath>..\packages\Microsoft.CodeAnalysis.Elfie.1.0.0-rc14\lib\net45\Microsoft.CodeAnalysis.Elfie.dll</HintPath>
+        </Reference>
+        <Reference Include="Microsoft.CodeAnalysis.ExternalAccess.OmniSharp, Version=4.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+          <HintPath>..\packages\Microsoft.CodeAnalysis.ExternalAccess.OmniSharp.4.3.0-2.22225.6\lib\netstandard2.0\Microsoft.CodeAnalysis.ExternalAccess.OmniSharp.dll</HintPath>
+        </Reference>
+        <Reference Include="Microsoft.CodeAnalysis.Features, Version=4.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+          <HintPath>..\packages\Microsoft.CodeAnalysis.Features.4.3.0-2.22225.6\lib\netstandard2.0\Microsoft.CodeAnalysis.Features.dll</HintPath>
+        </Reference>
+        <Reference Include="Microsoft.CodeAnalysis.Scripting, Version=4.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+          <HintPath>..\packages\Microsoft.CodeAnalysis.Scripting.Common.4.3.0-2.22225.6\lib\netstandard2.0\Microsoft.CodeAnalysis.Scripting.dll</HintPath>
         </Reference>
         <Reference Include="Microsoft.CodeAnalysis.Workspaces, Version=4.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-          <HintPath>..\packages\Microsoft.CodeAnalysis.Workspaces.Common.4.3.0-1.final\lib\netstandard2.0\Microsoft.CodeAnalysis.Workspaces.dll</HintPath>
+          <HintPath>..\packages\Microsoft.CodeAnalysis.Workspaces.Common.4.3.0-2.22225.6\lib\netstandard2.0\Microsoft.CodeAnalysis.Workspaces.dll</HintPath>
         </Reference>
         <Reference Include="Microsoft.CodeAnalysis.Workspaces.MSBuild, Version=4.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-          <HintPath>..\packages\Microsoft.CodeAnalysis.Workspaces.MSBuild.4.3.0-1.final\lib\net472\Microsoft.CodeAnalysis.Workspaces.MSBuild.dll</HintPath>
+          <HintPath>..\packages\Microsoft.CodeAnalysis.Workspaces.MSBuild.4.3.0-2.22225.6\lib\net472\Microsoft.CodeAnalysis.Workspaces.MSBuild.dll</HintPath>
+        </Reference>
+        <Reference Include="Microsoft.DiaSymReader, Version=1.4.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+          <HintPath>..\packages\Microsoft.DiaSymReader.1.4.0\lib\net20\Microsoft.DiaSymReader.dll</HintPath>
+        </Reference>
+        <Reference Include="Microsoft.Extensions.Caching.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+          <HintPath>..\packages\Microsoft.Extensions.Caching.Abstractions.6.0.0\lib\net461\Microsoft.Extensions.Caching.Abstractions.dll</HintPath>
+        </Reference>
+        <Reference Include="Microsoft.Extensions.Caching.Memory, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+          <HintPath>..\packages\Microsoft.Extensions.Caching.Memory.6.0.0\lib\net461\Microsoft.Extensions.Caching.Memory.dll</HintPath>
+        </Reference>
+        <Reference Include="Microsoft.Extensions.Configuration, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+          <HintPath>..\packages\Microsoft.Extensions.Configuration.7.0.0-preview.5.22301.12\lib\net462\Microsoft.Extensions.Configuration.dll</HintPath>
+        </Reference>
+        <Reference Include="Microsoft.Extensions.Configuration.Abstractions, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+          <HintPath>..\packages\Microsoft.Extensions.Configuration.Abstractions.7.0.0-preview.5.22301.12\lib\net462\Microsoft.Extensions.Configuration.Abstractions.dll</HintPath>
+        </Reference>
+        <Reference Include="Microsoft.Extensions.Configuration.Binder, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+          <HintPath>..\packages\Microsoft.Extensions.Configuration.Binder.7.0.0-preview.5.22301.12\lib\net462\Microsoft.Extensions.Configuration.Binder.dll</HintPath>
+        </Reference>
+        <Reference Include="Microsoft.Extensions.DependencyInjection, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+          <HintPath>..\packages\Microsoft.Extensions.DependencyInjection.7.0.0-preview.5.22301.12\lib\net462\Microsoft.Extensions.DependencyInjection.dll</HintPath>
+        </Reference>
+        <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+          <HintPath>..\packages\Microsoft.Extensions.DependencyInjection.Abstractions.7.0.0-preview.5.22301.12\lib\net462\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
+        </Reference>
+        <Reference Include="Microsoft.Extensions.FileProviders.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+          <HintPath>..\packages\Microsoft.Extensions.FileProviders.Abstractions.6.0.0\lib\net461\Microsoft.Extensions.FileProviders.Abstractions.dll</HintPath>
+        </Reference>
+        <Reference Include="Microsoft.Extensions.FileProviders.Physical, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+          <HintPath>..\packages\Microsoft.Extensions.FileProviders.Physical.6.0.0\lib\net461\Microsoft.Extensions.FileProviders.Physical.dll</HintPath>
+        </Reference>
+        <Reference Include="Microsoft.Extensions.FileSystemGlobbing, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+          <HintPath>..\packages\Microsoft.Extensions.FileSystemGlobbing.6.0.0\lib\net461\Microsoft.Extensions.FileSystemGlobbing.dll</HintPath>
+        </Reference>
+        <Reference Include="Microsoft.Extensions.Logging, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+          <HintPath>..\packages\Microsoft.Extensions.Logging.7.0.0-preview.5.22301.12\lib\net462\Microsoft.Extensions.Logging.dll</HintPath>
+        </Reference>
+        <Reference Include="Microsoft.Extensions.Logging.Abstractions, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+          <HintPath>..\packages\Microsoft.Extensions.Logging.Abstractions.7.0.0-preview.5.22301.12\lib\net462\Microsoft.Extensions.Logging.Abstractions.dll</HintPath>
+        </Reference>
+        <Reference Include="Microsoft.Extensions.Logging.Configuration, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+          <HintPath>..\packages\Microsoft.Extensions.Logging.Configuration.7.0.0-preview.5.22301.12\lib\net462\Microsoft.Extensions.Logging.Configuration.dll</HintPath>
+        </Reference>
+        <Reference Include="Microsoft.Extensions.Logging.Console, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+          <HintPath>..\packages\Microsoft.Extensions.Logging.Console.7.0.0-preview.5.22301.12\lib\net462\Microsoft.Extensions.Logging.Console.dll</HintPath>
+        </Reference>
+        <Reference Include="Microsoft.Extensions.Options, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+          <HintPath>..\packages\Microsoft.Extensions.Options.7.0.0-preview.5.22301.12\lib\net462\Microsoft.Extensions.Options.dll</HintPath>
+        </Reference>
+        <Reference Include="Microsoft.Extensions.Options.ConfigurationExtensions, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+          <HintPath>..\packages\Microsoft.Extensions.Options.ConfigurationExtensions.7.0.0-preview.5.22301.12\lib\net462\Microsoft.Extensions.Options.ConfigurationExtensions.dll</HintPath>
+        </Reference>
+        <Reference Include="Microsoft.Extensions.Primitives, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+          <HintPath>..\packages\Microsoft.Extensions.Primitives.7.0.0-preview.5.22301.12\lib\net462\Microsoft.Extensions.Primitives.dll</HintPath>
         </Reference>
         <Reference Include="Microsoft.IO.Redist, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
           <HintPath>..\packages\Microsoft.IO.Redist.6.0.0\lib\net472\Microsoft.IO.Redist.dll</HintPath>
@@ -68,9 +153,51 @@
         <Reference Include="Microsoft.NET.StringTools, Version=1.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
           <HintPath>..\packages\Microsoft.NET.StringTools.1.0.0\lib\net472\Microsoft.NET.StringTools.dll</HintPath>
         </Reference>
+        <Reference Include="Microsoft.VisualStudio.RemoteControl, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <HintPath>..\packages\Microsoft.VisualStudio.RemoteControl.16.3.44\lib\net45\Microsoft.VisualStudio.RemoteControl.dll</HintPath>
+        </Reference>
+        <Reference Include="Microsoft.VisualStudio.Utilities.Internal, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <HintPath>..\packages\Microsoft.VisualStudio.Utilities.Internal.16.3.36\lib\net45\Microsoft.VisualStudio.Utilities.Internal.dll</HintPath>
+        </Reference>
         <Reference Include="mscorlib" />
         <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
           <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+        </Reference>
+        <Reference Include="NuGet.Common, Version=6.2.1.2, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+          <HintPath>..\packages\NuGet.Common.6.2.1\lib\net472\NuGet.Common.dll</HintPath>
+        </Reference>
+        <Reference Include="NuGet.Configuration, Version=6.2.1.2, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+          <HintPath>..\packages\NuGet.Configuration.6.2.1\lib\net472\NuGet.Configuration.dll</HintPath>
+        </Reference>
+        <Reference Include="NuGet.DependencyResolver.Core, Version=6.2.1.2, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+          <HintPath>..\packages\NuGet.DependencyResolver.Core.6.2.1\lib\net472\NuGet.DependencyResolver.Core.dll</HintPath>
+        </Reference>
+        <Reference Include="NuGet.Frameworks, Version=6.2.1.2, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+          <HintPath>..\packages\NuGet.Frameworks.6.2.1\lib\net472\NuGet.Frameworks.dll</HintPath>
+        </Reference>
+        <Reference Include="NuGet.LibraryModel, Version=6.2.1.2, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+          <HintPath>..\packages\NuGet.LibraryModel.6.2.1\lib\net472\NuGet.LibraryModel.dll</HintPath>
+        </Reference>
+        <Reference Include="NuGet.Packaging, Version=6.2.1.2, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+          <HintPath>..\packages\NuGet.Packaging.6.2.1\lib\net472\NuGet.Packaging.dll</HintPath>
+        </Reference>
+        <Reference Include="NuGet.ProjectModel, Version=6.2.1.2, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+          <HintPath>..\packages\NuGet.ProjectModel.6.2.1\lib\net472\NuGet.ProjectModel.dll</HintPath>
+        </Reference>
+        <Reference Include="NuGet.Protocol, Version=6.2.1.2, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+          <HintPath>..\packages\NuGet.Protocol.6.2.1\lib\net472\NuGet.Protocol.dll</HintPath>
+        </Reference>
+        <Reference Include="NuGet.Versioning, Version=6.2.1.2, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+          <HintPath>..\packages\NuGet.Versioning.6.2.1\lib\net472\NuGet.Versioning.dll</HintPath>
+        </Reference>
+        <Reference Include="OmniSharp.Abstractions, Version=1.38.0.0, Culture=neutral, PublicKeyToken=7e5bf7b3b470b509, processorArchitecture=MSIL">
+          <HintPath>..\packages\OmniSharp.Abstractions.1.38.2\lib\net472\OmniSharp.Abstractions.dll</HintPath>
+        </Reference>
+        <Reference Include="OmniSharp.Roslyn, Version=1.38.0.0, Culture=neutral, PublicKeyToken=7e5bf7b3b470b509, processorArchitecture=MSIL">
+          <HintPath>..\packages\OmniSharp.Roslyn.1.38.2\lib\net472\OmniSharp.Roslyn.dll</HintPath>
+        </Reference>
+        <Reference Include="OmniSharp.Shared, Version=1.38.0.0, Culture=neutral, PublicKeyToken=7e5bf7b3b470b509, processorArchitecture=MSIL">
+          <HintPath>..\packages\OmniSharp.Shared.1.38.2\lib\net472\OmniSharp.Shared.dll</HintPath>
         </Reference>
         <Reference Include="System" />
         <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
@@ -80,6 +207,7 @@
           <HintPath>..\packages\System.Collections.Immutable.5.0.0\lib\net461\System.Collections.Immutable.dll</HintPath>
         </Reference>
         <Reference Include="System.ComponentModel.Composition" />
+        <Reference Include="System.ComponentModel.DataAnnotations" />
         <Reference Include="System.Composition.AttributedModel, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
           <HintPath>..\packages\System.Composition.AttributedModel.6.0.0\lib\net461\System.Composition.AttributedModel.dll</HintPath>
         </Reference>
@@ -101,8 +229,17 @@
         </Reference>
         <Reference Include="System.Core" />
         <Reference Include="System.Data" />
+        <Reference Include="System.Data.DataSetExtensions" />
         <Reference Include="System.Data.OracleClient" />
+        <Reference Include="System.Diagnostics.DiagnosticSource, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+          <HintPath>..\packages\System.Diagnostics.DiagnosticSource.7.0.0-preview.5.22301.12\lib\net462\System.Diagnostics.DiagnosticSource.dll</HintPath>
+        </Reference>
         <Reference Include="System.Drawing" />
+        <Reference Include="System.IdentityModel" />
+        <Reference Include="System.IO, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <HintPath>..\packages\System.IO.4.3.0\lib\net462\System.IO.dll</HintPath>
+        </Reference>
+        <Reference Include="System.IO.Compression" />
         <Reference Include="System.IO.Pipelines, Version=6.0.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
           <HintPath>..\packages\System.IO.Pipelines.6.0.1\lib\net461\System.IO.Pipelines.dll</HintPath>
         </Reference>
@@ -110,19 +247,39 @@
           <HintPath>..\packages\System.Memory.4.5.4\lib\net461\System.Memory.dll</HintPath>
         </Reference>
         <Reference Include="System.Net" />
+        <Reference Include="System.Net.Http" />
+        <Reference Include="System.Net.Http.WebRequest" />
         <Reference Include="System.Numerics" />
         <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
           <HintPath>..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
         </Reference>
+        <Reference Include="System.Reflection.DispatchProxy, Version=4.0.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <HintPath>..\packages\System.Reflection.DispatchProxy.4.5.1\lib\net461\System.Reflection.DispatchProxy.dll</HintPath>
+        </Reference>
         <Reference Include="System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
           <HintPath>..\packages\System.Reflection.Metadata.5.0.0\lib\net461\System.Reflection.Metadata.dll</HintPath>
+        </Reference>
+        <Reference Include="System.Runtime, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <HintPath>..\packages\System.Runtime.4.3.0\lib\net462\System.Runtime.dll</HintPath>
         </Reference>
         <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
           <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.6.0.0\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
         </Reference>
+        <Reference Include="System.Runtime.InteropServices.RuntimeInformation, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <HintPath>..\packages\System.Runtime.InteropServices.RuntimeInformation.4.3.0\lib\net45\System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
+        </Reference>
         <Reference Include="System.Security" />
         <Reference Include="System.Security.AccessControl, Version=4.1.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
           <HintPath>..\packages\System.Security.AccessControl.4.7.0\lib\net461\System.Security.AccessControl.dll</HintPath>
+        </Reference>
+        <Reference Include="System.Security.Cryptography.Algorithms, Version=4.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <HintPath>..\packages\System.Security.Cryptography.Algorithms.4.3.1\lib\net463\System.Security.Cryptography.Algorithms.dll</HintPath>
+        </Reference>
+        <Reference Include="System.Security.Cryptography.Encoding, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <HintPath>..\packages\System.Security.Cryptography.Encoding.4.3.0\lib\net46\System.Security.Cryptography.Encoding.dll</HintPath>
+        </Reference>
+        <Reference Include="System.Security.Cryptography.Primitives, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <HintPath>..\packages\System.Security.Cryptography.Primitives.4.3.0\lib\net46\System.Security.Cryptography.Primitives.dll</HintPath>
         </Reference>
         <Reference Include="System.Security.Permissions, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
           <HintPath>..\packages\System.Security.Permissions.4.7.0\lib\net461\System.Security.Permissions.dll</HintPath>
@@ -130,15 +287,19 @@
         <Reference Include="System.Security.Principal.Windows, Version=4.1.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
           <HintPath>..\packages\System.Security.Principal.Windows.4.7.0\lib\net461\System.Security.Principal.Windows.dll</HintPath>
         </Reference>
+        <Reference Include="System.ServiceModel" />
         <Reference Include="System.ServiceProcess" />
         <Reference Include="System.Text.Encoding.CodePages, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
           <HintPath>..\packages\System.Text.Encoding.CodePages.6.0.0\lib\net461\System.Text.Encoding.CodePages.dll</HintPath>
         </Reference>
-        <Reference Include="System.Text.Encodings.Web, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-          <HintPath>..\packages\System.Text.Encodings.Web.6.0.0\lib\net461\System.Text.Encodings.Web.dll</HintPath>
+        <Reference Include="System.Text.Encodings.Web, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+          <HintPath>..\packages\System.Text.Encodings.Web.7.0.0-preview.5.22301.12\lib\net462\System.Text.Encodings.Web.dll</HintPath>
         </Reference>
-        <Reference Include="System.Text.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-          <HintPath>..\packages\System.Text.Json.6.0.0\lib\net461\System.Text.Json.dll</HintPath>
+        <Reference Include="System.Text.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+          <HintPath>..\packages\System.Text.Json.7.0.0-preview.5.22301.12\lib\net462\System.Text.Json.dll</HintPath>
+        </Reference>
+        <Reference Include="System.Threading.Tasks.Dataflow, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <HintPath>..\packages\System.Threading.Tasks.Dataflow.6.0.0\lib\net461\System.Threading.Tasks.Dataflow.dll</HintPath>
         </Reference>
         <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
           <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
@@ -149,19 +310,105 @@
         </Reference>
         <Reference Include="System.Xaml" />
         <Reference Include="System.Xml" />
+        <Reference Include="System.Xml.Linq" />
         <Reference Include="WindowsBase" />
     </ItemGroup>
     <ItemGroup>
         <Compile Include="AllTypesHandler.cs" />
+        <Compile Include="BaseLogger.cs" />
         <Compile Include="EndpointHandler.cs" />
         <Compile Include="EventPacket.cs" />
         <Compile Include="Host.cs" />
         <Compile Include="Packet.cs" />
         <Compile Include="Program.cs" />
+        <Compile Include="ProjectSystemExtraction\Architecture.cs" />
+        <Compile Include="ProjectSystemExtraction\CompilationOptionsHelper.cs" />
+        <Compile Include="ProjectSystemExtraction\Configuration.cs" />
+        <Compile Include="ProjectSystemExtraction\DiscoveryType.cs" />
+        <Compile Include="ProjectSystemExtraction\DisposableObject.cs" />
+        <Compile Include="ProjectSystemExtraction\DotNetCliService.cs" />
+        <Compile Include="ProjectSystemExtraction\DotNetInfo.cs" />
+        <Compile Include="ProjectSystemExtraction\ErrorMessage.cs" />
+        <Compile Include="ProjectSystemExtraction\ErrorMessages.cs" />
+        <Compile Include="ProjectSystemExtraction\EventTypes.cs" />
+        <Compile Include="ProjectSystemExtraction\Extensions.cs" />
+        <Compile Include="ProjectSystemExtraction\FileSystemHelper.cs" />
+        <Compile Include="ProjectSystemExtraction\GlobalSectionBlock.cs" />
+        <Compile Include="ProjectSystemExtraction\HashedString.cs" />
+        <Compile Include="ProjectSystemExtraction\HostServicesAggregator.cs" />
+        <Compile Include="ProjectSystemExtraction\IDotNetCliService.cs" />
+        <Compile Include="ProjectSystemExtraction\IEventEmitter.cs" />
+        <Compile Include="ProjectSystemExtraction\IEventEmitterExtensions.cs" />
+        <Compile Include="ProjectSystemExtraction\IHasher.cs" />
+        <Compile Include="ProjectSystemExtraction\IHostServicesProvider.cs" />
+        <Compile Include="ProjectSystemExtraction\ImmutableArrayExtensions.cs" />
+        <Compile Include="ProjectSystemExtraction\IMSBuildLocator.cs" />
+        <Compile Include="ProjectSystemExtraction\InvalidSolutionFileException.cs" />
+        <Compile Include="ProjectSystemExtraction\ItemNames.cs" />
+        <Compile Include="ProjectSystemExtraction\MetadataFileReferenceCache.cs" />
+        <Compile Include="ProjectSystemExtraction\MetadataNames.cs" />
+        <Compile Include="ProjectSystemExtraction\MetadataReferenceEqualityComparer.cs" />
+        <Compile Include="ProjectSystemExtraction\MicrosoftBuildLocatorInstanceProvider.cs" />
+        <Compile Include="ProjectSystemExtraction\MSBuildDiagnostic.cs" />
+        <Compile Include="ProjectSystemExtraction\MSBuildDiagnosticSeverity.cs" />
+        <Compile Include="ProjectSystemExtraction\MSBuildDiagnosticsMessage.cs" />
+        <Compile Include="ProjectSystemExtraction\MsBuildExtensions.cs" />
+        <Compile Include="ProjectSystemExtraction\MSBuildHelpers.cs" />
+        <Compile Include="ProjectSystemExtraction\MSBuildInstance.cs" />
+        <Compile Include="ProjectSystemExtraction\MSBuildInstanceProvider.cs" />
+        <Compile Include="ProjectSystemExtraction\MSBuildLocator.cs" />
+        <Compile Include="ProjectSystemExtraction\MSBuildLogger.cs" />
+        <Compile Include="ProjectSystemExtraction\MSBuildOptions.cs" />
+        <Compile Include="ProjectSystemExtraction\MSBuildOverrideOptions.cs" />
+        <Compile Include="ProjectSystemExtraction\MSBuildProjectDiagnosticsEvent.cs" />
+        <Compile Include="ProjectSystemExtraction\MSBuildProjectInfo.cs" />
+        <Compile Include="ProjectSystemExtraction\MsBuildProjectSystem.cs" />
+        <Compile Include="ProjectSystemExtraction\OmniSharpApplication.cs" />
+        <Compile Include="ProjectSystemExtraction\OmniSharpExtensionsOptions.cs" />
+        <Compile Include="ProjectSystemExtraction\OmniSharpTextLoader.cs" />
+        <Compile Include="ProjectSystemExtraction\OmniSharpWorkspace.cs" />
+        <Compile Include="ProjectSystemExtraction\OperatingSystem.cs" />
+        <Compile Include="ProjectSystemExtraction\PackageDependency.cs" />
+        <Compile Include="ProjectSystemExtraction\PackageDependencyChecker.cs" />
+        <Compile Include="ProjectSystemExtraction\PackageReference.cs" />
+        <Compile Include="ProjectSystemExtraction\PackageRestoreMessage.cs" />
+        <Compile Include="ProjectSystemExtraction\Platform.cs" />
+        <Compile Include="ProjectSystemExtraction\PlatformHelper.cs" />
+        <Compile Include="ProjectSystemExtraction\ProcessExitStatus.cs" />
+        <Compile Include="ProjectSystemExtraction\ProcessExtensions.cs" />
+        <Compile Include="ProjectSystemExtraction\ProcessHelper.cs" />
+        <Compile Include="ProjectSystemExtraction\ProjectBlock.cs" />
+        <Compile Include="ProjectSystemExtraction\ProjectConfigurationMessage.cs" />
+        <Compile Include="ProjectSystemExtraction\ProjectFileInfo.cs" />
+        <Compile Include="ProjectSystemExtraction\ProjectFileInfoCollection.cs" />
+        <Compile Include="ProjectSystemExtraction\ProjectFileInfoExtensions.cs" />
+        <Compile Include="ProjectSystemExtraction\ProjectIdInfo.cs" />
+        <Compile Include="ProjectSystemExtraction\ProjectLoadedEventArgs.cs" />
+        <Compile Include="ProjectSystemExtraction\ProjectLoader.cs" />
+        <Compile Include="ProjectSystemExtraction\ProjectManager.cs" />
+        <Compile Include="ProjectSystemExtraction\ProjectSectionBlock.cs" />
+        <Compile Include="ProjectSystemExtraction\Property.cs" />
+        <Compile Include="ProjectSystemExtraction\PropertyConverter.cs" />
+        <Compile Include="ProjectSystemExtraction\PropertyNames.cs" />
+        <Compile Include="ProjectSystemExtraction\Scanner.cs" />
+        <Compile Include="ProjectSystemExtraction\SdksPathResolver.cs" />
+        <Compile Include="ProjectSystemExtraction\SectionBlock.cs" />
+        <Compile Include="ProjectSystemExtraction\SemanticVersion.cs" />
+        <Compile Include="ProjectSystemExtraction\SolutionFile.cs" />
+        <Compile Include="ProjectSystemExtraction\SolutionFilterReader.cs" />
+        <Compile Include="ProjectSystemExtraction\StdioEventEmitter.cs" />
+        <Compile Include="ProjectSystemExtraction\StdioLoggerExtensions.cs" />
+        <Compile Include="ProjectSystemExtraction\TargetFramework.cs" />
+        <Compile Include="ProjectSystemExtraction\TargetNames.cs" />
+        <Compile Include="ProjectSystemExtraction\UnresolvedDependenciesMessage.cs" />
+        <Compile Include="ProjectSystemExtraction\UserOverrideInstanceProvider.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
         <Compile Include="RequestPacket.cs" />
         <Compile Include="ResponsePacket.cs" />
+        <Compile Include="Router.cs" />
         <Compile Include="SharedTextWriter.cs" />
+        <Compile Include="StdioLogger.cs" />
+        <Compile Include="StdioLoggerProvider.cs" />
         <Compile Include="TestHandler.cs" />
     </ItemGroup>
     <ItemGroup>
@@ -185,12 +432,10 @@
       </PropertyGroup>
       <Error Condition="!Exists('..\packages\Microsoft.CodeAnalysis.Analyzers.3.3.3\build\Microsoft.CodeAnalysis.Analyzers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeAnalysis.Analyzers.3.3.3\build\Microsoft.CodeAnalysis.Analyzers.props'))" />
       <Error Condition="!Exists('..\packages\Microsoft.CodeAnalysis.Analyzers.3.3.3\build\Microsoft.CodeAnalysis.Analyzers.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeAnalysis.Analyzers.3.3.3\build\Microsoft.CodeAnalysis.Analyzers.targets'))" />
-      <Error Condition="!Exists('..\packages\System.Text.Json.6.0.0\build\System.Text.Json.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\System.Text.Json.6.0.0\build\System.Text.Json.targets'))" />
       <Error Condition="!Exists('..\packages\Microsoft.Build.Locator.1.4.1\build\Microsoft.Build.Locator.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Build.Locator.1.4.1\build\Microsoft.Build.Locator.props'))" />
       <Error Condition="!Exists('..\packages\Microsoft.Build.Locator.1.4.1\build\Microsoft.Build.Locator.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Build.Locator.1.4.1\build\Microsoft.Build.Locator.targets'))" />
     </Target>
     <Import Project="..\packages\Microsoft.CodeAnalysis.Analyzers.3.3.3\build\Microsoft.CodeAnalysis.Analyzers.targets" Condition="Exists('..\packages\Microsoft.CodeAnalysis.Analyzers.3.3.3\build\Microsoft.CodeAnalysis.Analyzers.targets')" />
-    <Import Project="..\packages\System.Text.Json.6.0.0\build\System.Text.Json.targets" Condition="Exists('..\packages\System.Text.Json.6.0.0\build\System.Text.Json.targets')" />
     <Import Project="..\packages\Microsoft.Build.Locator.1.4.1\build\Microsoft.Build.Locator.targets" Condition="Exists('..\packages\Microsoft.Build.Locator.1.4.1\build\Microsoft.Build.Locator.targets')" />
     <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
          Other similar extension points exist, see Microsoft.Common.targets.

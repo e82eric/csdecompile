@@ -3,8 +3,10 @@ using Microsoft.CodeAnalysis;
 
 namespace TryOmnisharpExtension.IlSpy;
 
-public interface IOmnisharpWorkspace
+public interface IOmniSharpWorkspace
 {
     public IEnumerable<string> GetProjectAssemblyPaths();
     Solution CurrentSolution { get; }
+    public Document GetDocument(string fileName);
+    IEnumerable<Document> GetDocuments(string filePath);
 }

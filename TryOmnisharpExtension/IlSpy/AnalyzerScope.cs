@@ -68,7 +68,7 @@ namespace TryOmnisharpExtension.IlSpy
                 {
                     //THe GetAwaiter.GetResult should be ok here since it will only be async once in applications runtime.
                     //TODO: Better way to do this
-                    var projectAssemblises = _workspace.GetProjectCompilations().GetAwaiter().GetResult()
+                    var projectAssemblises = _workspace.GetProjectCompilations()
                         .Select(r => r.AssemblyName);
                     if (!projectAssemblises.Contains(pefile.Name))
                     {

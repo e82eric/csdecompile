@@ -22,16 +22,17 @@ namespace StdIoHost
         }
         public override async Task<object> Handle(RequestPacket packet)
         {
-            var arguments = DeserializeRequestObject(packet.ArgumentsStream);
-
-            var argObject = arguments.ToObject<GetAllTypesRequest>();
-            
-            var allTypes = await _allTypesRepository.GetAllTypes(
-                argObject.Directory,
-                argObject.TypeName);
-
-            var result = new { AllTypes = allTypes };
-            return result;
+            return null;
+            // var arguments = DeserializeRequestObject(packet.ArgumentsStream);
+            //
+            // var argObject = arguments.ToObject<GetAllTypesRequest>();
+            //
+            // var allTypes = await _allTypesRepository.GetAllTypes(
+            //     argObject.Directory,
+            //     argObject.TypeName);
+            //
+            // var result = new { AllTypes = allTypes };
+            // return result;
         }
         
         private JToken DeserializeRequestObject(Stream readStream)

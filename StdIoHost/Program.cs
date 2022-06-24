@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Linq;
-using System.Net;
 using System.Threading;
-using Microsoft.Build.Locator;
-using Microsoft.CodeAnalysis.MSBuild;
+using StdIoHost.ProjectSystemExtraction;
 
 namespace StdIoHost
 {
@@ -11,9 +8,10 @@ namespace StdIoHost
     {
         public static void Main(string[] args)
         {
+            var solutionPath = args[0];
             var cancellation = new CancellationTokenSource();
-            var stdOut = new SharedTextWriter(Console.Out);
-            var host = new Host(Console.In, stdOut);
+            OmniSharpApplication.Init(Console.Out, Console.In, solutionPath).GetAwaiter().GetResult();
+            var host = OmniSharpApplication.CreateHost();
             host.Start();
             cancellation.Token.WaitHandle.WaitOne();
         }

@@ -2,10 +2,11 @@
 using System.Collections.Concurrent;
 using System.IO;
 using System.Threading;
+using OmniSharp.Services;
 
 namespace StdIoHost
 {
-    public class SharedTextWriter : IDisposable
+    public class SharedTextWriter : IDisposable, ISharedTextWriter
     {
         private readonly TextWriter _writer;
         private readonly Thread _thread;

@@ -9,13 +9,13 @@ namespace TryOmnisharpExtension.FindImplementations;
 public class IlSpyFindImplementationsCommandFactoryTemp : IlSpyFindImplementationsCommandFactory,
     ICommandFactory<INavigationCommand<FindImplementationsResponse>>
 {
-    private readonly OmniSharpWorkspace _omniSharpWorkspace;
+    private readonly IOmniSharpWorkspace _omniSharpWorkspace;
 
     [ImportingConstructor]
     public IlSpyFindImplementationsCommandFactoryTemp(
         IlSpyBaseTypeUsageFinder typeFinder,
         IlSpyMemberImplementationFinder memberImplementationFinder,
-        OmniSharpWorkspace omniSharpWorkspace):base(typeFinder, memberImplementationFinder)
+        IOmniSharpWorkspace omniSharpWorkspace):base(typeFinder, memberImplementationFinder)
     {
         _omniSharpWorkspace = omniSharpWorkspace;
     }

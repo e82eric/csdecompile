@@ -21,6 +21,12 @@ public class PeFileCache
         var result = _peFileCache.Values.ToArray();
         return result;
     }
+
+    public int GetAssemblyCount()
+    {
+        return _peFileCache.Count;
+    }
+    
     public bool TryGetByNameAndFrameworkId(string fullName, string targetFrameworkId, out PEFile peFile)
     {
         var uniqueness = fullName + '|' + targetFrameworkId;

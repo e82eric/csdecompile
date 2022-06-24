@@ -183,7 +183,7 @@ public class IlSpyFindImplementationsCommandFactory2<TResponseType>
 
     private async Task<INamedTypeSymbol> GetTypeSymbol(string fullName)
     {
-        var compilations = await _decompileWorkspace.GetProjectCompilations();
+        var compilations = _decompileWorkspace.GetProjectCompilations();
         INamedTypeSymbol symbol = null;
         foreach (var compilation in compilations)
         {

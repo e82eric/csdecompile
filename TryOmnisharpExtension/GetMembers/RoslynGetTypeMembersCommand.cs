@@ -1,17 +1,18 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using OmniSharp;
+using TryOmnisharpExtension.IlSpy;
 
 namespace TryOmnisharpExtension.GetMembers;
 
 public class RoslynGetTypeMembersCommand : INavigationCommand<GetTypeMembersResponse>
 {
     private readonly INamedTypeSymbol _symbol;
-    private readonly OmniSharpWorkspace _workspace;
+    private readonly IOmniSharpWorkspace _workspace;
 
     public RoslynGetTypeMembersCommand(
         INamedTypeSymbol symbol,
-        OmniSharpWorkspace workspace)
+        IOmniSharpWorkspace workspace)
     {
         _symbol = symbol;
         _workspace = workspace;

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Composition;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using ICSharpCode.Decompiler.Metadata;
 using Microsoft.CodeAnalysis;
@@ -12,18 +13,18 @@ namespace TryOmnisharpExtension.IlSpy
     [Export(typeof(IDecompileWorkspace))]
     public class DecompileWorkspace : IDecompileWorkspace
     {
-        private readonly IOmnisharpWorkspace _workspace;
+        private readonly IOmniSharpWorkspace _workspace;
         private readonly PeFileCache _peFileCache;
         private readonly ConcurrentDictionary<string, Compilation> _compilations = new ();
 
         [ImportingConstructor]
-        public DecompileWorkspace(IOmnisharpWorkspace workspace, PeFileCache peFileCache)
+        public DecompileWorkspace(IOmniSharpWorkspace workspace, PeFileCache peFileCache)
         {
             _workspace = workspace;
             _peFileCache = peFileCache;
         }
 
-        public void LoadDlls()
+        public int LoadDlls()
         {
             var projectAssemblyPaths = _workspace.GetProjectAssemblyPaths();
             foreach (var path in projectAssemblyPaths)
@@ -37,9 +38,12 @@ namespace TryOmnisharpExtension.IlSpy
                     _peFileCache.TryOpen(dllFilePath.FullName, out _);
                 }
             }
-        }
 
-        public async Task<IReadOnlyList<Compilation>> GetProjectCompilations()
+            var result = _peFileCache.GetAssemblyCount();
+            return result;
+        }
+        
+        public async Task RunProjectCompilations()
         {
             var result = new List<Compilation>();
             foreach (var project in _workspace.CurrentSolution.Projects)
@@ -55,12 +59,16 @@ namespace TryOmnisharpExtension.IlSpy
                     result.Add(compilation);
                 }
             }
+        }
+
+        public IReadOnlyList<Compilation> GetProjectCompilations()
+        {
+            var result = _compilations.Values.ToArray();
             return result;
         }
 
 		public PEFile[] GetAssemblies()
         {
-            LoadDlls();
             var result = _peFileCache.GetAssemblies();
             return result;
         }

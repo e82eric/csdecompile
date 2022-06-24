@@ -5,6 +5,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.FindSymbols;
 using OmniSharp;
 using OmniSharp.Extensions;
+using TryOmnisharpExtension.IlSpy;
 using ISymbol = Microsoft.CodeAnalysis.ISymbol;
 
 namespace TryOmnisharpExtension.FindUsages;
@@ -12,11 +13,11 @@ namespace TryOmnisharpExtension.FindUsages;
 public class RoslynFindUsagesCommand : INavigationCommand<FindUsagesResponse>
 {
     private readonly ISymbol _symbol;
-    private readonly OmniSharpWorkspace _workspace;
+    private readonly IOmniSharpWorkspace _workspace;
 
     public RoslynFindUsagesCommand(
         ISymbol symbol,
-        OmniSharpWorkspace workspace)
+        IOmniSharpWorkspace workspace)
     {
         _symbol = symbol;
         _workspace = workspace;

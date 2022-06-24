@@ -1,6 +1,6 @@
 namespace TryOmnisharpExtension
 {
-    internal static class Endpoints
+    public static class Endpoints
     {
         public const string DecompileGotoDefinition = "/decompilegotodefinition";
         public const string DecompileFindImplementations = "/decompilefindimplementations";

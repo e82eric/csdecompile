@@ -12,12 +12,12 @@ public class ExternalAssembliesDecompileWorkspace : IDecompileWorkspace
         return new PEFile[] { };
     }
 
-    public void LoadDlls()
+    public int LoadDlls()
     {
-        
+        return 0;
     }
 
-    public Task<IReadOnlyList<Compilation>> GetProjectCompilations()
+    public IReadOnlyList<Compilation> GetProjectCompilations()
     {
         throw new System.NotImplementedException();
     }

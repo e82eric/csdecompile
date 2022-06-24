@@ -1,5 +1,6 @@
 ﻿using System.Composition;
 using OmniSharp;
+using TryOmnisharpExtension.IlSpy;
 using ISymbol = Microsoft.CodeAnalysis.ISymbol;
 
 namespace TryOmnisharpExtension.FindUsages;
@@ -7,7 +8,7 @@ namespace TryOmnisharpExtension.FindUsages;
 [Export(typeof(ICommandFactory<INavigationCommand<FindUsagesResponse>>))]
 public class FindUsagesCommandFactory : ExternalAssembliesFindUsagesCommandFactory, ICommandFactory<INavigationCommand<FindUsagesResponse>>
 {
-    private readonly OmniSharpWorkspace _omniSharpWorkspace;
+    private readonly IOmniSharpWorkspace _omniSharpWorkspace;
 
     [ImportingConstructor]
     public FindUsagesCommandFactory(
@@ -17,7 +18,7 @@ public class FindUsagesCommandFactory : ExternalAssembliesFindUsagesCommandFacto
         IlSpyFieldUsagesFinder fieldUsagesFinder,
         IlSpyVariableUsagesFinder variableUsagesFinder,
         IlSpyEventUsagesFinder eventUsagesFinder,
-        OmniSharpWorkspace omniSharpWorkspace):base(
+        IOmniSharpWorkspace omniSharpWorkspace):base(
             usagesFinder,
             methodUsagesFinder,
             propertyUsagesFinder,

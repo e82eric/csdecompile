@@ -340,9 +340,9 @@
         <Compile Include="IlSpy\IlSpySymbolFinder.cs" />
         <Compile Include="IlSpy\IlSpyToSourceInfoBase.cs" />
         <Compile Include="IlSpy\IlSpyTypeSystemFactory.cs" />
-        <Compile Include="IlSpy\IOmnisharpWorkspace.cs" />
+        <Compile Include="IlSpy\IOmniSharpWorkspace.cs" />
         <Compile Include="IlSpy\MyAssemblyResolver.cs" />
-        <Compile Include="IlSpy\OmnisharpWorkspaceWrapper.cs" />
+        <Compile Include="IlSpy\OmniSharpWorkspaceWrapper.cs" />
         <Compile Include="IlSpy\PeFileCache.cs" />
         <Compile Include="IlSpy\SymbolHelper.cs" />
         <Compile Include="INavigationCommand.cs" />

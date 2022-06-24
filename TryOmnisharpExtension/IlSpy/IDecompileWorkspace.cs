@@ -9,6 +9,6 @@ namespace TryOmnisharpExtension.IlSpy;
 public interface IDecompileWorkspace
 {
     PEFile[] GetAssemblies();
-    void LoadDlls();
-    Task<IReadOnlyList<Compilation>> GetProjectCompilations();
+    int LoadDlls();
+    IReadOnlyList<Compilation> GetProjectCompilations();
 }

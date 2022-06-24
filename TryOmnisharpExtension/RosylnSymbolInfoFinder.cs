@@ -15,13 +15,13 @@ namespace TryOmnisharpExtension
     [Export]
     public class RosylnSymbolInfoFinder<TCommandType>
     {
-        private readonly OmniSharpWorkspace _workspace;
+        private readonly IOmniSharpWorkspace _workspace;
         private readonly IlSpySymbolFinder _ilSpySymbolFinder;
         private readonly ICommandFactory<TCommandType> _gotoDefinitionCommandFactory;
 
         [ImportingConstructor]
         public RosylnSymbolInfoFinder(
-            OmniSharpWorkspace workspace,
+            IOmniSharpWorkspace workspace,
             IlSpySymbolFinder ilSpySymbolFinder,
             ICommandFactory<TCommandType> gotoDefinitionCommandFactory)
         {

@@ -17,13 +17,13 @@ namespace TryOmnisharpExtension;
 [Export]
 public class EverywhereSymbolInfoFinder2<TCommandResponseType> where TCommandResponseType : FindImplementationsResponse, new()
 {
-    private readonly OmniSharpWorkspace _workspace;
+    private readonly IOmniSharpWorkspace _workspace;
     private readonly IlSpySymbolFinder _ilSpySymbolFinder;
     private readonly ICommandFactory<INavigationCommand<TCommandResponseType>> _commandFactory;
 
     [ImportingConstructor]
     public EverywhereSymbolInfoFinder2(
-        OmniSharpWorkspace workspace,
+        IOmniSharpWorkspace workspace,
         IlSpySymbolFinder ilSpySymbolFinder,
         ICommandFactory<INavigationCommand<TCommandResponseType>> commandFactory)
     {

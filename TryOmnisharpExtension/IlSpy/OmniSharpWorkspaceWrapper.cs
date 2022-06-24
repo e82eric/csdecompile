@@ -6,13 +6,13 @@ using OmniSharp;
 
 namespace TryOmnisharpExtension.IlSpy;
 
-[Export(typeof(IOmnisharpWorkspace))]
-public class OmnisharpWorkspaceWrapper : IOmnisharpWorkspace
+[Export(typeof(IOmniSharpWorkspace))]
+public class OmniSharpWorkspaceWrapper : IOmniSharpWorkspace
 {
     private readonly OmniSharpWorkspace _omniSharpWorkspace;
 
     [ImportingConstructor]
-    public OmnisharpWorkspaceWrapper(OmniSharpWorkspace omniSharpWorkspace)
+    public OmniSharpWorkspaceWrapper(OmniSharpWorkspace omniSharpWorkspace)
     {
         _omniSharpWorkspace = omniSharpWorkspace;
     }
@@ -24,4 +24,13 @@ public class OmnisharpWorkspaceWrapper : IOmnisharpWorkspace
     }
 
     public Solution CurrentSolution => _omniSharpWorkspace.CurrentSolution;
+    public Document GetDocument(string fileName)
+    {
+        return _omniSharpWorkspace.GetDocument(fileName);
+    }
+
+    public IEnumerable<Document> GetDocuments(string filePath)
+    {
+        return _omniSharpWorkspace.GetDocuments(filePath);
+    }
 }
