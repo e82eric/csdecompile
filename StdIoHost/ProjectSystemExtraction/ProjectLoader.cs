@@ -64,7 +64,7 @@ internal class ProjectLoader
         return globalProperties;
     }
 
-    public (MSB.Execution.ProjectInstance projectInstance, MSB.Evaluation.Project project, ImmutableArray<MSBuildDiagnostic> diagnostics) BuildProject(
+    public (bool, MSB.Execution.ProjectInstance projectInstance, MSB.Evaluation.Project project, ImmutableArray<MSBuildDiagnostic> diagnostics) BuildProject(
         string filePath, IReadOnlyDictionary<string, string> configurationsInSolution)
     {
         using (_sdksPathResolver.SetSdksPathEnvironmentVariable(filePath))
@@ -96,12 +96,12 @@ internal class ProjectLoader
             var buildResult = projectInstance.Build(
                 targets: new string[] { TargetNames.Compile, TargetNames.CoreCompile },
                 loggers);
-
+            
             var diagnostics = msbuildLogger.GetDiagnostics();
 
             return buildResult
-                ? (projectInstance, evaluatedProject, diagnostics)
-                : (null, null, diagnostics);
+                ? (buildResult, projectInstance, evaluatedProject, diagnostics)
+                : (buildResult, null, null, diagnostics);
         }
     }
 

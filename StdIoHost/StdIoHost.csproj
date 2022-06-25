@@ -314,7 +314,6 @@
         <Reference Include="WindowsBase" />
     </ItemGroup>
     <ItemGroup>
-        <Compile Include="AllTypesHandler.cs" />
         <Compile Include="BaseLogger.cs" />
         <Compile Include="EndpointHandler.cs" />
         <Compile Include="EventPacket.cs" />
@@ -379,6 +378,7 @@
         <Compile Include="ProjectSystemExtraction\ProcessHelper.cs" />
         <Compile Include="ProjectSystemExtraction\ProjectBlock.cs" />
         <Compile Include="ProjectSystemExtraction\ProjectConfigurationMessage.cs" />
+        <Compile Include="ProjectSystemExtraction\ProjectData.cs" />
         <Compile Include="ProjectSystemExtraction\ProjectFileInfo.cs" />
         <Compile Include="ProjectSystemExtraction\ProjectFileInfoCollection.cs" />
         <Compile Include="ProjectSystemExtraction\ProjectFileInfoExtensions.cs" />
@@ -409,7 +409,6 @@
         <Compile Include="SharedTextWriter.cs" />
         <Compile Include="StdioLogger.cs" />
         <Compile Include="StdioLoggerProvider.cs" />
-        <Compile Include="TestHandler.cs" />
     </ItemGroup>
     <ItemGroup>
       <None Include="App.config" />

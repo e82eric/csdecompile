@@ -55,7 +55,7 @@ namespace OmniSharp.MSBuild
                     continue;
                 }
 
-                var loadResult = _manager.ProcessProjectUpdate(projectFilePath, allowAutoRestore: true, projectIdInfo);
+                var loadResult = _manager.LoadProject(projectFilePath, projectIdInfo);
                 if (loadResult)
                 {
                     _eventEmitter.Emit("PROJECT_LOADED", new { ProjectName = projectFilePath });

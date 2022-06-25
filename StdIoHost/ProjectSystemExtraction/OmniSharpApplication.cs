@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Collections.Immutable;
+﻿using System.Collections.Immutable;
 using System.IO;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Caching.Memory;
@@ -78,12 +77,6 @@ internal static class OmniSharpApplication
 
         sdksPathResolver.Enabled = msBuildOptions.UseLegacySdkResolver;
         sdksPathResolver.OverridePath = msBuildOptions.MSBuildSDKsPath;
-
-        // if (logLevel < LogLevel.Information)
-        // {
-        //     var buildEnvironmentInfo = MSBuildHelpers.GetBuildEnvironmentInfo();
-        //     _logger.LogDebug($"MSBuild environment: {Environment.NewLine}{buildEnvironmentInfo}");
-        // }
 
         var propertyOverrides = msBuildLocator.RegisteredInstance?.PropertyOverrides ?? ImmutableDictionary.Create<string, string>();
         var packageDependencyChecker = new PackageDependencyChecker(

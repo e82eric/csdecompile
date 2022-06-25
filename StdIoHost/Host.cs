@@ -10,13 +10,6 @@ namespace StdIoHost
         private readonly TextReader _input;
         private readonly SharedTextWriter _output;
         private readonly Router _router;
-        // private readonly IDictionary<string, Lazy<EndpointHandler>> _endpointHandlers;
-        // private DecompileGotoDefinitionHandler _goToDefinitionHandler;
-        // private DecompileFindImplementationsHandler _findImplementationsHandler;
-        // private DecompiledSourceHandler _getSourceHandler;
-        // private DecompileFindUsagesHandler _findUsagesHandler;
-        // private GetTypesHandler _searchTypesHandler;
-        // private GetTypeMembersHandler _getTypeMembersHander;
 
         public Host(TextReader input, SharedTextWriter output, Router router)
         {

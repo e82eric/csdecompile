@@ -6,7 +6,6 @@ using System.Linq;
 using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.Extensions.Logging;
 using MSB = Microsoft.Build;
 
@@ -20,12 +19,10 @@ internal class ProjectManager : DisposableObject
         public string ChangeTriggerPath { get; }
         public ProjectLoadedEventArgs LoadedEventArgs { get; set; }
 
-        public ProjectToUpdate(string filePath, bool allowAutoRestore, ProjectIdInfo projectIdInfo, string changeTriggerPath)
+        public ProjectToUpdate(string filePath, ProjectIdInfo projectIdInfo)
         {
             ProjectIdInfo = projectIdInfo ?? throw new ArgumentNullException(nameof(projectIdInfo));
             FilePath = filePath ?? throw new ArgumentNullException(nameof(filePath));
-            ChangeTriggerPath = changeTriggerPath;
-            AllowAutoRestore = allowAutoRestore;
         }
     }
 
@@ -77,73 +74,56 @@ internal class ProjectManager : DisposableObject
         _processLoopCancellation.Dispose();
     }
     
-    public bool ProcessProjectUpdate(string projectFilePath, bool allowAutoRestore, ProjectIdInfo projectId, string changeTriggerFilePath = null)
+    public bool LoadProject(string projectFilePath, ProjectIdInfo projectId)
     {
-        _logger.LogInformation($"Queue project update for '{projectFilePath}'");
-        var projectToUpdate = new ProjectToUpdate(projectFilePath, allowAutoRestore, projectId, changeTriggerFilePath);
-        var result = ProcessProject(projectToUpdate);
-        return result;
-    }
-    
-    private bool ProcessProject(ProjectToUpdate projectToUpdate)
-    {
-        bool result = false;
-        
-        var (projectFileInfo, loadedEventArgs) = LoadProject(projectToUpdate.FilePath, projectToUpdate.ProjectIdInfo);
-        if (projectFileInfo == null)
+        _logger.LogInformation($"Start project load for '{projectFilePath}'");
+        var projectToUpdate = new ProjectToUpdate(projectFilePath, projectId);
+        if (_workspace.CurrentSolution.Projects.Any(i => i.FilePath == projectFilePath))
         {
-            _failedToLoadProjectFiles.Add(projectToUpdate.FilePath);
-        }
-        else
-        {
-            result = true;
+            _logger.LogInformation($"Already leaded '{projectFilePath}'");
+            return true;
         }
 
-        projectToUpdate.LoadedEventArgs = loadedEventArgs;
-        AddProjectToWorkspace(projectFileInfo);
-        AddProjectFilesToWorkspace(projectFileInfo, projectToUpdate.ChangeTriggerPath);
-
-        _packageDependencyChecker.CheckForUnresolvedDependences(projectFileInfo, projectToUpdate.AllowAutoRestore);
-
-        return result;
-    }
-
-    private (ProjectFileInfo, ProjectLoadedEventArgs) LoadProject(string projectFilePath, ProjectIdInfo idInfo)
-        => LoadOrReloadProject(projectFilePath, () => ProjectFileInfo.Load(projectFilePath, idInfo, _projectLoader, _sessionId, _dotNetInfo));
-
-    private (ProjectFileInfo, ProjectLoadedEventArgs) LoadOrReloadProject(string projectFilePath, Func<(ProjectFileInfo, ImmutableArray<MSBuildDiagnostic>, ProjectLoadedEventArgs)> loader)
-    {
-        _logger.LogInformation($"Loading project: {projectFilePath}");
+        _logger.LogInformation($"Loading project: {projectToUpdate.FilePath}");
 
         try
         {
-            var (projectFileInfo, diagnostics, eventArgs) = loader();
-
-            if (projectFileInfo != null)
+            var buildResult = Build(
+                projectToUpdate.FilePath,
+                projectToUpdate.ProjectIdInfo);
+            
+            if (buildResult.success)
             {
-                _logger.LogInformation($"Successfully loaded project file '{projectFilePath}'.");
+                _logger.LogInformation($"Successfully ran buildProject project file '{projectToUpdate.FilePath}'.");
+                projectToUpdate.LoadedEventArgs = buildResult.eventArgs;
+                AddProjectToWorkspace(buildResult.projectFileInfo);
+                AddProjectFilesToWorkspace(buildResult.projectFileInfo);
+
+                _packageDependencyChecker.CheckForUnresolvedDependences(buildResult.projectFileInfo, projectToUpdate.AllowAutoRestore);
+                _logger.LogInformation($"Successfully loaded '{projectToUpdate.FilePath}'.");
             }
             else
             {
-                _logger.LogWarning($"Failed to load project file '{projectFilePath}'.");
+                _failedToLoadProjectFiles.Add(projectToUpdate.FilePath);
+                _logger.LogWarning($"Failed to load project file '{projectToUpdate.FilePath}'.");
+                return false;
             }
 
-            _eventEmitter.MSBuildProjectDiagnostics(projectFilePath, diagnostics);
-
-            return (projectFileInfo, eventArgs);
+            _eventEmitter.MSBuildProjectDiagnostics(projectToUpdate.FilePath, buildResult.diagnostics);
+            return true;
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, $"Failed to load project file '{projectFilePath}'.");
-            _eventEmitter.Error(ex, fileName: projectFilePath);
-            return (null, null);
+            _logger.LogError(ex, $"Failed to load project file '{projectToUpdate.FilePath}'.");
+            _eventEmitter.Error(ex, fileName: projectToUpdate.FilePath);
+            return false;
         }
     }
 
     private void AddProjectToWorkspace(ProjectFileInfo projectFileInfo)
     {
         _logger.LogInformation($"Adding project '{projectFileInfo.FilePath}'");
-
+        
         _projectFiles.Add(projectFileInfo);
 
         var projectInfo = projectFileInfo.CreateProjectInfo(_analyzerAssemblyLoader);
@@ -152,7 +132,7 @@ internal class ProjectManager : DisposableObject
         {
             var newSolution = _workspace.CurrentSolution.AddProject(projectInfo);
 
-            SubscribeToAnalyzerReferenceLoadFailures(projectInfo.AnalyzerReferences.Cast<AnalyzerFileReference>(), _logger);
+            // SubscribeToAnalyzerReferenceLoadFailures(projectInfo.AnalyzerReferences.Cast<AnalyzerFileReference>(), _logger);
 
             if (!_workspace.TryApplyChanges(newSolution))
             {
@@ -161,7 +141,7 @@ internal class ProjectManager : DisposableObject
         }
     }
     
-    private void AddProjectFilesToWorkspace(ProjectFileInfo projectFileInfo, string changeTriggerFilePath)
+    private void AddProjectFilesToWorkspace(ProjectFileInfo projectFileInfo)
     {
         var project = _workspace.CurrentSolution.GetProject(projectFileInfo.Id);
         if (project == null)
@@ -191,17 +171,6 @@ internal class ProjectManager : DisposableObject
                 _workspace.UpdateCompilationOptionsForProject(project.Id, newCompilationOptions);
                 _logger.LogDebug($"Updated project compilation options on project {project.Name}.");
             }
-        }
-    }
-
-    private void SubscribeToAnalyzerReferenceLoadFailures(IEnumerable<AnalyzerFileReference> analyzerFileReferences, ILogger logger)
-    {
-        foreach (var analyzerFileReference in analyzerFileReferences)
-        {
-            analyzerFileReference.AnalyzerLoadFailed += (sender, e) =>
-            {
-                logger.LogError($"Failure while loading the analyzer reference '{analyzerFileReference.Display}': {e.Message}");
-            };
         }
     }
 
@@ -293,7 +262,9 @@ internal class ProjectManager : DisposableObject
                     // We've found a project reference that we didn't know about already, but it exists on disk.
                     // This is likely a project that is outside of OmniSharp's TargetDirectory.
                     referencedProject = ProjectFileInfo.CreateNoBuild(projectReferencePath, _projectLoader, _dotNetInfo);
-                    AddProjectToWorkspace(referencedProject);
+                    LoadProject(referencedProject.FilePath, referencedProject.ProjectIdInfo);
+                    // AddProjectToWorkspace(referencedProject);
+                    // AddProjectFilesToWorkspace(referencedProject);
                 }
             }
 
@@ -425,5 +396,36 @@ internal class ProjectManager : DisposableObject
         }
 
         return false;
+    }
+    
+    public (bool success, ProjectFileInfo projectFileInfo, ImmutableArray<MSBuildDiagnostic> diagnostics, ProjectLoadedEventArgs eventArgs)
+        Build(string filePath, ProjectIdInfo projectIdInfo)
+    {
+        if (!File.Exists(filePath))
+        {
+            return (false, null, ImmutableArray<MSBuildDiagnostic>.Empty, null);
+        }
+
+        var (buildResult, projectInstance, project, diagnostics) = _projectLoader.BuildProject(filePath, projectIdInfo?.SolutionConfiguration);
+        
+        if (projectInstance == null)
+        {
+            return (buildResult, null, diagnostics, null);
+        }
+
+        var data = ProjectData.Create(filePath, projectInstance, project);
+        var projectFileInfo = new ProjectFileInfo(projectIdInfo, filePath, data, _sessionId, _dotNetInfo);
+        var eventArgs = new ProjectLoadedEventArgs(projectIdInfo.Id,
+            project,
+            _sessionId,
+            projectInstance,
+            diagnostics,
+            isReload: false,
+            projectIdInfo.IsDefinedInSolution,
+            projectFileInfo.SourceFiles,
+            _dotNetInfo.Version,
+            data.References);
+
+        return (buildResult, projectFileInfo, diagnostics, eventArgs);
     }
 }

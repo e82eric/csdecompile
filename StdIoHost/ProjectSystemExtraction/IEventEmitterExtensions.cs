@@ -8,11 +8,12 @@ internal static class IEventEmitterExtensions
 {
     public static void MSBuildProjectDiagnostics(this IEventEmitter eventEmitter, string projectFilePath, ImmutableArray<MSBuildDiagnostic> diagnostics)
     {
+        var errors = SelectMessages(diagnostics, MSBuildDiagnosticSeverity.Error);
         eventEmitter.Emit(MSBuildProjectDiagnosticsEvent.Id, new MSBuildProjectDiagnosticsEvent()
         {
             FileName = projectFilePath,
             Warnings = SelectMessages(diagnostics, MSBuildDiagnosticSeverity.Warning),
-            Errors = SelectMessages(diagnostics, MSBuildDiagnosticSeverity.Error)
+            Errors = errors
         });
     }
 
