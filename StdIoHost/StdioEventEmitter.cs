@@ -1,6 +1,6 @@
 namespace StdIoHost.ProjectSystemExtraction;
 
-public class StdioEventEmitter : IEventEmitter
+public class StdioEventEmitter
 {
     private readonly SharedTextWriter _writer;
 

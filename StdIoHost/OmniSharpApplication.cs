@@ -1,10 +1,8 @@
-﻿using System.Collections.Immutable;
+﻿using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
-using OmniSharp.MSBuild;
-using OmniSharp.Roslyn.Utilities;
+using StdIoHost.SimpleProjectSystem;
 using TryOmnisharpExtension;
 using TryOmnisharpExtension.FindImplementations;
 using TryOmnisharpExtension.FindUsages;
@@ -17,7 +15,7 @@ namespace StdIoHost.ProjectSystemExtraction;
 
 internal static class OmniSharpApplication
 {
-    private static OmniSharpWorkspace2 _workspace;
+    private static IOmniSharpWorkspace _workspace;
     private static ILoggerFactory _loggerFactory;
     private static PeFileCache _peFileCache;
     private static IlSpyTypeSystemFactory _decompilerTypeSystemFactory;
@@ -36,80 +34,38 @@ internal static class OmniSharpApplication
                 .AddFilter("System", LogLevel.Warning)
                 .AddConsole().AddStdio(_sharedTextWriter);
         });
-        ILogger logger = _loggerFactory.CreateLogger<Program>();
-        logger.LogInformation("Info Log");
-        logger.LogWarning("Warning Log");
-        logger.LogError("Error Log");
-        logger.LogCritical("Critical Log");
 
-        _workspace = GetWorkspace(_loggerFactory);
+        var eventEmitter = new StdioEventEmitter(_sharedTextWriter);
+        _workspace = GetWorkspace(eventEmitter);
         
         _peFileCache = new PeFileCache();
         var resolverFactory = new AssemblyResolverFactory(_peFileCache);
         _decompilerTypeSystemFactory = new IlSpyTypeSystemFactory(resolverFactory, _peFileCache);
         _decompileWorkspace = new DecompileWorkspace(_workspace, _peFileCache);
-        var eventEmitter = new StdioEventEmitter(_sharedTextWriter);
         var solutionFileInfo = new FileInfo(solutionPath);
-        var targetDirectory = solutionFileInfo.Directory.FullName;
-        var projectSystem = GetProjectSystem(eventEmitter, targetDirectory);
-        await projectSystem.Start(LogLevel.Debug, solutionFileInfo);
+        var projectsLoadTimer = Stopwatch.StartNew();
+        await ((SimpleDecompileWorkspace)_workspace).Start(solutionFileInfo);
+        projectsLoadTimer.Stop();
+        
+        var dllLoadTimer = Stopwatch.StartNew();
+        var assemblyCount = _decompileWorkspace.LoadDlls();
+        dllLoadTimer.Stop();
+        var compilationsTimer = Stopwatch.StartNew();
+        await _decompileWorkspace.RunProjectCompilations();
+        compilationsTimer.Stop();
+        eventEmitter.Emit("ASSEMBLIES_LOADED", new
+        {
+            AssembliesLoaded = assemblyCount,
+            ProjectsLoadTime = projectsLoadTimer.Elapsed,
+            DllLoadTime = dllLoadTimer.Elapsed,
+            CompilationsTime = compilationsTimer.Elapsed
+        });
     }
 
-    private static OmniSharpWorkspace2 GetWorkspace(ILoggerFactory loggerFactory)
+    private static IOmniSharpWorkspace GetWorkspace(StdioEventEmitter eventEmitter)
     {
-        var hostAggregator = new HostServicesAggregator(new IHostServicesProvider[] { }, loggerFactory);
-        var workspace = new OmniSharpWorkspace2(hostAggregator, loggerFactory);
-        return workspace;
-    }
-
-    public static ProjectSystem GetProjectSystem(IEventEmitter eventEmitter, string targetDirectory)
-    {
-        var memoryCache = new MemoryCache(new MemoryCacheOptions());
-        var analyzer = ShadowCopyAnalyzerAssemblyLoader.Instance;
-        var dotnetCliService = new DotNetCliService(_loggerFactory, eventEmitter, targetDirectory);
-        var dotNetInfo = dotnetCliService.GetInfo(targetDirectory);
-        var metadataFileReferenceCache = new MetadataFileReferenceCache(memoryCache, _loggerFactory);
-        var sdksPathResolver = new SdksPathResolver(dotnetCliService, _loggerFactory);
-        var msBuildLocator = MSBuildLocator.CreateDefault(_loggerFactory);
-        msBuildLocator.RegisterDefaultInstance(_loggerFactory.CreateLogger("Stuf"));
-        
-        var msBuildOptions = new MSBuildOptions();
-
-        sdksPathResolver.Enabled = msBuildOptions.UseLegacySdkResolver;
-        sdksPathResolver.OverridePath = msBuildOptions.MSBuildSDKsPath;
-
-        var propertyOverrides = msBuildLocator.RegisteredInstance?.PropertyOverrides ?? ImmutableDictionary.Create<string, string>();
-        var packageDependencyChecker = new PackageDependencyChecker(
-            _loggerFactory,
-            eventEmitter,
-            dotnetCliService,
-            msBuildOptions);
-        
-        var projectLoader = new ProjectLoader(msBuildOptions,
-            targetDirectory,
-            propertyOverrides,
-            _loggerFactory,
-            sdksPathResolver);
-
-        var projectManager = new ProjectManager(
-            _loggerFactory,
-            // msBuildOptions,
-            eventEmitter,
-            metadataFileReferenceCache,
-            packageDependencyChecker,
-            projectLoader,
-            _workspace,
-            analyzer,
-            // eventSinks.ToImmutableArray(),
-            dotNetInfo);
-
-        var system = new ProjectSystem(
-            eventEmitter,
-            _loggerFactory,
-            _decompileWorkspace,
-            projectManager);
-        
-        return system;
+        var result = new SimpleDecompileWorkspace(eventEmitter);
+        return result;
     }
 
     public static DecompileGotoDefinitionHandler CreateGoToDefinitionHandler()

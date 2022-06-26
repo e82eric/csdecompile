@@ -5,8 +5,23 @@ public static class SymbolHelper
 {
     public static bool AreSameUsingToken(this IEntity entity, IEntity toCompare)
     {
-        var result = entity.ParentModule.AssemblyName == toCompare.ParentModule.AssemblyName
-             && entity.MetadataToken == toCompare.MetadataToken;
+        if (entity == null || toCompare == null)
+        {
+            //TODO: Log what is going on here
+            return false;
+        }
+        var sameToken = entity.MetadataToken == toCompare.MetadataToken;
+        if (entity.ParentModule == null)
+        {
+            return false;
+        }
+
+        if (toCompare.ParentModule == null)
+        {
+            return false;
+        }
+        var sameAssembly = entity.ParentModule.AssemblyName == toCompare.ParentModule.AssemblyName;
+        var result = sameAssembly && sameToken;
         return result;
     }
     public static ITypeDefinition FindContainingType(IEntity symbol)

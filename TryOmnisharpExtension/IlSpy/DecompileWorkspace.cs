@@ -28,18 +28,7 @@ namespace TryOmnisharpExtension.IlSpy
         {
             var projectAssemblyPaths = _workspace.GetProjectAssemblyPaths();
 
-            // Parallel.ForEach(projectAssemblyPaths, path =>
-            // {
-            //     var projectDllFile = new FileInfo(path);
-            //     var projectBinDir = projectDllFile.Directory;
-            //     var binDirDlls = projectBinDir.GetFiles("*.dll", SearchOption.AllDirectories);
-            //
-            //     foreach (var dllFilePath in binDirDlls)
-            //     {
-            //         _peFileCache.TryOpen(dllFilePath.FullName, out _);
-            //     }
-            // });
-            foreach (var path in projectAssemblyPaths)
+            Parallel.ForEach(projectAssemblyPaths, path =>
             {
                 var projectDllFile = new FileInfo(path);
                 var projectBinDir = projectDllFile.Directory;
@@ -49,7 +38,18 @@ namespace TryOmnisharpExtension.IlSpy
                 {
                     _peFileCache.TryOpen(dllFilePath.FullName, out _);
                 }
-            }
+            });
+            // foreach (var path in projectAssemblyPaths)
+            // {
+            //     var projectDllFile = new FileInfo(path);
+            //     var projectBinDir = projectDllFile.Directory;
+            //     var binDirDlls = projectBinDir.GetFiles("*.dll", SearchOption.AllDirectories);
+            //
+            //     foreach (var dllFilePath in binDirDlls)
+            //     {
+            //         _peFileCache.TryOpen(dllFilePath.FullName, out _);
+            //     }
+            // }
 
             var result = _peFileCache.GetAssemblyCount();
             return result;

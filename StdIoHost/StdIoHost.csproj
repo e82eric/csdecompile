@@ -90,6 +90,9 @@
         <Reference Include="Microsoft.CodeAnalysis.Workspaces, Version=4.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
           <HintPath>..\packages\Microsoft.CodeAnalysis.Workspaces.Common.4.3.0-2.22225.6\lib\netstandard2.0\Microsoft.CodeAnalysis.Workspaces.dll</HintPath>
         </Reference>
+        <Reference Include="Microsoft.CodeAnalysis.Workspaces.MSBuild">
+          <HintPath>..\packages\Microsoft.CodeAnalysis.Workspaces.MSBuild.4.3.0-2.22225.6\lib\net472\Microsoft.CodeAnalysis.Workspaces.MSBuild.dll</HintPath>
+        </Reference>
         <Reference Include="Microsoft.CodeAnalysis.Workspaces.MSBuild, Version=4.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
           <HintPath>..\packages\Microsoft.CodeAnalysis.Workspaces.MSBuild.4.3.0-2.22225.6\lib\net472\Microsoft.CodeAnalysis.Workspaces.MSBuild.dll</HintPath>
         </Reference>
@@ -315,99 +318,20 @@
     </ItemGroup>
     <ItemGroup>
         <Compile Include="BaseLogger.cs" />
-        <Compile Include="EndpointHandler.cs" />
         <Compile Include="EventPacket.cs" />
         <Compile Include="Host.cs" />
+        <Compile Include="OmniSharpApplication.cs" />
         <Compile Include="Packet.cs" />
         <Compile Include="Program.cs" />
-        <Compile Include="ProjectSystemExtraction\Architecture.cs" />
-        <Compile Include="ProjectSystemExtraction\CompilationOptionsHelper.cs" />
-        <Compile Include="ProjectSystemExtraction\Configuration.cs" />
-        <Compile Include="ProjectSystemExtraction\DiscoveryType.cs" />
-        <Compile Include="ProjectSystemExtraction\DisposableObject.cs" />
-        <Compile Include="ProjectSystemExtraction\DotNetCliService.cs" />
-        <Compile Include="ProjectSystemExtraction\DotNetInfo.cs" />
-        <Compile Include="ProjectSystemExtraction\ErrorMessage.cs" />
-        <Compile Include="ProjectSystemExtraction\ErrorMessages.cs" />
-        <Compile Include="ProjectSystemExtraction\EventTypes.cs" />
-        <Compile Include="ProjectSystemExtraction\Extensions.cs" />
-        <Compile Include="ProjectSystemExtraction\FileSystemHelper.cs" />
-        <Compile Include="ProjectSystemExtraction\GlobalSectionBlock.cs" />
-        <Compile Include="ProjectSystemExtraction\HashedString.cs" />
-        <Compile Include="ProjectSystemExtraction\HostServicesAggregator.cs" />
-        <Compile Include="ProjectSystemExtraction\IDotNetCliService.cs" />
-        <Compile Include="ProjectSystemExtraction\IEventEmitter.cs" />
-        <Compile Include="ProjectSystemExtraction\IEventEmitterExtensions.cs" />
-        <Compile Include="ProjectSystemExtraction\IHasher.cs" />
-        <Compile Include="ProjectSystemExtraction\IHostServicesProvider.cs" />
-        <Compile Include="ProjectSystemExtraction\ImmutableArrayExtensions.cs" />
-        <Compile Include="ProjectSystemExtraction\IMSBuildLocator.cs" />
-        <Compile Include="ProjectSystemExtraction\InvalidSolutionFileException.cs" />
-        <Compile Include="ProjectSystemExtraction\ItemNames.cs" />
-        <Compile Include="ProjectSystemExtraction\MetadataFileReferenceCache.cs" />
-        <Compile Include="ProjectSystemExtraction\MetadataNames.cs" />
-        <Compile Include="ProjectSystemExtraction\MetadataReferenceEqualityComparer.cs" />
-        <Compile Include="ProjectSystemExtraction\MicrosoftBuildLocatorInstanceProvider.cs" />
-        <Compile Include="ProjectSystemExtraction\MSBuildDiagnostic.cs" />
-        <Compile Include="ProjectSystemExtraction\MSBuildDiagnosticSeverity.cs" />
-        <Compile Include="ProjectSystemExtraction\MSBuildDiagnosticsMessage.cs" />
-        <Compile Include="ProjectSystemExtraction\MsBuildExtensions.cs" />
-        <Compile Include="ProjectSystemExtraction\MSBuildHelpers.cs" />
-        <Compile Include="ProjectSystemExtraction\MSBuildInstance.cs" />
-        <Compile Include="ProjectSystemExtraction\MSBuildInstanceProvider.cs" />
-        <Compile Include="ProjectSystemExtraction\MSBuildLocator.cs" />
-        <Compile Include="ProjectSystemExtraction\MSBuildLogger.cs" />
-        <Compile Include="ProjectSystemExtraction\MSBuildOptions.cs" />
-        <Compile Include="ProjectSystemExtraction\MSBuildOverrideOptions.cs" />
-        <Compile Include="ProjectSystemExtraction\MSBuildProjectDiagnosticsEvent.cs" />
-        <Compile Include="ProjectSystemExtraction\MSBuildProjectInfo.cs" />
-        <Compile Include="ProjectSystemExtraction\MsBuildProjectSystem.cs" />
-        <Compile Include="ProjectSystemExtraction\OmniSharpApplication.cs" />
-        <Compile Include="ProjectSystemExtraction\OmniSharpExtensionsOptions.cs" />
-        <Compile Include="ProjectSystemExtraction\OmniSharpTextLoader.cs" />
-        <Compile Include="ProjectSystemExtraction\OmniSharpWorkspace.cs" />
-        <Compile Include="ProjectSystemExtraction\OperatingSystem.cs" />
-        <Compile Include="ProjectSystemExtraction\PackageDependency.cs" />
-        <Compile Include="ProjectSystemExtraction\PackageDependencyChecker.cs" />
-        <Compile Include="ProjectSystemExtraction\PackageReference.cs" />
-        <Compile Include="ProjectSystemExtraction\PackageRestoreMessage.cs" />
-        <Compile Include="ProjectSystemExtraction\Platform.cs" />
-        <Compile Include="ProjectSystemExtraction\PlatformHelper.cs" />
-        <Compile Include="ProjectSystemExtraction\ProcessExitStatus.cs" />
-        <Compile Include="ProjectSystemExtraction\ProcessExtensions.cs" />
-        <Compile Include="ProjectSystemExtraction\ProcessHelper.cs" />
-        <Compile Include="ProjectSystemExtraction\ProjectBlock.cs" />
-        <Compile Include="ProjectSystemExtraction\ProjectConfigurationMessage.cs" />
-        <Compile Include="ProjectSystemExtraction\ProjectData.cs" />
-        <Compile Include="ProjectSystemExtraction\ProjectFileInfo.cs" />
-        <Compile Include="ProjectSystemExtraction\ProjectFileInfoCollection.cs" />
-        <Compile Include="ProjectSystemExtraction\ProjectFileInfoExtensions.cs" />
-        <Compile Include="ProjectSystemExtraction\ProjectIdInfo.cs" />
-        <Compile Include="ProjectSystemExtraction\ProjectLoadedEventArgs.cs" />
-        <Compile Include="ProjectSystemExtraction\ProjectLoader.cs" />
-        <Compile Include="ProjectSystemExtraction\ProjectManager.cs" />
-        <Compile Include="ProjectSystemExtraction\ProjectSectionBlock.cs" />
-        <Compile Include="ProjectSystemExtraction\Property.cs" />
-        <Compile Include="ProjectSystemExtraction\PropertyConverter.cs" />
-        <Compile Include="ProjectSystemExtraction\PropertyNames.cs" />
-        <Compile Include="ProjectSystemExtraction\Scanner.cs" />
-        <Compile Include="ProjectSystemExtraction\SdksPathResolver.cs" />
-        <Compile Include="ProjectSystemExtraction\SectionBlock.cs" />
-        <Compile Include="ProjectSystemExtraction\SemanticVersion.cs" />
-        <Compile Include="ProjectSystemExtraction\SolutionFile.cs" />
-        <Compile Include="ProjectSystemExtraction\SolutionFilterReader.cs" />
-        <Compile Include="ProjectSystemExtraction\StdioEventEmitter.cs" />
-        <Compile Include="ProjectSystemExtraction\StdioLoggerExtensions.cs" />
-        <Compile Include="ProjectSystemExtraction\TargetFramework.cs" />
-        <Compile Include="ProjectSystemExtraction\TargetNames.cs" />
-        <Compile Include="ProjectSystemExtraction\UnresolvedDependenciesMessage.cs" />
-        <Compile Include="ProjectSystemExtraction\UserOverrideInstanceProvider.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
         <Compile Include="RequestPacket.cs" />
         <Compile Include="ResponsePacket.cs" />
         <Compile Include="Router.cs" />
         <Compile Include="SharedTextWriter.cs" />
+        <Compile Include="SimpleDecompileWorkspace.cs" />
+        <Compile Include="StdioEventEmitter.cs" />
         <Compile Include="StdioLogger.cs" />
+        <Compile Include="StdioLoggerExtensions.cs" />
         <Compile Include="StdioLoggerProvider.cs" />
     </ItemGroup>
     <ItemGroup>

@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.FindSymbols;
 using Microsoft.CodeAnalysis.Text;
-using OmniSharp;
 using OmniSharp.Extensions;
 using TryOmnisharpExtension.IlSpy;
 
