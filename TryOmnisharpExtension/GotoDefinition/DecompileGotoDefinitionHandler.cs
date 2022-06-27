@@ -1,9 +1,8 @@
 ﻿using System.Threading.Tasks;
-using OmniSharp.Mef;
 
 namespace TryOmnisharpExtension.GotoDefinition
 {
-    public class DecompileGotoDefinitionHandler : IRequestHandler<DecompileGotoDefinitionRequest, DecompileGotoDefinitionResponse>
+    public class DecompileGotoDefinitionHandler
     {
         private readonly RosylnSymbolInfoFinder<IGotoDefinitionCommand> _rosylnGotoDefinitionCommandFactory;
         private readonly IlSpyCommandFactory<IGotoDefinitionCommand> _ilSpySymbolInfoFinder;

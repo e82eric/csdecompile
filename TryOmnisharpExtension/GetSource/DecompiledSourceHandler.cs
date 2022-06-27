@@ -1,9 +1,8 @@
 ﻿using System.Threading.Tasks;
-using OmniSharp.Mef;
 
 namespace TryOmnisharpExtension.GetSource
 {
-    public class DecompiledSourceHandler : IRequestHandler<DecompiledSourceRequest, DecompiledSourceResponse>
+    public class DecompiledSourceHandler
     {
         private readonly IlSpyDecompiledSourceCommandFactory _commandFactory;
         private readonly IlSpyDecompiledSourceCommandFactory _externalAssembliesCommandFactory;

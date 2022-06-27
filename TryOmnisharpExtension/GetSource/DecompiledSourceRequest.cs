@@ -1,10 +1,6 @@
-﻿using OmniSharp;
-using OmniSharp.Mef;
-
-namespace TryOmnisharpExtension.GetSource
+﻿namespace TryOmnisharpExtension.GetSource
 {
-    [OmniSharpEndpoint(Endpoints.DecompiledSource, typeof(DecompiledSourceRequest), typeof(DecompiledSourceResponse))]
-    public class DecompiledSourceRequest : IRequest
+    public class DecompiledSourceRequest
     {
         public string AssemblyFilePath { get; set; }
         public string ContainingTypeFullName { get; set; }

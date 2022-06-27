@@ -1,10 +1,9 @@
 ﻿using System.Threading.Tasks;
-using OmniSharp.Mef;
 using TryOmnisharpExtension.FindImplementations;
 
 namespace TryOmnisharpExtension.FindUsages;
 
-public class DecompileFindUsagesHandler : IRequestHandler<DecompileFindUsagesRequest, FindUsagesResponse>
+public class DecompileFindUsagesHandler
 {
     private readonly EverywhereSymbolInfoFinder2<FindUsagesResponse> _everywhereSymbolInfoFinder;
     private readonly IlSpyFindImplementationsCommandFactory2<FindUsagesResponse> _ilSpyFindImplementationsCommandFactory;

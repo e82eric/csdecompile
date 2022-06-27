@@ -1,10 +1,9 @@
 ﻿using System.Threading.Tasks;
-using OmniSharp.Mef;
 using TryOmnisharpExtension.GetMembers;
 
 namespace TryOmnisharpExtension.ExternalAssemblies;
 
-public class SearchExternalAssembliesForTypeHandler : IRequestHandler<SearchExternalAssembliesForTypeRequest, SearchExternalAssembliesForTypeResponse>
+public class SearchExternalAssembliesForTypeHandler
 {
     private readonly IlSpyAllTypesRepository _allTypesRepository;
 

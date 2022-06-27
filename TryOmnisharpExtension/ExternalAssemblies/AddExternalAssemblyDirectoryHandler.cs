@@ -1,9 +1,8 @@
 ﻿using System.Threading.Tasks;
-using OmniSharp.Mef;
 
 namespace TryOmnisharpExtension.ExternalAssemblies;
 
-public class AddExternalAssemblyDirectoryHandler : IRequestHandler<AddExternalAssemblyDirectoryRequest, AddExternalAssemblyDirectoryResponse>
+public class AddExternalAssemblyDirectoryHandler
 {
     private readonly ExternalAssembliesWorkspace _externalAssembliesWorkspace;
 

@@ -1,9 +1,8 @@
 ﻿using System.Threading.Tasks;
-using OmniSharp.Mef;
 
 namespace TryOmnisharpExtension.GetMembers;
 
-public class GetTypeMembersHandler : IRequestHandler<GetTypeMembersRequest, GetTypeMembersResponse>
+public class GetTypeMembersHandler
 {
     private readonly IlSpyGetMembersCommandFactory _commandFactory;
     private readonly RoslynGetTypeMembersCommandFactory _roslynGetTypeMembersCommandFactory;

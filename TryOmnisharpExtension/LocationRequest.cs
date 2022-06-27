@@ -1,8 +1,6 @@
-using OmniSharp;
-
 namespace TryOmnisharpExtension;
 
-public class LocationRequest : IRequest
+public class LocationRequest
 {
     public bool IsDecompiled { get; set; }
     public bool IsFromExternalAssembly { get; set; }

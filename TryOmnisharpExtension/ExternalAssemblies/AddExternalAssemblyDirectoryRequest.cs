@@ -1,8 +1,6 @@
-using OmniSharp;
-
 namespace TryOmnisharpExtension.ExternalAssemblies;
 
-public class AddExternalAssemblyDirectoryRequest : IRequest
+public class AddExternalAssemblyDirectoryRequest
 {
     public string DirectoryFilePath { get; set; }
 }

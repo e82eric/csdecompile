@@ -1,9 +1,8 @@
 ﻿using System.Threading.Tasks;
-using OmniSharp.Mef;
 
 namespace TryOmnisharpExtension.GetMembers;
 
-public class GetTypesHandler : IRequestHandler<GetTypesRequest, GetTypesResponse>
+public class GetTypesHandler
 {
     private readonly AllTypesRepository _typesRepository;
 
