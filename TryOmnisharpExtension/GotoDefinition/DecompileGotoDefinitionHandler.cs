@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using Autofac;
 using OmniSharp.Mef;
 
 namespace TryOmnisharpExtension.GotoDefinition
@@ -13,11 +12,11 @@ namespace TryOmnisharpExtension.GotoDefinition
         public DecompileGotoDefinitionHandler(
             RosylnSymbolInfoFinder<IGotoDefinitionCommand> rosylnSymbolInfoFinder,
             IlSpyCommandFactory<IGotoDefinitionCommand> ilSpySymbolInfoFinder,
-            ExtensionContainer extensionContainer)
+            IlSpyCommandFactory<IGotoDefinitionCommand> externalAssembliesCommandFactory)
         {
             _rosylnGotoDefinitionCommandFactory = rosylnSymbolInfoFinder;
             _ilSpySymbolInfoFinder = ilSpySymbolInfoFinder;
-            _externalAssembliesCommandFactory = extensionContainer.Container.Resolve<IlSpyCommandFactory<IGotoDefinitionCommand>>();
+            _externalAssembliesCommandFactory = externalAssembliesCommandFactory;
         }
         
         public async Task<DecompileGotoDefinitionResponse> Handle(DecompileGotoDefinitionRequest request)

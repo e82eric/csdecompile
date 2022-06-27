@@ -91,11 +91,10 @@ internal static class OmniSharpApplication
         var ilSpySymbolInfoFinder = new IlSpyCommandFactory<IGotoDefinitionCommand>(
             ilSpySymbolFinder,
             gotoDefinitionCommandFactory);
-        var extensionContainer = new ExtensionContainer();
         var result = new DecompileGotoDefinitionHandler(
             roslynSymbolInfoFinder,
             ilSpySymbolInfoFinder,
-            extensionContainer);
+            null);
         return result;
     }
 
@@ -104,8 +103,7 @@ internal static class OmniSharpApplication
         var decompilerFactory = new DecompilerFactory(_decompilerTypeSystemFactory);
         var ilSpySymbolFinder = new IlSpySymbolFinder(_decompilerTypeSystemFactory, decompilerFactory);
         var ilSpyDecompiledSourceCommandFactory = new IlSpyDecompiledSourceCommandFactory(decompilerFactory, ilSpySymbolFinder);
-        var extensionContainer = new ExtensionContainer();
-        var result = new DecompiledSourceHandler(ilSpyDecompiledSourceCommandFactory, extensionContainer);
+        var result = new DecompiledSourceHandler(ilSpyDecompiledSourceCommandFactory, null);
         return result;
     }
 
@@ -135,9 +133,8 @@ internal static class OmniSharpApplication
             ilSpySymbolFinder,
             ilSpyFindImplementationsCommandFactoryTemp,
             _decompileWorkspace);
-        var extensionContainer = new ExtensionContainer();
         var result = new DecompileFindImplementationsHandler(everywhereSymbolInfoFinder2,
-            ilSpyFindImplementationsCommandFactory2, extensionContainer);
+            ilSpyFindImplementationsCommandFactory2, null);
         return result;
     }
     public static DecompileFindUsagesHandler CreateFindUsagesHandler()
@@ -191,11 +188,10 @@ internal static class OmniSharpApplication
             ilSpySymbolFinder,
             findUsagesCommandFactory,
             _decompileWorkspace);
-        var extensionContainer = new ExtensionContainer();
         var result = new DecompileFindUsagesHandler(
             everywhereSymbolInfoFinder2,
             ilSpyFindImplementationsCommandFactory2,
-            extensionContainer);
+            null);
         return result;
     }
 

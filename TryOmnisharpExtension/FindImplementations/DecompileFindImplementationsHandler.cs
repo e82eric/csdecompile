@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using Autofac;
 using OmniSharp.Mef;
 
 namespace TryOmnisharpExtension.FindImplementations;
@@ -13,12 +12,11 @@ public class DecompileFindImplementationsHandler : IRequestHandler<DecompileFind
     public DecompileFindImplementationsHandler(
         EverywhereSymbolInfoFinder2<FindImplementationsResponse> everywhereSymbolInfoFinder2,
         IlSpyFindImplementationsCommandFactory2<FindImplementationsResponse> ilSpyFindImplementationsCommandFactory,
-        ExtensionContainer extensionContainer)
+        IlSpyExternalAssembliesCommandFactory<FindImplementationsResponse> externalAssembliesCommandFactory)
     {
         _everywhereSymbolInfoFinder2 = everywhereSymbolInfoFinder2;
         _ilSpyFindImplementationsCommandFactory = ilSpyFindImplementationsCommandFactory;
-        _externalAssemblyCommandFactory = extensionContainer.Container
-            .Resolve<IlSpyExternalAssembliesCommandFactory<FindImplementationsResponse>>();
+        _externalAssemblyCommandFactory = externalAssembliesCommandFactory;
     }
         
     public async Task<FindImplementationsResponse> Handle(DecompileFindImplementationsRequest request)

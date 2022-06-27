@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using Autofac;
 using OmniSharp.Mef;
 
 namespace TryOmnisharpExtension.GetSource
@@ -11,11 +10,10 @@ namespace TryOmnisharpExtension.GetSource
 
         public DecompiledSourceHandler(
             IlSpyDecompiledSourceCommandFactory commandFactory,
-            ExtensionContainer extensionContainer)
+            IlSpyDecompiledSourceCommandFactory externalAssembliesCommandFactory)
         {
             _commandFactory =  commandFactory;
-            _externalAssembliesCommandFactory =
-                extensionContainer.Container.Resolve<IlSpyDecompiledSourceCommandFactory>();
+            _externalAssembliesCommandFactory = externalAssembliesCommandFactory;
         }
         
         public Task<DecompiledSourceResponse> Handle(DecompiledSourceRequest request)
