@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Composition;
 using System.Threading.Tasks;
 using ICSharpCode.Decompiler.CSharp;
 using ICSharpCode.Decompiler.CSharp.Syntax;
@@ -12,8 +10,6 @@ using ISymbol = Microsoft.CodeAnalysis.ISymbol;
 
 namespace TryOmnisharpExtension.FindImplementations;
 
-[Shared]
-[Export]
 public class IlSpyFindImplementationsCommandFactory2<TResponseType>
     where TResponseType : FindImplementationsResponse, new()
 {
@@ -21,7 +17,6 @@ public class IlSpyFindImplementationsCommandFactory2<TResponseType>
     private readonly IDecompileWorkspace _decompileWorkspace;
     private readonly IlSpySymbolFinder _symbolFinder;
 
-    [ImportingConstructor]
     public IlSpyFindImplementationsCommandFactory2(
         IlSpySymbolFinder symbolFinder,
         ICommandFactory<INavigationCommand<TResponseType>> commandCommandFactory,

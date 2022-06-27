@@ -1,14 +1,11 @@
-﻿using System.Composition;
-using ICSharpCode.Decompiler.TypeSystem;
+﻿using ICSharpCode.Decompiler.TypeSystem;
 using TryOmnisharpExtension.FindUsages;
 using TryOmnisharpExtension.IlSpy;
 
 namespace TryOmnisharpExtension.FindImplementations;
 
-[Export]
 public class IlSpyBaseTypeUsageFinder : IlSpyUsagesFinderBase<ITypeDefinition>
 {
-    [ImportingConstructor]
     public IlSpyBaseTypeUsageFinder(
         TypesThatUseTypeAsBaseTypeMetadataScanner typesThatUseTypeUsedByAnalyzer,
         TypeUsedAsBaseTypeFinder typeUsedAsBaseTypeFinder,

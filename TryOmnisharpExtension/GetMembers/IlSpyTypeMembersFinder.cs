@@ -1,18 +1,15 @@
 ﻿using System.Collections.Generic;
-using System.Composition;
 using ICSharpCode.Decompiler.CSharp.Syntax;
 using ICSharpCode.Decompiler.TypeSystem;
 using TryOmnisharpExtension.IlSpy;
 
 namespace TryOmnisharpExtension.GetMembers;
 
-[Export]
 public class IlSpyTypeMembersFinder : IlSpyToSourceInfoBase
 {
     private readonly TypeMembersFinder _typeMembersFinder;
     private readonly DecompilerFactory _decompilerFactory;
 
-    [ImportingConstructor]
     public IlSpyTypeMembersFinder(
         TypeMembersFinder typeMembersFinder,
         DecompilerFactory decompilerFactory)

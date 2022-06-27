@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Composition;
 using ICSharpCode.Decompiler.CSharp;
 using ICSharpCode.Decompiler.CSharp.Syntax;
 using ICSharpCode.Decompiler.TypeSystem;
@@ -8,7 +7,6 @@ using TryOmnisharpExtension.IlSpy;
 
 namespace TryOmnisharpExtension.FindImplementations;
 
-[Export]
 public class MemberOverrideInTypeFinder : IEntityUsedInTypeFinder<IMember>
 {
     public IEnumerable<AstNode> Find(

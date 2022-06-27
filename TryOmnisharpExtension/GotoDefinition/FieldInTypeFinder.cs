@@ -1,6 +1,4 @@
-﻿using System.Composition;
-using System.Linq;
-using System.Reflection.Metadata;
+﻿using System.Linq;
 using ICSharpCode.Decompiler.CSharp;
 using ICSharpCode.Decompiler.CSharp.Syntax;
 using ICSharpCode.Decompiler.TypeSystem;
@@ -8,7 +6,6 @@ using TryOmnisharpExtension.IlSpy;
 
 namespace TryOmnisharpExtension.GotoDefinition;
 
-[Export]
 public class FieldInTypeFinder : IDefinitionInDecompiledSyntaxTreeFinder<IField>
 {
     public AstNode Find(

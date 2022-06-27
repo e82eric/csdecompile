@@ -1,5 +1,4 @@
-﻿using System.Composition;
-using ICSharpCode.Decompiler.TypeSystem;
+﻿using ICSharpCode.Decompiler.TypeSystem;
 using TryOmnisharpExtension.IlSpy;
 
 namespace TryOmnisharpExtension.FindImplementations;
@@ -9,7 +8,6 @@ public class IlSpyExternalAssembliesCommandFactory<TResponseType> where TRespons
     private readonly IDecompilerCommandFactory<INavigationCommand<TResponseType>> _commandCommandFactory;
     private readonly IlSpySymbolFinder _symbolFinder;
 
-    [ImportingConstructor]
     public IlSpyExternalAssembliesCommandFactory(
         IlSpySymbolFinder symbolFinder,
         IDecompilerCommandFactory<INavigationCommand<TResponseType>> commandCommandFactory)

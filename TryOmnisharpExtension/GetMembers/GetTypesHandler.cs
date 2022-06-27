@@ -1,15 +1,12 @@
-﻿using System.Composition;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using OmniSharp.Mef;
 
 namespace TryOmnisharpExtension.GetMembers;
 
-[OmniSharpHandler(Endpoints.GetTypes, Languages.Csharp), Shared]
 public class GetTypesHandler : IRequestHandler<GetTypesRequest, GetTypesResponse>
 {
     private readonly AllTypesRepository _typesRepository;
 
-    [ImportingConstructor]
     public GetTypesHandler(AllTypesRepository typesRepository)
     {
         _typesRepository = typesRepository;

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Composition;
+﻿using System.Collections.Generic;
 using ICSharpCode.Decompiler.CSharp;
 using ICSharpCode.Decompiler.CSharp.Syntax;
 using ICSharpCode.Decompiler.TypeSystem;
@@ -8,7 +6,6 @@ using TryOmnisharpExtension.IlSpy;
 
 namespace TryOmnisharpExtension.FindUsages;
 
-[Export]
 public class MemberUsedInTypeFinder : IEntityUsedInTypeFinder<IMember>
 {
     public IEnumerable<AstNode> Find(

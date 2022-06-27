@@ -1,13 +1,10 @@
-﻿using System.Composition;
-using System.Reflection.Metadata;
-using ICSharpCode.Decompiler.CSharp;
+﻿using ICSharpCode.Decompiler.CSharp;
 using ICSharpCode.Decompiler.CSharp.Syntax;
 using ICSharpCode.Decompiler.TypeSystem;
 using TryOmnisharpExtension.IlSpy;
 
 namespace TryOmnisharpExtension.GotoDefinition;
 
-[Export]
 public class EventInTypeFinder : IDefinitionInDecompiledSyntaxTreeFinder<IEvent>
 {
     public AstNode Find(

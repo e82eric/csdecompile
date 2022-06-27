@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Composition;
 using ICSharpCode.Decompiler.CSharp;
 using ICSharpCode.Decompiler.CSharp.Syntax;
 using ICSharpCode.Decompiler.TypeSystem;
@@ -7,7 +6,6 @@ using TryOmnisharpExtension.IlSpy;
 
 namespace TryOmnisharpExtension.FindUsages;
 
-[Export]
 public class TypeUsedInTypeFinder3 : IEntityUsedInTypeFinder<ITypeDefinition>
 {
     public IEnumerable<AstNode> Find(

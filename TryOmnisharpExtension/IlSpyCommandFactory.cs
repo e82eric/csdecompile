@@ -1,16 +1,13 @@
-﻿using System.Composition;
-using ICSharpCode.Decompiler.TypeSystem;
+﻿using ICSharpCode.Decompiler.TypeSystem;
 using TryOmnisharpExtension.IlSpy;
 
 namespace TryOmnisharpExtension
 {
-    [Export]
     public class IlSpyCommandFactory<TCommandType>
     {
         private readonly ICommandFactory<TCommandType> _commandCommandFactory;
         private readonly IlSpySymbolFinder _symbolFinder;
 
-        [ImportingConstructor]
         public IlSpyCommandFactory(
             IlSpySymbolFinder symbolFinder,
             ICommandFactory<TCommandType> commandCommandFactory)

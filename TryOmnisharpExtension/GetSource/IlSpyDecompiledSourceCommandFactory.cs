@@ -1,15 +1,12 @@
-﻿using System.Composition;
-using TryOmnisharpExtension.IlSpy;
+﻿using TryOmnisharpExtension.IlSpy;
 
 namespace TryOmnisharpExtension.GetSource
 {
-    [Export]
     public class IlSpyDecompiledSourceCommandFactory
     {
         private readonly DecompilerFactory _decompilerFactory;
         private readonly IlSpySymbolFinder _ilSpySymbolFinder;
 
-        [ImportingConstructor]
         public IlSpyDecompiledSourceCommandFactory(
             DecompilerFactory decompilerFactory,
             IlSpySymbolFinder ilSpySymbolFinder)

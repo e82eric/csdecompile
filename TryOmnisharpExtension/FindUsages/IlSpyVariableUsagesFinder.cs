@@ -1,18 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Composition;
+﻿using System.Collections.Generic;
 using ICSharpCode.Decompiler.CSharp.Syntax;
 using ICSharpCode.Decompiler.TypeSystem;
 using TryOmnisharpExtension.IlSpy;
 
 namespace TryOmnisharpExtension.FindUsages;
 
-[Export]
 public class IlSpyVariableUsagesFinder : IlSpyToSourceInfoBase
 {
     private readonly VariableInMethodBodyFinder _variableInMethodBodyFinder;
 
-    [ImportingConstructor]
     public IlSpyVariableUsagesFinder(
         VariableInMethodBodyFinder variableInMethodBodyFinder)
     {

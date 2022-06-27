@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Composition;
 using System.Linq;
 using ICSharpCode.Decompiler.CSharp;
 using ICSharpCode.Decompiler.CSharp.Syntax;
@@ -8,7 +7,6 @@ using TryOmnisharpExtension.IlSpy;
 
 namespace TryOmnisharpExtension.GetMembers;
 
-[Export]
 public class TypeMembersFinder
 {
     public IEnumerable<AstNode> Find(

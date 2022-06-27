@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Composition;
 using System.Linq;
 using System.Reflection.Metadata;
 using ICSharpCode.Decompiler;
@@ -12,13 +11,11 @@ using GenericContext = ICSharpCode.Decompiler.TypeSystem.GenericContext;
 
 namespace TryOmnisharpExtension.FindUsages;
 
-[Export]
 public class MemberUsedByMetadataScanner : IMetadataUsagesScanner<IMember>
 {
     private readonly AnalyzerScope _analyzerScope;
     const GetMemberOptions Options = GetMemberOptions.IgnoreInheritedMembers | GetMemberOptions.ReturnMemberDefinitions;
 
-    [ImportingConstructor]
     public MemberUsedByMetadataScanner(AnalyzerScope analyzerScope)
     {
         _analyzerScope = analyzerScope;

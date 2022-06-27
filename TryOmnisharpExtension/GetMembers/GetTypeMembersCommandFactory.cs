@@ -1,15 +1,12 @@
 ﻿using System;
-using System.Composition;
 using ICSharpCode.Decompiler.TypeSystem;
 
 namespace TryOmnisharpExtension.GetMembers;
 
-[Export(typeof(ICommandFactory<INavigationCommand<GetTypeMembersResponse>>))]
 public class GetTypeMembersCommandFactory : ICommandFactory<INavigationCommand<GetTypeMembersResponse>>
 {
     private readonly IlSpyTypeMembersFinder _typeFinder;
 
-    [ImportingConstructor]
     public GetTypeMembersCommandFactory(
         IlSpyTypeMembersFinder typeFinder)
     {

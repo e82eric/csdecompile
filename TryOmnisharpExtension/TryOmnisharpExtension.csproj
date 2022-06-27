@@ -342,7 +342,6 @@
         <Compile Include="IlSpy\IlSpyTypeSystemFactory.cs" />
         <Compile Include="IlSpy\IOmniSharpWorkspace.cs" />
         <Compile Include="IlSpy\MyAssemblyResolver.cs" />
-        <Compile Include="IlSpy\OmniSharpWorkspaceWrapper.cs" />
         <Compile Include="IlSpy\PeFileCache.cs" />
         <Compile Include="IlSpy\SymbolHelper.cs" />
         <Compile Include="INavigationCommand.cs" />
@@ -357,9 +356,6 @@
         <Compile Include="Languages.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
         <Compile Include="SourceFileInfo.cs" />
-        <Compile Include="Workspace\LoadAssembliesRequest.cs" />
-        <Compile Include="Workspace\LoadAssembliesResponse.cs" />
-        <Compile Include="Workspace\WorkspaceHandler.cs" />
     </ItemGroup>
     <ItemGroup>
       <None Include="App.config" />

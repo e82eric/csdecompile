@@ -1,6 +1,5 @@
 ﻿using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Composition;
 using System.Threading.Tasks;
 using ICSharpCode.Decompiler.CSharp.Syntax;
 using ICSharpCode.Decompiler.TypeSystem;
@@ -8,14 +7,12 @@ using TryOmnisharpExtension.IlSpy;
 
 namespace TryOmnisharpExtension.FindUsages;
 
-[Export]
 public class IlSpyUsagesFinderBase<T>: IlSpyToSourceInfoBase
 {
     private readonly DecompilerFactory _decompilerFactory;
     private readonly IMetadataUsagesScanner<T> _typeUsedByTypeIlScanner;
     private readonly IEntityUsedInTypeFinder<T> _usageFinder;
 
-    [ImportingConstructor]
     public IlSpyUsagesFinderBase(
         DecompilerFactory decompilerFactory,
         IMetadataUsagesScanner<T> typeUsedByTypeIlScanner,

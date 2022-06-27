@@ -1,11 +1,8 @@
 ﻿using System.Collections.Generic;
-using System.Composition;
 using ICSharpCode.Decompiler.CSharp.Syntax;
-using TryOmnisharpExtension.IlSpy;
 
 namespace TryOmnisharpExtension.FindUsages;
 
-[Export]
 public class VariableInMethodBodyFinder
 {
     public IEnumerable<AstNode> Find(Identifier variableNode)

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Composition;
 using ICSharpCode.Decompiler.CSharp.Syntax;
 using ICSharpCode.Decompiler.TypeSystem;
 using TryOmnisharpExtension.IlSpy;
@@ -11,7 +10,6 @@ public class IlSpyDefinitionFinderBase<T> : IlSpyToSourceInfoBase where T : IEnt
     private readonly IDefinitionInDecompiledSyntaxTreeFinder<T> _eventInTypeFinder;
     private readonly DecompilerFactory _decompilerFactory;
 
-    [ImportingConstructor]
     public IlSpyDefinitionFinderBase(IDefinitionInDecompiledSyntaxTreeFinder<T> eventInTypeFinder, DecompilerFactory decompilerFactory)
     {
         _eventInTypeFinder = eventInTypeFinder;

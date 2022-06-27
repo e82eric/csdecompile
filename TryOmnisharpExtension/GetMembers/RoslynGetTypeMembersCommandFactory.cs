@@ -1,19 +1,15 @@
-﻿using System.Composition;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
-using OmniSharp;
 using TryOmnisharpExtension.IlSpy;
 
 namespace TryOmnisharpExtension.GetMembers;
 
-[Export]
 public class RoslynGetTypeMembersCommandFactory
 {
     private readonly IOmniSharpWorkspace _workspace;
 
-    [ImportingConstructor]
     public RoslynGetTypeMembersCommandFactory(IOmniSharpWorkspace workspace)
     {
         _workspace = workspace;

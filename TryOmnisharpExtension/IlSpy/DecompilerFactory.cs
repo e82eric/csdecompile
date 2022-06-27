@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Composition;
 
 namespace TryOmnisharpExtension.IlSpy;
 
-[Export]
 public class DecompilerFactory
 {
     private readonly IDecompilerTypeSystemFactory _typeSystemFactory;
 
-    [ImportingConstructor]
     public DecompilerFactory(
         IDecompilerTypeSystemFactory typeSystemFactory)
     {

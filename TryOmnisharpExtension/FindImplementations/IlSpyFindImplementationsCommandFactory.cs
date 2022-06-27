@@ -1,5 +1,4 @@
-﻿using System.Composition;
-using ICSharpCode.Decompiler.TypeSystem;
+﻿using ICSharpCode.Decompiler.TypeSystem;
 using TryOmnisharpExtension.FindUsages;
 
 namespace TryOmnisharpExtension.FindImplementations;
@@ -9,7 +8,6 @@ public class IlSpyFindImplementationsCommandFactory : IDecompilerCommandFactory<
     private readonly IlSpyBaseTypeUsageFinder _typeFinder;
     private readonly IlSpyMemberImplementationFinder _memberImplementationFinder;
 
-    [ImportingConstructor]
     public IlSpyFindImplementationsCommandFactory(
         IlSpyBaseTypeUsageFinder typeFinder,
         IlSpyMemberImplementationFinder memberImplementationFinder)

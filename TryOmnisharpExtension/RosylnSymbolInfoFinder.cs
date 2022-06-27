@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Composition;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -11,14 +10,12 @@ using TryOmnisharpExtension.IlSpy;
 
 namespace TryOmnisharpExtension
 {
-    [Export]
     public class RosylnSymbolInfoFinder<TCommandType>
     {
         private readonly IOmniSharpWorkspace _workspace;
         private readonly IlSpySymbolFinder _ilSpySymbolFinder;
         private readonly ICommandFactory<TCommandType> _gotoDefinitionCommandFactory;
 
-        [ImportingConstructor]
         public RosylnSymbolInfoFinder(
             IOmniSharpWorkspace workspace,
             IlSpySymbolFinder ilSpySymbolFinder,

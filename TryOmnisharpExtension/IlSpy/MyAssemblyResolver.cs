@@ -1,11 +1,9 @@
-﻿using System.Composition;
-using System.IO;
+﻿using System.IO;
 using System.Threading.Tasks;
 using ICSharpCode.Decompiler.Metadata;
 
 namespace TryOmnisharpExtension.IlSpy
 {
-    [Export]
     sealed class MyAssemblyResolver : IAssemblyResolver
     {
         private readonly PeFileCache _peFileCache;
@@ -13,7 +11,6 @@ namespace TryOmnisharpExtension.IlSpy
         
         private readonly UniversalAssemblyResolver _universalAssemblyResolver;
 
-        [ImportingConstructor]
         public MyAssemblyResolver(
             PeFileCache peFileCache,
             string targetFrameworkId,

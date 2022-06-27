@@ -1,17 +1,13 @@
-﻿using System.Composition;
-using ICSharpCode.Decompiler.TypeSystem;
-using TryOmnisharpExtension.GetMembers;
+﻿using TryOmnisharpExtension.GetMembers;
 using TryOmnisharpExtension.IlSpy;
 
 namespace TryOmnisharpExtension;
 
-[Export]
 public class IlSpyGetMembersCommandFactory
 {
     private readonly IlSpySymbolFinder _symbolFinder;
     private readonly IlSpyTypeMembersFinder _typeMembersFinder;
 
-    [ImportingConstructor]
     public IlSpyGetMembersCommandFactory(
         IlSpySymbolFinder symbolFinder,
         IlSpyTypeMembersFinder typeMembersFinder)

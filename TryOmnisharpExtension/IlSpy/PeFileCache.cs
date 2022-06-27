@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using System.Composition;
 using System.IO;
 using System.Linq;
 using System.Reflection.Metadata;
@@ -9,8 +8,6 @@ using ICSharpCode.Decompiler.Metadata;
 
 namespace TryOmnisharpExtension.IlSpy;
 
-[Shared]
-[Export]
 public class PeFileCache
 {
     private readonly  ConcurrentDictionary<string, string> _byFileName = new();

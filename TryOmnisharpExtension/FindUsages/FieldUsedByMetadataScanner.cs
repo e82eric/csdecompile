@@ -1,13 +1,10 @@
-﻿using System.Composition;
-using System.Reflection.Metadata;
+﻿using System.Reflection.Metadata;
 using TryOmnisharpExtension.IlSpy;
 
 namespace TryOmnisharpExtension.FindUsages;
 
-[Export]
 public class FieldUsedByMetadataScanner : MemberUsedByMetadataScanner
 {
-    [ImportingConstructor]
     public FieldUsedByMetadataScanner(AnalyzerScope analyzerScope):base(analyzerScope)
     {
     }

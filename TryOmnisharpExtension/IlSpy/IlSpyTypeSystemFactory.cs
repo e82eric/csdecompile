@@ -1,19 +1,15 @@
 ﻿using System.Collections.Concurrent;
-using System.Composition;
 using ICSharpCode.Decompiler.Metadata;
 using ICSharpCode.Decompiler.TypeSystem;
 
 namespace TryOmnisharpExtension.IlSpy
 {
-    [Shared]
-    [Export(typeof(IDecompilerTypeSystemFactory))]
     public class IlSpyTypeSystemFactory : IDecompilerTypeSystemFactory
     {
         private readonly ConcurrentDictionary<string, DecompilerTypeSystem> _projectTypeSystemCache = new();
         private readonly AssemblyResolverFactory _resolverFactory;
         private readonly PeFileCache _peFileCache;
 
-        [ImportingConstructor]
         public IlSpyTypeSystemFactory(
             AssemblyResolverFactory resolverFactory,
             PeFileCache peFileCache)

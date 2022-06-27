@@ -1,17 +1,14 @@
-﻿using System.Composition;
-using System.IO;
+﻿using System.IO;
 using System.Reflection.Metadata;
 using System.Reflection.PortableExecutable;
 using ICSharpCode.Decompiler.Metadata;
 
 namespace TryOmnisharpExtension.IlSpy
 {
-    [Export]
     public class AssemblyResolverFactory
     {
         private readonly PeFileCache _peFileCache;
 
-        [ImportingConstructor]
         public AssemblyResolverFactory(PeFileCache peFileCache)
         {
             _peFileCache = peFileCache;

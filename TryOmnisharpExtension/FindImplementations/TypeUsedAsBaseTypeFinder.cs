@@ -1,6 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Composition;
-using System.Reflection.Metadata;
 using ICSharpCode.Decompiler.CSharp;
 using ICSharpCode.Decompiler.CSharp.Syntax;
 using ICSharpCode.Decompiler.TypeSystem;
@@ -9,7 +7,6 @@ using TryOmnisharpExtension.IlSpy;
 
 namespace TryOmnisharpExtension.FindImplementations;
 
-[Export]
 public class TypeUsedAsBaseTypeFinder : IEntityUsedInTypeFinder<ITypeDefinition>
 {
     public IEnumerable<AstNode> Find(

@@ -1,17 +1,14 @@
 ﻿using System.Collections.Generic;
-using System.Composition;
 using ICSharpCode.Decompiler.TypeSystem;
 using TryOmnisharpExtension.FindUsages;
 using TryOmnisharpExtension.IlSpy;
 
 namespace TryOmnisharpExtension.FindImplementations;
 
-[Export]
 public class TypesThatUseTypeAsBaseTypeMetadataScanner : IMetadataUsagesScanner<ITypeDefinition>
 {
     private readonly AnalyzerScope _analyzerScope;
 
-    [ImportingConstructor]
     public TypesThatUseTypeAsBaseTypeMetadataScanner(AnalyzerScope analyzerScope)
     {
         _analyzerScope = analyzerScope;

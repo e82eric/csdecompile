@@ -1,17 +1,13 @@
-﻿using System.Composition;
-using ICSharpCode.Decompiler.TypeSystem;
-using OmniSharp;
+﻿using ICSharpCode.Decompiler.TypeSystem;
 using TryOmnisharpExtension.IlSpy;
 
 namespace TryOmnisharpExtension.FindImplementations;
 
-[Export(typeof(ICommandFactory<INavigationCommand<FindImplementationsResponse>>))]
 public class IlSpyFindImplementationsCommandFactoryTemp : IlSpyFindImplementationsCommandFactory,
     ICommandFactory<INavigationCommand<FindImplementationsResponse>>
 {
     private readonly IOmniSharpWorkspace _omniSharpWorkspace;
 
-    [ImportingConstructor]
     public IlSpyFindImplementationsCommandFactoryTemp(
         IlSpyBaseTypeUsageFinder typeFinder,
         IlSpyMemberImplementationFinder memberImplementationFinder,

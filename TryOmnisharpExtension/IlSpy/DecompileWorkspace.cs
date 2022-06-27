@@ -1,6 +1,5 @@
 ﻿using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Composition;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,15 +8,12 @@ using Microsoft.CodeAnalysis;
 
 namespace TryOmnisharpExtension.IlSpy
 {
-    [Shared]
-    [Export(typeof(IDecompileWorkspace))]
     public class DecompileWorkspace : IDecompileWorkspace
     {
         private readonly IOmniSharpWorkspace _workspace;
         private readonly PeFileCache _peFileCache;
         private readonly ConcurrentDictionary<string, Compilation> _compilations = new ();
 
-        [ImportingConstructor]
         public DecompileWorkspace(IOmniSharpWorkspace workspace, PeFileCache peFileCache)
         {
             _workspace = workspace;

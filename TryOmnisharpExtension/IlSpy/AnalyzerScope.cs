@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Composition;
 using System.Linq;
 using System.Reflection.Metadata;
 using ICSharpCode.Decompiler;
@@ -9,13 +8,11 @@ using ICSharpCode.Decompiler.Util;
 
 namespace TryOmnisharpExtension.IlSpy
 {
-    [Export]
     public class AnalyzerScope
     {
         private readonly AssemblyResolverFactory _assemblyResolverFactory;
         private readonly IDecompileWorkspace _workspace;
 
-        [ImportingConstructor]
         public AnalyzerScope(
             AssemblyResolverFactory assemblyResolverFactory,
             IDecompileWorkspace workspace)

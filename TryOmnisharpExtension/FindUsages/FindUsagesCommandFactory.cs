@@ -1,16 +1,12 @@
-﻿using System.Composition;
-using OmniSharp;
-using TryOmnisharpExtension.IlSpy;
+﻿using TryOmnisharpExtension.IlSpy;
 using ISymbol = Microsoft.CodeAnalysis.ISymbol;
 
 namespace TryOmnisharpExtension.FindUsages;
 
-[Export(typeof(ICommandFactory<INavigationCommand<FindUsagesResponse>>))]
 public class FindUsagesCommandFactory : ExternalAssembliesFindUsagesCommandFactory, ICommandFactory<INavigationCommand<FindUsagesResponse>>
 {
     private readonly IOmniSharpWorkspace _omniSharpWorkspace;
 
-    [ImportingConstructor]
     public FindUsagesCommandFactory(
         IlSpyTypeUsagesFinder usagesFinder,
         IlSpyMethodUsagesFinder methodUsagesFinder,

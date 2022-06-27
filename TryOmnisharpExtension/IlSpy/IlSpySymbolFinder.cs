@@ -1,5 +1,4 @@
-﻿using System.Composition;
-using System.Linq;
+﻿using System.Linq;
 using ICSharpCode.Decompiler.CSharp;
 using ICSharpCode.Decompiler.CSharp.Syntax;
 using ICSharpCode.Decompiler.TypeSystem;
@@ -10,13 +9,11 @@ using SyntaxTree = ICSharpCode.Decompiler.CSharp.Syntax.SyntaxTree;
 
 namespace TryOmnisharpExtension.IlSpy;
 
-[Export]
 public class IlSpySymbolFinder
 {
     private readonly IDecompilerTypeSystemFactory _typeSystemFactory;
     private readonly DecompilerFactory _decompilerFactory;
 
-    [ImportingConstructor]
     public IlSpySymbolFinder(
         IDecompilerTypeSystemFactory typeSystemFactory,
         DecompilerFactory decompilerFactory)

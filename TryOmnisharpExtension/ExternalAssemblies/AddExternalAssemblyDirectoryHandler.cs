@@ -1,15 +1,12 @@
-﻿using System.Composition;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using OmniSharp.Mef;
 
 namespace TryOmnisharpExtension.ExternalAssemblies;
 
-[OmniSharpHandler(Endpoints.AddExternalAssemblyDirectory, Languages.Csharp), Shared]
 public class AddExternalAssemblyDirectoryHandler : IRequestHandler<AddExternalAssemblyDirectoryRequest, AddExternalAssemblyDirectoryResponse>
 {
     private readonly ExternalAssembliesWorkspace _externalAssembliesWorkspace;
 
-    [ImportingConstructor]
     public AddExternalAssemblyDirectoryHandler(
         ExternalAssembliesWorkspace externalAssembliesWorkspace)
     {

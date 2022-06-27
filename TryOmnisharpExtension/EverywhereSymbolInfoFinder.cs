@@ -1,27 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Composition;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.FindSymbols;
 using Microsoft.CodeAnalysis.Text;
-using OmniSharp;
 using OmniSharp.Extensions;
 using TryOmnisharpExtension.FindImplementations;
 using TryOmnisharpExtension.IlSpy;
 
 namespace TryOmnisharpExtension;
 
-[Export]
 public class EverywhereSymbolInfoFinder2<TCommandResponseType> where TCommandResponseType : FindImplementationsResponse, new()
 {
     private readonly IOmniSharpWorkspace _workspace;
     private readonly IlSpySymbolFinder _ilSpySymbolFinder;
     private readonly ICommandFactory<INavigationCommand<TCommandResponseType>> _commandFactory;
 
-    [ImportingConstructor]
     public EverywhereSymbolInfoFinder2(
         IOmniSharpWorkspace workspace,
         IlSpySymbolFinder ilSpySymbolFinder,

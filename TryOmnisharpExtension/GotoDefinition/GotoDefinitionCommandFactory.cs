@@ -1,9 +1,7 @@
-﻿using System.Composition;
-using ICSharpCode.Decompiler.TypeSystem;
+﻿using ICSharpCode.Decompiler.TypeSystem;
 
 namespace TryOmnisharpExtension.GotoDefinition
 {
-    [Export(typeof(ICommandFactory<IGotoDefinitionCommand>))]
     public class GotoDefinitionCommandFactory : ICommandFactory<IGotoDefinitionCommand>
     {
         private readonly IlSpyTypeFinder _typeFinder;
@@ -12,7 +10,6 @@ namespace TryOmnisharpExtension.GotoDefinition
         private readonly IlSpyEventFinder _eventFinder;
         private readonly IlSpyFieldFinder _fieldFinder;
 
-        [ImportingConstructor]
         public GotoDefinitionCommandFactory(
             IlSpyTypeFinder typeFinder,
             IlSpyMemberFinder memberFinder,

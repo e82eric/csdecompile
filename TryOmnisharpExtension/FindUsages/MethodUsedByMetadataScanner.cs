@@ -1,15 +1,12 @@
-﻿using System.Composition;
-using System.Reflection.Metadata;
+﻿using System.Reflection.Metadata;
 using ICSharpCode.Decompiler.TypeSystem;
 using TryOmnisharpExtension.IlSpy;
 using GenericContext = ICSharpCode.Decompiler.TypeSystem.GenericContext;
 
 namespace TryOmnisharpExtension.FindUsages;
 
-[Export]
 public class MethodUsedByMetadataScanner : MemberUsedByMetadataScanner
 {
-    [ImportingConstructor]
     public MethodUsedByMetadataScanner(AnalyzerScope analyzerScope) : base(analyzerScope)
     {
     }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Composition;
 using System.IO;
 using ICSharpCode.Decompiler;
 using ICSharpCode.Decompiler.Metadata;
@@ -8,12 +7,10 @@ using TryOmnisharpExtension.ExternalAssemblies;
 
 namespace TryOmnisharpExtension.GetMembers;
 
-[Export]
 public class IlSpyAllTypesRepository
 {
     private readonly ExternalAssembliesWorkspace _externalAssembliesWorkspace;
 
-    [ImportingConstructor]
     public IlSpyAllTypesRepository(ExternalAssembliesWorkspace externalAssembliesWorkspace)
     {
         _externalAssembliesWorkspace = externalAssembliesWorkspace;

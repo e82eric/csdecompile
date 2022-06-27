@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.Composition;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using TryOmnisharpExtension.FindImplementations;
 
 namespace TryOmnisharpExtension.FindUsages;
@@ -9,7 +8,6 @@ internal class IlSpyUsagesCommand<T, TResponse> : INavigationCommand<TResponse> 
     private readonly T _symbol;
     private readonly IlSpyUsagesFinderBase<T> _usagesFinder;
         
-    [ImportingConstructor]
     public IlSpyUsagesCommand(
         T symbol,
         IlSpyUsagesFinderBase<T> usagesFinder)

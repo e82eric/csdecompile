@@ -1,22 +1,15 @@
 ﻿using System.Collections.Generic;
-using System.Composition;
-using System.Linq;
-using System.Reflection;
-using System.Reflection.Metadata;
 using ICSharpCode.Decompiler;
 using ICSharpCode.Decompiler.Metadata;
 using TryOmnisharpExtension.IlSpy;
-using AssemblyReference = ICSharpCode.Decompiler.Metadata.AssemblyReference;
 
 namespace TryOmnisharpExtension.GetMembers;
 
-[Export]
 public class AllTypesRepository
 {
     private readonly IDecompileWorkspace _workspace;
     private readonly AssemblyResolverFactory _assemblyResolverFactory;
 
-    [ImportingConstructor]
     public AllTypesRepository(IDecompileWorkspace workspace, AssemblyResolverFactory assemblyResolverFactory)
     {
         _workspace = workspace;

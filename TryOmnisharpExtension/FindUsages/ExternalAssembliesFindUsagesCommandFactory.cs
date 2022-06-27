@@ -1,5 +1,4 @@
-﻿using System.Composition;
-using ICSharpCode.Decompiler.CSharp.Syntax;
+﻿using ICSharpCode.Decompiler.CSharp.Syntax;
 using ICSharpCode.Decompiler.TypeSystem;
 
 namespace TryOmnisharpExtension.FindUsages;
@@ -13,7 +12,6 @@ public class ExternalAssembliesFindUsagesCommandFactory : IDecompilerCommandFact
     private readonly IlSpyEventUsagesFinder _eventUsagesFinder;
     private readonly IlSpyVariableUsagesFinder _variableUsagesFinder;
 
-    [ImportingConstructor]
     public ExternalAssembliesFindUsagesCommandFactory(
         IlSpyTypeUsagesFinder usagesFinder,
         IlSpyMethodUsagesFinder methodUsagesFinder,

@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.Composition;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using ICSharpCode.Decompiler.TypeSystem;
 
 namespace TryOmnisharpExtension.GetMembers;
@@ -9,7 +8,6 @@ internal class IlSpyTypeMembersCommand: INavigationCommand<GetTypeMembersRespons
     private readonly ITypeDefinition _symbol;
     private readonly IlSpyTypeMembersFinder _usagesFinder;
 
-    [ImportingConstructor]
     public IlSpyTypeMembersCommand(
         ITypeDefinition symbol,
         IlSpyTypeMembersFinder usagesFinder)

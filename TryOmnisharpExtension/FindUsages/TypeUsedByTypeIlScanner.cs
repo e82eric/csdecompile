@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Composition;
 using System.Reflection.Metadata;
 using ICSharpCode.Decompiler.Disassembler;
 using ICSharpCode.Decompiler.Metadata;
@@ -10,12 +9,10 @@ using TryOmnisharpExtension.IlSpy;
 
 namespace TryOmnisharpExtension.FindUsages;
 
-[Export]
 public class TypeUsedByTypeIlScanner : IMetadataUsagesScanner<ITypeDefinition>
 {
     private readonly AnalyzerScope _analyzerScope;
 
-    [ImportingConstructor]
     public TypeUsedByTypeIlScanner(AnalyzerScope analyzerScope)
     {
         _analyzerScope = analyzerScope;
