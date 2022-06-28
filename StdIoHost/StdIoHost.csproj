@@ -80,9 +80,6 @@
         <Reference Include="Microsoft.CodeAnalysis.Elfie, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
           <HintPath>..\packages\Microsoft.CodeAnalysis.Elfie.1.0.0-rc14\lib\net45\Microsoft.CodeAnalysis.Elfie.dll</HintPath>
         </Reference>
-        <Reference Include="Microsoft.CodeAnalysis.ExternalAccess.OmniSharp, Version=4.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-          <HintPath>..\packages\Microsoft.CodeAnalysis.ExternalAccess.OmniSharp.4.3.0-2.22225.6\lib\netstandard2.0\Microsoft.CodeAnalysis.ExternalAccess.OmniSharp.dll</HintPath>
-        </Reference>
         <Reference Include="Microsoft.CodeAnalysis.Features, Version=4.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
           <HintPath>..\packages\Microsoft.CodeAnalysis.Features.4.3.0-2.22225.6\lib\netstandard2.0\Microsoft.CodeAnalysis.Features.dll</HintPath>
         </Reference>
@@ -167,42 +164,6 @@
         <Reference Include="mscorlib" />
         <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
           <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
-        </Reference>
-        <Reference Include="NuGet.Common, Version=6.2.1.2, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-          <HintPath>..\packages\NuGet.Common.6.2.1\lib\net472\NuGet.Common.dll</HintPath>
-        </Reference>
-        <Reference Include="NuGet.Configuration, Version=6.2.1.2, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-          <HintPath>..\packages\NuGet.Configuration.6.2.1\lib\net472\NuGet.Configuration.dll</HintPath>
-        </Reference>
-        <Reference Include="NuGet.DependencyResolver.Core, Version=6.2.1.2, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-          <HintPath>..\packages\NuGet.DependencyResolver.Core.6.2.1\lib\net472\NuGet.DependencyResolver.Core.dll</HintPath>
-        </Reference>
-        <Reference Include="NuGet.Frameworks, Version=6.2.1.2, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-          <HintPath>..\packages\NuGet.Frameworks.6.2.1\lib\net472\NuGet.Frameworks.dll</HintPath>
-        </Reference>
-        <Reference Include="NuGet.LibraryModel, Version=6.2.1.2, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-          <HintPath>..\packages\NuGet.LibraryModel.6.2.1\lib\net472\NuGet.LibraryModel.dll</HintPath>
-        </Reference>
-        <Reference Include="NuGet.Packaging, Version=6.2.1.2, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-          <HintPath>..\packages\NuGet.Packaging.6.2.1\lib\net472\NuGet.Packaging.dll</HintPath>
-        </Reference>
-        <Reference Include="NuGet.ProjectModel, Version=6.2.1.2, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-          <HintPath>..\packages\NuGet.ProjectModel.6.2.1\lib\net472\NuGet.ProjectModel.dll</HintPath>
-        </Reference>
-        <Reference Include="NuGet.Protocol, Version=6.2.1.2, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-          <HintPath>..\packages\NuGet.Protocol.6.2.1\lib\net472\NuGet.Protocol.dll</HintPath>
-        </Reference>
-        <Reference Include="NuGet.Versioning, Version=6.2.1.2, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-          <HintPath>..\packages\NuGet.Versioning.6.2.1\lib\net472\NuGet.Versioning.dll</HintPath>
-        </Reference>
-        <Reference Include="OmniSharp.Abstractions, Version=1.38.0.0, Culture=neutral, PublicKeyToken=7e5bf7b3b470b509, processorArchitecture=MSIL">
-          <HintPath>..\packages\OmniSharp.Abstractions.1.38.2\lib\net472\OmniSharp.Abstractions.dll</HintPath>
-        </Reference>
-        <Reference Include="OmniSharp.Roslyn, Version=1.38.0.0, Culture=neutral, PublicKeyToken=7e5bf7b3b470b509, processorArchitecture=MSIL">
-          <HintPath>..\packages\OmniSharp.Roslyn.1.38.2\lib\net472\OmniSharp.Roslyn.dll</HintPath>
-        </Reference>
-        <Reference Include="OmniSharp.Shared, Version=1.38.0.0, Culture=neutral, PublicKeyToken=7e5bf7b3b470b509, processorArchitecture=MSIL">
-          <HintPath>..\packages\OmniSharp.Shared.1.38.2\lib\net472\OmniSharp.Shared.dll</HintPath>
         </Reference>
         <Reference Include="System" />
         <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">

@@ -1,15 +1,157 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
-using OmniSharp;
-using OmniSharp.Extensions;
 using TryOmnisharpExtension.IlSpy;
 
 namespace TryOmnisharpExtension;
 
 internal static class RoslynSymbolHelpers
 {
+    private readonly static CachedStringBuilder s_cachedBuilder;
+    public static bool IsInterfaceType(this ISymbol symbol) => (symbol as ITypeSymbol)?.IsInterfaceType() == true;
+    public static bool IsInterfaceType(this ITypeSymbol symbol) => symbol?.TypeKind == TypeKind.Interface;
+    public static bool IsOverridable(this ISymbol symbol) => symbol?.ContainingType?.TypeKind == TypeKind.Class && !symbol.IsSealed && (symbol.IsVirtual || symbol.IsAbstract || symbol.IsOverride);
+    
+    public static string GetMetadataName(this ISymbol symbol)
+    {
+        if (symbol == null)
+        {
+            throw new ArgumentNullException(nameof(symbol));
+        }
+
+        var symbols = new Stack<ISymbol>();
+
+        while (symbol != null)
+        {
+            if (symbol.Kind == SymbolKind.Assembly ||
+                symbol.Kind == SymbolKind.NetModule)
+            {
+                break;
+            }
+
+            if ((symbol as INamespaceSymbol)?.IsGlobalNamespace == true)
+            {
+                break;
+            }
+
+            symbols.Push(symbol);
+            symbol = symbol.ContainingSymbol;
+        }
+
+        var builder = s_cachedBuilder.Acquire();
+        try
+        {
+            ISymbol current = null, previous = null;
+
+            while (symbols.Count > 0)
+            {
+                current = symbols.Pop();
+
+                if (previous != null)
+                {
+                    if (previous.Kind == SymbolKind.NamedType &&
+                        current.Kind == SymbolKind.NamedType)
+                    {
+                        builder.Append('+');
+                    }
+                    else
+                    {
+                        builder.Append('.');
+                    }
+                }
+
+                builder.Append(current.MetadataName);
+
+                previous = current;
+            }
+
+            return builder.ToString();
+        }
+        finally
+        {
+            s_cachedBuilder.Release(builder);
+        }
+    }
+    public static string GetSymbolName(this ISymbol symbol)
+    {
+        var topLevelSymbol = symbol.GetTopLevelContainingNamedType();
+        return GetTypeDisplayString(topLevelSymbol);
+    }
+    internal static INamedTypeSymbol GetTopLevelContainingNamedType(this ISymbol symbol)
+    {
+        // Traverse up until we find a named type that is parented by the namespace
+        var topLevelNamedType = symbol;
+        while (!SymbolEqualityComparer.Default.Equals(topLevelNamedType.ContainingSymbol, symbol.ContainingNamespace) ||
+            topLevelNamedType.Kind != SymbolKind.NamedType)
+        {
+            topLevelNamedType = topLevelNamedType.ContainingSymbol;
+        }
+
+        return (INamedTypeSymbol)topLevelNamedType;
+    }
+    private static string GetTypeDisplayString(INamedTypeSymbol symbol)
+    {
+        if (symbol.SpecialType != SpecialType.None)
+        {
+            var specialType = symbol.SpecialType;
+            var name = Enum.GetName(typeof(SpecialType), symbol.SpecialType).Replace("_", ".");
+            return name;
+        }
+
+        if (symbol.IsGenericType)
+        {
+            symbol = symbol.ConstructUnboundGenericType();
+        }
+
+        if (symbol.IsUnboundGenericType)
+        {
+            // TODO: Is this the best to get the fully metadata name?
+            var parts = symbol.ToDisplayParts();
+            var filteredParts = parts.Where(x => x.Kind != SymbolDisplayPartKind.Punctuation).ToArray();
+            var typeName = new StringBuilder();
+            foreach (var part in filteredParts.Take(filteredParts.Length - 1))
+            {
+                typeName.Append(part.Symbol.Name);
+                typeName.Append(".");
+            }
+            typeName.Append(symbol.MetadataName);
+
+            return typeName.ToString();
+        }
+
+        return symbol.ToDisplayString();
+    }
+    public static bool IsImplementableMember(this ISymbol symbol)
+    {
+        if (symbol?.ContainingType?.TypeKind == TypeKind.Interface)
+        {
+            if (symbol.Kind == SymbolKind.Event)
+            {
+                return true;
+            }
+
+            if (symbol.Kind == SymbolKind.Property)
+            {
+                return true;
+            }
+
+            if (symbol.Kind == SymbolKind.Method)
+            {
+                var methodSymbol = (IMethodSymbol)symbol;
+                if (methodSymbol.MethodKind == MethodKind.Ordinary ||
+                    methodSymbol.MethodKind == MethodKind.PropertyGet ||
+                    methodSymbol.MethodKind == MethodKind.PropertySet)
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
     public static SourceFileInfo GetSourceLineInfo(this Location location, IOmniSharpWorkspace workspace)
     {
         var lineSpan = location.GetMappedLineSpan();

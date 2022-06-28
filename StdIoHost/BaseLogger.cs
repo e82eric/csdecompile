@@ -1,6 +1,6 @@
 ﻿using System;
 using Microsoft.Extensions.Logging;
-using OmniSharp.Utilities;
+using TryOmnisharpExtension;
 
 namespace StdIoHost;
 

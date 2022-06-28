@@ -1,13 +1,12 @@
 ﻿using Microsoft.Extensions.Logging;
-using OmniSharp.Services;
 
 namespace StdIoHost;
 
 class StdioLoggerProvider : ILoggerProvider
 {
-    private readonly ISharedTextWriter _writer;
+    private readonly SharedTextWriter _writer;
 
-    public StdioLoggerProvider(ISharedTextWriter writer)
+    public StdioLoggerProvider(SharedTextWriter writer)
     {
         _writer = writer;
     }

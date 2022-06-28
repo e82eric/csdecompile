@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.FindSymbols;
 using Microsoft.CodeAnalysis.Text;
-using OmniSharp.Extensions;
 using TryOmnisharpExtension.IlSpy;
 
 namespace TryOmnisharpExtension

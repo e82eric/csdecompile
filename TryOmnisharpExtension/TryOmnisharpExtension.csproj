@@ -61,9 +61,6 @@
         <Reference Include="Microsoft.CodeAnalysis.Elfie, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
           <HintPath>..\packages\Microsoft.CodeAnalysis.Elfie.1.0.0-rc14\lib\net45\Microsoft.CodeAnalysis.Elfie.dll</HintPath>
         </Reference>
-        <Reference Include="Microsoft.CodeAnalysis.ExternalAccess.OmniSharp, Version=4.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-          <HintPath>..\packages\Microsoft.CodeAnalysis.ExternalAccess.OmniSharp.4.2.0-3.22169.1\lib\netstandard2.0\Microsoft.CodeAnalysis.ExternalAccess.OmniSharp.dll</HintPath>
-        </Reference>
         <Reference Include="Microsoft.CodeAnalysis.Features, Version=4.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
           <HintPath>..\packages\Microsoft.CodeAnalysis.Features.4.2.0-3.22169.1\lib\netstandard2.0\Microsoft.CodeAnalysis.Features.dll</HintPath>
         </Reference>
@@ -130,21 +127,6 @@
         <Reference Include="mscorlib" />
         <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
           <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
-        </Reference>
-        <Reference Include="NuGet.Versioning, Version=6.0.0.280, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-          <HintPath>..\packages\NuGet.Versioning.6.0.0\lib\net472\NuGet.Versioning.dll</HintPath>
-        </Reference>
-        <Reference Include="OmniSharp.Abstractions">
-            <HintPath>..\packages\OmniSharp.Abstractions.1.38.2\lib\net472\OmniSharp.Abstractions.dll</HintPath>
-<!--          <HintPath>..\..\omnisharp-clean\bin\Debug\OmniSharp.Stdio.Driver\net472\OmniSharp.Abstractions.dll</HintPath>-->
-        </Reference>
-        <Reference Include="OmniSharp.Roslyn">
-          <HintPath>..\packages\OmniSharp.Roslyn.1.38.2\lib\net472\OmniSharp.Roslyn.dll</HintPath>
-<!--            <HintPath>..\..\omnisharp-clean\bin\Debug\OmniSharp.Stdio.Driver\net472\OmniSharp.Roslyn.dll</HintPath>-->
-        </Reference>
-        <Reference Include="OmniSharp.Shared">
-            <HintPath>..\packages\OmniSharp.Shared.1.38.2\lib\net472\OmniSharp.Shared.dll</HintPath>
-<!--          <HintPath>..\..\omnisharp-clean\bin\Debug\OmniSharp.Stdio.Driver\net472\OmniSharp.Shared.dll</HintPath>-->
         </Reference>
         <Reference Include="System" />
         <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
@@ -229,6 +211,7 @@
         <Reference Include="System.Xml" />
     </ItemGroup>
     <ItemGroup>
+        <Compile Include="CachedStringBuilder.cs" />
         <Compile Include="DecompileInfo.cs" />
         <Compile Include="Endpoints.cs" />
         <Compile Include="EverywhereSymbolInfoFinder.cs" />

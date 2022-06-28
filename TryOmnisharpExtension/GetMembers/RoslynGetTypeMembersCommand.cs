@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
-using OmniSharp;
 using TryOmnisharpExtension.IlSpy;
 
 namespace TryOmnisharpExtension.GetMembers;
