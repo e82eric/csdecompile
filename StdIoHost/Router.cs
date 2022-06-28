@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using TryOmnisharpExtension;
+using TryOmnisharpExtension.ExternalAssemblies;
 using TryOmnisharpExtension.FindImplementations;
 using TryOmnisharpExtension.FindUsages;
 using TryOmnisharpExtension.GetMembers;
@@ -21,6 +22,7 @@ internal class Router
     private readonly DecompileFindUsagesHandler _findUsagesHandler;
     private readonly GetTypesHandler _searchTypesHandler;
     private readonly GetTypeMembersHandler _getTypeMembersHandler;
+    private readonly AddExternalAssemblyDirectoryHandler _addExternalAssemblyDirectoryHandler;
 
     public Router(
         DecompileGotoDefinitionHandler goToDefinitionHandler,
@@ -28,7 +30,8 @@ internal class Router
         DecompiledSourceHandler decompiledSourceHandler,
         DecompileFindUsagesHandler findUsagesHandler,
         GetTypesHandler getTypesHandler,
-        GetTypeMembersHandler getTypeMembersHandler)
+        GetTypeMembersHandler getTypeMembersHandler,
+        AddExternalAssemblyDirectoryHandler addExternalAssemblyDirectoryHandler)
     {
         _goToDefinitionHandler = goToDefinitionHandler;
         _findImplementationsHandler = findImplementationsHandler;
@@ -36,6 +39,7 @@ internal class Router
         _findUsagesHandler = findUsagesHandler;
         _searchTypesHandler = getTypesHandler;
         _getTypeMembersHandler = getTypeMembersHandler;
+        _addExternalAssemblyDirectoryHandler = addExternalAssemblyDirectoryHandler;
     }
         
     public async Task<ResponsePacket> HandleRequest(string json)
@@ -70,6 +74,9 @@ internal class Router
                     break;
                 case Endpoints.GetTypeMembers:
                     response.Body = await GetTypeMembers(request);
+                    break;
+                case Endpoints.AddExternalAssemblyDirectory:
+                    response.Body = await RunAddDllDirectory(request);
                     break;
             }
         }
@@ -155,6 +162,14 @@ internal class Router
         var arguments = DeserializeRequestObject(request.ArgumentsStream);
         var argObject = arguments.ToObject<DecompileGotoDefinitionRequest>();
         var gotoDefinitionResult = await _goToDefinitionHandler.Handle(argObject);
+        return gotoDefinitionResult;
+    }
+    
+    private async Task<object> RunAddDllDirectory(RequestPacket request)
+    {
+        var arguments = DeserializeRequestObject(request.ArgumentsStream);
+        var argObject = arguments.ToObject<AddExternalAssemblyDirectoryRequest>();
+        var gotoDefinitionResult = await _addExternalAssemblyDirectoryHandler.Handle(argObject);
         return gotoDefinitionResult;
     }
 

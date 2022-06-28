@@ -6,16 +6,13 @@ public class DecompileFindImplementationsHandler
 {
     private readonly EverywhereSymbolInfoFinder2<FindImplementationsResponse> _everywhereSymbolInfoFinder2;
     private readonly IlSpyFindImplementationsCommandFactory2<FindImplementationsResponse> _ilSpyFindImplementationsCommandFactory;
-    private IlSpyExternalAssembliesCommandFactory<FindImplementationsResponse> _externalAssemblyCommandFactory;
 
     public DecompileFindImplementationsHandler(
         EverywhereSymbolInfoFinder2<FindImplementationsResponse> everywhereSymbolInfoFinder2,
-        IlSpyFindImplementationsCommandFactory2<FindImplementationsResponse> ilSpyFindImplementationsCommandFactory,
-        IlSpyExternalAssembliesCommandFactory<FindImplementationsResponse> externalAssembliesCommandFactory)
+        IlSpyFindImplementationsCommandFactory2<FindImplementationsResponse> ilSpyFindImplementationsCommandFactory)
     {
         _everywhereSymbolInfoFinder2 = everywhereSymbolInfoFinder2;
         _ilSpyFindImplementationsCommandFactory = ilSpyFindImplementationsCommandFactory;
-        _externalAssemblyCommandFactory = externalAssembliesCommandFactory;
     }
         
     public async Task<FindImplementationsResponse> Handle(DecompileFindImplementationsRequest request)
@@ -27,14 +24,7 @@ public class DecompileFindImplementationsHandler
         }
         else
         {
-            if (request.IsFromExternalAssembly)
-            {
-                command = _externalAssemblyCommandFactory.Find(request);
-            }
-            else
-            {
-                command = await _ilSpyFindImplementationsCommandFactory.Find(request);
-            }
+            command = await _ilSpyFindImplementationsCommandFactory.Find(request);
         }
         
         var result = await command.Execute();

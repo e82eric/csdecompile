@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using StdIoHost.SimpleProjectSystem;
 using TryOmnisharpExtension;
+using TryOmnisharpExtension.ExternalAssemblies;
 using TryOmnisharpExtension.FindImplementations;
 using TryOmnisharpExtension.FindUsages;
 using TryOmnisharpExtension.GetMembers;
@@ -42,6 +43,7 @@ internal static class OmniSharpApplication
         var resolverFactory = new AssemblyResolverFactory(_peFileCache);
         _decompilerTypeSystemFactory = new IlSpyTypeSystemFactory(resolverFactory, _peFileCache);
         _decompileWorkspace = new DecompileWorkspace(_workspace, _peFileCache);
+
         var solutionFileInfo = new FileInfo(solutionPath);
         var projectsLoadTimer = Stopwatch.StartNew();
         await ((SimpleDecompileWorkspace)_workspace).Start(solutionFileInfo);
@@ -93,8 +95,7 @@ internal static class OmniSharpApplication
             gotoDefinitionCommandFactory);
         var result = new DecompileGotoDefinitionHandler(
             roslynSymbolInfoFinder,
-            ilSpySymbolInfoFinder,
-            null);
+            ilSpySymbolInfoFinder);
         return result;
     }
 
@@ -103,7 +104,7 @@ internal static class OmniSharpApplication
         var decompilerFactory = new DecompilerFactory(_decompilerTypeSystemFactory);
         var ilSpySymbolFinder = new IlSpySymbolFinder(_decompilerTypeSystemFactory, decompilerFactory);
         var ilSpyDecompiledSourceCommandFactory = new IlSpyDecompiledSourceCommandFactory(decompilerFactory, ilSpySymbolFinder);
-        var result = new DecompiledSourceHandler(ilSpyDecompiledSourceCommandFactory, null);
+        var result = new DecompiledSourceHandler(ilSpyDecompiledSourceCommandFactory);
         return result;
     }
 
@@ -134,7 +135,7 @@ internal static class OmniSharpApplication
             ilSpyFindImplementationsCommandFactoryTemp,
             _decompileWorkspace);
         var result = new DecompileFindImplementationsHandler(everywhereSymbolInfoFinder2,
-            ilSpyFindImplementationsCommandFactory2, null);
+            ilSpyFindImplementationsCommandFactory2);
         return result;
     }
     public static DecompileFindUsagesHandler CreateFindUsagesHandler()
@@ -188,10 +189,10 @@ internal static class OmniSharpApplication
             ilSpySymbolFinder,
             findUsagesCommandFactory,
             _decompileWorkspace);
+        
         var result = new DecompileFindUsagesHandler(
             everywhereSymbolInfoFinder2,
-            ilSpyFindImplementationsCommandFactory2,
-            null);
+            ilSpyFindImplementationsCommandFactory2);
         return result;
     }
 
@@ -223,16 +224,23 @@ internal static class OmniSharpApplication
         var decompileFindUsagesHandler = CreateFindUsagesHandler();
         var getTypesHandlers = CreateGetTypesHandlers();
         var getTypeMembersHandler = CreateGetTypeMembersHandler();
+        var addExternalAssemblyDirectoryHandler = CreateAddExternalAssemblyDirectoryHandler();
         var router = new Router(
             gotoDefinitionHandler,
             decompileFindImplementationsHandler,
             decompiledSourceHandler,
             decompileFindUsagesHandler,
             getTypesHandlers,
-            getTypeMembersHandler);
-        
+            getTypeMembersHandler,
+            addExternalAssemblyDirectoryHandler);
         
         var result = new Host(_stdIn, _sharedTextWriter, router);
+        return result;
+    }
+    
+    public static AddExternalAssemblyDirectoryHandler CreateAddExternalAssemblyDirectoryHandler()
+    {
+        var result = new AddExternalAssemblyDirectoryHandler(_decompileWorkspace);
         return result;
     }
 }

@@ -14,7 +14,7 @@ public class GetTypesHandler
     public Task<GetTypesResponse> Handle(GetTypesRequest request)
     {
         var types = _typesRepository.GetAllTypes(request.SearchString);
-        var response = new GetTypesResponse {};
+        var response = new GetTypesResponse();
         foreach (var type in types)
         {
             response.Implementations.Add(type);

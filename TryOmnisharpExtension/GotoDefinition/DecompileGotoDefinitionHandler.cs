@@ -6,16 +6,13 @@ namespace TryOmnisharpExtension.GotoDefinition
     {
         private readonly RosylnSymbolInfoFinder<IGotoDefinitionCommand> _rosylnGotoDefinitionCommandFactory;
         private readonly IlSpyCommandFactory<IGotoDefinitionCommand> _ilSpySymbolInfoFinder;
-        private readonly IlSpyCommandFactory<IGotoDefinitionCommand> _externalAssembliesCommandFactory;
 
         public DecompileGotoDefinitionHandler(
             RosylnSymbolInfoFinder<IGotoDefinitionCommand> rosylnSymbolInfoFinder,
-            IlSpyCommandFactory<IGotoDefinitionCommand> ilSpySymbolInfoFinder,
-            IlSpyCommandFactory<IGotoDefinitionCommand> externalAssembliesCommandFactory)
+            IlSpyCommandFactory<IGotoDefinitionCommand> ilSpySymbolInfoFinder)
         {
             _rosylnGotoDefinitionCommandFactory = rosylnSymbolInfoFinder;
             _ilSpySymbolInfoFinder = ilSpySymbolInfoFinder;
-            _externalAssembliesCommandFactory = externalAssembliesCommandFactory;
         }
         
         public async Task<DecompileGotoDefinitionResponse> Handle(DecompileGotoDefinitionRequest request)
@@ -27,14 +24,7 @@ namespace TryOmnisharpExtension.GotoDefinition
             }
             else
             {
-                if (request.IsFromExternalAssembly)
-                {
-                    command = _externalAssembliesCommandFactory.Find(request);
-                }
-                else
-                {
-                    command = _ilSpySymbolInfoFinder.Find(request);
-                }
+                command = _ilSpySymbolInfoFinder.Find(request);
             }
             
             var result = await command.Execute();

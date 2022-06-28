@@ -218,10 +218,6 @@
         <Compile Include="ExternalAssemblies\AddExternalAssemblyDirectoryHandler.cs" />
         <Compile Include="ExternalAssemblies\AddExternalAssemblyDirectoryRequest.cs" />
         <Compile Include="ExternalAssemblies\AddExternalAssemblyDirectoryResponse.cs" />
-        <Compile Include="ExternalAssemblies\ExternalAssembliesWorkspace.cs" />
-        <Compile Include="ExternalAssemblies\SearchExternalAssembliesForTypeHandler.cs" />
-        <Compile Include="ExternalAssemblies\SearchExternalAssembliesForTypeRequest.cs" />
-        <Compile Include="ExternalAssemblies\SearchExternalAssembliesForTypeResponse.cs" />
         <Compile Include="FindImplementations\DecompileFindImplementationsHandler.cs" />
         <Compile Include="FindImplementations\DecompileFindImplementationsRequest.cs" />
         <Compile Include="FindImplementations\IlSpyFindImplementationsCommandFactoryTemp.cs" />
@@ -231,7 +227,6 @@
         <Compile Include="FindImplementations\EverywhereImplementationsCommand.cs" />
         <Compile Include="FindImplementations\FindImplementationsResponse.cs" />
         <Compile Include="FindImplementations\IlSpyBaseTypeUsageFinder.cs" />
-        <Compile Include="FindImplementations\IlSpyExternalAssembliesCommandFactory.cs" />
         <Compile Include="FindImplementations\IlSpyFindImplementationsCommandFactory.cs" />
         <Compile Include="FindImplementations\IlSpyFindImplementationsCommandFactory2.cs" />
         <Compile Include="FindImplementations\IlSpyMethodImplementationsFinder.cs" />
@@ -273,7 +268,6 @@
         <Compile Include="GetMembers\GetTypesHandler.cs" />
         <Compile Include="GetMembers\GetTypesRequest.cs" />
         <Compile Include="GetMembers\GetTypesResponse.cs" />
-        <Compile Include="GetMembers\IlSpyAllTypesRepository.cs" />
         <Compile Include="GetMembers\IlSpyGetMembersCommandFactory.cs" />
         <Compile Include="GetMembers\IlSpyTypeMembersCommand.cs" />
         <Compile Include="GetMembers\IlSpyTypeMembersFinder.cs" />
@@ -312,7 +306,6 @@
         <Compile Include="IlSpy\DecompilerFactory.cs" />
         <Compile Include="IlSpy\DecompileWorkspace.cs" />
         <Compile Include="IlSpy\AssemblyResolverFactory.cs" />
-        <Compile Include="IlSpy\ExternalAssembliesDecompileWorkspace.cs" />
         <Compile Include="IlSpy\ExternalAssemblyTypeSystemFactory.cs" />
         <Compile Include="IlSpy\IDecompilerTypeSystemFactory.cs" />
         <Compile Include="IlSpy\IDecompileWorkspace.cs" />

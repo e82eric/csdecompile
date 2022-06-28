@@ -26,42 +26,6 @@ public class AllTypesRepository
         {
             var assemblyResolver = _assemblyResolverFactory.GetAssemblyResolver(peFile);
             SearchReferencingModules(peFile, alreadyCheckedPeFiles, assemblyResolver, searchString, alreadyAdded, result);
-            // var typeDefinitions = peFile.TypeDefinitions;
-            // foreach (var typeDefinitionHandle in typeDefinitions)
-            // {
-            //     var typeDef = peFile.GetTypeDefinition(typeDefinitionHandle);
-            //     var foundTypeName = peFile.GetString(typeDef.Name);
-            //     if (foundTypeName != null)
-            //     {
-            //         if (foundTypeName.Contains(searchString))
-            //         {
-            //             var fullTypeName = typeDefinitionHandle.GetFullTypeName(peFile);
-            //             var fullName = fullTypeName.ReflectionName;
-            //
-            //             if (!alreadyAdded.Contains(fullName))
-            //             {
-            //                 var namespaceName = peFile.GetString(typeDef.Namespace);
-            //                 peFile.GetModuleReference(typeDef..)
-            //                 var assemblyFilePath = peFile.ManifestResources.FileName;
-            //                 var decompileInfo = new DecompileInfo
-            //                 {
-            //                     AssemblyFilePath = peFile.FileName,
-            //                     AssemblyName = peFile.FullName,
-            //                     Column = 1,
-            //                     ContainingTypeFullName = fullName,
-            //                     EndColumn = 1,
-            //                     Line = 1,
-            //                     SourceText = fullName,
-            //                     NamespaceName = namespaceName,
-            //                     StartColumn = 1,
-            //                     // UsageType = UsageTypes.Type
-            //                 };
-            //                 result.Add(decompileInfo);
-            //                 alreadyAdded.Add(fullName);
-            //             }
-            //         }
-            //     }
-            // }
         }
         
         return result;
