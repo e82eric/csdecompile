@@ -15,7 +15,7 @@ public class DecompileFindImplementationsHandler
         _ilSpyFindImplementationsCommandFactory = ilSpyFindImplementationsCommandFactory;
     }
         
-    public async Task<FindImplementationsResponse> Handle(DecompileFindImplementationsRequest request)
+    public async Task<FindImplementationsResponse> Handle(DecompiledLocationRequest request)
     {
         INavigationCommand<FindImplementationsResponse> command;
         if (!request.IsDecompiled)

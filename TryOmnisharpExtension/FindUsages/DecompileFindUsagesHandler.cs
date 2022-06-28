@@ -16,7 +16,7 @@ public class DecompileFindUsagesHandler
         _ilSpyFindImplementationsCommandFactory = ilSpyFindImplementationsCommandFactory;
     }
         
-    public async Task<FindUsagesResponse> Handle(DecompileFindUsagesRequest request)
+    public async Task<FindUsagesResponse> Handle(DecompiledLocationRequest request)
     {
         INavigationCommand<FindUsagesResponse> command;
         if (!request.IsDecompiled)

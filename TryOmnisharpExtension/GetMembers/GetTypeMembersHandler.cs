@@ -15,7 +15,7 @@ public class GetTypeMembersHandler
         _roslynGetTypeMembersCommandFactory = roslynGetTypeMembersCommandFactory;
     }
     
-    public async Task<GetTypeMembersResponse> Handle(GetTypeMembersRequest request)
+    public async Task<GetTypeMembersResponse> Handle(DecompiledLocationRequest request)
     {
         INavigationCommand<GetTypeMembersResponse> command = null;
         

@@ -126,14 +126,14 @@ internal class Router
         
     private async Task<object> GetTypeMembers(RequestPacket request)
     {
-        var argObject = GetRequestObject<GetTypeMembersRequest>(request);
+        var argObject = GetRequestObject<DecompiledLocationRequest>(request);
         var responseBody = await _getTypeMembersHandler.Handle(argObject);
         return responseBody;
     }
 
     private async Task<object> RunFindUsages(RequestPacket request)
     {
-        var argObject = GetRequestObject<DecompileFindUsagesRequest>(request);
+        var argObject = GetRequestObject<DecompiledLocationRequest>(request);
         var responseBody = await _findUsagesHandler.Handle(argObject);
         return responseBody;
     }
@@ -147,14 +147,14 @@ internal class Router
         
     private async Task<object> RunFindImplementations(RequestPacket request)
     {
-        var argObject = GetRequestObject<DecompileFindImplementationsRequest>(request);
+        var argObject = GetRequestObject<DecompiledLocationRequest>(request);
         var gotoDefinitionResult = await _findImplementationsHandler.Handle(argObject);
         return gotoDefinitionResult;
     }
 
     private async Task<object> RunGotoDefinition(RequestPacket request)
     {
-        var argObject = GetRequestObject<DecompileGotoDefinitionRequest>(request);
+        var argObject = GetRequestObject<DecompiledLocationRequest>(request);
         var gotoDefinitionResult = await _goToDefinitionHandler.Handle(argObject);
         return gotoDefinitionResult;
     }

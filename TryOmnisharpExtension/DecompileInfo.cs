@@ -9,7 +9,6 @@ namespace TryOmnisharpExtension
         public string AssemblyFilePath { get; set; }
         public string NamespaceName { get; set; }
         public string ContainingTypeShortName { get; set; }
-        public bool IsFromExternalAssembly { get; set; }
         
         public override ResponseLocationType Type => ResponseLocationType.Decompiled;
     }

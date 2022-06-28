@@ -219,7 +219,6 @@
         <Compile Include="ExternalAssemblies\AddExternalAssemblyDirectoryRequest.cs" />
         <Compile Include="ExternalAssemblies\AddExternalAssemblyDirectoryResponse.cs" />
         <Compile Include="FindImplementations\DecompileFindImplementationsHandler.cs" />
-        <Compile Include="FindImplementations\DecompileFindImplementationsRequest.cs" />
         <Compile Include="FindImplementations\IlSpyFindImplementationsCommandFactoryTemp.cs" />
         <Compile Include="FindImplementations\MemberOverrideInTypeFinder.cs" />
         <Compile Include="FindImplementations\TypesThatUseMemberAsBaseTypeMetadataScanner.cs" />
@@ -233,7 +232,6 @@
         <Compile Include="FindImplementations\TypesThatUseTypeAsBaseTypeMetadataScanner.cs" />
         <Compile Include="FindImplementations\RosylynFindImplementationsCommand.cs" />
         <Compile Include="FindUsages\DecompileFindUsagesHandler.cs" />
-        <Compile Include="FindUsages\DecompileFindUsagesRequest.cs" />
         <Compile Include="FindUsages\EventUsedByMetadataScanner.cs" />
         <Compile Include="FindUsages\ExternalAssembliesFindUsagesCommandFactory.cs" />
         <Compile Include="FindUsages\FieldUsedByMetadataScanner.cs" />
@@ -263,7 +261,6 @@
         <Compile Include="GetMembers\AllTypesRepository.cs" />
         <Compile Include="GetMembers\GetTypeMembersCommandFactory.cs" />
         <Compile Include="GetMembers\GetTypeMembersHandler.cs" />
-        <Compile Include="GetMembers\GetTypeMembersRequest.cs" />
         <Compile Include="GetMembers\GetTypeMembersResponse.cs" />
         <Compile Include="GetMembers\GetTypesHandler.cs" />
         <Compile Include="GetMembers\GetTypesRequest.cs" />
@@ -279,7 +276,6 @@
         <Compile Include="GetSource\DecompiledSourceResponse.cs" />
         <Compile Include="GetSource\IlSpyDecompiledSourceCommandFactory.cs" />
         <Compile Include="GotoDefinition\DecompileGotoDefinitionHandler.cs" />
-        <Compile Include="GotoDefinition\DecompileGotoDefinitionRequest.cs" />
         <Compile Include="GotoDefinition\DecompileGotoDefinitionResponse.cs" />
         <Compile Include="GotoDefinition\FieldInTypeFinder.cs" />
         <Compile Include="GotoDefinition\GotoDefinitionCommandFactory.cs" />
@@ -325,7 +321,6 @@
         <Compile Include="RoslynSymbolHelpers.cs" />
         <Compile Include="RoslynToIlSpyEqualityExtensions.cs" />
         <Compile Include="RosylnSymbolInfoFinder.cs" />
-        <Compile Include="Languages.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
         <Compile Include="SourceFileInfo.cs" />
     </ItemGroup>
