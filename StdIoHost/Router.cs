@@ -119,60 +119,60 @@ internal class Router
         
     private async Task<object> GetSearchTypesHandler(RequestPacket request)
     {
-        var arguments = DeserializeRequestObject(request.ArgumentsStream);
-        var argObject = arguments.ToObject<GetTypesRequest>();
+        var argObject = GetRequestObject<GetTypesRequest>(request);
         var responseBody = await _searchTypesHandler.Handle(argObject);
         return responseBody;
     }
         
     private async Task<object> GetTypeMembers(RequestPacket request)
     {
-        var arguments = DeserializeRequestObject(request.ArgumentsStream);
-        var argObject = arguments.ToObject<GetTypeMembersRequest>();
+        var argObject = GetRequestObject<GetTypeMembersRequest>(request);
         var responseBody = await _getTypeMembersHandler.Handle(argObject);
         return responseBody;
     }
-        
+
     private async Task<object> RunFindUsages(RequestPacket request)
     {
-        var arguments = DeserializeRequestObject(request.ArgumentsStream);
-        var argObject = arguments.ToObject<DecompileFindUsagesRequest>();
+        var argObject = GetRequestObject<DecompileFindUsagesRequest>(request);
         var responseBody = await _findUsagesHandler.Handle(argObject);
         return responseBody;
     }
 
     private async Task<object> RunGetSource(RequestPacket request)
     {
-        var arguments = DeserializeRequestObject(request.ArgumentsStream);
-        var argObject = arguments.ToObject<DecompiledSourceRequest>();
+        var argObject = GetRequestObject<DecompiledSourceRequest>(request);
         var gotoDefinitionResult = await _getSourceHandler.Handle(argObject);
         return gotoDefinitionResult;
     }
         
     private async Task<object> RunFindImplementations(RequestPacket request)
     {
-        var arguments = DeserializeRequestObject(request.ArgumentsStream);
-        var argObject = arguments.ToObject<DecompileFindImplementationsRequest>();
+        var argObject = GetRequestObject<DecompileFindImplementationsRequest>(request);
         var gotoDefinitionResult = await _findImplementationsHandler.Handle(argObject);
         return gotoDefinitionResult;
     }
 
     private async Task<object> RunGotoDefinition(RequestPacket request)
     {
-        var arguments = DeserializeRequestObject(request.ArgumentsStream);
-        var argObject = arguments.ToObject<DecompileGotoDefinitionRequest>();
+        var argObject = GetRequestObject<DecompileGotoDefinitionRequest>(request);
         var gotoDefinitionResult = await _goToDefinitionHandler.Handle(argObject);
         return gotoDefinitionResult;
     }
     
     private async Task<object> RunAddDllDirectory(RequestPacket request)
     {
-        var arguments = DeserializeRequestObject(request.ArgumentsStream);
-        var argObject = arguments.ToObject<AddExternalAssemblyDirectoryRequest>();
+        var argObject = GetRequestObject<AddExternalAssemblyDirectoryRequest>(request);
         var gotoDefinitionResult = await _addExternalAssemblyDirectoryHandler.Handle(argObject);
         return gotoDefinitionResult;
     }
-
+    
+    private T GetRequestObject<T>(RequestPacket request)
+    {
+        var arguments = DeserializeRequestObject(request.ArgumentsStream);
+        var argObject = arguments.ToObject<T>();
+        return argObject;
+    }
+    
     private JToken DeserializeRequestObject(Stream readStream)
     {
         try
