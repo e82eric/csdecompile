@@ -1,7 +1,9 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using StdIoHost.ProjectSystemExtraction;
 using StdIoHost.SimpleProjectSystem;
 using TryOmnisharpExtension;
 using TryOmnisharpExtension.ExternalAssemblies;
@@ -12,7 +14,7 @@ using TryOmnisharpExtension.GetSource;
 using TryOmnisharpExtension.GotoDefinition;
 using TryOmnisharpExtension.IlSpy;
 
-namespace StdIoHost.ProjectSystemExtraction;
+namespace StdIoHost;
 
 internal static class OmniSharpApplication
 {
@@ -126,11 +128,11 @@ internal static class OmniSharpApplication
             decompilerFactory,
             typesThatUseMemberAsBaseTypeMetadataScanner,
             memberOverrideInTypeFinder);
-        var ilSpyFindImplementationsCommandFactoryTemp = new IlSpyFindImplementationsCommandFactoryTemp(
+        var ilSpyFindImplementationsCommandFactoryTemp = new RoslynFindImplementationsCommandFactory(
             ilSpyBaseTypeUsageFinder, ilSpyMemberImplementationFinder, _workspace);
         var everywhereSymbolInfoFinder2 = new EverywhereSymbolInfoFinder2<FindImplementationsResponse>(
             _workspace, ilSpySymbolFinder, ilSpyFindImplementationsCommandFactoryTemp);
-        var ilSpyFindImplementationsCommandFactory2 = new IlSpyFindImplementationsCommandFactory2<FindImplementationsResponse>(
+        var ilSpyFindImplementationsCommandFactory2 = new GenericIlSpyFindImplementationsCommandFactory<FindImplementationsResponse>(
             ilSpySymbolFinder,
             ilSpyFindImplementationsCommandFactoryTemp,
             _decompileWorkspace);
@@ -145,7 +147,7 @@ internal static class OmniSharpApplication
         var ilSpySymbolFinder = new IlSpySymbolFinder(_decompilerTypeSystemFactory, decompilerFactory);
         var analyzerScope = new AnalyzerScope(assemblyResolverFactory, _decompileWorkspace);
         var typeUsedByTypeIlScanner = new TypeUsedByTypeIlScanner(analyzerScope);
-        var typeUsedInTypeFinder3 = new TypeUsedInTypeFinder3();
+        var typeUsedInTypeFinder3 = new TypeUsedInTypeFinder();
         var ilSpyTypeUsagesFinder = new IlSpyTypeUsagesFinder(
             decompilerFactory,
             typeUsedByTypeIlScanner,
@@ -185,7 +187,7 @@ internal static class OmniSharpApplication
             _workspace,
             ilSpySymbolFinder,
             findUsagesCommandFactory);
-        var ilSpyFindImplementationsCommandFactory2 = new IlSpyFindImplementationsCommandFactory2<FindUsagesResponse>(
+        var ilSpyFindImplementationsCommandFactory2 = new GenericIlSpyFindImplementationsCommandFactory<FindUsagesResponse>(
             ilSpySymbolFinder,
             findUsagesCommandFactory,
             _decompileWorkspace);
@@ -198,12 +200,18 @@ internal static class OmniSharpApplication
 
     public static GetTypesHandler CreateGetTypesHandlers()
     {
-        var assemblyResolverFactory = new AssemblyResolverFactory(_peFileCache);
-        var allTypesRepository = new AllTypesRepository(_decompileWorkspace, assemblyResolverFactory);
+        var allTypesRepository = GetAllTypesRepository();
         var result = new GetTypesHandler(allTypesRepository);
         return result;
     }
-    
+
+    private static AllTypesRepository GetAllTypesRepository()
+    {
+        var assemblyResolverFactory = new AssemblyResolverFactory(_peFileCache);
+        var allTypesRepository = new AllTypesRepository(_decompileWorkspace, assemblyResolverFactory);
+        return allTypesRepository;
+    }
+
     public static GetTypeMembersHandler CreateGetTypeMembersHandler()
     {
         var decompilerFactory = new DecompilerFactory(_decompilerTypeSystemFactory);
@@ -225,19 +233,42 @@ internal static class OmniSharpApplication
         var getTypesHandlers = CreateGetTypesHandlers();
         var getTypeMembersHandler = CreateGetTypeMembersHandler();
         var addExternalAssemblyDirectoryHandler = CreateAddExternalAssemblyDirectoryHandler();
-        var router = new Router(
-            gotoDefinitionHandler,
-            decompileFindImplementationsHandler,
-            decompiledSourceHandler,
-            decompileFindUsagesHandler,
-            getTypesHandlers,
-            getTypeMembersHandler,
-            addExternalAssemblyDirectoryHandler);
+        var getAssemblyTypesHandler = GetAssemblyTypesHandler();
+        var getAssembliesHandler = GetAssembliesHandler();
+
+        var handlers = new Dictionary<string, IHandler>
+        {
+            { Endpoints.DecompileGotoDefinition, gotoDefinitionHandler },
+            { Endpoints.DecompileFindImplementations, decompileFindImplementationsHandler },
+            { Endpoints.DecompiledSource, decompiledSourceHandler },
+            { Endpoints.DecompileFindUsages, decompileFindUsagesHandler },
+            { Endpoints.GetAssemblyTypes, getAssemblyTypesHandler },
+            { Endpoints.GetTypes, getTypesHandlers },
+            { Endpoints.GetTypeMembers, getTypeMembersHandler },
+            { Endpoints.AddExternalAssemblyDirectory, addExternalAssemblyDirectoryHandler },
+            { Endpoints.GetAssemblies, getAssembliesHandler }
+        };
+
+        var router = new Router(handlers);
         
         var result = new Host(_stdIn, _sharedTextWriter, router);
         return result;
     }
-    
+
+    private static GetAssembliesHandler GetAssembliesHandler()
+    {
+        var getAssembliesCommandFactory = new GetAssembliesCommandFactory(_decompileWorkspace);
+        var getAssembliesHandler = new GetAssembliesHandler(getAssembliesCommandFactory);
+        return getAssembliesHandler;
+    }
+
+    private static GetAssemblyTypesHandler GetAssemblyTypesHandler()
+    {
+        var allTypesRepository = GetAllTypesRepository();
+        var getAssemblyTypesHandler = new GetAssemblyTypesHandler(allTypesRepository);
+        return getAssemblyTypesHandler;
+    }
+
     public static AddExternalAssemblyDirectoryHandler CreateAddExternalAssemblyDirectoryHandler()
     {
         var result = new AddExternalAssemblyDirectoryHandler(_decompileWorkspace);

@@ -219,7 +219,7 @@
         <Compile Include="ExternalAssemblies\AddExternalAssemblyDirectoryRequest.cs" />
         <Compile Include="ExternalAssemblies\AddExternalAssemblyDirectoryResponse.cs" />
         <Compile Include="FindImplementations\DecompileFindImplementationsHandler.cs" />
-        <Compile Include="FindImplementations\IlSpyFindImplementationsCommandFactoryTemp.cs" />
+        <Compile Include="FindImplementations\RoslynFindImplementationsCommandFactory.cs" />
         <Compile Include="FindImplementations\MemberOverrideInTypeFinder.cs" />
         <Compile Include="FindImplementations\TypesThatUseMemberAsBaseTypeMetadataScanner.cs" />
         <Compile Include="FindImplementations\TypeUsedAsBaseTypeFinder.cs" />
@@ -227,7 +227,7 @@
         <Compile Include="FindImplementations\FindImplementationsResponse.cs" />
         <Compile Include="FindImplementations\IlSpyBaseTypeUsageFinder.cs" />
         <Compile Include="FindImplementations\IlSpyFindImplementationsCommandFactory.cs" />
-        <Compile Include="FindImplementations\IlSpyFindImplementationsCommandFactory2.cs" />
+        <Compile Include="FindImplementations\GenericIlSpyFindImplementationsCommandFactory.cs" />
         <Compile Include="FindImplementations\IlSpyMethodImplementationsFinder.cs" />
         <Compile Include="FindImplementations\TypesThatUseTypeAsBaseTypeMetadataScanner.cs" />
         <Compile Include="FindImplementations\RosylynFindImplementationsCommand.cs" />
@@ -256,9 +256,16 @@
         <Compile Include="FindUsages\RoslynFindUsagesCommand.cs" />
         <Compile Include="FindUsages\TypeDefinitionUsedVisitor.cs" />
         <Compile Include="FindUsages\TypeUsedByTypeIlScanner.cs" />
-        <Compile Include="FindUsages\TypeUsedInTypeFinder3.cs" />
+        <Compile Include="FindUsages\TypeUsedInTypeFinder.cs" />
         <Compile Include="FindUsages\VariableInMethodBodyFinder.cs" />
         <Compile Include="GetMembers\AllTypesRepository.cs" />
+        <Compile Include="GetMembers\Assembly.cs" />
+        <Compile Include="GetMembers\GetAssembliesCommand.cs" />
+        <Compile Include="GetMembers\GetAssembliesCommandFactory.cs" />
+        <Compile Include="GetMembers\GetAssembliesHandler.cs" />
+        <Compile Include="GetMembers\GetAssembliesResponse.cs" />
+        <Compile Include="GetMembers\GetAssemblyTypesHandler.cs" />
+        <Compile Include="GetMembers\GetAssemblyTypesRequest.cs" />
         <Compile Include="GetMembers\GetTypeMembersCommandFactory.cs" />
         <Compile Include="GetMembers\GetTypeMembersHandler.cs" />
         <Compile Include="GetMembers\GetTypeMembersResponse.cs" />
@@ -293,8 +300,10 @@
         <Compile Include="GotoDefinition\PropertyInTypeFinder.cs" />
         <Compile Include="GotoDefinition\RosylynGotoDefinitionCommand.cs" />
         <Compile Include="GotoDefinition\TypeInTypeFinder.cs" />
+        <Compile Include="HandlerBase.cs" />
         <Compile Include="ICommandFactory.cs" />
         <Compile Include="IDecompilerCommandFactory.cs" />
+        <Compile Include="IHandler.cs" />
         <Compile Include="IlSpyCommandFactory.cs" />
         <Compile Include="IlSpy\AnalyzerScope.cs" />
         <Compile Include="IlSpy\AstExtensions.cs" />

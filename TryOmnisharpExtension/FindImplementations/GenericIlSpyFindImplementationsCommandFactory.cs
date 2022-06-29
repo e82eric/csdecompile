@@ -10,14 +10,14 @@ using ISymbol = Microsoft.CodeAnalysis.ISymbol;
 
 namespace TryOmnisharpExtension.FindImplementations;
 
-public class IlSpyFindImplementationsCommandFactory2<TResponseType>
+public class GenericIlSpyFindImplementationsCommandFactory<TResponseType>
     where TResponseType : FindImplementationsResponse, new()
 {
     private readonly ICommandFactory<INavigationCommand<TResponseType>> _commandCommandFactory;
     private readonly IDecompileWorkspace _decompileWorkspace;
     private readonly IlSpySymbolFinder _symbolFinder;
 
-    public IlSpyFindImplementationsCommandFactory2(
+    public GenericIlSpyFindImplementationsCommandFactory(
         IlSpySymbolFinder symbolFinder,
         ICommandFactory<INavigationCommand<TResponseType>> commandCommandFactory,
         IDecompileWorkspace decompileWorkspace)

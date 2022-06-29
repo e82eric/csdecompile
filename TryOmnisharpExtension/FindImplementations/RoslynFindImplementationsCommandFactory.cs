@@ -3,12 +3,12 @@ using TryOmnisharpExtension.IlSpy;
 
 namespace TryOmnisharpExtension.FindImplementations;
 
-public class IlSpyFindImplementationsCommandFactoryTemp : IlSpyFindImplementationsCommandFactory,
+public class RoslynFindImplementationsCommandFactory : IlSpyFindImplementationsCommandFactory,
     ICommandFactory<INavigationCommand<FindImplementationsResponse>>
 {
     private readonly IOmniSharpWorkspace _omniSharpWorkspace;
 
-    public IlSpyFindImplementationsCommandFactoryTemp(
+    public RoslynFindImplementationsCommandFactory(
         IlSpyBaseTypeUsageFinder typeFinder,
         IlSpyMemberImplementationFinder memberImplementationFinder,
         IOmniSharpWorkspace omniSharpWorkspace):base(typeFinder, memberImplementationFinder)

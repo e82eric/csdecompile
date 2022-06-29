@@ -31,6 +31,12 @@ public class AllTypesRepository
         return result;
     }
     
+    public IEnumerable<DecompileInfo> GetAssemblyType(string assemblyFilePath)
+    {
+        var peFile = _workspace.GetAssembly(assemblyFilePath);
+        var result = GetAssemblyTypes(peFile);
+        return result;
+    }
 
     private string GetPeFileUniqueness(PEFile peFile)
     {
@@ -67,6 +73,40 @@ public class AllTypesRepository
                 }
             }
         }
+    }
+    
+    private IList<DecompileInfo> GetAssemblyTypes(PEFile peFile)
+    {
+        var result = new List<DecompileInfo>();
+        var typeDefinitions = peFile.Metadata.TypeDefinitions;
+        foreach (var typeDefinitionHandle in typeDefinitions)
+        {
+            var typeDef = peFile.Metadata.GetTypeDefinition(typeDefinitionHandle);
+            var foundTypeName = peFile.Metadata.GetString(typeDef.Name);
+            if (foundTypeName != null)
+            {
+                var fullTypeName = typeDefinitionHandle.GetFullTypeName(peFile.Metadata);
+                var fullName = fullTypeName.ReflectionName;
+
+                var namespaceName = peFile.Metadata.GetString(typeDef.Namespace);
+                var decompileInfo = new DecompileInfo
+                {
+                    AssemblyFilePath = peFile.FileName,
+                    AssemblyName = peFile.FullName,
+                    Column = 1,
+                    ContainingTypeFullName = fullName,
+                    EndColumn = 1,
+                    Line = 1,
+                    SourceText = fullName,
+                    NamespaceName = namespaceName,
+                    StartColumn = 1,
+                    // UsageType = UsageTypes.Type
+                };
+                result.Add(decompileInfo);
+            }
+        }
+
+        return result;
     }
 
     private void AddTypeDefinitions(PEFile peFile, string searchString, HashSet<string> alreadyAdded, IList<DecompileInfo> result)

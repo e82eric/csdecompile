@@ -1,45 +1,19 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using TryOmnisharpExtension;
-using TryOmnisharpExtension.ExternalAssemblies;
-using TryOmnisharpExtension.FindImplementations;
-using TryOmnisharpExtension.FindUsages;
-using TryOmnisharpExtension.GetMembers;
-using TryOmnisharpExtension.GetSource;
-using TryOmnisharpExtension.GotoDefinition;
 
 namespace StdIoHost;
 
 internal class Router
 {
-    private readonly DecompileGotoDefinitionHandler _goToDefinitionHandler;
-    private readonly DecompileFindImplementationsHandler _findImplementationsHandler;
-    private readonly DecompiledSourceHandler _getSourceHandler;
-    private readonly DecompileFindUsagesHandler _findUsagesHandler;
-    private readonly GetTypesHandler _searchTypesHandler;
-    private readonly GetTypeMembersHandler _getTypeMembersHandler;
-    private readonly AddExternalAssemblyDirectoryHandler _addExternalAssemblyDirectoryHandler;
+    private readonly Dictionary<string, IHandler> _handlers;
 
-    public Router(
-        DecompileGotoDefinitionHandler goToDefinitionHandler,
-        DecompileFindImplementationsHandler findImplementationsHandler,
-        DecompiledSourceHandler decompiledSourceHandler,
-        DecompileFindUsagesHandler findUsagesHandler,
-        GetTypesHandler getTypesHandler,
-        GetTypeMembersHandler getTypeMembersHandler,
-        AddExternalAssemblyDirectoryHandler addExternalAssemblyDirectoryHandler)
+    public Router(Dictionary<string, IHandler> handlers)
     {
-        _goToDefinitionHandler = goToDefinitionHandler;
-        _findImplementationsHandler = findImplementationsHandler;
-        _getSourceHandler = decompiledSourceHandler;
-        _findUsagesHandler = findUsagesHandler;
-        _searchTypesHandler = getTypesHandler;
-        _getTypeMembersHandler = getTypeMembersHandler;
-        _addExternalAssemblyDirectoryHandler = addExternalAssemblyDirectoryHandler;
+        _handlers = handlers;
     }
         
     public async Task<ResponsePacket> HandleRequest(string json)
@@ -55,29 +29,13 @@ internal class Router
 
         try
         {
-            switch (request.Command)
+            if (_handlers.TryGetValue(request.Command, out var handler))
             {
-                case Endpoints.DecompileGotoDefinition:
-                    response.Body = await RunGotoDefinition(request);
-                    break;
-                case Endpoints.DecompileFindImplementations:
-                    response.Body = await RunFindImplementations(request);
-                    break;
-                case Endpoints.DecompiledSource:
-                    response.Body = await RunGetSource(request);
-                    break;
-                case Endpoints.DecompileFindUsages:
-                    response.Body = await RunFindUsages(request);
-                    break;
-                case Endpoints.GetTypes:
-                    response.Body = await GetSearchTypesHandler(request);
-                    break;
-                case Endpoints.GetTypeMembers:
-                    response.Body = await GetTypeMembers(request);
-                    break;
-                case Endpoints.AddExternalAssemblyDirectory:
-                    response.Body = await RunAddDllDirectory(request);
-                    break;
+                response.Body = await handler.Handle(request.ArgumentsStream);
+            }
+            else
+            {
+                response.Success = false;
             }
         }
         catch (Exception e)
@@ -115,79 +73,5 @@ internal class Router
         }
 
         return response;
-    }
-        
-    private async Task<object> GetSearchTypesHandler(RequestPacket request)
-    {
-        var argObject = GetRequestObject<GetTypesRequest>(request);
-        var responseBody = await _searchTypesHandler.Handle(argObject);
-        return responseBody;
-    }
-        
-    private async Task<object> GetTypeMembers(RequestPacket request)
-    {
-        var argObject = GetRequestObject<DecompiledLocationRequest>(request);
-        var responseBody = await _getTypeMembersHandler.Handle(argObject);
-        return responseBody;
-    }
-
-    private async Task<object> RunFindUsages(RequestPacket request)
-    {
-        var argObject = GetRequestObject<DecompiledLocationRequest>(request);
-        var responseBody = await _findUsagesHandler.Handle(argObject);
-        return responseBody;
-    }
-
-    private async Task<object> RunGetSource(RequestPacket request)
-    {
-        var argObject = GetRequestObject<DecompiledSourceRequest>(request);
-        var gotoDefinitionResult = await _getSourceHandler.Handle(argObject);
-        return gotoDefinitionResult;
-    }
-        
-    private async Task<object> RunFindImplementations(RequestPacket request)
-    {
-        var argObject = GetRequestObject<DecompiledLocationRequest>(request);
-        var gotoDefinitionResult = await _findImplementationsHandler.Handle(argObject);
-        return gotoDefinitionResult;
-    }
-
-    private async Task<object> RunGotoDefinition(RequestPacket request)
-    {
-        var argObject = GetRequestObject<DecompiledLocationRequest>(request);
-        var gotoDefinitionResult = await _goToDefinitionHandler.Handle(argObject);
-        return gotoDefinitionResult;
-    }
-    
-    private async Task<object> RunAddDllDirectory(RequestPacket request)
-    {
-        var argObject = GetRequestObject<AddExternalAssemblyDirectoryRequest>(request);
-        var gotoDefinitionResult = await _addExternalAssemblyDirectoryHandler.Handle(argObject);
-        return gotoDefinitionResult;
-    }
-    
-    private T GetRequestObject<T>(RequestPacket request)
-    {
-        var arguments = DeserializeRequestObject(request.ArgumentsStream);
-        var argObject = arguments.ToObject<T>();
-        return argObject;
-    }
-    
-    private JToken DeserializeRequestObject(Stream readStream)
-    {
-        try
-        {
-            using (var streamReader = new StreamReader(readStream))
-            {
-                using (var textReader = new JsonTextReader(streamReader))
-                {
-                    return JToken.Load(textReader);
-                }
-            }
-        }
-        catch
-        {
-            return new JObject();
-        }
     }
 }

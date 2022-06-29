@@ -6,7 +6,7 @@ using TryOmnisharpExtension.IlSpy;
 
 namespace TryOmnisharpExtension.FindUsages;
 
-public class TypeUsedInTypeFinder3 : IEntityUsedInTypeFinder<ITypeDefinition>
+public class TypeUsedInTypeFinder : IEntityUsedInTypeFinder<ITypeDefinition>
 {
     public IEnumerable<AstNode> Find(
         SyntaxTree syntaxTree,

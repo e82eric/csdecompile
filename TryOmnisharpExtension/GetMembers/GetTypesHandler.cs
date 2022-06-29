@@ -2,7 +2,7 @@
 
 namespace TryOmnisharpExtension.GetMembers;
 
-public class GetTypesHandler
+public class GetTypesHandler : HandlerBase<GetTypesRequest, GetTypesResponse>
 {
     private readonly AllTypesRepository _typesRepository;
 
@@ -11,7 +11,7 @@ public class GetTypesHandler
         _typesRepository = typesRepository;
     }
     
-    public Task<GetTypesResponse> Handle(GetTypesRequest request)
+    public override Task<GetTypesResponse> Handle(GetTypesRequest request)
     {
         var types = _typesRepository.GetAllTypes(request.SearchString);
         var response = new GetTypesResponse();
@@ -20,5 +20,16 @@ public class GetTypesHandler
             response.Implementations.Add(type);
         }
         return Task.FromResult(response);
+    }
+
+    public GetTypesResponse HandleGetAssemblyTypes(GetAssemblyTypesRequest request)
+    {
+        var types = _typesRepository.GetAssemblyType(request.AssemblyFilePath);
+        var response = new GetTypesResponse();
+        foreach (var type in types)
+        {
+            response.Implementations.Add(type);
+        }
+        return response;
     }
 }

@@ -2,7 +2,7 @@
 
 namespace TryOmnisharpExtension.GotoDefinition
 {
-    public class DecompileGotoDefinitionHandler
+    public class DecompileGotoDefinitionHandler : HandlerBase<DecompiledLocationRequest, DecompileGotoDefinitionResponse>
     {
         private readonly RosylnSymbolInfoFinder<IGotoDefinitionCommand> _rosylnGotoDefinitionCommandFactory;
         private readonly IlSpyCommandFactory<IGotoDefinitionCommand> _ilSpySymbolInfoFinder;
@@ -15,7 +15,7 @@ namespace TryOmnisharpExtension.GotoDefinition
             _ilSpySymbolInfoFinder = ilSpySymbolInfoFinder;
         }
         
-        public async Task<DecompileGotoDefinitionResponse> Handle(DecompiledLocationRequest request)
+        public override async Task<DecompileGotoDefinitionResponse> Handle(DecompiledLocationRequest request)
         {
             IGotoDefinitionCommand command;
             if (!request.IsDecompiled)

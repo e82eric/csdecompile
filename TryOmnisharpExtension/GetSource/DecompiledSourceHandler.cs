@@ -2,7 +2,7 @@
 
 namespace TryOmnisharpExtension.GetSource
 {
-    public class DecompiledSourceHandler
+    public class DecompiledSourceHandler : HandlerBase<DecompiledSourceRequest, DecompiledSourceResponse>
     {
         private readonly IlSpyDecompiledSourceCommandFactory _commandFactory;
 
@@ -11,7 +11,7 @@ namespace TryOmnisharpExtension.GetSource
             _commandFactory =  commandFactory;
         }
         
-        public Task<DecompiledSourceResponse> Handle(DecompiledSourceRequest request)
+        public override Task<DecompiledSourceResponse> Handle(DecompiledSourceRequest request)
         {
             var response = _commandFactory.Find(request);
             return Task.FromResult(response);

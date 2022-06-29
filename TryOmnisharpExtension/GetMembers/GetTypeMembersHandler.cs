@@ -2,7 +2,7 @@
 
 namespace TryOmnisharpExtension.GetMembers;
 
-public class GetTypeMembersHandler
+public class GetTypeMembersHandler : HandlerBase<DecompiledLocationRequest, GetTypeMembersResponse>
 {
     private readonly IlSpyGetMembersCommandFactory _commandFactory;
     private readonly RoslynGetTypeMembersCommandFactory _roslynGetTypeMembersCommandFactory;
@@ -15,7 +15,7 @@ public class GetTypeMembersHandler
         _roslynGetTypeMembersCommandFactory = roslynGetTypeMembersCommandFactory;
     }
     
-    public async Task<GetTypeMembersResponse> Handle(DecompiledLocationRequest request)
+    public override async Task<GetTypeMembersResponse> Handle(DecompiledLocationRequest request)
     {
         INavigationCommand<GetTypeMembersResponse> command = null;
         

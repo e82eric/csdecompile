@@ -2,20 +2,20 @@
 
 namespace TryOmnisharpExtension.FindImplementations;
 
-public class DecompileFindImplementationsHandler
+public class DecompileFindImplementationsHandler : HandlerBase<DecompiledLocationRequest, FindImplementationsResponse>
 {
     private readonly EverywhereSymbolInfoFinder2<FindImplementationsResponse> _everywhereSymbolInfoFinder2;
-    private readonly IlSpyFindImplementationsCommandFactory2<FindImplementationsResponse> _ilSpyFindImplementationsCommandFactory;
+    private readonly GenericIlSpyFindImplementationsCommandFactory<FindImplementationsResponse> _genericIlSpyFindImplementationsCommandFactory;
 
     public DecompileFindImplementationsHandler(
         EverywhereSymbolInfoFinder2<FindImplementationsResponse> everywhereSymbolInfoFinder2,
-        IlSpyFindImplementationsCommandFactory2<FindImplementationsResponse> ilSpyFindImplementationsCommandFactory)
+        GenericIlSpyFindImplementationsCommandFactory<FindImplementationsResponse> genericIlSpyFindImplementationsCommandFactory)
     {
         _everywhereSymbolInfoFinder2 = everywhereSymbolInfoFinder2;
-        _ilSpyFindImplementationsCommandFactory = ilSpyFindImplementationsCommandFactory;
+        _genericIlSpyFindImplementationsCommandFactory = genericIlSpyFindImplementationsCommandFactory;
     }
         
-    public async Task<FindImplementationsResponse> Handle(DecompiledLocationRequest request)
+    public override async Task<FindImplementationsResponse> Handle(DecompiledLocationRequest request)
     {
         INavigationCommand<FindImplementationsResponse> command;
         if (!request.IsDecompiled)
@@ -24,7 +24,7 @@ public class DecompileFindImplementationsHandler
         }
         else
         {
-            command = await _ilSpyFindImplementationsCommandFactory.Find(request);
+            command = await _genericIlSpyFindImplementationsCommandFactory.Find(request);
         }
         
         var result = await command.Execute();

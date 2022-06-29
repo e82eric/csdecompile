@@ -80,7 +80,13 @@ namespace TryOmnisharpExtension.IlSpy
             return result;
         }
 
-		public PEFile[] GetAssemblies()
+        public PEFile GetAssembly(string filePath)
+        {
+            _peFileCache.TryOpen(filePath, out var result);
+            return result;
+        }
+
+        public PEFile[] GetAssemblies()
         {
             var result = _peFileCache.GetAssemblies();
             return result;

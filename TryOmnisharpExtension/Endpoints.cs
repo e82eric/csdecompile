@@ -9,5 +9,7 @@ namespace TryOmnisharpExtension
         public const string GetTypes = "/gettypes";
         public const string GetTypeMembers = "/gettypemembers";
         public const string AddExternalAssemblyDirectory = "/addexternalassemblydirectory";
+        public const string GetAssemblies = "/getassemblies";
+        public const string GetAssemblyTypes = "/getassemblytypes";
     }
 }
