@@ -1,9 +1,10 @@
-﻿using TryOmnisharpExtension.IlSpy;
+﻿using TryOmnisharpExtension.FindImplementations;
+using TryOmnisharpExtension.IlSpy;
 using ISymbol = Microsoft.CodeAnalysis.ISymbol;
 
 namespace TryOmnisharpExtension.FindUsages;
 
-public class FindUsagesCommandFactory : ExternalAssembliesFindUsagesCommandFactory, ICommandFactory<INavigationCommand<FindUsagesResponse>>
+public class FindUsagesCommandFactory : ExternalAssembliesFindUsagesCommandFactory, ICommandFactory<INavigationCommand<FindImplementationsResponse>>
 {
     private readonly IOmniSharpWorkspace _omniSharpWorkspace;
 
@@ -25,7 +26,7 @@ public class FindUsagesCommandFactory : ExternalAssembliesFindUsagesCommandFacto
         _omniSharpWorkspace = omniSharpWorkspace;
     }
 
-    public INavigationCommand<FindUsagesResponse> GetForInSource(ISymbol roslynSymbol)
+    public INavigationCommand<FindImplementationsResponse> GetForInSource(ISymbol roslynSymbol)
     {
         var result = new RoslynFindUsagesCommand(roslynSymbol, _omniSharpWorkspace);
         return result;

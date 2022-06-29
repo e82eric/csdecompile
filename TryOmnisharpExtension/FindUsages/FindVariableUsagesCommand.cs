@@ -5,7 +5,7 @@ using TryOmnisharpExtension.FindImplementations;
 
 namespace TryOmnisharpExtension.FindUsages;
 
-internal class FindVariableUsagesCommand : INavigationCommand<FindUsagesResponse>
+internal class FindVariableUsagesCommand : INavigationCommand<FindImplementationsResponse>
 {
     private readonly IlSpyVariableUsagesFinder _usagesFinder;
     private readonly string _sourceText;
@@ -24,14 +24,14 @@ internal class FindVariableUsagesCommand : INavigationCommand<FindUsagesResponse
         _sourceText = sourceText;
     }
         
-    public Task<FindUsagesResponse> Execute()
+    public Task<FindImplementationsResponse> Execute()
     {
         var metadataSources = _usagesFinder.Run(
             _containingTypeDefinition,
             _variable,
             _sourceText);
 
-        var result = new FindUsagesResponse();
+        var result = new FindImplementationsResponse();
             
         foreach (var metadataSource in metadataSources)
         {

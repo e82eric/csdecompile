@@ -4,7 +4,7 @@ using ICSharpCode.Decompiler.TypeSystem;
 using Microsoft.CodeAnalysis;
 using ISymbol = Microsoft.CodeAnalysis.ISymbol;
 
-namespace TryOmnisharpExtension;
+namespace TryOmnisharpExtension.Roslyn;
 
 public static class RoslynToIlSpyEqualityExtensions
 {

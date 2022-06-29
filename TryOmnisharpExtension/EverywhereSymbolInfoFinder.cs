@@ -8,16 +8,17 @@ using Microsoft.CodeAnalysis.FindSymbols;
 using Microsoft.CodeAnalysis.Text;
 using TryOmnisharpExtension.FindImplementations;
 using TryOmnisharpExtension.IlSpy;
+using TryOmnisharpExtension.Roslyn;
 
 namespace TryOmnisharpExtension;
 
-public class EverywhereSymbolInfoFinder2<TCommandResponseType> where TCommandResponseType : FindImplementationsResponse, new()
+public class EverywhereSymbolInfoFinder<TCommandResponseType> where TCommandResponseType : FindImplementationsResponse, new()
 {
     private readonly IOmniSharpWorkspace _workspace;
     private readonly IlSpySymbolFinder _ilSpySymbolFinder;
     private readonly ICommandFactory<INavigationCommand<TCommandResponseType>> _commandFactory;
 
-    public EverywhereSymbolInfoFinder2(
+    public EverywhereSymbolInfoFinder(
         IOmniSharpWorkspace workspace,
         IlSpySymbolFinder ilSpySymbolFinder,
         ICommandFactory<INavigationCommand<TCommandResponseType>> commandFactory)

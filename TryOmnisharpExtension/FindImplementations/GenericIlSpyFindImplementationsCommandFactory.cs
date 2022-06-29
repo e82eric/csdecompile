@@ -6,6 +6,7 @@ using ICSharpCode.Decompiler.TypeSystem;
 using Microsoft.CodeAnalysis;
 using TryOmnisharpExtension.FindUsages;
 using TryOmnisharpExtension.IlSpy;
+using TryOmnisharpExtension.Roslyn;
 using ISymbol = Microsoft.CodeAnalysis.ISymbol;
 
 namespace TryOmnisharpExtension.FindImplementations;

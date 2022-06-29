@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using TryOmnisharpExtension.Roslyn;
 
 namespace TryOmnisharpExtension.GotoDefinition
 {

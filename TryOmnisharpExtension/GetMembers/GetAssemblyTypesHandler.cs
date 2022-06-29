@@ -1,8 +1,9 @@
 using System.Threading.Tasks;
+using TryOmnisharpExtension.FindImplementations;
 
 namespace TryOmnisharpExtension.GetMembers;
 
-public class GetAssemblyTypesHandler : HandlerBase<GetAssemblyTypesRequest, GetTypesResponse>
+public class GetAssemblyTypesHandler : HandlerBase<GetAssemblyTypesRequest, FindImplementationsResponse>
 {
     private readonly AllTypesRepository _typesRepository;
 
@@ -11,10 +12,10 @@ public class GetAssemblyTypesHandler : HandlerBase<GetAssemblyTypesRequest, GetT
         _typesRepository = typesRepository;
     }
     
-    public override Task<GetTypesResponse> Handle(GetAssemblyTypesRequest request)
+    public override Task<FindImplementationsResponse> Handle(GetAssemblyTypesRequest request)
     {
         var types = _typesRepository.GetAssemblyType(request.AssemblyFilePath);
-        var response = new GetTypesResponse();
+        var response = new FindImplementationsResponse();
         foreach (var type in types)
         {
             response.Implementations.Add(type);

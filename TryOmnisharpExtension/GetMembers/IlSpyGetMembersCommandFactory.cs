@@ -1,4 +1,5 @@
-﻿using TryOmnisharpExtension.GetMembers;
+﻿using TryOmnisharpExtension.FindImplementations;
+using TryOmnisharpExtension.GetMembers;
 using TryOmnisharpExtension.IlSpy;
 
 namespace TryOmnisharpExtension;
@@ -16,7 +17,7 @@ public class IlSpyGetMembersCommandFactory
         _typeMembersFinder = typeMembersFinder;
     }
         
-    public INavigationCommand<GetTypeMembersResponse>Find(DecompiledLocationRequest request)
+    public INavigationCommand<FindImplementationsResponse>Find(DecompiledLocationRequest request)
     {
         var symbolAtLocation = _symbolFinder.FindTypeDefinition(
             request.AssemblyFilePath,

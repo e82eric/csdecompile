@@ -1,9 +1,10 @@
 ﻿using System.Threading.Tasks;
 using ICSharpCode.Decompiler.TypeSystem;
+using TryOmnisharpExtension.FindImplementations;
 
 namespace TryOmnisharpExtension.GetMembers;
 
-internal class IlSpyTypeMembersCommand: INavigationCommand<GetTypeMembersResponse>
+internal class IlSpyTypeMembersCommand: INavigationCommand<FindImplementationsResponse>
 {
     private readonly ITypeDefinition _symbol;
     private readonly IlSpyTypeMembersFinder _usagesFinder;
@@ -16,12 +17,12 @@ internal class IlSpyTypeMembersCommand: INavigationCommand<GetTypeMembersRespons
         _usagesFinder = usagesFinder;
     }
         
-    public Task<GetTypeMembersResponse> Execute()
+    public Task<FindImplementationsResponse> Execute()
     {
         var metadataSources = _usagesFinder.Run(
             _symbol);
 
-        var result = new GetTypeMembersResponse();
+        var result = new FindImplementationsResponse();
             
         foreach (var metadataSource in metadataSources)
         {

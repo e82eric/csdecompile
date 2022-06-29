@@ -13,6 +13,7 @@ using TryOmnisharpExtension.GetMembers;
 using TryOmnisharpExtension.GetSource;
 using TryOmnisharpExtension.GotoDefinition;
 using TryOmnisharpExtension.IlSpy;
+using TryOmnisharpExtension.Roslyn;
 
 namespace StdIoHost;
 
@@ -130,7 +131,7 @@ internal static class OmniSharpApplication
             memberOverrideInTypeFinder);
         var ilSpyFindImplementationsCommandFactoryTemp = new RoslynFindImplementationsCommandFactory(
             ilSpyBaseTypeUsageFinder, ilSpyMemberImplementationFinder, _workspace);
-        var everywhereSymbolInfoFinder2 = new EverywhereSymbolInfoFinder2<FindImplementationsResponse>(
+        var everywhereSymbolInfoFinder2 = new EverywhereSymbolInfoFinder<FindImplementationsResponse>(
             _workspace, ilSpySymbolFinder, ilSpyFindImplementationsCommandFactoryTemp);
         var ilSpyFindImplementationsCommandFactory2 = new GenericIlSpyFindImplementationsCommandFactory<FindImplementationsResponse>(
             ilSpySymbolFinder,
@@ -183,11 +184,11 @@ internal static class OmniSharpApplication
             ilSpyVariableUsagesFinder,
             ilSpyEventUsagesFinder,
             _workspace);
-        var everywhereSymbolInfoFinder2 = new EverywhereSymbolInfoFinder2<FindUsagesResponse>(
+        var everywhereSymbolInfoFinder2 = new EverywhereSymbolInfoFinder<FindImplementationsResponse>(
             _workspace,
             ilSpySymbolFinder,
             findUsagesCommandFactory);
-        var ilSpyFindImplementationsCommandFactory2 = new GenericIlSpyFindImplementationsCommandFactory<FindUsagesResponse>(
+        var ilSpyFindImplementationsCommandFactory2 = new GenericIlSpyFindImplementationsCommandFactory<FindImplementationsResponse>(
             ilSpySymbolFinder,
             findUsagesCommandFactory,
             _decompileWorkspace);

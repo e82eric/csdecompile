@@ -4,14 +4,14 @@ namespace TryOmnisharpExtension.FindImplementations;
 
 public class DecompileFindImplementationsHandler : HandlerBase<DecompiledLocationRequest, FindImplementationsResponse>
 {
-    private readonly EverywhereSymbolInfoFinder2<FindImplementationsResponse> _everywhereSymbolInfoFinder2;
+    private readonly EverywhereSymbolInfoFinder<FindImplementationsResponse> _everywhereSymbolInfoFinder;
     private readonly GenericIlSpyFindImplementationsCommandFactory<FindImplementationsResponse> _genericIlSpyFindImplementationsCommandFactory;
 
     public DecompileFindImplementationsHandler(
-        EverywhereSymbolInfoFinder2<FindImplementationsResponse> everywhereSymbolInfoFinder2,
+        EverywhereSymbolInfoFinder<FindImplementationsResponse> everywhereSymbolInfoFinder,
         GenericIlSpyFindImplementationsCommandFactory<FindImplementationsResponse> genericIlSpyFindImplementationsCommandFactory)
     {
-        _everywhereSymbolInfoFinder2 = everywhereSymbolInfoFinder2;
+        _everywhereSymbolInfoFinder = everywhereSymbolInfoFinder;
         _genericIlSpyFindImplementationsCommandFactory = genericIlSpyFindImplementationsCommandFactory;
     }
         
@@ -20,7 +20,7 @@ public class DecompileFindImplementationsHandler : HandlerBase<DecompiledLocatio
         INavigationCommand<FindImplementationsResponse> command;
         if (!request.IsDecompiled)
         {
-            command = await _everywhereSymbolInfoFinder2.Get(request);
+            command = await _everywhereSymbolInfoFinder.Get(request);
         }
         else
         {

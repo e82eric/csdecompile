@@ -6,7 +6,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
 using TryOmnisharpExtension.IlSpy;
 
-namespace TryOmnisharpExtension;
+namespace TryOmnisharpExtension.Roslyn;
 
 internal static class RoslynSymbolHelpers
 {

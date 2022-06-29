@@ -1,10 +1,12 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
+using TryOmnisharpExtension.FindImplementations;
 using TryOmnisharpExtension.IlSpy;
+using TryOmnisharpExtension.Roslyn;
 
 namespace TryOmnisharpExtension.GetMembers;
 
-public class RoslynGetTypeMembersCommand : INavigationCommand<GetTypeMembersResponse>
+public class RoslynGetTypeMembersCommand : INavigationCommand<FindImplementationsResponse>
 {
     private readonly INamedTypeSymbol _symbol;
     private readonly IOmniSharpWorkspace _workspace;
@@ -16,11 +18,11 @@ public class RoslynGetTypeMembersCommand : INavigationCommand<GetTypeMembersResp
         _symbol = symbol;
         _workspace = workspace;
     }
-    public Task<GetTypeMembersResponse> Execute()
+    public Task<FindImplementationsResponse> Execute()
     {
         var members = _symbol.GetMembers();
 
-        var result = new GetTypeMembersResponse();
+        var result = new FindImplementationsResponse();
         foreach (var member in members)
         {
             if (!member.IsImplicitlyDeclared

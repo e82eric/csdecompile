@@ -1,8 +1,9 @@
 ﻿using System.Threading.Tasks;
+using TryOmnisharpExtension.FindImplementations;
 
 namespace TryOmnisharpExtension.GetMembers;
 
-public class GetTypeMembersHandler : HandlerBase<DecompiledLocationRequest, GetTypeMembersResponse>
+public class GetTypeMembersHandler : HandlerBase<DecompiledLocationRequest, FindImplementationsResponse>
 {
     private readonly IlSpyGetMembersCommandFactory _commandFactory;
     private readonly RoslynGetTypeMembersCommandFactory _roslynGetTypeMembersCommandFactory;
@@ -15,9 +16,9 @@ public class GetTypeMembersHandler : HandlerBase<DecompiledLocationRequest, GetT
         _roslynGetTypeMembersCommandFactory = roslynGetTypeMembersCommandFactory;
     }
     
-    public override async Task<GetTypeMembersResponse> Handle(DecompiledLocationRequest request)
+    public override async Task<FindImplementationsResponse> Handle(DecompiledLocationRequest request)
     {
-        INavigationCommand<GetTypeMembersResponse> command = null;
+        INavigationCommand<FindImplementationsResponse> command = null;
         
         if (!request.IsDecompiled)
         {

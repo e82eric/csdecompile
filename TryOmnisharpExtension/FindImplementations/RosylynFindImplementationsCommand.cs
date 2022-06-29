@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.FindSymbols;
 using TryOmnisharpExtension.IlSpy;
+using TryOmnisharpExtension.Roslyn;
 
 namespace TryOmnisharpExtension.FindImplementations;
 

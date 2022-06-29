@@ -7,7 +7,7 @@ using Microsoft.CodeAnalysis.FindSymbols;
 using Microsoft.CodeAnalysis.Text;
 using TryOmnisharpExtension.IlSpy;
 
-namespace TryOmnisharpExtension
+namespace TryOmnisharpExtension.Roslyn
 {
     public class RosylnSymbolInfoFinder<TCommandType>
     {

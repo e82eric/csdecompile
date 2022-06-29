@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
+using TryOmnisharpExtension.FindImplementations;
 using TryOmnisharpExtension.IlSpy;
 
 namespace TryOmnisharpExtension.GetMembers;
@@ -15,7 +16,7 @@ public class RoslynGetTypeMembersCommandFactory
         _workspace = workspace;
     }
     
-    public async Task<INavigationCommand<GetTypeMembersResponse>> Get(LocationRequest request)
+    public async Task<INavigationCommand<FindImplementationsResponse>> Get(LocationRequest request)
     {
         var document = _workspace.GetDocument(request.FileName);
         var symbol = await GetDefinitionSymbol(document, request.Line, request.Column);

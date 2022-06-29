@@ -1,12 +1,14 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.FindSymbols;
+using TryOmnisharpExtension.FindImplementations;
 using TryOmnisharpExtension.IlSpy;
+using TryOmnisharpExtension.Roslyn;
 using ISymbol = Microsoft.CodeAnalysis.ISymbol;
 
 namespace TryOmnisharpExtension.FindUsages;
 
-public class RoslynFindUsagesCommand : INavigationCommand<FindUsagesResponse>
+public class RoslynFindUsagesCommand : INavigationCommand<FindImplementationsResponse>
 {
     private readonly ISymbol _symbol;
     private readonly IOmniSharpWorkspace _workspace;
@@ -18,12 +20,12 @@ public class RoslynFindUsagesCommand : INavigationCommand<FindUsagesResponse>
         _symbol = symbol;
         _workspace = workspace;
     }
-    public async Task<FindUsagesResponse> Execute()
+    public async Task<FindImplementationsResponse> Execute()
     {
         var definition = await SymbolFinder.FindSourceDefinitionAsync(_symbol, _workspace.CurrentSolution);
         var usages = await SymbolFinder.FindReferencesAsync(definition ?? _symbol, _workspace.CurrentSolution);
 
-        var result = new FindUsagesResponse();
+        var result = new FindImplementationsResponse();
         foreach (var usage in usages)
         {
             foreach (var location in usage.Locations)
