@@ -61,6 +61,15 @@ public class EverywhereSymbolInfoFinder<TCommandResponseType> where TCommandResp
                     propertyName);
                 ilSpyCommand = _commandFactory.GetForProperty(ilspyProperty, projectOutputFilePath);
                 break;
+            case SymbolKind.Event:
+                var @event = (IEventSymbol)roslynSymbol;
+                var eventName = $"{@event.ContainingType.GetSymbolName()}.{@event.Name}";
+                var ilspyEvent = _ilSpySymbolFinder.FindEvent(
+                    assemblyFilePath,
+                    @event.ContainingType.GetSymbolName(),
+                    eventName);
+                ilSpyCommand = _commandFactory.GetForEvent(ilspyEvent, projectOutputFilePath);
+                break;
             case SymbolKind.Field:
                 var fieldSymbol = (IFieldSymbol)roslynSymbol;
                 var ilspyField = _ilSpySymbolFinder.FindField(

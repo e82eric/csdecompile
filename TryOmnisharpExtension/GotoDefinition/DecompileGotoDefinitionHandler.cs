@@ -32,4 +32,50 @@ namespace TryOmnisharpExtension.GotoDefinition
             return result;
         }
     }
+
+    class FileNotFoundCommand : IGotoDefinitionCommand
+    {
+        private readonly string _filePath;
+
+        public FileNotFoundCommand(string filePath)
+        {
+            _filePath = filePath;
+        }
+        public Task<DecompileGotoDefinitionResponse> Execute()
+        {
+            var result = new DecompileGotoDefinitionResponse()
+            {
+                ErrorDetails = new ErrorDetails()
+                {
+                    Message = $"FILE_NOT_FOUND {_filePath}"
+                }
+            };
+            return Task.FromResult(result);    
+        }
+    }
+    
+    class SymbolNotFoundAtLocationCommand : IGotoDefinitionCommand
+    {
+        private readonly string _filePath;
+        private readonly int _line;
+        private readonly int _column;
+
+        public SymbolNotFoundAtLocationCommand(string filePath, int line, int column)
+        {
+            _filePath = filePath;
+            _line = line;
+            _column = column;
+        }
+        public Task<DecompileGotoDefinitionResponse> Execute()
+        {
+            var result = new DecompileGotoDefinitionResponse()
+            {
+                ErrorDetails = new ErrorDetails()
+                {
+                    Message = $"SYMBOL_NOT_FOUND_AT_LOCATION {_filePath}:{_line}:{_column}"
+                }
+            };
+            return Task.FromResult(result);    
+        }
+    }
 }

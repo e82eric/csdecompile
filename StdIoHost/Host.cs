@@ -44,7 +44,7 @@ namespace StdIoHost
                                 e = aggregateEx.Flatten().InnerException;
                             }
 
-                            _output.WriteLine(new EventPacket()
+                            _output.WriteLine(new EventPacket
                             {
                                 Event = "error",
                                 Body = JsonConvert.ToString(e.ToString(), '"', StringEscapeHandling.Default)

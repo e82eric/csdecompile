@@ -1,4 +1,7 @@
-﻿using ICSharpCode.Decompiler.TypeSystem;
+﻿using ICSharpCode.Decompiler.CSharp.Syntax;
+using ICSharpCode.Decompiler.IL;
+using ICSharpCode.Decompiler.TypeSystem;
+using TryOmnisharpExtension.FindUsages;
 
 namespace TryOmnisharpExtension.GotoDefinition
 {
@@ -24,6 +27,17 @@ namespace TryOmnisharpExtension.GotoDefinition
             _typeFinder = typeFinder;
         }
 
+        public IGotoDefinitionCommand GetForFileNotFound(string filePath)
+        {
+            var result = new FileNotFoundCommand(filePath);
+            return result;
+        }
+        
+        public IGotoDefinitionCommand SymbolNotFoundAtLocation(string filePath, int line, int column)
+        {
+            var result = new SymbolNotFoundAtLocationCommand(filePath, line, column);
+            return result;
+        }
         public IGotoDefinitionCommand GetForInSource(Microsoft.CodeAnalysis.ISymbol roslynSymbol)
         {
             return new RosylynGotoDefinitionCommand(roslynSymbol);
@@ -56,6 +70,25 @@ namespace TryOmnisharpExtension.GotoDefinition
         public IGotoDefinitionCommand GetForProperty(IProperty property, string assemblyFilePath)
         {
             var result = new GoToDefintionCommand<IProperty>(property, _propertyFinder, assemblyFilePath);
+            return result;
+        }
+
+        public IGotoDefinitionCommand GetForVariable(
+            ILVariable variable,
+            ITypeDefinition typeDefinition,
+            SyntaxTree syntaxTree,
+            string sourceText,
+            string assemblyFilePath)
+        {
+            var variableInMethodBodyFinder = new VariableInTypeFinder();
+            var ilSpyVariableDefintionFinder = new IlSpyVariableDefintionFinder(variableInMethodBodyFinder);
+            var result = new GotoVariableDefintiionCommand(
+                ilSpyVariableDefintionFinder,
+                typeDefinition,
+                syntaxTree,
+                variable,
+                sourceText,
+                assemblyFilePath);
             return result;
         }
     }

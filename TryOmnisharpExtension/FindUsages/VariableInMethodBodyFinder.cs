@@ -7,25 +7,11 @@ public class VariableInMethodBodyFinder
 {
     public IEnumerable<AstNode> Find(Identifier variableNode)
     {
-        // var result = new List<UsageAsTextLocation>();
         var foundUsages = new List<AstNode>();
         var methodBodyNode = FindMethodBody(variableNode);
         if (methodBodyNode != null)
         {
             FindUsagesOfIdentifier(methodBodyNode, variableNode, foundUsages);
-
-            // foreach (var identifier in foundUsages)
-            // {
-            //     // var statement = FindIdentifierParentStatement(identifier);
-            //     var usage = new UsageAsTextLocation
-            //     {
-            //         Node = identifier,
-            //         // StartLocation = identifier.StartLocation,
-            //         // EndLocation = identifier.EndLocation,
-            //         // Statement = statement.ToString()
-            //     };
-            //     result.Add(usage);
-            // }
         }
 
         return foundUsages;
@@ -66,23 +52,4 @@ public class VariableInMethodBodyFinder
             FindUsagesOfIdentifier(child, variableNode, found);
         }
     }
-
-    // private Statement FindIdentifierParentStatement(AstNode currentNode)
-    // {
-    //     if (currentNode is Statement statement)
-    //     {
-    //         return statement;
-    //     }
-    //
-    //     if (currentNode.Parent != null)
-    //     {
-    //         var result = FindIdentifierParentStatement(currentNode.Parent);
-    //         if (result != null)
-    //         {
-    //             return result;
-    //         }
-    //     }
-    //
-    //     return null;
-    // }
 }

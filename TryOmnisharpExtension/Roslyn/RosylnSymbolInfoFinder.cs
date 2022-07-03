@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.FindSymbols;
 using Microsoft.CodeAnalysis.Text;
+using TryOmnisharpExtension.GotoDefinition;
 using TryOmnisharpExtension.IlSpy;
 
 namespace TryOmnisharpExtension.Roslyn
@@ -28,10 +29,23 @@ namespace TryOmnisharpExtension.Roslyn
         public async Task<TCommandType> Get(LocationRequest request)
         {
             var document = _workspace.GetDocument(request.FileName);
+            if (document == null)
+            {
+                var fileNotFoundCommand = _gotoDefinitionCommandFactory.GetForFileNotFound(request.FileName);
+                return fileNotFoundCommand;
+            }
             var projectOutputFilePath = document.Project.OutputFilePath;
             var assemblyFilePath = projectOutputFilePath;
             var roslynSymbol = await GetDefinitionSymbol(document, request.Line, request.Column);
 
+            if (roslynSymbol == null)
+            {
+                var symbolNotFoundAtLocationCommand = _gotoDefinitionCommandFactory.SymbolNotFoundAtLocation(
+                    request.FileName,
+                    request.Line,
+                    request.Column);
+                return symbolNotFoundAtLocationCommand;
+            }
             TCommandType result = default;
             
             if (roslynSymbol.Locations.First().IsInSource)

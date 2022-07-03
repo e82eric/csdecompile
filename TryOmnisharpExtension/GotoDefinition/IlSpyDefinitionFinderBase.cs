@@ -9,9 +9,14 @@ public class IlSpyDefinitionFinderBase<T> : IlSpyToSourceInfoBase where T : IEnt
 {
     private readonly IDefinitionInDecompiledSyntaxTreeFinder<T> _eventInTypeFinder;
     private readonly DecompilerFactory _decompilerFactory;
+    private IDefinitionInDecompiledSyntaxTreeFinder<ITypeDefinition> _typeDefinitionFinder;
 
-    public IlSpyDefinitionFinderBase(IDefinitionInDecompiledSyntaxTreeFinder<T> eventInTypeFinder, DecompilerFactory decompilerFactory)
+    public IlSpyDefinitionFinderBase(
+        IDefinitionInDecompiledSyntaxTreeFinder<T> eventInTypeFinder,
+        IDefinitionInDecompiledSyntaxTreeFinder<ITypeDefinition> typeDefinitionFinder,
+        DecompilerFactory decompilerFactory)
     {
+        _typeDefinitionFinder = typeDefinitionFinder;
         _eventInTypeFinder = eventInTypeFinder;
         _decompilerFactory = decompilerFactory;
     }
@@ -25,6 +30,13 @@ public class IlSpyDefinitionFinderBase<T> : IlSpyToSourceInfoBase where T : IEnt
         var foundUse = _eventInTypeFinder.Find(
             eventSymbol,
             decompiled.syntaxTree);
+
+        //If we can't find the member,  fallback to returning the type definition
+        //This most common cause would be a default constructor
+        if (foundUse == null)
+        {
+            foundUse = _typeDefinitionFinder.Find(rootType, decompiled.syntaxTree);
+        }
             
         var lines = decompiled.sourceText.Split(new []{"\r\n"}, StringSplitOptions.None);
 

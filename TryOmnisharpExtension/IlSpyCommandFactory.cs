@@ -1,4 +1,8 @@
-﻿using ICSharpCode.Decompiler.TypeSystem;
+﻿using ICSharpCode.Decompiler.CSharp;
+using ICSharpCode.Decompiler.CSharp.Syntax;
+using ICSharpCode.Decompiler.TypeSystem;
+using TryOmnisharpExtension.FindUsages;
+using TryOmnisharpExtension.GotoDefinition;
 using TryOmnisharpExtension.IlSpy;
 
 namespace TryOmnisharpExtension
@@ -18,6 +22,32 @@ namespace TryOmnisharpExtension
         
         public TCommandType Find(DecompiledLocationRequest request)
         {
+            var containingTypeDefinition = _symbolFinder.FindTypeDefinition(
+                request.AssemblyFilePath,
+                request.ContainingTypeFullName);
+            
+             (AstNode node, SyntaxTree syntaxTree, string sourceText) findNodeResult = _symbolFinder.FindNode(
+                containingTypeDefinition,
+                request.Line,
+                request.Column);
+
+            var parentResolveResult = findNodeResult.node.Parent.GetResolveResult();
+
+            //TODO: This should be in a usages specific context
+            if (parentResolveResult is ILVariableResolveResult variableResolveResult)
+            {
+                var variableFinder = new VariableInTypeFinder();
+                variableFinder.Find(variableResolveResult.Variable, findNodeResult.syntaxTree);
+
+                var variableCommand = _commandCommandFactory.GetForVariable(
+                    variableResolveResult.Variable,
+                    containingTypeDefinition,
+                    findNodeResult.syntaxTree,
+                    findNodeResult.sourceText,
+                    request.AssemblyFilePath);
+                return variableCommand;
+            }
+            
             var symbolAtLocation = _symbolFinder.FindSymbolAtLocation(
                 request.AssemblyFilePath,
                 request.ContainingTypeFullName,

@@ -2,6 +2,7 @@
 using ICSharpCode.Decompiler.CSharp;
 using ICSharpCode.Decompiler.CSharp.Syntax;
 using ICSharpCode.Decompiler.TypeSystem;
+using TryOmnisharpExtension.FindUsages;
 using TryOmnisharpExtension.IlSpy;
 
 namespace TryOmnisharpExtension.GotoDefinition;

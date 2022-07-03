@@ -1,0 +1,3 @@
+public class InSourceFindImplementationsBaseClassInheritor : InSourceFindImplementationsBaseClass
+{
+}

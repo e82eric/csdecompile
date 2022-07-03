@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using TryOmnisharpExtension;
+using TryOmnisharpExtension.GotoDefinition;
 
 namespace StdIoHost;
 
@@ -31,7 +32,17 @@ internal class Router
         {
             if (_handlers.TryGetValue(request.Command, out var handler))
             {
-                response.Body = await handler.Handle(request.ArgumentsStream);
+                var handlerResult = await handler.Handle(request.ArgumentsStream);
+                response.Body = handlerResult;
+                if (handlerResult is DecompileGotoDefinitionResponse maybeError)
+                {
+                    if (maybeError.ErrorDetails != null)
+                    {
+                        response.Success = false;
+                        response.Message = maybeError.ErrorDetails.Message;
+                        response.Body = null;
+                    }
+                }
             }
             else
             {

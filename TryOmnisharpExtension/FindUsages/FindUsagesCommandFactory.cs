@@ -1,4 +1,6 @@
-﻿using TryOmnisharpExtension.FindImplementations;
+﻿using ICSharpCode.Decompiler.CSharp.Syntax;
+using ICSharpCode.Decompiler.IL;
+using ICSharpCode.Decompiler.TypeSystem;
 using TryOmnisharpExtension.IlSpy;
 using ISymbol = Microsoft.CodeAnalysis.ISymbol;
 
@@ -30,5 +32,21 @@ public class FindUsagesCommandFactory : ExternalAssembliesFindUsagesCommandFacto
     {
         var result = new RoslynFindUsagesCommand(roslynSymbol, _omniSharpWorkspace);
         return result;
+    }
+
+    public INavigationCommand<FindImplementationsResponse> GetForFileNotFound(string filePath)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public INavigationCommand<FindImplementationsResponse> SymbolNotFoundAtLocation(string filePath, int line, int column)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public INavigationCommand<FindImplementationsResponse> GetForVariable(ILVariable variable, ITypeDefinition typeDefinition, SyntaxTree syntaxTree,
+        string sourceText, string assemblyFilePath)
+    {
+        throw new System.NotImplementedException();
     }
 }

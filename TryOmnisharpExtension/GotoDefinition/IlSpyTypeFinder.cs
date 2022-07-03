@@ -5,8 +5,11 @@ namespace TryOmnisharpExtension.GotoDefinition
  {
      public class IlSpyTypeFinder : IlSpyDefinitionFinderBase<ITypeDefinition>
      {
-         public IlSpyTypeFinder(TypeInTypeFinder typeInFinder, DecompilerFactory decompilerFactory) : base(
-             typeInFinder, decompilerFactory)
+         public IlSpyTypeFinder(
+             TypeInTypeFinder typeInFinder,
+             TypeInTypeFinder typeInTypeFinder,
+             DecompilerFactory decompilerFactory) : base(
+             typeInFinder, typeInFinder, decompilerFactory)
          {
          }
      }

@@ -283,6 +283,7 @@
         <Compile Include="GotoDefinition\FieldInTypeFinder.cs" />
         <Compile Include="GotoDefinition\GotoDefinitionCommandFactory.cs" />
         <Compile Include="GotoDefinition\GoToDefintionCommand.cs" />
+        <Compile Include="GotoDefinition\GotoVariableDefintiionCommand.cs" />
         <Compile Include="GotoDefinition\IDefinitionInDecompiledSyntaxTreeFinder.cs" />
         <Compile Include="GotoDefinition\IGotoDefinitionCommand.cs" />
         <Compile Include="GotoDefinition\IlSpyDefinitionFinderBase.cs" />
@@ -296,6 +297,7 @@
         <Compile Include="GotoDefinition\PropertyInTypeFinder.cs" />
         <Compile Include="GotoDefinition\RosylynGotoDefinitionCommand.cs" />
         <Compile Include="GotoDefinition\TypeInTypeFinder.cs" />
+        <Compile Include="GotoDefinition\VariableInTypeFinder.cs" />
         <Compile Include="HandlerBase.cs" />
         <Compile Include="ICommandFactory.cs" />
         <Compile Include="IDecompilerCommandFactory.cs" />

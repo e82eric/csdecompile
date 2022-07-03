@@ -1,0 +1,156 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <Import Project="..\packages\NUnit.3.13.3\build\NUnit.props" Condition="Exists('..\packages\NUnit.3.13.3\build\NUnit.props')" />
+    <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+    <PropertyGroup>
+        <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+        <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+        <ProjectGuid>{48F14EEF-B427-4FA1-8343-363A75CE3DAC}</ProjectGuid>
+        <OutputType>Library</OutputType>
+        <AppDesignerFolder>Properties</AppDesignerFolder>
+        <RootNamespace>IntegrationTests</RootNamespace>
+        <AssemblyName>IntegrationTests</AssemblyName>
+        <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+        <FileAlignment>512</FileAlignment>
+        <LangVersion>latest</LangVersion>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+        <PlatformTarget>AnyCPU</PlatformTarget>
+        <DebugSymbols>true</DebugSymbols>
+        <DebugType>full</DebugType>
+        <Optimize>false</Optimize>
+        <OutputPath>bin\Debug\</OutputPath>
+        <DefineConstants>DEBUG;TRACE</DefineConstants>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>4</WarningLevel>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+        <PlatformTarget>AnyCPU</PlatformTarget>
+        <DebugType>pdbonly</DebugType>
+        <Optimize>true</Optimize>
+        <OutputPath>bin\Release\</OutputPath>
+        <DefineConstants>TRACE</DefineConstants>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>4</WarningLevel>
+    </PropertyGroup>
+    <ItemGroup>
+        <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+          <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+        </Reference>
+        <Reference Include="nunit.framework, Version=3.13.3.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+          <HintPath>..\packages\NUnit.3.13.3\lib\net45\nunit.framework.dll</HintPath>
+        </Reference>
+        <Reference Include="System" />
+        <Reference Include="System.Core" />
+        <Reference Include="System.Data" />
+        <Reference Include="System.Xml" />
+    </ItemGroup>
+    <ItemGroup>
+        <Compile Include="..\..\StdIoHost\Packet.cs">
+          <Link>LinkedModels\Packet.cs</Link>
+        </Compile>
+        <Compile Include="..\..\StdIoHost\ResponsePacket.cs">
+          <Link>LinkedModels\ResponsePacket.cs</Link>
+        </Compile>
+        <Compile Include="..\..\TryOmnisharpExtension\DecompiledLocationRequest.cs">
+          <Link>LinkedModels\DecompiledLocationRequest.cs</Link>
+        </Compile>
+        <Compile Include="..\..\TryOmnisharpExtension\DecompileInfo.cs">
+          <Link>LinkedModels\DecompileInfo.cs</Link>
+        </Compile>
+        <Compile Include="..\..\TryOmnisharpExtension\Endpoints.cs">
+          <Link>LinkedModels\Endpoints.cs</Link>
+        </Compile>
+        <Compile Include="..\..\TryOmnisharpExtension\FindImplementationsResponse.cs">
+          <Link>LinkedModels\FindImplementationsResponse.cs</Link>
+        </Compile>
+        <Compile Include="..\..\TryOmnisharpExtension\GetMembers\Assembly.cs">
+          <Link>LinkedModels\Assembly.cs</Link>
+        </Compile>
+        <Compile Include="..\..\TryOmnisharpExtension\GetMembers\GetAssembliesResponse.cs">
+          <Link>LinkedModels\GetAssembliesResponse.cs</Link>
+        </Compile>
+        <Compile Include="..\..\TryOmnisharpExtension\GetSource\DecompiledSourceRequest.cs">
+          <Link>LinkedModels\DecompiledSourceRequest.cs</Link>
+        </Compile>
+        <Compile Include="..\..\TryOmnisharpExtension\GetSource\DecompiledSourceResponse.cs">
+          <Link>LinkedModels\DecompiledSourceResponse.cs</Link>
+        </Compile>
+        <Compile Include="..\..\TryOmnisharpExtension\GotoDefinition\DecompileGotoDefinitionResponse.cs">
+          <Link>LinkedModels\DecompileGotoDefinitionResponse.cs</Link>
+        </Compile>
+        <Compile Include="..\..\TryOmnisharpExtension\LocationRequest.cs">
+          <Link>LinkedModels\LocationRequest.cs</Link>
+        </Compile>
+        <Compile Include="..\..\TryOmnisharpExtension\ResponseLocation.cs">
+          <Link>LinkedModels\ResponseLocation.cs</Link>
+        </Compile>
+        <Compile Include="..\..\TryOmnisharpExtension\ResponseLocationType.cs">
+          <Link>LinkedModels\ResponseLocationType.cs</Link>
+        </Compile>
+        <Compile Include="..\..\TryOmnisharpExtension\SourceFileInfo.cs">
+          <Link>LinkedModels\SourceFileInfo.cs</Link>
+        </Compile>
+        <Compile Include="DecompilerClient.cs" />
+        <Compile Include="ExternalSource\FindImplementations\ExternalFindImplementationsBase.cs" />
+        <Compile Include="ExternalSource\FindImplementations\ExternalFindImplementationsBaseClassTests.cs" />
+        <Compile Include="ExternalSource\FindImplementations\ExternalFindImplementationsInterfaceTests.cs" />
+        <Compile Include="ExternalSource\FindUsages\ExternalFindUsagesEventTests.cs" />
+        <Compile Include="ExternalSource\FindUsages\ExternalFindUsagesFieldTests.cs" />
+        <Compile Include="ExternalSource\FindUsages\ExternalFindUsagesMethodTests.cs" />
+        <Compile Include="ExternalSource\FindUsages\ExternalFindUsagesPropertyTests.cs" />
+        <Compile Include="ExternalSource\FindUsages\ExternalFindUsagesTypeAsFieldTests.cs" />
+        <Compile Include="ExternalSource\FindUsages\ExternalFindUsagesTypeAsGenericTests.cs" />
+        <Compile Include="ExternalSource\FindUsages\ExternalFindUsagesTypeAsMethodTests.cs" />
+        <Compile Include="ExternalSource\FindUsages\ExternalFindUsagesTypeAsVariableTests.cs" />
+        <Compile Include="ExternalSource\FindUsages\ExternalFindUsagesVariableTests.cs" />
+        <Compile Include="ExternalSource\GotoDefinition\ExternalGotoDefinitionBaseClassTests.cs" />
+        <Compile Include="ExternalSource\GotoDefinition\ExternalGotoDefinitionConstructorTests.cs" />
+        <Compile Include="ExternalSource\GotoDefinition\ExternalGotoDefinitionDefaultConstructorTests.cs" />
+        <Compile Include="ExternalSource\GotoDefinition\ExternalGotoDefinitionEventTests.cs" />
+        <Compile Include="ExternalSource\GotoDefinition\ExternalGotoDefinitionFieldTests.cs" />
+        <Compile Include="ExternalSource\GotoDefinition\ExternalGotoDefinitionMethodTests.cs" />
+        <Compile Include="ExternalSource\GotoDefinition\ExternalGotoDefinitionPropertyTests.cs" />
+        <Compile Include="ExternalSource\GotoDefinition\ExternalGotoDefinitionVariableTests.cs" />
+        <Compile Include="ExternalTestBase.cs" />
+        <Compile Include="FindImplementationsTests.cs" />
+        <Compile Include="CommandPacket.cs" />
+        <Compile Include="GotoDefintionConverter.cs" />
+        <Compile Include="InSourceBase.cs" />
+        <Compile Include="InSource\GotoDefinition\InSourceGotoDefinitionBaseClassTests.cs" />
+        <Compile Include="InSource\GotoDefinition\InSourceGotoDefinitionConstructorTests.cs" />
+        <Compile Include="InSource\GotoDefinition\InSourceGotoDefinitionDefaultConstructorTests.cs" />
+        <Compile Include="InSource\GotoDefinition\InSourceGotoDefinitionEventTests.cs" />
+        <Compile Include="InSource\GotoDefinition\InSourceGotoDefinitionFieldTests.cs" />
+        <Compile Include="InSource\GotoDefinition\InSourceGotoDefinitionFileDoesntExistTests.cs" />
+        <Compile Include="InSource\GotoDefinition\InSourceGotoDefinitionMethodTests.cs" />
+        <Compile Include="InSource\GotoDefinition\InSourceGotoDefinitionPropertyTests.cs" />
+        <Compile Include="InSource\GotoDefinition\InSourceGotoDefinitionSymbolNotFoundAtLocationTests.cs" />
+        <Compile Include="InSource\GotoDefinition\InSourceGotoDefinitionVariableTests.cs" />
+        <Compile Include="Properties\AssemblyInfo.cs" />
+        <Compile Include="StdIoClient.cs" />
+        <Compile Include="TestHarness.cs" />
+        <Compile Include="TestHarnessStartup.cs" />
+    </ItemGroup>
+    <ItemGroup>
+      <None Include="packages.config" />
+    </ItemGroup>
+    <ItemGroup>
+      <Folder Include="InSource\FindImplementations" />
+    </ItemGroup>
+    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+    <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+      <PropertyGroup>
+        <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105.The missing file is {0}.</ErrorText>
+      </PropertyGroup>
+      <Error Condition="!Exists('..\packages\NUnit.3.13.3\build\NUnit.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\NUnit.3.13.3\build\NUnit.props'))" />
+    </Target>
+    <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+         Other similar extension points exist, see Microsoft.Common.targets.
+    <Target Name="BeforeBuild">
+    </Target>
+    <Target Name="AfterBuild">
+    </Target>
+    -->
+
+</Project>

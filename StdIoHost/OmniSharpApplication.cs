@@ -78,15 +78,15 @@ internal static class OmniSharpApplication
         var decompilerFactory = new DecompilerFactory(_decompilerTypeSystemFactory);
         var ilSpySymbolFinder = new IlSpySymbolFinder(_decompilerTypeSystemFactory, decompilerFactory);
         var typeInTypeFinder = new TypeInTypeFinder();
-        var ilSpyTypeFinder = new IlSpyTypeFinder(typeInTypeFinder, decompilerFactory);
+        var ilSpyTypeFinder = new IlSpyTypeFinder(typeInTypeFinder, typeInTypeFinder, decompilerFactory);
         var methodInTypeFinder = new MethodInTypeFinder();
-        var ilSpyMemberFinder = new IlSpyMemberFinder(methodInTypeFinder, decompilerFactory);
+        var ilSpyMemberFinder = new IlSpyMemberFinder(methodInTypeFinder, typeInTypeFinder, decompilerFactory);
         var propertyInTypeFinder = new PropertyInTypeFinder();
-        var ilSpyPropertyFinder = new IlSpyPropertyFinder(propertyInTypeFinder, decompilerFactory);
+        var ilSpyPropertyFinder = new IlSpyPropertyFinder(propertyInTypeFinder, typeInTypeFinder, decompilerFactory);
         var eventInTypeFinder = new EventInTypeFinder();
-        var ilSpyEventFinder = new IlSpyEventFinder(eventInTypeFinder, decompilerFactory);
+        var ilSpyEventFinder = new IlSpyEventFinder(eventInTypeFinder, typeInTypeFinder, decompilerFactory);
         var fieldInTypeFinder = new FieldInTypeFinder();
-        var ilSpyFieldFinder = new IlSpyFieldFinder(fieldInTypeFinder, decompilerFactory);
+        var ilSpyFieldFinder = new IlSpyFieldFinder(fieldInTypeFinder, typeInTypeFinder, decompilerFactory);
         var gotoDefinitionCommandFactory = new GotoDefinitionCommandFactory(
             ilSpyTypeFinder, ilSpyMemberFinder, ilSpyPropertyFinder, ilSpyEventFinder, ilSpyFieldFinder);
         var roslynSymbolInfoFinder = new RosylnSymbolInfoFinder<IGotoDefinitionCommand>(
