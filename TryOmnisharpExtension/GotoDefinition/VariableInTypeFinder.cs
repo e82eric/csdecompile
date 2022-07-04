@@ -1,5 +1,4 @@
 ﻿using ICSharpCode.Decompiler.CSharp.Syntax;
-using ICSharpCode.Decompiler.DebugInfo;
 using ICSharpCode.Decompiler.IL;
 
 namespace TryOmnisharpExtension.GotoDefinition;

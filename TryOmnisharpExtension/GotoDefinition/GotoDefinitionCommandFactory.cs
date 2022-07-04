@@ -7,14 +7,14 @@ namespace TryOmnisharpExtension.GotoDefinition
 {
     public class GotoDefinitionCommandFactory : ICommandFactory<INavigationCommand<DecompileGotoDefinitionResponse>>
     {
-        private readonly IlSpyTypeFinder _typeFinder;
+        private readonly IlSpyDefinitionFinderBase<ITypeDefinition> _typeFinder;
         private readonly IlSpyDefinitionFinderBase<IMethod> _memberFinder;
         private readonly IlSpyDefinitionFinderBase<IProperty> _propertyFinder;
         private readonly IlSpyDefinitionFinderBase<IEvent> _eventFinder;
         private readonly IlSpyDefinitionFinderBase<IField> _fieldFinder;
 
         public GotoDefinitionCommandFactory(
-            IlSpyTypeFinder typeFinder,
+            IlSpyDefinitionFinderBase<ITypeDefinition> typeFinder,
             IlSpyDefinitionFinderBase<IMethod> memberFinder,
             IlSpyDefinitionFinderBase<IProperty> propertyFinder,
             IlSpyDefinitionFinderBase<IEvent> eventFinder,

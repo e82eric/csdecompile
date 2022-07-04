@@ -288,7 +288,6 @@
         <Compile Include="GotoDefinition\IDefinitionInDecompiledSyntaxTreeFinder.cs" />
         <Compile Include="GotoDefinition\IlSpyDefinitionFinderBase.cs" />
         <Compile Include="GotoDefinition\EventInTypeFinder.cs" />
-        <Compile Include="GotoDefinition\IlSpyTypeFinder.cs" />
         <Compile Include="GotoDefinition\MethodInTypeFinder.cs" />
         <Compile Include="GotoDefinition\PropertyInTypeFinder.cs" />
         <Compile Include="GotoDefinition\RosylynGotoDefinitionCommand.cs" />
