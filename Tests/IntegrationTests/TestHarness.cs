@@ -47,9 +47,4 @@ static class TestHarness
         var result = @$"{_projectsToTestAgainstRoot}\AnotherLibraryThatReferencesLibrary\{fileName}";
         return result;
     }
-
-    public static DecompilerClient DecompilerClient()
-    {
-        return new DecompilerClient();
-    }
 }

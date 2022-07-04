@@ -25,7 +25,9 @@ public sealed class TestTask : FrostingTask<BuildContext>
             new NUnit3Settings
             {
                 NoResults = true,
-                TraceLevel = null
+                TraceLevel = NUnitInternalTraceLevel.Off,
+                NoWorkingDirectory = true,
+                Work = "../TestResults"
             });
     }
 }
