@@ -1,5 +1,4 @@
-﻿using System;
-using Cake.Common.IO;
+﻿using Cake.Common.IO;
 using Cake.Frosting;
 
 [TaskName("Clean")]
@@ -7,44 +6,13 @@ public sealed class CleanTask : FrostingTask<BuildContext>
 {
     public override void Run(BuildContext context)
     {
-        try
-        {
-            //There has to be a less brittle way to do this
-            context.DeleteDirectory("../TryOmnisharpExtension/bin", new DeleteDirectorySettings
-            {
-                Force = true,
-                Recursive = true
-            });
-            context.DeleteDirectory("../TryOmnisharpExtension/obj", new DeleteDirectorySettings
-            {
-                Force = true,
-                Recursive = true
-            });
-            context.DeleteDirectory("../StdIoHost/bin", new DeleteDirectorySettings
-            {
-                Force = true,
-                Recursive = true
-            });
-            context.DeleteDirectory("../StdIoHost/obj", new DeleteDirectorySettings
-            {
-                Force = true,
-                Recursive = true
-            });
-            context.DeleteDirectory("../Tests/IntegrationTests/bin", new DeleteDirectorySettings
-            {
-                Force = true,
-                Recursive = true
-            });
-            context.DeleteDirectory("../Tests/IntegrationTests/obj", new DeleteDirectorySettings
-            {
-                Force = true,
-                Recursive = true
-            });
-
-            }
-        catch (Exception e)
-        {
-        }
+        //There has to be a less brittle way to do this
+        context.CleanDirectory($"../TryOmnisharpExtension/bin/{context.MsBuildConfiguration}");
+        context.CleanDirectory($"../TryOmnisharpExtension/obj/{context.MsBuildConfiguration}");
+        context.CleanDirectory($"../StdIoHost/bin/{context.MsBuildConfiguration}");
+        context.CleanDirectory($"../StdIoHost/obj/{context.MsBuildConfiguration}");
+        context.CleanDirectory($"../Tests/IntegrationTests/bin/{context.MsBuildConfiguration}");
+        context.CleanDirectory($"../Tests/IntegrationTests/obj/{context.MsBuildConfiguration}");
         base.Run(context);
     }
 }
