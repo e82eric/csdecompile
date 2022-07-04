@@ -41,6 +41,7 @@
           <HintPath>..\packages\NUnit.3.13.3\lib\net45\nunit.framework.dll</HintPath>
         </Reference>
         <Reference Include="System" />
+        <Reference Include="System.Configuration" />
         <Reference Include="System.Core" />
         <Reference Include="System.Data" />
         <Reference Include="System.Xml" />
@@ -93,12 +94,14 @@
         </Compile>
         <Compile Include="DecompilerClient.cs" />
         <Compile Include="ExternalSource\FindImplementations\ExternalFindImplementationsBase.cs" />
+        <Compile Include="ExternalSource\FindImplementations\ExternalFindImplementationsBase2.cs" />
         <Compile Include="ExternalSource\FindImplementations\ExternalFindImplementationsBaseClassTests.cs" />
         <Compile Include="ExternalSource\FindImplementations\ExternalFindImplementationsInterfaceTests.cs" />
         <Compile Include="ExternalSource\FindUsages\ExternalFindUsagesEventTests.cs" />
         <Compile Include="ExternalSource\FindUsages\ExternalFindUsagesFieldTests.cs" />
         <Compile Include="ExternalSource\FindUsages\ExternalFindUsagesMethodTests.cs" />
         <Compile Include="ExternalSource\FindUsages\ExternalFindUsagesPropertyTests.cs" />
+        <Compile Include="ExternalSource\FindUsages\ExternalFindUsagesTestBase.cs" />
         <Compile Include="ExternalSource\FindUsages\ExternalFindUsagesTypeAsFieldTests.cs" />
         <Compile Include="ExternalSource\FindUsages\ExternalFindUsagesTypeAsGenericTests.cs" />
         <Compile Include="ExternalSource\FindUsages\ExternalFindUsagesTypeAsMethodTests.cs" />
@@ -111,12 +114,13 @@
         <Compile Include="ExternalSource\GotoDefinition\ExternalGotoDefinitionFieldTests.cs" />
         <Compile Include="ExternalSource\GotoDefinition\ExternalGotoDefinitionMethodTests.cs" />
         <Compile Include="ExternalSource\GotoDefinition\ExternalGotoDefinitionPropertyTests.cs" />
+        <Compile Include="ExternalSource\GotoDefinition\ExternalGotoDefinitionTestBase.cs" />
         <Compile Include="ExternalSource\GotoDefinition\ExternalGotoDefinitionVariableTests.cs" />
         <Compile Include="ExternalTestBase.cs" />
-        <Compile Include="FindImplementationsTests.cs" />
         <Compile Include="CommandPacket.cs" />
-        <Compile Include="GotoDefintionConverter.cs" />
+        <Compile Include="ResponseLocationConverter.cs" />
         <Compile Include="InSourceBase.cs" />
+        <Compile Include="InSource\FindImplementations\FindImplementationsTests.cs" />
         <Compile Include="InSource\GotoDefinition\InSourceGotoDefinitionBaseClassTests.cs" />
         <Compile Include="InSource\GotoDefinition\InSourceGotoDefinitionConstructorTests.cs" />
         <Compile Include="InSource\GotoDefinition\InSourceGotoDefinitionDefaultConstructorTests.cs" />
@@ -129,14 +133,13 @@
         <Compile Include="InSource\GotoDefinition\InSourceGotoDefinitionVariableTests.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
         <Compile Include="StdIoClient.cs" />
+        <Compile Include="TestBase.cs" />
         <Compile Include="TestHarness.cs" />
         <Compile Include="TestHarnessStartup.cs" />
     </ItemGroup>
     <ItemGroup>
+      <None Include="App.config" />
       <None Include="packages.config" />
-    </ItemGroup>
-    <ItemGroup>
-      <Folder Include="InSource\FindImplementations" />
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
     <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

@@ -4,7 +4,7 @@ using TryOmnisharpExtension;
 namespace IntegrationTests;
 
 [TestFixture]
-public class ExternalFindUsagesTypeAsFieldTests : ExternalFindImplementationsBase
+public class ExternalFindUsagesTypeAsFieldTests : ExternalFindUsagesTestBase
 {
     private static string FilePath = TestHarness.GetLibraryThatReferencesLibraryFilePath(
         "ExternalFindUsagesTypeAsFieldCaller.cs");
@@ -12,7 +12,6 @@ public class ExternalFindUsagesTypeAsFieldTests : ExternalFindImplementationsBas
     public void GotoExternalClassDefinition()
     {
         SendRequestAndAssertLine(
-            Endpoints.DecompileFindUsages,
             filePath: FilePath,
             column: 13,
             line: 9,

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
@@ -7,7 +6,7 @@ using TryOmnisharpExtension;
 
 namespace IntegrationTests;
 
-public class GotoDefintionConverter : CustomCreationConverter<ResponseLocation>
+public class ResponseLocationConverter : CustomCreationConverter<ResponseLocation>
 {
     private ResponseLocationType _currentObjectType;
 

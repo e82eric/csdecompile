@@ -1,4 +1,6 @@
+using System.Configuration;
 using System.IO;
+using NUnit.Framework;
 
 namespace IntegrationTests;
 
@@ -9,9 +11,21 @@ static class TestHarness
 
     public static void Init()
     {
-        _projectsToTestAgainstRoot = Path.GetFullPath(@"..\..\..\..\AssembliesToTestAgainst");
-        var exePath = "C:\\src\\TryOmnisharpExtension\\StdIoHost\\bin\\Debug\\StdIoHost.exe";
-        var targetSolutionPath = "C:\\src\\TryOmnisharpExtension\\AssembliesToTestAgainst\\LibrariesThatReferenceOtherLibraries.sln";
+        var configuration = ConfigurationManager.AppSettings["Configuration"];
+        TestContext.Out.WriteLine($"Resolved Configuration: {configuration}");
+        
+        var rootDir = ConfigurationManager.AppSettings["RootDir"];
+        TestContext.Out.WriteLine($"Resolved RootDir: {rootDir}");
+        
+        _projectsToTestAgainstRoot = Path.GetFullPath($@"{rootDir}\AssembliesToTestAgainst");
+        TestContext.Out.WriteLine($"Resolved ProjectsToTestAgainstRootDir: {_projectsToTestAgainstRoot}");
+        
+        var exePath = @$"{rootDir}\StdIoHost\bin\Debug\StdIoHost.exe";
+        TestContext.Out.WriteLine($"Resolved StdIoExePath: {exePath}");
+        
+        var targetSolutionPath = @$"{rootDir}\AssembliesToTestAgainst\LibrariesThatReferenceOtherLibraries.sln";
+        TestContext.Out.WriteLine($"Resolved TargetSolutionPath: {targetSolutionPath}");
+        
         StdIoClient = new StdIoClient(exePath, targetSolutionPath);
         IoClient.Start();
     }

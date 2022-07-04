@@ -1,9 +1,10 @@
 using NUnit.Framework;
+using TryOmnisharpExtension;
 
 namespace IntegrationTests;
 
 [TestFixture]
-public class ExternalFindImplementationsInterfaceTests : ExternalFindImplementationsBase
+public class ExternalFindImplementationsInterfaceTests : ExternalFindImplementationsBase2
 {
     private static string FilePath = TestHarness.GetLibraryThatReferencesLibraryFilePath(
         "ExternalFindImplementationsInterfaceCaller.cs");
@@ -16,7 +17,8 @@ public class ExternalFindImplementationsInterfaceTests : ExternalFindImplementat
             line: 10,
             expected: new []
             {
-                "public class ExternalFindImplementationsInterfaceInheritor : ExternalFindImplementationsInterface"
+                (ResponseLocationType.Decompiled,
+                    "public class ExternalFindImplementationsInterfaceInheritor : ExternalFindImplementationsInterface")
             });
     }
     
@@ -29,7 +31,8 @@ public class ExternalFindImplementationsInterfaceTests : ExternalFindImplementat
             line: 11,
             expected: new []
             {
-                "public void BasicMethod()"
+                (ResponseLocationType.Decompiled,
+                    "public void BasicMethod()")
             });
     }
     
@@ -42,7 +45,8 @@ public class ExternalFindImplementationsInterfaceTests : ExternalFindImplementat
             line: 12,
             expected: new []
             {
-                "public string BasicProperty { get; set; }"
+                (ResponseLocationType.Decompiled,
+                    "public string BasicProperty { get; set; }")
             });
     }
     
@@ -55,7 +59,8 @@ public class ExternalFindImplementationsInterfaceTests : ExternalFindImplementat
             line: 12,
             expected: new []
             {
-                "public string BasicProperty { get; set; }"
+                (ResponseLocationType.Decompiled,
+                    "public string BasicProperty { get; set; }")
             });
     }
     
@@ -68,7 +73,8 @@ public class ExternalFindImplementationsInterfaceTests : ExternalFindImplementat
             line: 14,
             expected: new []
             {
-                "public event EventHandler BasicEvent;"
+                (ResponseLocationType.Decompiled,
+                    "public event EventHandler BasicEvent;")
             });
     }
     
@@ -81,7 +87,8 @@ public class ExternalFindImplementationsInterfaceTests : ExternalFindImplementat
             line: 15,
             expected: new []
             {
-                "public event EventHandler BasicEvent;"
+                (ResponseLocationType.Decompiled,
+                    "public event EventHandler BasicEvent;")
             });
     }
 }

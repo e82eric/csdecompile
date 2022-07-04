@@ -3,7 +3,7 @@
 namespace IntegrationTests;
 
 [TestFixture]
-public class ExternalGotoDefinitionBaseClassTests : ExternalTestBase
+public class ExternalGotoDefinitionBaseClassTests : ExternalGotoDefinitionTestBase
 {
     private static string FilePath =
         TestHarness.GetLibraryThatReferencesLibraryFilePath("ExternalGotoDefinitionBaseClassCaller.cs");

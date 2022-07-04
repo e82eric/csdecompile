@@ -1,11 +1,10 @@
-﻿using System.IO;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using TryOmnisharpExtension;
 using TryOmnisharpExtension.GotoDefinition;
 
 namespace IntegrationTests;
 
-public class InSourceBase
+public class InSourceBase : TestBase
 {
     protected void RequestAndAssertCorrectLine(string filePath, int column, int line, string expected)
     {
@@ -31,10 +30,12 @@ public class InSourceBase
     {
         Assert.True(response.Success);
         Assert.AreEqual(response.Body.Location.Type, ResponseLocationType.SourceCode);
-
-        var location = (SourceFileInfo)response.Body.Location;
-
-        var lines = File.ReadAllLines(location.FileName);
+        AssertInSourceLocation(response.Body.Location, expected);
+    }
+    
+    private static void AssertInSourceLocation(ResponseLocation location, string expected)
+    {
+        var lines = InSourceGetLines(location);
         var line = lines[location.Line - 1].Trim();
 
         Assert.AreEqual(expected, line);

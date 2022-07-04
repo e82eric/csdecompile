@@ -3,7 +3,7 @@ using NUnit.Framework;
 namespace IntegrationTests;
 
 [TestFixture]
-public class ExternalGotoDefinitionPropertyTests : ExternalTestBase
+public class ExternalGotoDefinitionPropertyTests : ExternalGotoDefinitionTestBase
 {
     private static string FilePath =
         TestHarness.GetLibraryThatReferencesLibraryFilePath("ExternalGotoDefinitionPropertyCaller.cs");

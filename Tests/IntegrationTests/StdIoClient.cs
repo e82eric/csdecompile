@@ -79,7 +79,7 @@ namespace IntegrationTests
 
                 var result = responseJObject.ToObject<ResponsePacket2<TResponse>>(new JsonSerializer
                 {
-                    Converters = { new GotoDefintionConverter() },
+                    Converters = { new ResponseLocationConverter() },
 
                 });
                 return result;

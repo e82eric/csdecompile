@@ -1,9 +1,10 @@
 using NUnit.Framework;
+using TryOmnisharpExtension;
 
 namespace IntegrationTests;
 
 [TestFixture]
-public class ExternalFindImplementationsBaseClassTests : ExternalFindImplementationsBase
+public class ExternalFindImplementationsBaseClassTests : ExternalFindImplementationsBase2
 {
     private static string FilePath = TestHarness.GetLibraryThatReferencesLibraryFilePath(
         "ExternalFindImplementationsBaseClassCaller.cs");
@@ -16,7 +17,8 @@ public class ExternalFindImplementationsBaseClassTests : ExternalFindImplementat
             line: 9,
             expected: new []
             {
-                "public class ExternalFindImplementationsBaseClassInheritor : ExternalFindImplementationsBaseClass"
+                (ResponseLocationType.Decompiled,
+                    "public class ExternalFindImplementationsBaseClassInheritor : ExternalFindImplementationsBaseClass")
             });
     }
 }
