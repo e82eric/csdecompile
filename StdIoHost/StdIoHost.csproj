@@ -288,7 +288,7 @@
         <Compile Include="Properties\AssemblyInfo.cs" />
         <Compile Include="Router.cs" />
         <Compile Include="SharedTextWriter.cs" />
-        <Compile Include="SimpleDecompileWorkspace.cs" />
+        <Compile Include="SimpleProjectSystem\SimpleDecompileWorkspace.cs" />
         <Compile Include="StdioEventEmitter.cs" />
         <Compile Include="StdioLogger.cs" />
         <Compile Include="StdioLoggerExtensions.cs" />

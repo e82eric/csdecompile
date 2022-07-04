@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -18,9 +19,10 @@ internal class SimpleDecompileWorkspace : IOmniSharpWorkspace
 
     public SimpleDecompileWorkspace(StdioEventEmitter eventEmitter)
     {
+        var msbuildLocation = ConfigurationManager.AppSettings["MsBuildLocation"];
         _eventEmitter = eventEmitter;
-        MSBuildLocator.RegisterMSBuildPath(@"C:\Program Files\Microsoft Visual Studio\2022\Professional\MSBuild\Current\Bin\");
-        // MicrosoftBuildLocator.RegisterDefaults();
+
+        MSBuildLocator.RegisterMSBuildPath(msbuildLocation);
         _workspace = MSBuildWorkspace.Create();
         
         _workspace.WorkspaceFailed += (sender, args) =>
@@ -46,8 +48,9 @@ internal class SimpleDecompileWorkspace : IOmniSharpWorkspace
                 _eventEmitter.Emit("PROJECT_LOADED", new { ProjectName = project.Name });
             }
         }
-        catch (Exception e)
+        catch (Exception)
         {
+            //TODO: Log Something
             _eventEmitter.Emit("PROJECT_FAILED", new { ProjectName = solutionFileInfo.Name });
             throw;
         }

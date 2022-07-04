@@ -177,7 +177,7 @@ public class GenericIlSpyFindImplementationsCommandFactory<TResponseType>
         return default;
     }
 
-    private async Task<INamedTypeSymbol> GetTypeSymbol(string fullName)
+    private Task<INamedTypeSymbol> GetTypeSymbol(string fullName)
     {
         var compilations = _decompileWorkspace.GetProjectCompilations();
         INamedTypeSymbol symbol = null;
@@ -190,6 +190,6 @@ public class GenericIlSpyFindImplementationsCommandFactory<TResponseType>
             }
         }
 
-        return symbol;
+        return Task.FromResult(symbol);
     }
 }

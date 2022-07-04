@@ -86,8 +86,9 @@ public class PeFileCache
 
             return true;
         }
-        catch (Exception e)
+        catch (Exception)
         {
+            //TODO: Log something here
             return false;
         }
     }
