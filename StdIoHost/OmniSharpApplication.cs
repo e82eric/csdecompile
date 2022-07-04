@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
+using ICSharpCode.Decompiler.TypeSystem;
 using Microsoft.Extensions.Logging;
 using StdIoHost.ProjectSystemExtraction;
 using StdIoHost.SimpleProjectSystem;
@@ -84,7 +85,7 @@ internal static class OmniSharpApplication
         var propertyInTypeFinder = new PropertyInTypeFinder();
         var ilSpyPropertyFinder = new IlSpyPropertyFinder(propertyInTypeFinder, typeInTypeFinder, decompilerFactory);
         var eventInTypeFinder = new EventInTypeFinder();
-        var ilSpyEventFinder = new IlSpyEventFinder(eventInTypeFinder, typeInTypeFinder, decompilerFactory);
+        var ilSpyEventFinder = new IlSpyDefinitionFinderBase<IEvent>(eventInTypeFinder, typeInTypeFinder, decompilerFactory);
         var fieldInTypeFinder = new FieldInTypeFinder();
         var ilSpyFieldFinder = new IlSpyFieldFinder(fieldInTypeFinder, typeInTypeFinder, decompilerFactory);
         var gotoDefinitionCommandFactory = new GotoDefinitionCommandFactory(

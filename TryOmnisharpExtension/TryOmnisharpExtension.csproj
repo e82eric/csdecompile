@@ -287,7 +287,6 @@
         <Compile Include="GotoDefinition\GotoVariableDefintiionCommand.cs" />
         <Compile Include="GotoDefinition\IDefinitionInDecompiledSyntaxTreeFinder.cs" />
         <Compile Include="GotoDefinition\IlSpyDefinitionFinderBase.cs" />
-        <Compile Include="GotoDefinition\IlSpyEventFinder.cs" />
         <Compile Include="GotoDefinition\EventInTypeFinder.cs" />
         <Compile Include="GotoDefinition\IlSpyFieldFinder.cs" />
         <Compile Include="GotoDefinition\IlSpyMemberFinder.cs" />

@@ -10,14 +10,14 @@ namespace TryOmnisharpExtension.GotoDefinition
         private readonly IlSpyTypeFinder _typeFinder;
         private readonly IlSpyMemberFinder _memberFinder;
         private readonly IlSpyPropertyFinder _propertyFinder;
-        private readonly IlSpyEventFinder _eventFinder;
+        private readonly IlSpyDefinitionFinderBase<IEvent> _eventFinder;
         private readonly IlSpyFieldFinder _fieldFinder;
 
         public GotoDefinitionCommandFactory(
             IlSpyTypeFinder typeFinder,
             IlSpyMemberFinder memberFinder,
             IlSpyPropertyFinder propertyFinder,
-            IlSpyEventFinder eventFinder,
+            IlSpyDefinitionFinderBase<IEvent> eventFinder,
             IlSpyFieldFinder fieldFinder)
         {
             _fieldFinder = fieldFinder;
