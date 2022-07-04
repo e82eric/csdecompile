@@ -11,12 +11,12 @@ public class FindUsagesCommandFactory : ExternalAssembliesFindUsagesCommandFacto
     private readonly IOmniSharpWorkspace _omniSharpWorkspace;
 
     public FindUsagesCommandFactory(
-        IlSpyTypeUsagesFinder usagesFinder,
-        IlSpyMethodUsagesFinder methodUsagesFinder,
-        IlSpyPropertyUsagesFinder propertyUsagesFinder,
-        IlSpyFieldUsagesFinder fieldUsagesFinder,
+        IlSpyUsagesFinderBase<ITypeDefinition> usagesFinder,
+        IlSpyUsagesFinderBase<IMember> methodUsagesFinder,
+        IlSpyUsagesFinderBase<IMember> propertyUsagesFinder,
+        IlSpyUsagesFinderBase<IMember> fieldUsagesFinder,
         IlSpyVariableUsagesFinder variableUsagesFinder,
-        IlSpyEventUsagesFinder eventUsagesFinder,
+        IlSpyUsagesFinderBase<IMember> eventUsagesFinder,
         IOmniSharpWorkspace omniSharpWorkspace):base(
             usagesFinder,
             methodUsagesFinder,

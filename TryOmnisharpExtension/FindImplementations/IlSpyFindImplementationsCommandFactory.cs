@@ -5,12 +5,12 @@ namespace TryOmnisharpExtension.FindImplementations;
 
 public class IlSpyFindImplementationsCommandFactory : IDecompilerCommandFactory<INavigationCommand<FindImplementationsResponse>>
 {
-    private readonly IlSpyBaseTypeUsageFinder _typeFinder;
-    private readonly IlSpyMemberImplementationFinder _memberImplementationFinder;
+    private readonly IlSpyUsagesFinderBase<ITypeDefinition> _typeFinder;
+    private readonly IlSpyUsagesFinderBase<IMember> _memberImplementationFinder;
 
     public IlSpyFindImplementationsCommandFactory(
-        IlSpyBaseTypeUsageFinder typeFinder,
-        IlSpyMemberImplementationFinder memberImplementationFinder)
+        IlSpyUsagesFinderBase<ITypeDefinition> typeFinder,
+        IlSpyUsagesFinderBase<IMember> memberImplementationFinder)
     {
         _typeFinder = typeFinder;
         _memberImplementationFinder = memberImplementationFinder;

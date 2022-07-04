@@ -120,13 +120,13 @@ internal static class OmniSharpApplication
         var analyzerScope = new AnalyzerScope(assemblyResolverFactory, _decompileWorkspace);
         var typesThatUseTypeAsBaseTypeMetadataScanner = new TypesThatUseTypeAsBaseTypeMetadataScanner(analyzerScope);
         var typeUsedAsBaseTypeFinder = new TypeUsedAsBaseTypeFinder();
-        var ilSpyBaseTypeUsageFinder = new IlSpyBaseTypeUsageFinder(
+        var ilSpyBaseTypeUsageFinder = new IlSpyUsagesFinderBase<ITypeDefinition>(
+            decompilerFactory,
             typesThatUseTypeAsBaseTypeMetadataScanner,
-            typeUsedAsBaseTypeFinder,
-            decompilerFactory);
+            typeUsedAsBaseTypeFinder);
         var typesThatUseMemberAsBaseTypeMetadataScanner = new TypesThatUseMemberAsBaseTypeMetadataScanner(analyzerScope);
         var memberOverrideInTypeFinder = new MemberOverrideInTypeFinder();
-        var ilSpyMemberImplementationFinder = new IlSpyMemberImplementationFinder(
+        var ilSpyMemberImplementationFinder = new IlSpyUsagesFinderBase<IMember>(
             decompilerFactory,
             typesThatUseMemberAsBaseTypeMetadataScanner,
             memberOverrideInTypeFinder);
@@ -150,30 +150,30 @@ internal static class OmniSharpApplication
         var analyzerScope = new AnalyzerScope(assemblyResolverFactory, _decompileWorkspace);
         var typeUsedByTypeIlScanner = new TypeUsedByTypeIlScanner(analyzerScope);
         var typeUsedInTypeFinder3 = new TypeUsedInTypeFinder();
-        var ilSpyTypeUsagesFinder = new IlSpyTypeUsagesFinder(
+        var ilSpyTypeUsagesFinder = new IlSpyUsagesFinderBase<ITypeDefinition>(
             decompilerFactory,
             typeUsedByTypeIlScanner,
             typeUsedInTypeFinder3);
         var methodUsedByMetadataScanner = new MethodUsedByMetadataScanner(analyzerScope);
         var inMemberBodyFinder = new MemberUsedInTypeFinder();
-        var ilSpyMethodUsagesFinder = new IlSpyMethodUsagesFinder(
+        var ilSpyMethodUsagesFinder = new IlSpyUsagesFinderBase<IMember>(
             decompilerFactory,
             methodUsedByMetadataScanner,
             inMemberBodyFinder);
         var propertyUsedByMetadataScanner = new PropertyUsedByMetadataScanner(analyzerScope);
-        var ilSpyPropertyUsagesFinder = new IlSpyPropertyUsagesFinder(
+        var ilSpyPropertyUsagesFinder = new IlSpyUsagesFinderBase<IMember>(
+            decompilerFactory,
             propertyUsedByMetadataScanner,
-            inMemberBodyFinder,
-            decompilerFactory);
+            inMemberBodyFinder);
         var fieldUsedByMetadataScanner = new FieldUsedByMetadataScanner(analyzerScope);
-        var ilSpyFieldUsagesFinder = new IlSpyFieldUsagesFinder(
+        var ilSpyFieldUsagesFinder = new IlSpyUsagesFinderBase<IMember>(
+            decompilerFactory,
             fieldUsedByMetadataScanner,
-            inMemberBodyFinder,
-            decompilerFactory);
+            inMemberBodyFinder);
         var variableInMethodBodyFinder = new VariableInMethodBodyFinder();
         var ilSpyVariableUsagesFinder = new IlSpyVariableUsagesFinder(variableInMethodBodyFinder);
         var eventUsedByMetadataScanner = new EventUsedByMetadataScanner(analyzerScope);
-        var ilSpyEventUsagesFinder = new IlSpyEventUsagesFinder(
+        var ilSpyEventUsagesFinder = new IlSpyUsagesFinderBase<IMember>(
             decompilerFactory,
             eventUsedByMetadataScanner,
             inMemberBodyFinder);

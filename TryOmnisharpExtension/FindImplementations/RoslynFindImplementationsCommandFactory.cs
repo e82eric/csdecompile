@@ -1,6 +1,7 @@
 ﻿using ICSharpCode.Decompiler.CSharp.Syntax;
 using ICSharpCode.Decompiler.IL;
 using ICSharpCode.Decompiler.TypeSystem;
+using TryOmnisharpExtension.FindUsages;
 using TryOmnisharpExtension.IlSpy;
 
 namespace TryOmnisharpExtension.FindImplementations;
@@ -11,8 +12,8 @@ public class RoslynFindImplementationsCommandFactory : IlSpyFindImplementationsC
     private readonly IOmniSharpWorkspace _omniSharpWorkspace;
 
     public RoslynFindImplementationsCommandFactory(
-        IlSpyBaseTypeUsageFinder typeFinder,
-        IlSpyMemberImplementationFinder memberImplementationFinder,
+        IlSpyUsagesFinderBase<ITypeDefinition> typeFinder,
+        IlSpyUsagesFinderBase<IMember> memberImplementationFinder,
         IOmniSharpWorkspace omniSharpWorkspace):base(typeFinder, memberImplementationFinder)
     {
         _omniSharpWorkspace = omniSharpWorkspace;

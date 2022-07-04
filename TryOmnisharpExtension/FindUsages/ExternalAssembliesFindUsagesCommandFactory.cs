@@ -6,19 +6,19 @@ namespace TryOmnisharpExtension.FindUsages;
 
 public class ExternalAssembliesFindUsagesCommandFactory : IDecompilerCommandFactory<INavigationCommand<FindImplementationsResponse>>
 {
-    private readonly IlSpyTypeUsagesFinder _usagesFinder;
-    private readonly IlSpyMethodUsagesFinder _methodUsagesFinder;
-    private readonly IlSpyPropertyUsagesFinder _propertyUsagesFinder;
-    private readonly IlSpyFieldUsagesFinder _fieldUsagesFinder;
-    private readonly IlSpyEventUsagesFinder _eventUsagesFinder;
+    private readonly IlSpyUsagesFinderBase<ITypeDefinition> _usagesFinder;
+    private readonly IlSpyUsagesFinderBase<IMember> _methodUsagesFinder;
+    private readonly IlSpyUsagesFinderBase<IMember> _propertyUsagesFinder;
+    private readonly IlSpyUsagesFinderBase<IMember> _fieldUsagesFinder;
+    private readonly IlSpyUsagesFinderBase<IMember> _eventUsagesFinder;
     private readonly IlSpyVariableUsagesFinder _variableUsagesFinder;
 
     public ExternalAssembliesFindUsagesCommandFactory(
-        IlSpyTypeUsagesFinder usagesFinder,
-        IlSpyMethodUsagesFinder methodUsagesFinder,
-        IlSpyPropertyUsagesFinder propertyUsagesFinder,
-        IlSpyFieldUsagesFinder fieldUsagesFinder,
-        IlSpyEventUsagesFinder eventUsagesFinder,
+        IlSpyUsagesFinderBase<ITypeDefinition> usagesFinder,
+        IlSpyUsagesFinderBase<IMember> methodUsagesFinder,
+        IlSpyUsagesFinderBase<IMember> propertyUsagesFinder,
+        IlSpyUsagesFinderBase<IMember> fieldUsagesFinder,
+        IlSpyUsagesFinderBase<IMember> eventUsagesFinder,
         IlSpyVariableUsagesFinder variableUsagesFinder)
     {
         _usagesFinder = usagesFinder;

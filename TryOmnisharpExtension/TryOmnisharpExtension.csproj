@@ -226,10 +226,8 @@
         <Compile Include="FindImplementations\TypesThatUseMemberAsBaseTypeMetadataScanner.cs" />
         <Compile Include="FindImplementations\TypeUsedAsBaseTypeFinder.cs" />
         <Compile Include="FindImplementations\EverywhereImplementationsCommand.cs" />
-        <Compile Include="FindImplementations\IlSpyBaseTypeUsageFinder.cs" />
         <Compile Include="FindImplementations\IlSpyFindImplementationsCommandFactory.cs" />
         <Compile Include="FindImplementations\GenericIlSpyFindImplementationsCommandFactory.cs" />
-        <Compile Include="FindImplementations\IlSpyMethodImplementationsFinder.cs" />
         <Compile Include="FindImplementations\TypesThatUseTypeAsBaseTypeMetadataScanner.cs" />
         <Compile Include="FindImplementations\RosylynFindImplementationsCommand.cs" />
         <Compile Include="FindUsages\DecompileFindUsagesHandler.cs" />
@@ -241,11 +239,6 @@
         <Compile Include="FindUsages\IlSpyUsagesCommand.cs" />
         <Compile Include="FindUsages\FindUsagesCommandFactory.cs" />
         <Compile Include="FindUsages\FindVariableUsagesCommand.cs" />
-        <Compile Include="FindUsages\IlSpyEventUsagesFinder.cs" />
-        <Compile Include="FindUsages\IlSpyFieldUsagesFinder.cs" />
-        <Compile Include="FindUsages\IlSpyMethodUsagesFinder.cs" />
-        <Compile Include="FindUsages\IlSpyPropertyUsageFinder.cs" />
-        <Compile Include="FindUsages\IlSpyTypeUsagesFinder.cs" />
         <Compile Include="FindUsages\IlSpyUsagesFinderBase.cs" />
         <Compile Include="FindUsages\IlSpyVariableUsagesFinder.cs" />
         <Compile Include="FindUsages\IMetadataUsagesScanner.cs" />
