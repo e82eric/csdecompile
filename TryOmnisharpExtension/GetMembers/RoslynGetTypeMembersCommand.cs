@@ -18,11 +18,11 @@ public class RoslynGetTypeMembersCommand : INavigationCommand<FindImplementation
         _symbol = symbol;
         _workspace = workspace;
     }
-    public Task<FindImplementationsResponse> Execute()
+    public Task<ResponsePacket<FindImplementationsResponse>> Execute()
     {
         var members = _symbol.GetMembers();
 
-        var result = new FindImplementationsResponse();
+        var body = new FindImplementationsResponse();
         foreach (var member in members)
         {
             if (!member.IsImplicitlyDeclared
@@ -31,10 +31,12 @@ public class RoslynGetTypeMembersCommand : INavigationCommand<FindImplementation
                 foreach (var location in member.Locations)
                 {
                     var sourceFileInfo = location.GetSourceLineInfo(_workspace);
-                    result.Implementations.Add(sourceFileInfo);
+                    body.Implementations.Add(sourceFileInfo);
                 }
             }
         }
+
+        var result = ResponsePacket.Ok(body);
 
         return Task.FromResult(result);
     }

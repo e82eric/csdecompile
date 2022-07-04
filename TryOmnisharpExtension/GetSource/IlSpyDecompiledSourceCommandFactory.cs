@@ -15,7 +15,7 @@ namespace TryOmnisharpExtension.GetSource
             _ilSpySymbolFinder = ilSpySymbolFinder;
         }
         
-        public DecompiledSourceResponse Find(DecompiledSourceRequest request)
+        public ResponsePacket<DecompiledSourceResponse> Find(DecompiledSourceRequest request)
         {
             var symbol = _ilSpySymbolFinder.FindTypeDefinition(
                 request.AssemblyFilePath,
@@ -23,8 +23,8 @@ namespace TryOmnisharpExtension.GetSource
             var decompiler = _decompilerFactory.Get(symbol.ParentModule.PEFile.FileName);
             
             (_, string source) = decompiler.Run(symbol);
-        
-            return new DecompiledSourceResponse
+
+            var body = new DecompiledSourceResponse
             {
                 AssemblyFilePath = request.AssemblyFilePath,
                 ContainingTypeFullName = request.ContainingTypeFullName,
@@ -34,6 +34,10 @@ namespace TryOmnisharpExtension.GetSource
                 Line = request.Line,
                 Column = request.Column
             };
+
+            var response = ResponsePacket.Ok(body);
+            
+            return response;
         }
     }
 }

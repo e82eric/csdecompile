@@ -50,7 +50,7 @@ public class FindImplementationsTests
         AssertInSource(response, expected);
     }
     private static void AssertInSource(
-        ResponsePacket2<FindImplementationsResponse> response,
+        ResponsePacket<FindImplementationsResponse> response,
         IEnumerable<string> expected)
     {
         Assert.True(response.Success);

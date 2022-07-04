@@ -4,8 +4,12 @@ namespace TryOmnisharpExtension;
 
 public class NoOpCommand<T> : INavigationCommand<T> where T: FindImplementationsResponse, new()
 {
-    public Task<T> Execute()
+    public Task<ResponsePacket<T>> Execute()
     {
-        return Task.FromResult(new T());
+        var response = new ResponsePacket<T>()
+        {
+            Success = true
+        };
+        return Task.FromResult(response);
     }
 }

@@ -12,10 +12,11 @@ public class GetAssembliesHandler : HandlerBase<object, GetAssembliesResponse>
         _commandFactory = commandFactory;
     }
     
-    public override Task<GetAssembliesResponse> Handle(object request)
+    public override Task<ResponsePacket<GetAssembliesResponse>> Handle(object request)
     {
         var command = _commandFactory.Get();
-        var result = command.Execute();
+        var body = command.Execute();
+        var result = ResponsePacket.Ok(body);
         return Task.FromResult(result);
     }
 }

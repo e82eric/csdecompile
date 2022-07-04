@@ -2,6 +2,7 @@
 using ICSharpCode.Decompiler.IL;
 using ICSharpCode.Decompiler.TypeSystem;
 using TryOmnisharpExtension.FindUsages;
+using TryOmnisharpExtension.GotoDefinition;
 using TryOmnisharpExtension.IlSpy;
 
 namespace TryOmnisharpExtension.FindImplementations;
@@ -32,12 +33,14 @@ public class RoslynFindImplementationsCommandFactory : IlSpyFindImplementationsC
 
     public INavigationCommand<FindImplementationsResponse> GetForFileNotFound(string filePath)
     {
-        throw new System.NotImplementedException();
+        var result = new FileNotFoundCommand<FindImplementationsResponse>(filePath);
+        return result;
     }
 
     public INavigationCommand<FindImplementationsResponse> SymbolNotFoundAtLocation(string filePath, int line, int column)
     {
-        throw new System.NotImplementedException();
+        var result = new SymbolNotFoundAtLocationCommand<FindImplementationsResponse>(filePath, line, column);
+        return result;
     }
 
     public INavigationCommand<FindImplementationsResponse> GetForVariable(ILVariable variable, ITypeDefinition typeDefinition, SyntaxTree syntaxTree,

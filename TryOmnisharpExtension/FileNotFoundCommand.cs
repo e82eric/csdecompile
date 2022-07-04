@@ -1,8 +1,9 @@
 using System.Threading.Tasks;
+using TryOmnisharpExtension.GotoDefinition;
 
-namespace TryOmnisharpExtension.GotoDefinition;
+namespace TryOmnisharpExtension;
 
-class FileNotFoundCommand : INavigationCommand<DecompileGotoDefinitionResponse>
+class FileNotFoundCommand<T> : INavigationCommand<T>
 {
     private readonly string _filePath;
 
@@ -10,15 +11,14 @@ class FileNotFoundCommand : INavigationCommand<DecompileGotoDefinitionResponse>
     {
         _filePath = filePath;
     }
-    public Task<DecompileGotoDefinitionResponse> Execute()
+    public Task<ResponsePacket<T>> Execute()
     {
-        var result = new DecompileGotoDefinitionResponse()
+        var response = new ResponsePacket<T>
         {
-            ErrorDetails = new ErrorDetails()
-            {
-                Message = $"FILE_NOT_FOUND {_filePath}"
-            }
+            Success = false,
+            Message = $"FILE_NOT_FOUND {_filePath}"
         };
-        return Task.FromResult(result);    
+        
+        return Task.FromResult(response);    
     }
 }

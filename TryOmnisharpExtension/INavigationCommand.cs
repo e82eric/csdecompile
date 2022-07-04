@@ -4,5 +4,5 @@ namespace TryOmnisharpExtension;
 
 public interface INavigationCommand<T>
 {
-    Task<T> Execute();
+    Task<ResponsePacket<T>> Execute();
 }

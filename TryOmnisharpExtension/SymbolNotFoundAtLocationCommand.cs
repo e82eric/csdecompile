@@ -2,7 +2,7 @@ using System.Threading.Tasks;
 
 namespace TryOmnisharpExtension.GotoDefinition;
 
-class SymbolNotFoundAtLocationCommand : INavigationCommand<DecompileGotoDefinitionResponse>
+class SymbolNotFoundAtLocationCommand<T> : INavigationCommand<T>
 {
     private readonly string _filePath;
     private readonly int _line;
@@ -14,15 +14,13 @@ class SymbolNotFoundAtLocationCommand : INavigationCommand<DecompileGotoDefiniti
         _line = line;
         _column = column;
     }
-    public Task<DecompileGotoDefinitionResponse> Execute()
+    public Task<ResponsePacket<T>> Execute()
     {
-        var result = new DecompileGotoDefinitionResponse()
+        var response = new ResponsePacket<T>()
         {
-            ErrorDetails = new ErrorDetails()
-            {
-                Message = $"SYMBOL_NOT_FOUND_AT_LOCATION {_filePath}:{_line}:{_column}"
-            }
+            Message = $"SYMBOL_NOT_FOUND_AT_LOCATION {_filePath}:{_line}:{_column}",
+            Success = false
         };
-        return Task.FromResult(result);    
+        return Task.FromResult(response);    
     }
 }

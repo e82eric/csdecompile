@@ -12,15 +12,17 @@ public class GetTypesHandler : HandlerBase<GetTypesRequest, FindImplementationsR
         _typesRepository = typesRepository;
     }
     
-    public override Task<FindImplementationsResponse> Handle(GetTypesRequest request)
+    public override Task<ResponsePacket<FindImplementationsResponse>> Handle(GetTypesRequest request)
     {
         var types = _typesRepository.GetAllTypes(request.SearchString);
-        var response = new FindImplementationsResponse();
+        var body = new FindImplementationsResponse();
         foreach (var type in types)
         {
-            response.Implementations.Add(type);
+            body.Implementations.Add(type);
         }
-        return Task.FromResult(response);
+
+        var result = ResponsePacket.Ok(body);
+        return Task.FromResult(result);
     }
 
     public FindImplementationsResponse HandleGetAssemblyTypes(GetAssemblyTypesRequest request)

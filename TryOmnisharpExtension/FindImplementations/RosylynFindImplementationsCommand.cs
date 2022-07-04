@@ -20,13 +20,14 @@ public class RosylynFindImplementationsCommand : INavigationCommand<FindImplemen
         _workspace = workspace;
     }
         
-    public async Task<FindImplementationsResponse> Execute()
+    public async Task<ResponsePacket<FindImplementationsResponse>> Execute()
     {
-        var response = new FindImplementationsResponse();
+        var body = new FindImplementationsResponse();
 
         if (_symbol.IsSealed)
         {
-            return response;
+            var noOp = ResponsePacket.Ok(body);
+            return noOp;
         }
 
         if (_symbol.IsInterfaceType() || _symbol.IsImplementableMember())
@@ -42,14 +43,14 @@ public class RosylynFindImplementationsCommand : INavigationCommand<FindImplemen
                 else
                 {
                     var sourceInfo = implementation.GetSourceLineInfo(_workspace);
-                    response.Implementations.Add(sourceInfo);
+                    body.Implementations.Add(sourceInfo);
 
                     if (implementation.IsOverridable())
                     {
                         var overrides = await SymbolFinder.FindOverridesAsync(implementation, _workspace.CurrentSolution);
                         foreach (var @override in overrides)
                         {
-                            response.Implementations.Add(@override.GetSourceLineInfo(_workspace));
+                            body.Implementations.Add(@override.GetSourceLineInfo(_workspace));
                         }
                     }
                 }
@@ -65,7 +66,7 @@ public class RosylynFindImplementationsCommand : INavigationCommand<FindImplemen
                 if (derivedType.Locations.First().IsInSource)
                 {
                     var sourceLineInfo = derivedType.GetSourceLineInfo(_workspace);
-                    response.Implementations.Add(sourceLineInfo);
+                    body.Implementations.Add(sourceLineInfo);
                 }
             }
         }
@@ -77,7 +78,7 @@ public class RosylynFindImplementationsCommand : INavigationCommand<FindImplemen
                 if (@override.Locations.First().IsInSource)
                 {
                     var sourceLineInfo = @override.GetSourceLineInfo(_workspace);
-                    response.Implementations.Add(sourceLineInfo);
+                    body.Implementations.Add(sourceLineInfo);
                 }
             }
         }
@@ -89,15 +90,16 @@ public class RosylynFindImplementationsCommand : INavigationCommand<FindImplemen
             if (_symbol is IMethodSymbol method && method.PartialImplementationPart != null)
             {
                 var sourceLineInfo = method.PartialImplementationPart.GetSourceLineInfo(_workspace);
-                response.Implementations.Add(sourceLineInfo);
+                body.Implementations.Add(sourceLineInfo);
             }
             else
             {
                 var sourceLineInfo = _symbol.GetSourceLineInfo(_workspace);
-                response.Implementations.Add(sourceLineInfo);
+                body.Implementations.Add(sourceLineInfo);
             }
         }
 
-        return response;
+        var result = ResponsePacket.Ok(body);
+        return result;
     }
 }

@@ -31,7 +31,7 @@ class GotoVariableDefintiionCommand : INavigationCommand<DecompileGotoDefinition
         _assemblyFileInfo = assemblyFileInfo;
     }
 
-    public Task<DecompileGotoDefinitionResponse> Execute()
+    public Task<ResponsePacket<DecompileGotoDefinitionResponse>> Execute()
     {
         var defintion = _finder.Run(
             _containingTypeDefinition,
@@ -47,6 +47,13 @@ class GotoVariableDefintiionCommand : INavigationCommand<DecompileGotoDefinition
             SourceText = _containingTypeSourceText,
             IsDecompiled = true
         };
-        return Task.FromResult(result);
+
+        var response = new ResponsePacket<DecompileGotoDefinitionResponse>
+        {
+            Body = result,
+            Success = true
+        };
+        
+        return Task.FromResult(response);
     }
 }

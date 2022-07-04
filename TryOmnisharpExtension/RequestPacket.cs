@@ -2,6 +2,7 @@
 using System.IO;
 using System.Text;
 using Newtonsoft.Json.Linq;
+using TryOmnisharpExtension;
 
 namespace StdIoHost
 {

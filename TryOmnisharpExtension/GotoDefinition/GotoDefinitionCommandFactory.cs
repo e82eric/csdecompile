@@ -29,13 +29,13 @@ namespace TryOmnisharpExtension.GotoDefinition
 
         public INavigationCommand<DecompileGotoDefinitionResponse> GetForFileNotFound(string filePath)
         {
-            var result = new FileNotFoundCommand(filePath);
+            var result = new FileNotFoundCommand<DecompileGotoDefinitionResponse>(filePath);
             return result;
         }
         
         public INavigationCommand<DecompileGotoDefinitionResponse> SymbolNotFoundAtLocation(string filePath, int line, int column)
         {
-            var result = new SymbolNotFoundAtLocationCommand(filePath, line, column);
+            var result = new SymbolNotFoundAtLocationCommand<DecompileGotoDefinitionResponse>(filePath, line, column);
             return result;
         }
         public INavigationCommand<DecompileGotoDefinitionResponse> GetForInSource(Microsoft.CodeAnalysis.ISymbol roslynSymbol)

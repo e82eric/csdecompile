@@ -19,7 +19,7 @@ public class GoToDefintionCommand<T> : INavigationCommand<DecompileGotoDefinitio
         _assemblyFilePath = assemblyFilePath;
     }
         
-    public Task<DecompileGotoDefinitionResponse> Execute()
+    public Task<ResponsePacket<DecompileGotoDefinitionResponse>> Execute()
     {
         var (ilSpyMetadataSource, sourceText) = _ilSpyTypeFinder.Find(
             _typeDefinition);
@@ -33,6 +33,12 @@ public class GoToDefintionCommand<T> : INavigationCommand<DecompileGotoDefinitio
             IsDecompiled = true
         };
 
-        return Task.FromResult(result);
+        var response = new ResponsePacket<DecompileGotoDefinitionResponse>
+        {
+            Body = result,
+            Success = true
+        };
+
+        return Task.FromResult(response);
     }
 }

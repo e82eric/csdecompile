@@ -7,9 +7,9 @@ namespace TryOmnisharpExtension;
 
 public abstract class HandlerBase<TRequest, TResponse> : IHandler
 {
-    public abstract Task<TResponse> Handle(TRequest request);
+    public abstract Task<ResponsePacket<TResponse>> Handle(TRequest request);
 
-    public async Task<object> Handle(Stream argumentStream)
+    public async Task<ResponsePacket> Handle(Stream argumentStream)
     {
         var requestObject = GetRequestObject(argumentStream);
         var result = await Handle(requestObject);

@@ -47,12 +47,6 @@
         <Reference Include="System.Xml" />
     </ItemGroup>
     <ItemGroup>
-        <Compile Include="..\..\StdIoHost\Packet.cs">
-          <Link>LinkedModels\Packet.cs</Link>
-        </Compile>
-        <Compile Include="..\..\StdIoHost\ResponsePacket.cs">
-          <Link>LinkedModels\ResponsePacket.cs</Link>
-        </Compile>
         <Compile Include="..\..\TryOmnisharpExtension\DecompiledLocationRequest.cs">
           <Link>LinkedModels\DecompiledLocationRequest.cs</Link>
         </Compile>
@@ -83,11 +77,20 @@
         <Compile Include="..\..\TryOmnisharpExtension\LocationRequest.cs">
           <Link>LinkedModels\LocationRequest.cs</Link>
         </Compile>
+        <Compile Include="..\..\TryOmnisharpExtension\Packet.cs">
+          <Link>LinkedModels\Packet.cs</Link>
+        </Compile>
+        <Compile Include="..\..\TryOmnisharpExtension\RequestPacket.cs">
+          <Link>LinkedModels\RequestPacket.cs</Link>
+        </Compile>
         <Compile Include="..\..\TryOmnisharpExtension\ResponseLocation.cs">
           <Link>LinkedModels\ResponseLocation.cs</Link>
         </Compile>
         <Compile Include="..\..\TryOmnisharpExtension\ResponseLocationType.cs">
           <Link>LinkedModels\ResponseLocationType.cs</Link>
+        </Compile>
+        <Compile Include="..\..\TryOmnisharpExtension\ResponsePacket.cs">
+          <Link>LinkedModels\ResponsePacket.cs</Link>
         </Compile>
         <Compile Include="..\..\TryOmnisharpExtension\SourceFileInfo.cs">
           <Link>LinkedModels\SourceFileInfo.cs</Link>
@@ -118,6 +121,10 @@
         <Compile Include="ExternalSource\GotoDefinition\ExternalGotoDefinitionVariableTests.cs" />
         <Compile Include="ExternalTestBase.cs" />
         <Compile Include="CommandPacket.cs" />
+        <Compile Include="InSource\FindImplementations\InSourceFindImplementationsFileDoesntExistTests.cs" />
+        <Compile Include="InSource\FindImplementations\InSourceFindImplementationsSymbolNotFoundAtLocationTests.cs" />
+        <Compile Include="InSource\FindUsages\InSourceFindUsagesFileDoesntExistTests.cs" />
+        <Compile Include="InSource\FindUsages\InSourceFindUsagesSymbolNotFoundAtLocationTests.cs" />
         <Compile Include="ResponseLocationConverter.cs" />
         <Compile Include="InSourceBase.cs" />
         <Compile Include="InSource\FindImplementations\FindImplementationsTests.cs" />

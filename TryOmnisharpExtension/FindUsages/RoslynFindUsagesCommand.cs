@@ -20,18 +20,18 @@ public class RoslynFindUsagesCommand : INavigationCommand<FindImplementationsRes
         _symbol = symbol;
         _workspace = workspace;
     }
-    public async Task<FindImplementationsResponse> Execute()
+    public async Task<ResponsePacket<FindImplementationsResponse>> Execute()
     {
         var definition = await SymbolFinder.FindSourceDefinitionAsync(_symbol, _workspace.CurrentSolution);
         var usages = await SymbolFinder.FindReferencesAsync(definition ?? _symbol, _workspace.CurrentSolution);
 
-        var result = new FindImplementationsResponse();
+        var body = new FindImplementationsResponse();
         foreach (var usage in usages)
         {
             foreach (var location in usage.Locations)
             {
                 var sourceFileInfo = location.Location.GetSourceLineInfo(_workspace);
-                result.Implementations.Add(sourceFileInfo);
+                body.Implementations.Add(sourceFileInfo);
             }
 
             //IsImplicitlyDeclared gets rid of auto generated stuff
@@ -46,12 +46,13 @@ public class RoslynFindUsagesCommand : INavigationCommand<FindImplementationsRes
                     if (location.IsInSource)
                     {
                         var sourceFileInfo = location.GetSourceLineInfo(_workspace);
-                        result.Implementations.Add(sourceFileInfo);
+                        body.Implementations.Add(sourceFileInfo);
                     }
                 }
             }
         }
 
+        var result = ResponsePacket.Ok(body);
         return result;
     }
 }

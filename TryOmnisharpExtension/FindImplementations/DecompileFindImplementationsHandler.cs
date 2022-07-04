@@ -15,7 +15,7 @@ public class DecompileFindImplementationsHandler : HandlerBase<DecompiledLocatio
         _genericIlSpyFindImplementationsCommandFactory = genericIlSpyFindImplementationsCommandFactory;
     }
         
-    public override async Task<FindImplementationsResponse> Handle(DecompiledLocationRequest request)
+    public override async Task<ResponsePacket<FindImplementationsResponse>> Handle(DecompiledLocationRequest request)
     {
         INavigationCommand<FindImplementationsResponse> command;
         if (!request.IsDecompiled)

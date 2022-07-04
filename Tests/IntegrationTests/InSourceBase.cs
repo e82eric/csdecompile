@@ -26,7 +26,7 @@ public class InSourceBase : TestBase
         AssertInSource(response, expected);
     }
 
-    private static void AssertInSource(ResponsePacket2<DecompileGotoDefinitionResponse> response, string expected)
+    private static void AssertInSource(ResponsePacket<DecompileGotoDefinitionResponse> response, string expected)
     {
         Assert.True(response.Success);
         Assert.AreEqual(response.Body.Location.Type, ResponseLocationType.SourceCode);

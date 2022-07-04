@@ -311,8 +311,11 @@
         <Compile Include="DecompiledLocationRequest.cs" />
         <Compile Include="LocationRequest.cs" />
         <Compile Include="NoOpCommand.cs" />
+        <Compile Include="Packet.cs" />
+        <Compile Include="RequestPacket.cs" />
         <Compile Include="ResponseLocation.cs" />
         <Compile Include="ResponseLocationType.cs" />
+        <Compile Include="ResponsePacket.cs" />
         <Compile Include="Roslyn\RoslynSymbolHelpers.cs" />
         <Compile Include="Roslyn\RoslynToIlSpyEqualityExtensions.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />

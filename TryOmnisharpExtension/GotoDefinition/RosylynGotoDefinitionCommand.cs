@@ -13,7 +13,7 @@ public class RosylynGotoDefinitionCommand : INavigationCommand<DecompileGotoDefi
         _symbol = symbol;
     }
         
-    public Task<DecompileGotoDefinitionResponse> Execute()
+    public Task<ResponsePacket<DecompileGotoDefinitionResponse>> Execute()
     {
         var lineSpan = _symbol.Locations.First().GetMappedLineSpan();
         var result = new DecompileGotoDefinitionResponse
@@ -26,6 +26,13 @@ public class RosylynGotoDefinitionCommand : INavigationCommand<DecompileGotoDefi
             },
             IsDecompiled = false,
         };
-        return Task.FromResult(result);
+
+        var response = new ResponsePacket<DecompileGotoDefinitionResponse>()
+        {
+            Body = result,
+            Success = true
+        };
+        
+        return Task.FromResult(response);
     }
 }

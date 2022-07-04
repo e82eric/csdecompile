@@ -6,6 +6,7 @@ using System.Threading;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
+using TryOmnisharpExtension;
 
 namespace IntegrationTests
 {
@@ -56,7 +57,7 @@ namespace IntegrationTests
             _process.Kill();
         }
 
-        public ResponsePacket2<TResponse> ExecuteCommand<TArgument, TResponse>(CommandPacket<TArgument> commandPacket)
+        public ResponsePacket<TResponse> ExecuteCommand<TArgument, TResponse>(CommandPacket<TArgument> commandPacket)
         {
             _currentSeq++;
             commandPacket.Seq = _currentSeq;
@@ -77,7 +78,7 @@ namespace IntegrationTests
                 TestContext.Out.WriteLine("RESPONSE");
                 TestContext.Out.WriteLine(responseJObject);
 
-                var result = responseJObject.ToObject<ResponsePacket2<TResponse>>(new JsonSerializer
+                var result = responseJObject.ToObject<ResponsePacket<TResponse>>(new JsonSerializer
                 {
                     Converters = { new ResponseLocationConverter() },
 

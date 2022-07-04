@@ -24,21 +24,23 @@ internal class FindVariableUsagesCommand : INavigationCommand<FindImplementation
         _sourceText = sourceText;
     }
         
-    public Task<FindImplementationsResponse> Execute()
+    public Task<ResponsePacket<FindImplementationsResponse>> Execute()
     {
         var metadataSources = _usagesFinder.Run(
             _containingTypeDefinition,
             _variable,
             _sourceText);
 
-        var result = new FindImplementationsResponse();
+        var body = new FindImplementationsResponse();
             
         foreach (var metadataSource in metadataSources)
         {
             // DecompileInfo decompileInfo = DecompileInfoMapper.MapFromMetadataSource(metadataSource);
-            result.Implementations.Add(metadataSource);
+            body.Implementations.Add(metadataSource);
         }
-            
+
+        var result = ResponsePacket.Ok(body);
+
         return Task.FromResult(result);
     }
 }

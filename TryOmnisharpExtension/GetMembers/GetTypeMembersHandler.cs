@@ -16,7 +16,7 @@ public class GetTypeMembersHandler : HandlerBase<DecompiledLocationRequest, Find
         _roslynGetTypeMembersCommandFactory = roslynGetTypeMembersCommandFactory;
     }
     
-    public override async Task<FindImplementationsResponse> Handle(DecompiledLocationRequest request)
+    public override async Task<ResponsePacket<FindImplementationsResponse>> Handle(DecompiledLocationRequest request)
     {
         INavigationCommand<FindImplementationsResponse> command = null;
         

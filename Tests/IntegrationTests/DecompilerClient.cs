@@ -5,7 +5,7 @@ namespace IntegrationTests;
 
 class DecompilerClient
 {
-    public ResponsePacket2<DecompileGotoDefinitionResponse> GotoDefinition(DecompiledLocationRequest request)
+    public ResponsePacket<DecompileGotoDefinitionResponse> GotoDefinition(DecompiledLocationRequest request)
     {
         var definitionRequest = new CommandPacket<DecompiledLocationRequest>
         {

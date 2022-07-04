@@ -16,7 +16,7 @@ namespace TryOmnisharpExtension.GotoDefinition
             _ilSpySymbolInfoFinder = ilSpySymbolInfoFinder;
         }
         
-        public override async Task<DecompileGotoDefinitionResponse> Handle(DecompiledLocationRequest request)
+        public override async Task<ResponsePacket<DecompileGotoDefinitionResponse>> Handle(DecompiledLocationRequest request)
         {
             INavigationCommand<DecompileGotoDefinitionResponse> command;
             if (!request.IsDecompiled)

@@ -5,5 +5,5 @@ namespace TryOmnisharpExtension;
 
 public interface IHandler
 {
-    Task<object> Handle(Stream argumentStream);
+    Task<ResponsePacket> Handle(Stream argumentStream);
 }

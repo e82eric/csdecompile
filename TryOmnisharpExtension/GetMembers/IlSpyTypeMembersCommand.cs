@@ -17,18 +17,19 @@ internal class IlSpyTypeMembersCommand: INavigationCommand<FindImplementationsRe
         _usagesFinder = usagesFinder;
     }
         
-    public Task<FindImplementationsResponse> Execute()
+    public Task<ResponsePacket<FindImplementationsResponse>> Execute()
     {
         var metadataSources = _usagesFinder.Run(
             _symbol);
 
-        var result = new FindImplementationsResponse();
+        var body = new FindImplementationsResponse();
             
         foreach (var metadataSource in metadataSources)
         {
-            result.Implementations.Add(metadataSource);
+            body.Implementations.Add(metadataSource);
         }
-            
+
+        var result = ResponsePacket.Ok(body);
         return Task.FromResult(result);
     }
 }

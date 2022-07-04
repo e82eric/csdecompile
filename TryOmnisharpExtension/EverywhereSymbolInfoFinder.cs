@@ -31,10 +31,24 @@ public class EverywhereSymbolInfoFinder<TCommandResponseType> where TCommandResp
     public async Task<INavigationCommand<TCommandResponseType>> Get(LocationRequest request)
     {
         var document = _workspace.GetDocument(request.FileName);
+        if (document == null)
+        {
+            var fileNotFoundCommand = _commandFactory.GetForFileNotFound(request.FileName);
+            return fileNotFoundCommand;
+        }
         var projectOutputFilePath = document.Project.OutputFilePath;
         var assemblyFilePath = projectOutputFilePath;
         var roslynSymbol = await GetDefinitionSymbol(document, request.Line, request.Column);
             
+        if (roslynSymbol == null)
+        {
+            var symbolNotFoundAtLocationCommand = _commandFactory.SymbolNotFoundAtLocation(
+                request.FileName,
+                request.Line,
+                request.Column);
+            return symbolNotFoundAtLocationCommand;
+        }
+        
         var rosylnCommand = _commandFactory.GetForInSource(roslynSymbol);
             
         if (roslynSymbol.Locations.First().IsInSource)

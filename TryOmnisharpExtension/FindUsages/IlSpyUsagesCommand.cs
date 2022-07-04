@@ -16,17 +16,19 @@ internal class IlSpyUsagesCommand<T, TResponse> : INavigationCommand<TResponse> 
         _usagesFinder = usagesFinder;
     }
         
-    public Task<TResponse> Execute()
+    public Task<ResponsePacket<TResponse>> Execute()
     {
         var metadataSources = _usagesFinder.Run(
             _symbol);
 
-        var result = new TResponse();
+        var body = new TResponse();
             
         foreach (var metadataSource in metadataSources)
         {
-            result.Implementations.Add(metadataSource);
+            body.Implementations.Add(metadataSource);
         }
+
+        var result = ResponsePacket.Ok(body);
             
         return Task.FromResult(result);
     }

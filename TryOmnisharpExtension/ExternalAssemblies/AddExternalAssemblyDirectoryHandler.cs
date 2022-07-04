@@ -15,11 +15,12 @@ public class AddExternalAssemblyDirectoryHandler
         _decompileWorkspace = decompileWorkspace;
     }
     
-    public override Task<AddExternalAssemblyDirectoryResponse> Handle(AddExternalAssemblyDirectoryRequest request)
+    public override Task<ResponsePacket<AddExternalAssemblyDirectoryResponse>> Handle(AddExternalAssemblyDirectoryRequest request)
     {
         var directoryFileInfo = new DirectoryInfo(request.DirectoryFilePath);
         _decompileWorkspace.LoadDllsInDirectory(directoryFileInfo);
-        var response = new AddExternalAssemblyDirectoryResponse { Success = true };
-        return Task.FromResult(response);
+        var body = new AddExternalAssemblyDirectoryResponse { Success = true };
+        var result = ResponsePacket.Ok(body);
+        return Task.FromResult(result);
     }
 }

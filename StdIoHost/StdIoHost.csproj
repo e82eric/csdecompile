@@ -284,11 +284,8 @@
         <Compile Include="EventPacket.cs" />
         <Compile Include="Host.cs" />
         <Compile Include="OmniSharpApplication.cs" />
-        <Compile Include="Packet.cs" />
         <Compile Include="Program.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
-        <Compile Include="RequestPacket.cs" />
-        <Compile Include="ResponsePacket.cs" />
         <Compile Include="Router.cs" />
         <Compile Include="SharedTextWriter.cs" />
         <Compile Include="SimpleDecompileWorkspace.cs" />

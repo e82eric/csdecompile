@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using TryOmnisharpExtension;
-using TryOmnisharpExtension.GotoDefinition;
 
 namespace StdIoHost;
 
@@ -26,27 +25,20 @@ internal class Router
         //     LogRequest(json, logger, LogLevel.Debug);
         // }
 
-        var response = request.Reply();
-
+        ResponsePacket response;
         try
         {
             if (_handlers.TryGetValue(request.Command, out var handler))
             {
-                var handlerResult = await handler.Handle(request.ArgumentsStream);
-                response.Body = handlerResult;
-                if (handlerResult is DecompileGotoDefinitionResponse maybeError)
-                {
-                    if (maybeError.ErrorDetails != null)
-                    {
-                        response.Success = false;
-                        response.Message = maybeError.ErrorDetails.Message;
-                        response.Body = null;
-                    }
-                }
+                response = await handler.Handle(request.ArgumentsStream);
             }
             else
             {
-                response.Success = false;
+                response = new ResponsePacket
+                {
+                    Success = false,
+                    Message = $"UNKNOWN_COMMAND {request.Command}",
+                };
             }
         }
         catch (Exception e)
@@ -58,8 +50,11 @@ internal class Router
 
             // updating the response object here so that the ResponseStream
             // prints the latest state when being closed
-            response.Success = false;
-            response.Message = JsonConvert.ToString(e.ToString(), '"', StringEscapeHandling.Default);
+            response = new ResponsePacket
+            {
+                Success = false,
+                Message = JsonConvert.ToString(e.ToString(), '"', StringEscapeHandling.Default)
+            };
         }
         finally
         {
@@ -82,7 +77,8 @@ internal class Router
             //
             // // actually write it
         }
-
+        response.Command = request.Command;
+        response.Request_seq = request.Seq;
         return response;
     }
 }
