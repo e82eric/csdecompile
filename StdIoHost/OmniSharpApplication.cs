@@ -81,7 +81,7 @@ internal static class OmniSharpApplication
         var typeInTypeFinder = new TypeInTypeFinder();
         var ilSpyTypeFinder = new IlSpyTypeFinder(typeInTypeFinder, typeInTypeFinder, decompilerFactory);
         var methodInTypeFinder = new MethodInTypeFinder();
-        var ilSpyMemberFinder = new IlSpyMemberFinder(methodInTypeFinder, typeInTypeFinder, decompilerFactory);
+        var ilSpyMemberFinder = new IlSpyDefinitionFinderBase<IMethod>(methodInTypeFinder, typeInTypeFinder, decompilerFactory);
         var propertyInTypeFinder = new PropertyInTypeFinder();
         var ilSpyPropertyFinder = new IlSpyPropertyFinder(propertyInTypeFinder, typeInTypeFinder, decompilerFactory);
         var eventInTypeFinder = new EventInTypeFinder();
