@@ -87,7 +87,7 @@ internal static class OmniSharpApplication
         var eventInTypeFinder = new EventInTypeFinder();
         var ilSpyEventFinder = new IlSpyDefinitionFinderBase<IEvent>(eventInTypeFinder, typeInTypeFinder, decompilerFactory);
         var fieldInTypeFinder = new FieldInTypeFinder();
-        var ilSpyFieldFinder = new IlSpyFieldFinder(fieldInTypeFinder, typeInTypeFinder, decompilerFactory);
+        var ilSpyFieldFinder = new IlSpyDefinitionFinderBase<IField>(fieldInTypeFinder, typeInTypeFinder, decompilerFactory);
         var gotoDefinitionCommandFactory = new GotoDefinitionCommandFactory(
             ilSpyTypeFinder, ilSpyMemberFinder, ilSpyPropertyFinder, ilSpyEventFinder, ilSpyFieldFinder);
         var roslynSymbolInfoFinder = new RosylnSymbolInfoFinder<INavigationCommand<DecompileGotoDefinitionResponse>>(

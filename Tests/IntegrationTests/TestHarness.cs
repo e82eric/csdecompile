@@ -20,7 +20,7 @@ static class TestHarness
         _projectsToTestAgainstRoot = Path.GetFullPath($@"{rootDir}\AssembliesToTestAgainst");
         TestContext.Out.WriteLine($"Resolved ProjectsToTestAgainstRootDir: {_projectsToTestAgainstRoot}");
         
-        var exePath = @$"{rootDir}\StdIoHost\bin\Debug\StdIoHost.exe";
+        var exePath = @$"{rootDir}\StdIoHost\bin\{configuration}\StdIoHost.exe";
         TestContext.Out.WriteLine($"Resolved StdIoExePath: {exePath}");
         
         var targetSolutionPath = @$"{rootDir}\AssembliesToTestAgainst\LibrariesThatReferenceOtherLibraries.sln";
