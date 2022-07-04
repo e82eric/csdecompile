@@ -89,11 +89,11 @@ internal static class OmniSharpApplication
         var ilSpyFieldFinder = new IlSpyFieldFinder(fieldInTypeFinder, typeInTypeFinder, decompilerFactory);
         var gotoDefinitionCommandFactory = new GotoDefinitionCommandFactory(
             ilSpyTypeFinder, ilSpyMemberFinder, ilSpyPropertyFinder, ilSpyEventFinder, ilSpyFieldFinder);
-        var roslynSymbolInfoFinder = new RosylnSymbolInfoFinder<IGotoDefinitionCommand>(
+        var roslynSymbolInfoFinder = new RosylnSymbolInfoFinder<INavigationCommand<DecompileGotoDefinitionResponse>>(
             _workspace,
             ilSpySymbolFinder,
             gotoDefinitionCommandFactory);
-        var ilSpySymbolInfoFinder = new IlSpyCommandFactory<IGotoDefinitionCommand>(
+        var ilSpySymbolInfoFinder = new IlSpyCommandFactory<INavigationCommand<DecompileGotoDefinitionResponse>>(
             ilSpySymbolFinder,
             gotoDefinitionCommandFactory);
         var result = new DecompileGotoDefinitionHandler(

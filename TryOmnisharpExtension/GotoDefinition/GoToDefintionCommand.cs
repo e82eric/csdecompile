@@ -3,7 +3,7 @@ using ICSharpCode.Decompiler.TypeSystem;
 
 namespace TryOmnisharpExtension.GotoDefinition;
 
-public class GoToDefintionCommand<T> : IGotoDefinitionCommand where T : IEntity
+public class GoToDefintionCommand<T> : INavigationCommand<DecompileGotoDefinitionResponse> where T : IEntity
 {
     private readonly T _typeDefinition;
     private readonly IlSpyDefinitionFinderBase<T> _ilSpyTypeFinder;

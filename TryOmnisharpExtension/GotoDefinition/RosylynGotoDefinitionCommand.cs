@@ -4,7 +4,7 @@ using Microsoft.CodeAnalysis;
 
 namespace TryOmnisharpExtension.GotoDefinition;
 
-public class RosylynGotoDefinitionCommand : IGotoDefinitionCommand
+public class RosylynGotoDefinitionCommand : INavigationCommand<DecompileGotoDefinitionResponse>
 {
     private readonly ISymbol _symbol;
 

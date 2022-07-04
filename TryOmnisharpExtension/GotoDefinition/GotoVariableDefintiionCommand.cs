@@ -1,13 +1,12 @@
 ﻿using System.Threading.Tasks;
 using ICSharpCode.Decompiler.CSharp.Syntax;
-using ICSharpCode.Decompiler.DebugInfo;
 using ICSharpCode.Decompiler.IL;
 using ICSharpCode.Decompiler.TypeSystem;
 using TryOmnisharpExtension.FindUsages;
 
 namespace TryOmnisharpExtension.GotoDefinition;
 
-class GotoVariableDefintiionCommand : IGotoDefinitionCommand
+class GotoVariableDefintiionCommand : INavigationCommand<DecompileGotoDefinitionResponse>
 {
     private readonly IlSpyVariableDefintionFinder _finder;
     private readonly ITypeDefinition _containingTypeDefinition;
