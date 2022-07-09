@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using ICSharpCode.Decompiler.CSharp;
 using ICSharpCode.Decompiler.CSharp.Syntax;
 using ICSharpCode.Decompiler.TypeSystem;
 
@@ -31,8 +32,8 @@ public class IlSpyToSourceInfoBase
     {
         target.AssemblyName = containingType.ParentModule.AssemblyName;
         target.ContainingTypeFullName = containingType.ReflectionName;
+        target.ContainingTypeShortName = containingType.Name;
         target.AssemblyFilePath = containingType.Compilation.MainModule.PEFile.FileName;
-        target.ContainingTypeShortName = containingType.ReflectionName;
         target.NamespaceName = containingType.Namespace;
     }
 

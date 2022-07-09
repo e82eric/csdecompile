@@ -13,7 +13,7 @@ public class ExternalFindImplementationsBase : ExternalTestBase
         string filePath,
         int column,
         int line,
-        IEnumerable<(ResponseLocationType type, string value)> expected)
+        IEnumerable<(ResponseLocationType type, string value, string shortTypeName)> expected)
     {
         var requestArguments = new DecompiledLocationRequest
         {
@@ -33,7 +33,7 @@ public class ExternalFindImplementationsBase : ExternalTestBase
         string tokenToFind,
         int column,
         int line,
-        IEnumerable<(ResponseLocationType type, string value)> expected)
+        IEnumerable<(ResponseLocationType type, string value, string shortTypeName)> expected)
     {
         DecompiledLocationRequest definitionRequestArguments = GotoDefintionAndCreateRequestForToken(
             filePath,
@@ -47,7 +47,7 @@ public class ExternalFindImplementationsBase : ExternalTestBase
     
     private static void SendRequestAndAssertLine(
         string command,
-        IEnumerable<(ResponseLocationType type, string value)> expected,
+        IEnumerable<(ResponseLocationType type, string value, string shortTypeName)> expected,
         DecompiledLocationRequest requestArguments)
     {
         var request = new CommandPacket<DecompiledLocationRequest>
@@ -83,6 +83,7 @@ public class ExternalFindImplementationsBase : ExternalTestBase
             Assert.NotNull(foundExpected);
             Assert.AreEqual(foundExpected.type, implementation.Type);
             Assert.AreEqual(implementation.SourceText, sourceLine);
+            Assert.AreEqual(foundExpected.shortTypeName, implementation.ContainingTypeShortName);
         }
     }
 

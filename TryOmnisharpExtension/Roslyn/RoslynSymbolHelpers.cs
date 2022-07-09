@@ -155,7 +155,7 @@ internal static class RoslynSymbolHelpers
     public static SourceFileInfo GetSourceLineInfo(this Location location, IOmniSharpWorkspace workspace)
     {
         var lineSpan = location.GetMappedLineSpan();
-
+        
         var documents = workspace.GetDocuments(lineSpan.Path);
         var sourceText = GetSourceText(location, documents, lineSpan.HasMappedPath);
         var text = GetLineText(location, sourceText, lineSpan.StartLinePosition.Line).Trim();
@@ -222,7 +222,6 @@ internal static class RoslynSymbolHelpers
         {
             result.ContainingTypeFullName = GetFullTypeName(symbol);
         }
-        result.NamespaceName = symbol.ContainingNamespace.GetMetadataName();
         return result;
     }
 

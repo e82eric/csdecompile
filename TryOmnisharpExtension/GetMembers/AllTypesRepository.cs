@@ -87,6 +87,7 @@ public class AllTypesRepository
             {
                 var fullTypeName = typeDefinitionHandle.GetFullTypeName(peFile.Metadata);
                 var fullName = fullTypeName.ReflectionName;
+                var shortName = fullTypeName.Name;
 
                 var namespaceName = peFile.Metadata.GetString(typeDef.Namespace);
                 var decompileInfo = new DecompileInfo
@@ -95,6 +96,7 @@ public class AllTypesRepository
                     AssemblyName = peFile.FullName,
                     Column = 1,
                     ContainingTypeFullName = fullName,
+                    ContainingTypeShortName = shortName,
                     EndColumn = 1,
                     Line = 1,
                     SourceText = fullName,
@@ -122,6 +124,7 @@ public class AllTypesRepository
                 {
                     var fullTypeName = typeDefinitionHandle.GetFullTypeName(peFile.Metadata);
                     var fullName = fullTypeName.ReflectionName;
+                    var shortName = fullTypeName.Name;
 
                     if (!alreadyAdded.Contains(fullName))
                     {
@@ -132,6 +135,7 @@ public class AllTypesRepository
                             AssemblyName = peFile.FullName,
                             Column = 1,
                             ContainingTypeFullName = fullName,
+                            ContainingTypeShortName = shortName,
                             EndColumn = 1,
                             Line = 1,
                             SourceText = fullName,

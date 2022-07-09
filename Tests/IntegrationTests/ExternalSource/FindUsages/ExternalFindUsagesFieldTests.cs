@@ -20,9 +20,9 @@ public class ExternalFindUsagesFieldTests : ExternalFindUsagesTestBase
             
             expected: new []
             {
-                (ResponseLocationType.Decompiled, "private string _field;"),
-                (ResponseLocationType.Decompiled, "_field = 0;"),
-                (ResponseLocationType.Decompiled, "string field = _field;"),
+                (ResponseLocationType.Decompiled, "private string _field;", "ExternalFindUsagesFieldTarget"),
+                (ResponseLocationType.Decompiled, "_field = \"0\";", "ExternalFindUsagesFieldTarget"),
+                (ResponseLocationType.Decompiled, "string field = _field;", "ExternalFindUsagesFieldTarget"),
             });
     }
 }

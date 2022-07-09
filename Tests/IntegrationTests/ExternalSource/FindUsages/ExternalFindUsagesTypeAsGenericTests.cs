@@ -17,8 +17,12 @@ public class ExternalFindUsagesTypeAsGenericTests : ExternalFindUsagesTestBase
             line: 9,
             expected: new []
             {
-                (ResponseLocationType.SourceCode, "ExternalFindUsagesTypeAsGenericTarget a = null;"),
-                (ResponseLocationType.Decompiled, "public class ExternalFindUsagesTypeAsGenericUser : ExternalFindUsagesTypeAsGenericUserBase<ExternalFindUsagesTypeAsGenericTarget>"),
+                (ResponseLocationType.SourceCode,
+                    "ExternalFindUsagesTypeAsGenericTarget a = null;",
+                    "ExternalFindUsagesTypeAsGenericCaller"),
+                (ResponseLocationType.Decompiled,
+                    "public class ExternalFindUsagesTypeAsGenericUser : ExternalFindUsagesTypeAsGenericUserBase<ExternalFindUsagesTypeAsGenericTarget>",
+                    "ExternalFindUsagesTypeAsGenericUser"),
             });
     }
 }

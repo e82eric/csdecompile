@@ -17,9 +17,15 @@ public class ExternalFindUsagesTypeAsMethodTests : ExternalFindUsagesTestBase
             line: 10,
             expected: new []
             {
-                (ResponseLocationType.SourceCode, "new ExternalFindUsagesMethodTarget().ExternalBasicMethod();"),
-                (ResponseLocationType.Decompiled, "new ExternalFindUsagesMethodTarget().ExternalBasicMethod();"),
-                (ResponseLocationType.Decompiled, "Run(new ExternalFindUsagesMethodTarget().ExternalBasicMethod);"),
+                (ResponseLocationType.SourceCode,
+                    "new ExternalFindUsagesMethodTarget().ExternalBasicMethod();",
+                    "ExternalFindUsagesMethodCaller"),
+                (ResponseLocationType.Decompiled,
+                    "new ExternalFindUsagesMethodTarget().ExternalBasicMethod();",
+                    "ExternalFindUsagesMethodUser"),
+                (ResponseLocationType.Decompiled,
+                    "Run1(new ExternalFindUsagesMethodTarget().ExternalBasicMethod);",
+                    "ExternalFindUsagesMethodUser"),
             });
     }
     [Test]
@@ -33,11 +39,14 @@ public class ExternalFindUsagesTypeAsMethodTests : ExternalFindUsagesTestBase
             expected: new []
             {
                 (ResponseLocationType.SourceCode,
-                    "new ExternalFindUsagesMethodTarget().ExternalBasicMethod(string.Empty);"),
+                    "new ExternalFindUsagesMethodTarget().ExternalBasicMethod(string.Empty);",
+                    "ExternalFindUsagesMethodCaller"),
                 (ResponseLocationType.Decompiled,
-                    "new ExternalFindUsagesMethodTarget().ExternalBasicMethod(String.Empty);"),
+                    "new ExternalFindUsagesMethodTarget().ExternalBasicMethod(string.Empty);",
+                    "ExternalFindUsagesMethodUser"),
                 (ResponseLocationType.Decompiled,
-                    "Run(new ExternalFindUsagesMethodTarget().ExternalBasicMethod);"),
+                    "Run2(new ExternalFindUsagesMethodTarget().ExternalBasicMethod);",
+                    "ExternalFindUsagesMethodUser"),
             });
     }
     [Test]
@@ -51,11 +60,14 @@ public class ExternalFindUsagesTypeAsMethodTests : ExternalFindUsagesTestBase
             expected: new []
             {
                 (ResponseLocationType.SourceCode,
-                    "new ExternalFindUsagesMethodTarget().ExternalBasicMethod(String.Empty, String.Empty);"),
+                    "new ExternalFindUsagesMethodTarget().ExternalBasicMethod(String.Empty, String.Empty);",
+                    "ExternalFindUsagesMethodCaller"),
                 (ResponseLocationType.Decompiled,
-                    "new ExternalFindUsagesMethodTarget().ExternalBasicMethod(String.Empty, String.Empty);"),
+                    "new ExternalFindUsagesMethodTarget().ExternalBasicMethod(string.Empty, string.Empty);",
+                    "ExternalFindUsagesMethodUser"),
                 (ResponseLocationType.Decompiled,
-                    "Run(new ExternalFindUsagesMethodTarget().ExternalBasicMethod);"),
+                    "Run3(new ExternalFindUsagesMethodTarget().ExternalBasicMethod);",
+                    "ExternalFindUsagesMethodUser"),
             });
     }
 }

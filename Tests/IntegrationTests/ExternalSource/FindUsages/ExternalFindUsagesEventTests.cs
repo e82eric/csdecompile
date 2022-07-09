@@ -19,11 +19,14 @@ public class ExternalFindUsagesEventTests : ExternalFindUsagesTestBase
             expected: new []
             {
                 (ResponseLocationType.SourceCode,
-                    "new ExternalFindUsagesEventTarget().ExternalBasicEvent += OnExternalBasicEvent;"),
+                    "new ExternalFindUsagesEventTarget().ExternalBasicEvent += OnExternalBasicEvent;",
+                    "ExternalFindUsagesEventCaller"),
                 (ResponseLocationType.Decompiled,
-                    "obj.ExternalBasicEvent += ObjOnExternalBasicEvent;"),
+                    "externalFindUsagesEventTarget.ExternalBasicEvent += ObjOnExternalBasicEvent;",
+                    "ExternalFindUsagesEventCaller"),
                 (ResponseLocationType.Decompiled,
-                    "obj.ExternalBasicEvent -= ObjOnExternalBasicEvent")
+                    "externalFindUsagesEventTarget.ExternalBasicEvent -= ObjOnExternalBasicEvent;",
+                    "ExternalFindUsagesEventCaller")
             });
     }
 }

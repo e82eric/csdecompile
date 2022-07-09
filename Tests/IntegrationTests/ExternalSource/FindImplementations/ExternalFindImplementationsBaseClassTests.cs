@@ -18,7 +18,8 @@ public class ExternalFindImplementationsBaseClassTests : ExternalFindImplementat
             expected: new []
             {
                 (ResponseLocationType.Decompiled,
-                    "public class ExternalFindImplementationsBaseClassInheritor : ExternalFindImplementationsBaseClass")
+                    "public class ExternalFindImplementationsBaseClassInheritor : ExternalFindImplementationsBaseClass",
+                    "ExternalFindImplementationsBaseClassInheritor")
             });
     }
 }

@@ -17,11 +17,21 @@ public class ExternalFindUsagesMethodTests : ExternalFindUsagesTestBase
             line: 9,
             expected: new []
             {
-                (ResponseLocationType.SourceCode, "ExternalFindUsagesTypeAsMethodTarget a = null;"),
-                (ResponseLocationType.Decompiled, "public ExternalFindUsagesTypeAsMethodTarget Run()"),
-                (ResponseLocationType.Decompiled, "public void Run(ExternalFindUsagesTypeAsMethodTarget param1)"),
-                (ResponseLocationType.Decompiled, "public ExternalFindUsagesTypeAsMethodTarget Run2(ExternalFindUsagesTypeAsMethodTarget param1)"),
-                (ResponseLocationType.Decompiled, "public ExternalFindUsagesTypeAsMethodTarget Run2(ExternalFindUsagesTypeAsMethodTarget param1)"),
+                (ResponseLocationType.SourceCode,
+                    "ExternalFindUsagesTypeAsMethodTarget a = null;",
+                    "ExternalFindUsagesTypeAsMethodCaller"),
+                (ResponseLocationType.Decompiled,
+                    "public ExternalFindUsagesTypeAsMethodTarget Run()",
+                    "ExternalFindUsagesTypeAsMethodUser"),
+                (ResponseLocationType.Decompiled,
+                    "public void Run(ExternalFindUsagesTypeAsMethodTarget param1)",
+                    "ExternalFindUsagesTypeAsMethodUser"),
+                (ResponseLocationType.Decompiled,
+                    "public ExternalFindUsagesTypeAsMethodTarget Run2(ExternalFindUsagesTypeAsMethodTarget param1)",
+                    "ExternalFindUsagesTypeAsMethodUser"),
+                (ResponseLocationType.Decompiled,
+                    "public ExternalFindUsagesTypeAsMethodTarget Run2(ExternalFindUsagesTypeAsMethodTarget param1)",
+                    "ExternalFindUsagesTypeAsMethodUser"),
             });
     }
 }

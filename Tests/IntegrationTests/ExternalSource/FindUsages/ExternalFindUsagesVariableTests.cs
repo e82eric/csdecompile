@@ -20,10 +20,18 @@ public class ExternalFindUsagesVariableTests : ExternalFindUsagesTestBase
             
             expected: new []
             {
-                (ResponseLocationType.Decompiled, "int num = 1;"),
-                (ResponseLocationType.Decompiled, "int num2 = num + 1;"),
-                (ResponseLocationType.Decompiled, "int num3 = num + num;"),
-                (ResponseLocationType.Decompiled, "int num3 = num + num;"),
+                (ResponseLocationType.Decompiled,
+                    "int num = 1;",
+                    "ExternalFindUsagesVariableTarget"),
+                (ResponseLocationType.Decompiled,
+                    "int num2 = num + 1;",
+                    "ExternalFindUsagesVariableTarget"),
+                (ResponseLocationType.Decompiled,
+                    "int num3 = num + num;",
+                    "ExternalFindUsagesVariableTarget"),
+                (ResponseLocationType.Decompiled,
+                    "int num3 = num + num;",
+                    "ExternalFindUsagesVariableTarget"),
             });
     }
 }

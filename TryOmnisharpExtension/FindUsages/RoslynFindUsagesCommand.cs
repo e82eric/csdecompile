@@ -1,6 +1,9 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.FindSymbols;
+using Microsoft.CodeAnalysis.Text;
 using TryOmnisharpExtension.FindImplementations;
 using TryOmnisharpExtension.IlSpy;
 using TryOmnisharpExtension.Roslyn;
@@ -23,14 +26,16 @@ public class RoslynFindUsagesCommand : INavigationCommand<FindImplementationsRes
     public async Task<ResponsePacket<FindImplementationsResponse>> Execute()
     {
         var definition = await SymbolFinder.FindSourceDefinitionAsync(_symbol, _workspace.CurrentSolution);
-        var usages = await SymbolFinder.FindReferencesAsync(definition ?? _symbol, _workspace.CurrentSolution);
+        IEnumerable<ReferencedSymbol> usages = await SymbolFinder.FindReferencesAsync(definition ?? _symbol, _workspace.CurrentSolution);
 
         var body = new FindImplementationsResponse();
         foreach (var usage in usages)
         {
             foreach (var location in usage.Locations)
             {
+                var shortName = await GetShortName(location);
                 var sourceFileInfo = location.Location.GetSourceLineInfo(_workspace);
+                sourceFileInfo.ContainingTypeShortName = shortName;
                 body.Implementations.Add(sourceFileInfo);
             }
 
@@ -46,6 +51,18 @@ public class RoslynFindUsagesCommand : INavigationCommand<FindImplementationsRes
                     if (location.IsInSource)
                     {
                         var sourceFileInfo = location.GetSourceLineInfo(_workspace);
+
+                        string shortName = null;
+                        if (usage.Definition.ContainingType != null)
+                        {
+                            shortName = usage.Definition.ContainingType.Name;
+                        }
+                        else
+                        {
+                            shortName = usage.Definition.Name;
+                        }
+
+                        sourceFileInfo.ContainingTypeShortName = shortName;
                         body.Implementations.Add(sourceFileInfo);
                     }
                 }
@@ -55,4 +72,46 @@ public class RoslynFindUsagesCommand : INavigationCommand<FindImplementationsRes
         var result = ResponsePacket.Ok(body);
         return result;
     }
+
+    private async Task<string> GetShortName(ReferenceLocation location)
+    {
+        var lineSpan = location.Location.GetLineSpan();
+        var enclosingSymbol = await GetDefinitionSymbol(location.Document, lineSpan.StartLinePosition.Line,
+            lineSpan.StartLinePosition.Character);
+
+        string shortName = null;
+        if (enclosingSymbol.ContainingType != null)
+        {
+            shortName = enclosingSymbol.ContainingType.Name;
+        }
+        else
+        {
+            shortName = enclosingSymbol.Name;
+        }
+
+        return shortName;
+    }
+
+    internal async Task<ISymbol> GetDefinitionSymbol(Document document, int line, int column)
+    {
+        var sourceText = await document.GetTextAsync(CancellationToken.None);
+        var position = GetPositionFromLineAndOffset(sourceText, line -1, column);
+        var symbol = await SymbolFinder.FindSymbolAtPositionAsync(document, position, CancellationToken.None);
+        var symanticModel = await document.GetSemanticModelAsync();
+        var enclosingSymbol = symanticModel.GetEnclosingSymbol(position);
+        return enclosingSymbol;
+
+        return symbol switch
+        {
+            INamespaceSymbol => null,
+            // Always prefer the partial implementation over the definition
+            IMethodSymbol { IsPartialDefinition: true, PartialImplementationPart: var impl } => impl,
+            // Don't return property getters/settings/initers
+            IMethodSymbol { AssociatedSymbol: IPropertySymbol } => null,
+            _ => symbol
+        };
+    }
+
+    private static int GetPositionFromLineAndOffset(SourceText text, int lineNumber, int offset)
+        => text.Lines[lineNumber].Start + offset;
 }

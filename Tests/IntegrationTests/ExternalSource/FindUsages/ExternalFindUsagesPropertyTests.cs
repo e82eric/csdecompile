@@ -17,8 +17,12 @@ public class ExternalFindUsagesPropertyTests : ExternalFindUsagesTestBase
             line: 9,
             expected: new []
             {
-                (ResponseLocationType.SourceCode, "ExternalFindUsagesPropertyTarget a = null;"),
-                (ResponseLocationType.Decompiled, "public ExternalFindUsagesPropertyTarget BasicProperty { get; set; }"),
+                (ResponseLocationType.SourceCode,
+                    "ExternalFindUsagesPropertyTarget a = null;",
+                    "ExternalFindUsagesPropertyCaller"),
+                (ResponseLocationType.Decompiled,
+                    "public ExternalFindUsagesPropertyTarget BasicProperty { get; set; }",
+                    "ExternalFindUsagesPropertyUser"),
             });
     }
 }
