@@ -1,5 +1,6 @@
 ﻿using Cake.Common.Tools.DotNet;
 using Cake.Common.Tools.DotNet.Build;
+using Cake.Common.Tools.DotNet.MSBuild;
 using Cake.Frosting;
 
 [TaskName("Build")]
@@ -14,11 +15,11 @@ public sealed class BuildTask : FrostingTask<BuildContext>
         });
         context.DotNetBuild("../AssembliesToTestAgainst/LibrariesWithNoDependencies.sln", new DotNetBuildSettings
         {
-            Configuration = context.MsBuildConfiguration
+            Configuration = context.TestSolutionConfiguration,
         });
         context.DotNetBuild("../AssembliesToTestAgainst/LibrariesThatReferenceOtherLibraries.sln", new DotNetBuildSettings
         {
-            Configuration = context.MsBuildConfiguration
+            Configuration = context.TestSolutionConfiguration
         });
         base.Run(context);
     }
