@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using TryOmnisharpExtension.FindImplementations;
 
 namespace TryOmnisharpExtension.FindUsages;
 

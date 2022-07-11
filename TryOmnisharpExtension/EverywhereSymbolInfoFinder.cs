@@ -9,6 +9,7 @@ using Microsoft.CodeAnalysis.Text;
 using TryOmnisharpExtension.FindImplementations;
 using TryOmnisharpExtension.IlSpy;
 using TryOmnisharpExtension.Roslyn;
+using TypeKind = ICSharpCode.Decompiler.TypeSystem.TypeKind;
 
 namespace TryOmnisharpExtension;
 
@@ -89,7 +90,14 @@ public class EverywhereSymbolInfoFinder<TCommandResponseType> where TCommandResp
                 var ilspyField = _ilSpySymbolFinder.FindField(
                     assemblyFilePath,
                     fieldSymbol);
-                ilSpyCommand = _commandFactory.GetForField(ilspyField, projectOutputFilePath);
+                if (ilspyField.DeclaringType.Kind == TypeKind.Enum)
+                {
+                    ilSpyCommand = _commandFactory.GetForEnumField(ilspyField, projectOutputFilePath);
+                }
+                else
+                {
+                    ilSpyCommand = _commandFactory.GetForField(ilspyField, projectOutputFilePath);
+                }
                 break;
             case SymbolKind.Method:
                 var method = (IMethodSymbol)roslynSymbol;

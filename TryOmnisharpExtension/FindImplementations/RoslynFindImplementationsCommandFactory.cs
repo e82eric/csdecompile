@@ -20,6 +20,11 @@ public class RoslynFindImplementationsCommandFactory : IlSpyFindImplementationsC
         _omniSharpWorkspace = omniSharpWorkspace;
     }
 
+    public INavigationCommand<FindImplementationsResponse> GetForEnumField(IField field, string projectAssemblyFilePath)
+    {
+        throw new System.NotImplementedException();
+    }
+
     public INavigationCommand<FindImplementationsResponse> GetForField(IField field, string projectAssemblyFilePath)
     {
         throw new System.NotImplementedException();

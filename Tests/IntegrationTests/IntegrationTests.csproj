@@ -100,6 +100,7 @@
         <Compile Include="ExternalSource\FindImplementations\ExternalFindImplementationsBase2.cs" />
         <Compile Include="ExternalSource\FindImplementations\ExternalFindImplementationsBaseClassTests.cs" />
         <Compile Include="ExternalSource\FindImplementations\ExternalFindImplementationsInterfaceTests.cs" />
+        <Compile Include="ExternalSource\FindUsages\ExternalFindUsagesEnumTests.cs" />
         <Compile Include="ExternalSource\FindUsages\ExternalFindUsagesEventTests.cs" />
         <Compile Include="ExternalSource\FindUsages\ExternalFindUsagesFieldTests.cs" />
         <Compile Include="ExternalSource\FindUsages\ExternalFindUsagesMethodTests.cs" />

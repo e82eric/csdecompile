@@ -177,11 +177,19 @@ internal static class OmniSharpApplication
             decompilerFactory,
             eventUsedByMetadataScanner,
             inMemberBodyFinder);
+        var enumMemberParentUsedByTypeIlScanner = new EnumMemberParentUsedByTypeIlScanner(
+            analyzerScope,
+            typeUsedByTypeIlScanner);
+        var ilSpyUsagesEnumFieldFinder = new IlSpyUsagesFinderBase<IMember>(
+            decompilerFactory,
+            enumMemberParentUsedByTypeIlScanner,
+            inMemberBodyFinder);
         var findUsagesCommandFactory = new FindUsagesCommandFactory(
             ilSpyTypeUsagesFinder,
             ilSpyMethodUsagesFinder,
             ilSpyPropertyUsagesFinder,
             ilSpyFieldUsagesFinder,
+            ilSpyUsagesEnumFieldFinder,
             ilSpyVariableUsagesFinder,
             ilSpyEventUsagesFinder,
             _workspace);

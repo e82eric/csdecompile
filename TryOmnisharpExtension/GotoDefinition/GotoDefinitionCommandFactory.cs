@@ -60,7 +60,12 @@ namespace TryOmnisharpExtension.GotoDefinition
             var result = new GoToDefintionCommand<IMethod>(method, _memberFinder, assemblyFilePath);
             return result;
         }
-        
+
+        public INavigationCommand<DecompileGotoDefinitionResponse> GetForEnumField(IField field, string projectAssemblyFilePath)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public INavigationCommand<DecompileGotoDefinitionResponse> GetForField(IField field, string assemblyFilePath)
         {
             var result = new GoToDefintionCommand<IField>(field, _fieldFinder, assemblyFilePath);

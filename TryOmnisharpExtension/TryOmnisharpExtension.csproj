@@ -231,6 +231,7 @@
         <Compile Include="FindImplementations\TypesThatUseTypeAsBaseTypeMetadataScanner.cs" />
         <Compile Include="FindImplementations\RosylynFindImplementationsCommand.cs" />
         <Compile Include="FindUsages\DecompileFindUsagesHandler.cs" />
+        <Compile Include="FindUsages\EnumMemberParentUsedByTypeIlScanner.cs" />
         <Compile Include="FindUsages\EventUsedByMetadataScanner.cs" />
         <Compile Include="FindUsages\ExternalAssembliesFindUsagesCommandFactory.cs" />
         <Compile Include="FindUsages\FieldUsedByMetadataScanner.cs" />

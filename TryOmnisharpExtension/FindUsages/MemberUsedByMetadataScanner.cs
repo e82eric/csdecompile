@@ -177,7 +177,8 @@ public class MemberUsedByMetadataScanner : IMetadataUsagesScanner<IMember>
                 return false; // unexpected end of blob
             }
 
-            var member = MetadataTokenHelpers.EntityHandleOrNil(blob.ReadInt32());
+            var metadataToken = blob.ReadInt32();
+            var member = MetadataTokenHelpers.EntityHandleOrNil(metadataToken);
             if (member.IsNil || !member.Kind.IsMemberKind())
                 continue;
 

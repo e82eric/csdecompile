@@ -16,6 +16,7 @@ public class FindUsagesCommandFactory : ExternalAssembliesFindUsagesCommandFacto
         IlSpyUsagesFinderBase<IMember> methodUsagesFinder,
         IlSpyUsagesFinderBase<IMember> propertyUsagesFinder,
         IlSpyUsagesFinderBase<IMember> fieldUsagesFinder,
+        IlSpyUsagesFinderBase<IMember> enumFieldUsagesFinder,
         IlSpyVariableUsagesFinder variableUsagesFinder,
         IlSpyUsagesFinderBase<IMember> eventUsagesFinder,
         IOmniSharpWorkspace omniSharpWorkspace):base(
@@ -23,6 +24,7 @@ public class FindUsagesCommandFactory : ExternalAssembliesFindUsagesCommandFacto
             methodUsagesFinder,
             propertyUsagesFinder,
             fieldUsagesFinder,
+            enumFieldUsagesFinder,
             eventUsagesFinder,
             variableUsagesFinder)
     {

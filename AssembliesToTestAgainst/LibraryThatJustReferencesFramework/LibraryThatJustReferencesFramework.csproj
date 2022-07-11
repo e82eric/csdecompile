@@ -42,6 +42,8 @@
         <Compile Include="ExternalFindImplementationsBaseClassInheritor.cs" />
         <Compile Include="ExternalFindImplementationsInterface.cs" />
         <Compile Include="ExternalFindImplementationsInterfaceInheritor.cs" />
+        <Compile Include="ExternalFindUsagesEnumTarget.cs" />
+        <Compile Include="ExternalFindUsagesEnumUser.cs" />
         <Compile Include="ExternalFindUsagesEventCaller.cs" />
         <Compile Include="ExternalFindUsagesEventTarget.cs" />
         <Compile Include="ExternalFindUsagesFieldTarget.cs" />

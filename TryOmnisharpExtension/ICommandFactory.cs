@@ -8,6 +8,7 @@ namespace TryOmnisharpExtension;
 
 public interface ICommandFactory<T> : IDecompilerCommandFactory<T>
 {
+    T GetForEnumField(IField field, string projectAssemblyFilePath);
     T GetForField(IField field, string projectAssemblyFilePath);
     T GetForInSource(Microsoft.CodeAnalysis.ISymbol roslynSymbol);
     T GetForFileNotFound(string filePath);

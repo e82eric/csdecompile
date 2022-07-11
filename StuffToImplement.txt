@@ -1,9 +1,5 @@
-variable goto definition inside of decompiled source
 all searches have to start from first char
-UI to list all loaded assemblies
 - status bar stuff to indicate how many project assemblies and how many satelite and how many transient
-I think if find implementations is done on a sealed class it can immediately return
-- This currently gets a null ref
 UI to list all types in assembly
 UI to list all members of a type
 Find usages of this seems to not work
