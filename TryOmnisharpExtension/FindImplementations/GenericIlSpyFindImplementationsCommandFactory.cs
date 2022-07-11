@@ -8,6 +8,7 @@ using TryOmnisharpExtension.FindUsages;
 using TryOmnisharpExtension.IlSpy;
 using TryOmnisharpExtension.Roslyn;
 using ISymbol = Microsoft.CodeAnalysis.ISymbol;
+using TypeKind = ICSharpCode.Decompiler.TypeSystem.TypeKind;
 
 namespace TryOmnisharpExtension.FindImplementations;
 
@@ -88,7 +89,15 @@ public class GenericIlSpyFindImplementationsCommandFactory<TResponseType>
         
         if (symbolAtLocation is IField field)
         {
-            var ilSpyCommand = _commandCommandFactory.GetForField(field, request.AssemblyFilePath);
+            INavigationCommand<TResponseType> ilSpyCommand;
+            if (field.DeclaringType.Kind == TypeKind.Enum)
+            {
+                ilSpyCommand = _commandCommandFactory.GetForEnumField(field, request.AssemblyFilePath);
+            }
+            else
+            {
+                ilSpyCommand = _commandCommandFactory.GetForField(field, request.AssemblyFilePath);
+            }
 
             var roslynField = await GetRoslynMemberSymbol<IFieldSymbol>(field);
             if (roslynField != null)

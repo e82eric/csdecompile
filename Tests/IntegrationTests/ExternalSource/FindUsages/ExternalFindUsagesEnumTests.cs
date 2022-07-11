@@ -82,4 +82,24 @@ public class ExternalFindUsagesEnumTests : ExternalFindUsagesTestBase
                     "ExternalFindUsagesEnumUser"),
             });
     }
+    
+    [Test]
+    public void SearchAsMemberFromWithExternalSource()
+    {
+        this.SendRequestAndAssertLine(
+            filePath: FilePath,
+            lineToFind: "ExternalFindUsagesEnumTarget externalFindUsagesEnumTarget3 = ExternalFindUsagesEnumTarget.Type3;",
+            tokenToFind: "Type3",
+            column: 13,
+            line: 12,
+            expected: new []
+            {
+                (ResponseLocationType.SourceCode,
+                    "var t3 = ExternalFindUsagesEnumTarget.Type3;",
+                    "ExternalFindUsagesEnumCaller"),
+                (ResponseLocationType.Decompiled,
+                    "ExternalFindUsagesEnumTarget externalFindUsagesEnumTarget3 = ExternalFindUsagesEnumTarget.Type3;",
+                    "ExternalFindUsagesEnumUser"),
+            });
+    }
 }

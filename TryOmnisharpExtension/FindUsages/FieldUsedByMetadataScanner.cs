@@ -16,8 +16,6 @@ public class FieldUsedByMetadataScanner : MemberUsedByMetadataScanner
             case ILOpCode.Call:
             case ILOpCode.Ldfld:
             case ILOpCode.Ldflda:
-            case ILOpCode.Ldc_i4:
-            case ILOpCode.Ldc_i4_0:
             case ILOpCode.Stfld:
             case ILOpCode.Ldsfld:
             case ILOpCode.Ldsflda:
