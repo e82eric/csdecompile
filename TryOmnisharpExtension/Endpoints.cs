@@ -5,6 +5,7 @@ namespace TryOmnisharpExtension
         public const string DecompileGotoDefinition = "/gotodefinition";
         public const string DecompileFindImplementations = "/findimplementations";
         public const string DecompiledSource = "/decompiledsource";
+        public const string SymbolInfo = "/symbolinfo";
         public const string DecompileFindUsages = "/findusages";
         public const string GetTypes = "/gettypes";
         public const string GetTypeMembers = "/gettypemembers";

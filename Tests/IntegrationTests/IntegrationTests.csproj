@@ -92,6 +92,9 @@
         <Compile Include="..\..\TryOmnisharpExtension\ResponsePacket.cs">
           <Link>LinkedModels\ResponsePacket.cs</Link>
         </Compile>
+        <Compile Include="..\..\TryOmnisharpExtension\Roslyn\SymbolInfo.cs">
+          <Link>LinkedModels\SymbolInfo.cs</Link>
+        </Compile>
         <Compile Include="..\..\TryOmnisharpExtension\SourceFileInfo.cs">
           <Link>LinkedModels\SourceFileInfo.cs</Link>
         </Compile>
@@ -116,6 +119,7 @@
         <Compile Include="ExternalSource\GotoDefinition\ExternalGotoDefinitionDefaultConstructorTests.cs" />
         <Compile Include="ExternalSource\GotoDefinition\ExternalGotoDefinitionEventTests.cs" />
         <Compile Include="ExternalSource\GotoDefinition\ExternalGotoDefinitionFieldTests.cs" />
+        <Compile Include="ExternalSource\GotoDefinition\ExternalGotoDefinitionMethodOfGenericTypeTests.cs" />
         <Compile Include="ExternalSource\GotoDefinition\ExternalGotoDefinitionMethodTests.cs" />
         <Compile Include="ExternalSource\GotoDefinition\ExternalGotoDefinitionPropertyTests.cs" />
         <Compile Include="ExternalSource\GotoDefinition\ExternalGotoDefinitionTestBase.cs" />
@@ -126,6 +130,7 @@
         <Compile Include="InSource\FindImplementations\InSourceFindImplementationsSymbolNotFoundAtLocationTests.cs" />
         <Compile Include="InSource\FindUsages\InSourceFindUsagesFileDoesntExistTests.cs" />
         <Compile Include="InSource\FindUsages\InSourceFindUsagesSymbolNotFoundAtLocationTests.cs" />
+        <Compile Include="InSource\GotoDefinition\InSourceGetSymbolInfoTests.cs" />
         <Compile Include="ResponseLocationConverter.cs" />
         <Compile Include="InSourceBase.cs" />
         <Compile Include="InSource\FindImplementations\FindImplementationsTests.cs" />

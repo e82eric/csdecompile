@@ -5,18 +5,17 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.FindSymbols;
 using Microsoft.CodeAnalysis.Text;
-using TryOmnisharpExtension.GotoDefinition;
 using TryOmnisharpExtension.IlSpy;
 
 namespace TryOmnisharpExtension.Roslyn
 {
-    public class RosylnSymbolInfoFinder<TCommandType>
+    public class RoslynLocationToCommandFactory<TCommandType>
     {
         private readonly IOmniSharpWorkspace _workspace;
         private readonly IlSpySymbolFinder _ilSpySymbolFinder;
         private readonly ICommandFactory<TCommandType> _gotoDefinitionCommandFactory;
 
-        public RosylnSymbolInfoFinder(
+        public RoslynLocationToCommandFactory(
             IOmniSharpWorkspace workspace,
             IlSpySymbolFinder ilSpySymbolFinder,
             ICommandFactory<TCommandType> gotoDefinitionCommandFactory)
@@ -25,7 +24,7 @@ namespace TryOmnisharpExtension.Roslyn
             _workspace = workspace;
             _ilSpySymbolFinder = ilSpySymbolFinder;
         }
-        
+
         public async Task<TCommandType> Get(LocationRequest request)
         {
             var document = _workspace.GetDocument(request.FileName);
@@ -34,6 +33,7 @@ namespace TryOmnisharpExtension.Roslyn
                 var fileNotFoundCommand = _gotoDefinitionCommandFactory.GetForFileNotFound(request.FileName);
                 return fileNotFoundCommand;
             }
+
             var projectOutputFilePath = document.Project.OutputFilePath;
             var assemblyFilePath = projectOutputFilePath;
             var roslynSymbol = await GetDefinitionSymbol(document, request.Line, request.Column);
@@ -46,21 +46,22 @@ namespace TryOmnisharpExtension.Roslyn
                     request.Column);
                 return symbolNotFoundAtLocationCommand;
             }
+
             TCommandType result = default;
-            
+
             if (roslynSymbol.Locations.First().IsInSource)
             {
                 result = _gotoDefinitionCommandFactory.GetForInSource(roslynSymbol);
                 return result;
             }
-            
+
             switch (roslynSymbol.Kind)
             {
                 case SymbolKind.NamedType:
                     var ilSpyTypeDefinition = _ilSpySymbolFinder.FindTypeDefinition(
                         assemblyFilePath,
                         roslynSymbol.GetSymbolName());
-                    
+
                     result = _gotoDefinitionCommandFactory.GetForType(ilSpyTypeDefinition, projectOutputFilePath);
                     break;
                 case SymbolKind.Property:
@@ -105,11 +106,11 @@ namespace TryOmnisharpExtension.Roslyn
 
             return result;
         }
-        
+
         internal async Task<ISymbol> GetDefinitionSymbol(Document document, int line, int column)
         {
             var sourceText = await document.GetTextAsync(CancellationToken.None);
-            var position = GetPositionFromLineAndOffset(sourceText, line -1, column);
+            var position = GetPositionFromLineAndOffset(sourceText, line - 1, column);
             var symbol = await SymbolFinder.FindSymbolAtPositionAsync(document, position, CancellationToken.None);
 
             return symbol switch

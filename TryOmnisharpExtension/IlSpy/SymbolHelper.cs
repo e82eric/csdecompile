@@ -37,9 +37,9 @@ public static class SymbolHelper
             result = result.DeclaringType;
         }
 
-        if (result is ParameterizedType)
+        if (result is ParameterizedType parameterizedType)
         {
-            return null;
+            return parameterizedType.GenericType.GetDefinition();
         }
 
         return (ITypeDefinition)result;

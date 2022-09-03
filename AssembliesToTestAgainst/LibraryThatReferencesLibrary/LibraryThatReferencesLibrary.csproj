@@ -58,10 +58,13 @@
         <Compile Include="ExternalGotoDefinitionDefaultConstructorCaller.cs" />
         <Compile Include="ExternalGotoDefinitionEventCaller.cs" />
         <Compile Include="ExternalGotoDefinitionFieldCaller.cs" />
+        <Compile Include="ExternalGotoDefinitionMethodOfGenericTypeCaller.cs" />
         <Compile Include="ExternalGotoDefinitionPropertyCaller.cs" />
         <Compile Include="ExternalGotoDefinitionVariableCaller.cs" />
         <Compile Include="InSourceFindImplementationsBaseClass.cs" />
         <Compile Include="InSourceFindImplementationsBaseClassInheritor.cs" />
+        <Compile Include="InSourceGetSymbolInfoCaller.cs" />
+        <Compile Include="InSourceGetSymbolInfoTarget.cs" />
         <Compile Include="InSourceGotoDefinitionConstructorCaller.cs" />
         <Compile Include="InSourceGotoDefinitionConstructorTarget.cs" />
         <Compile Include="ExternalGotoDefinitionMethodCaller.cs" />

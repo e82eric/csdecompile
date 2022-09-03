@@ -74,6 +74,22 @@ internal static class OmniSharpApplication
         return result;
     }
 
+    public static GetSymbolInfoHandler CreateGetSymbolInfoHandler()
+    {
+        var decompilerFactory = new DecompilerFactory(_decompilerTypeSystemFactory);
+        var ilSpySymbolFinder = new IlSpySymbolFinder(_decompilerTypeSystemFactory, decompilerFactory);
+        var getSymbolInfoCommandFactory = new GetSymbolInfoCommandFactory();
+        var roslynLocationToCommandFactory = new RoslynLocationToCommandFactory<INavigationCommand<SymbolInfo>>(
+            _workspace,
+            ilSpySymbolFinder,
+            getSymbolInfoCommandFactory);
+        var ilSpySymbolInfoFinder = new IlSpyCommandFactory<INavigationCommand<SymbolInfo>>(
+            ilSpySymbolFinder,
+            getSymbolInfoCommandFactory);
+        var result = new GetSymbolInfoHandler(roslynLocationToCommandFactory, ilSpySymbolInfoFinder);
+        return result;
+    }
+
     public static DecompileGotoDefinitionHandler CreateGoToDefinitionHandler()
     {
         var decompilerFactory = new DecompilerFactory(_decompilerTypeSystemFactory);
@@ -90,7 +106,7 @@ internal static class OmniSharpApplication
         var ilSpyFieldFinder = new IlSpyDefinitionFinderBase<IField>(fieldInTypeFinder, typeInTypeFinder, decompilerFactory);
         var gotoDefinitionCommandFactory = new GotoDefinitionCommandFactory(
             ilSpyTypeFinder, ilSpyMemberFinder, ilSpyPropertyFinder, ilSpyEventFinder, ilSpyFieldFinder);
-        var roslynSymbolInfoFinder = new RosylnSymbolInfoFinder<INavigationCommand<DecompileGotoDefinitionResponse>>(
+        var roslynSymbolInfoFinder = new RoslynLocationToCommandFactory<INavigationCommand<DecompileGotoDefinitionResponse>>(
             _workspace,
             ilSpySymbolFinder,
             gotoDefinitionCommandFactory);
@@ -245,7 +261,8 @@ internal static class OmniSharpApplication
         var addExternalAssemblyDirectoryHandler = CreateAddExternalAssemblyDirectoryHandler();
         var getAssemblyTypesHandler = GetAssemblyTypesHandler();
         var getAssembliesHandler = GetAssembliesHandler();
-
+        var getSymbolInfoHandler = CreateGetSymbolInfoHandler();
+        
         var handlers = new Dictionary<string, IHandler>
         {
             { Endpoints.DecompileGotoDefinition, gotoDefinitionHandler },
@@ -256,7 +273,8 @@ internal static class OmniSharpApplication
             { Endpoints.GetTypes, getTypesHandlers },
             { Endpoints.GetTypeMembers, getTypeMembersHandler },
             { Endpoints.AddExternalAssemblyDirectory, addExternalAssemblyDirectoryHandler },
-            { Endpoints.GetAssemblies, getAssembliesHandler }
+            { Endpoints.GetAssemblies, getAssembliesHandler },
+            { Endpoints.SymbolInfo, getSymbolInfoHandler }
         };
 
         var router = new Router(handlers);

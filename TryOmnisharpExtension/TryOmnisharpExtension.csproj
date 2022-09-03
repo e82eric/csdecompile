@@ -276,14 +276,24 @@
         <Compile Include="GotoDefinition\DecompileGotoDefinitionHandler.cs" />
         <Compile Include="GotoDefinition\DecompileGotoDefinitionResponse.cs" />
         <Compile Include="GotoDefinition\FieldInTypeFinder.cs" />
+        <Compile Include="GotoDefinition\GetSymbolInfoCommandFactory.cs" />
+        <Compile Include="GotoDefinition\GetSymbolInfoHandler.cs" />
         <Compile Include="GotoDefinition\GotoDefinitionCommandFactory.cs" />
         <Compile Include="GotoDefinition\GoToDefintionCommand.cs" />
         <Compile Include="GotoDefinition\GotoVariableDefintiionCommand.cs" />
         <Compile Include="GotoDefinition\IDefinitionInDecompiledSyntaxTreeFinder.cs" />
         <Compile Include="GotoDefinition\IlSpyDefinitionFinderBase.cs" />
         <Compile Include="GotoDefinition\EventInTypeFinder.cs" />
+        <Compile Include="GotoDefinition\IlSpyFieldSymbolInfoCommand.cs" />
+        <Compile Include="GotoDefinition\IlSpyMemberSymbolInfoCommand.cs" />
+        <Compile Include="GotoDefinition\IlSpyMethodSymbolInfoCommand.cs" />
+        <Compile Include="GotoDefinition\IlSpyParameterSymbolInfoCommand.cs" />
+        <Compile Include="GotoDefinition\IlSpyPropertySymbolInfoCommand.cs" />
+        <Compile Include="GotoDefinition\IlSpyTypeDefinitionSymbolInfoCommand.cs" />
+        <Compile Include="GotoDefinition\IlSpyVariableSymbolInfoCommand.cs" />
         <Compile Include="GotoDefinition\MethodInTypeFinder.cs" />
         <Compile Include="GotoDefinition\PropertyInTypeFinder.cs" />
+        <Compile Include="GotoDefinition\RoslynSymbolInfoCommand.cs" />
         <Compile Include="GotoDefinition\RosylynGotoDefinitionCommand.cs" />
         <Compile Include="GotoDefinition\TypeInTypeFinder.cs" />
         <Compile Include="GotoDefinition\VariableInTypeFinder.cs" />
@@ -320,7 +330,8 @@
         <Compile Include="Roslyn\RoslynSymbolHelpers.cs" />
         <Compile Include="Roslyn\RoslynToIlSpyEqualityExtensions.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
-        <Compile Include="Roslyn\RosylnSymbolInfoFinder.cs" />
+        <Compile Include="Roslyn\RoslynLocationToCommandFactory.cs" />
+        <Compile Include="Roslyn\SymbolInfo.cs" />
         <Compile Include="SourceFileInfo.cs" />
         <Compile Include="SymbolNotFoundAtLocationCommand.cs" />
     </ItemGroup>

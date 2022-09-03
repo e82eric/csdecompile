@@ -5,14 +5,14 @@ namespace TryOmnisharpExtension.GotoDefinition
 {
     public class DecompileGotoDefinitionHandler : HandlerBase<DecompiledLocationRequest, DecompileGotoDefinitionResponse>
     {
-        private readonly RosylnSymbolInfoFinder<INavigationCommand<DecompileGotoDefinitionResponse>> _rosylnGotoDefinitionCommandFactory;
+        private readonly RoslynLocationToCommandFactory<INavigationCommand<DecompileGotoDefinitionResponse>> _rosylnGotoDefinitionCommandFactory;
         private readonly IlSpyCommandFactory<INavigationCommand<DecompileGotoDefinitionResponse>> _ilSpySymbolInfoFinder;
 
         public DecompileGotoDefinitionHandler(
-            RosylnSymbolInfoFinder<INavigationCommand<DecompileGotoDefinitionResponse>> rosylnSymbolInfoFinder,
+            RoslynLocationToCommandFactory<INavigationCommand<DecompileGotoDefinitionResponse>> roslynLocationToCommandFactory,
             IlSpyCommandFactory<INavigationCommand<DecompileGotoDefinitionResponse>> ilSpySymbolInfoFinder)
         {
-            _rosylnGotoDefinitionCommandFactory = rosylnSymbolInfoFinder;
+            _rosylnGotoDefinitionCommandFactory = roslynLocationToCommandFactory;
             _ilSpySymbolInfoFinder = ilSpySymbolInfoFinder;
         }
         
