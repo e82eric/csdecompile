@@ -43,6 +43,7 @@ public class RosylynFindImplementationsCommand : INavigationCommand<FindImplemen
                 else
                 {
                     var sourceInfo = implementation.GetSourceLineInfo(_workspace);
+                    sourceInfo.ContainingTypeShortName = GetShortName(implementation);
                     body.Implementations.Add(sourceInfo);
 
                     if (implementation.IsOverridable())
@@ -50,7 +51,9 @@ public class RosylynFindImplementationsCommand : INavigationCommand<FindImplemen
                         var overrides = await SymbolFinder.FindOverridesAsync(implementation, _workspace.CurrentSolution);
                         foreach (var @override in overrides)
                         {
-                            body.Implementations.Add(@override.GetSourceLineInfo(_workspace));
+                            var sourceLineInfo = @override.GetSourceLineInfo(_workspace);
+                            sourceLineInfo.ContainingTypeShortName = GetShortName(implementation);
+                            body.Implementations.Add(sourceLineInfo);
                         }
                     }
                 }
@@ -101,5 +104,20 @@ public class RosylynFindImplementationsCommand : INavigationCommand<FindImplemen
 
         var result = ResponsePacket.Ok(body);
         return result;
+    }
+    
+    private string GetShortName(ISymbol enclosingSymbol)
+    {
+        string shortName = null;
+        if (enclosingSymbol.ContainingType != null)
+        {
+            shortName = enclosingSymbol.ContainingType.Name;
+        }
+        else
+        {
+            shortName = enclosingSymbol.Name;
+        }
+
+        return shortName;
     }
 }

@@ -218,7 +218,7 @@ M.StartOmnisharp = function (solutionPath)
 		-- M._state.SolutionName = vim.fn.expand('%:p:t')
 	end
 	local job = Job:new({
-		command = 'C:\\src\\csdecompile\\StdIoHost\\bin\\Debug\\StdIoHost.exe',
+		command = '..:\\..\\StdIoHost\\bin\\Debug\\StdIoHost.exe',
 		args = {  solutionPath },
 		cwd = '.',
 		on_stdout = on_output,
@@ -737,9 +737,6 @@ M._navigationFloatingWin = function(data)
 			true
 	)
 end
-
-
-
 
 M._openTelescope = function(data, displayFunc, promptTitle)
 	local widths = {
