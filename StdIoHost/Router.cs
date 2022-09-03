@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using TryOmnisharpExtension;
+using CsDecompileLib;
 
 namespace StdIoHost;
 

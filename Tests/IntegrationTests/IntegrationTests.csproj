@@ -47,55 +47,55 @@
         <Reference Include="System.Xml" />
     </ItemGroup>
     <ItemGroup>
-        <Compile Include="..\..\TryOmnisharpExtension\DecompiledLocationRequest.cs">
+        <Compile Include="..\..\CsDecompileLib\DecompiledLocationRequest.cs">
           <Link>LinkedModels\DecompiledLocationRequest.cs</Link>
         </Compile>
-        <Compile Include="..\..\TryOmnisharpExtension\DecompileInfo.cs">
+        <Compile Include="..\..\CsDecompileLib\DecompileInfo.cs">
           <Link>LinkedModels\DecompileInfo.cs</Link>
         </Compile>
-        <Compile Include="..\..\TryOmnisharpExtension\Endpoints.cs">
+        <Compile Include="..\..\CsDecompileLib\Endpoints.cs">
           <Link>LinkedModels\Endpoints.cs</Link>
         </Compile>
-        <Compile Include="..\..\TryOmnisharpExtension\FindImplementationsResponse.cs">
+        <Compile Include="..\..\CsDecompileLib\FindImplementationsResponse.cs">
           <Link>LinkedModels\FindImplementationsResponse.cs</Link>
         </Compile>
-        <Compile Include="..\..\TryOmnisharpExtension\GetMembers\Assembly.cs">
+        <Compile Include="..\..\CsDecompileLib\GetMembers\Assembly.cs">
           <Link>LinkedModels\Assembly.cs</Link>
         </Compile>
-        <Compile Include="..\..\TryOmnisharpExtension\GetMembers\GetAssembliesResponse.cs">
+        <Compile Include="..\..\CsDecompileLib\GetMembers\GetAssembliesResponse.cs">
           <Link>LinkedModels\GetAssembliesResponse.cs</Link>
         </Compile>
-        <Compile Include="..\..\TryOmnisharpExtension\GetSource\DecompiledSourceRequest.cs">
+        <Compile Include="..\..\CsDecompileLib\GetSource\DecompiledSourceRequest.cs">
           <Link>LinkedModels\DecompiledSourceRequest.cs</Link>
         </Compile>
-        <Compile Include="..\..\TryOmnisharpExtension\GetSource\DecompiledSourceResponse.cs">
+        <Compile Include="..\..\CsDecompileLib\GetSource\DecompiledSourceResponse.cs">
           <Link>LinkedModels\DecompiledSourceResponse.cs</Link>
         </Compile>
-        <Compile Include="..\..\TryOmnisharpExtension\GotoDefinition\DecompileGotoDefinitionResponse.cs">
+        <Compile Include="..\..\CsDecompileLib\GotoDefinition\DecompileGotoDefinitionResponse.cs">
           <Link>LinkedModels\DecompileGotoDefinitionResponse.cs</Link>
         </Compile>
-        <Compile Include="..\..\TryOmnisharpExtension\LocationRequest.cs">
+        <Compile Include="..\..\CsDecompileLib\LocationRequest.cs">
           <Link>LinkedModels\LocationRequest.cs</Link>
         </Compile>
-        <Compile Include="..\..\TryOmnisharpExtension\Packet.cs">
+        <Compile Include="..\..\CsDecompileLib\Packet.cs">
           <Link>LinkedModels\Packet.cs</Link>
         </Compile>
-        <Compile Include="..\..\TryOmnisharpExtension\RequestPacket.cs">
+        <Compile Include="..\..\CsDecompileLib\RequestPacket.cs">
           <Link>LinkedModels\RequestPacket.cs</Link>
         </Compile>
-        <Compile Include="..\..\TryOmnisharpExtension\ResponseLocation.cs">
+        <Compile Include="..\..\CsDecompileLib\ResponseLocation.cs">
           <Link>LinkedModels\ResponseLocation.cs</Link>
         </Compile>
-        <Compile Include="..\..\TryOmnisharpExtension\ResponseLocationType.cs">
+        <Compile Include="..\..\CsDecompileLib\ResponseLocationType.cs">
           <Link>LinkedModels\ResponseLocationType.cs</Link>
         </Compile>
-        <Compile Include="..\..\TryOmnisharpExtension\ResponsePacket.cs">
+        <Compile Include="..\..\CsDecompileLib\ResponsePacket.cs">
           <Link>LinkedModels\ResponsePacket.cs</Link>
         </Compile>
-        <Compile Include="..\..\TryOmnisharpExtension\Roslyn\SymbolInfo.cs">
+        <Compile Include="..\..\CsDecompileLib\Roslyn\SymbolInfo.cs">
           <Link>LinkedModels\SymbolInfo.cs</Link>
         </Compile>
-        <Compile Include="..\..\TryOmnisharpExtension\SourceFileInfo.cs">
+        <Compile Include="..\..\CsDecompileLib\SourceFileInfo.cs">
           <Link>LinkedModels\SourceFileInfo.cs</Link>
         </Compile>
         <Compile Include="DecompilerClient.cs" />

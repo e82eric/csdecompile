@@ -7,7 +7,7 @@ public sealed class ResotoreTask : FrostingTask<BuildContext>
 {
     public override void Run(BuildContext context)
     {
-        context.NuGetRestore("../TryOmnisharpExtension.sln");
+        context.NuGetRestore("../CsDecompile.sln");
         context.NuGetRestore("../Tests/Tests.sln");
         base.Run(context);
     }

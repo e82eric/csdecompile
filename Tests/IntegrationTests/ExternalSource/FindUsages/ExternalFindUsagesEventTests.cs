@@ -1,5 +1,5 @@
 ﻿using NUnit.Framework;
-using TryOmnisharpExtension;
+using CsDecompileLib;
 
 namespace IntegrationTests;
 

@@ -9,7 +9,7 @@ public sealed class BuildTask : FrostingTask<BuildContext>
 {
     public override void Run(BuildContext context)
     {
-        context.DotNetBuild("../TryOmnisharpExtension.sln", new DotNetBuildSettings
+        context.DotNetBuild("../CsDecompile.sln", new DotNetBuildSettings
         {
             Configuration = context.MsBuildConfiguration
         });

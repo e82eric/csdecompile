@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using TryOmnisharpExtension;
+using CsDecompileLib;
 
 namespace IntegrationTests;
 

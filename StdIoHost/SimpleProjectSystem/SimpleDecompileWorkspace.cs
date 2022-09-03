@@ -8,7 +8,7 @@ using Microsoft.Build.Locator;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.MSBuild;
 using StdIoHost.ProjectSystemExtraction;
-using TryOmnisharpExtension.IlSpy;
+using CsDecompileLib.IlSpy;
 
 namespace StdIoHost.SimpleProjectSystem;
 

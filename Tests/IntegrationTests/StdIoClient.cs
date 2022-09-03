@@ -6,7 +6,7 @@ using System.Threading;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
-using TryOmnisharpExtension;
+using CsDecompileLib;
 
 namespace IntegrationTests
 {

@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
-using TryOmnisharpExtension;
+using CsDecompileLib;
 
 namespace IntegrationTests;
 

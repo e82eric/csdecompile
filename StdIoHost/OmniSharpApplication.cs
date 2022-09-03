@@ -6,15 +6,15 @@ using ICSharpCode.Decompiler.TypeSystem;
 using Microsoft.Extensions.Logging;
 using StdIoHost.ProjectSystemExtraction;
 using StdIoHost.SimpleProjectSystem;
-using TryOmnisharpExtension;
-using TryOmnisharpExtension.ExternalAssemblies;
-using TryOmnisharpExtension.FindImplementations;
-using TryOmnisharpExtension.FindUsages;
-using TryOmnisharpExtension.GetMembers;
-using TryOmnisharpExtension.GetSource;
-using TryOmnisharpExtension.GotoDefinition;
-using TryOmnisharpExtension.IlSpy;
-using TryOmnisharpExtension.Roslyn;
+using CsDecompileLib;
+using CsDecompileLib.ExternalAssemblies;
+using CsDecompileLib.FindImplementations;
+using CsDecompileLib.FindUsages;
+using CsDecompileLib.GetMembers;
+using CsDecompileLib.GetSource;
+using CsDecompileLib.GotoDefinition;
+using CsDecompileLib.IlSpy;
+using CsDecompileLib.Roslyn;
 
 namespace StdIoHost;
 

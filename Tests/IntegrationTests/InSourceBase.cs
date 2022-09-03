@@ -1,7 +1,7 @@
 ﻿using NUnit.Framework;
-using TryOmnisharpExtension;
-using TryOmnisharpExtension.GotoDefinition;
-using TryOmnisharpExtension.Roslyn;
+using CsDecompileLib;
+using CsDecompileLib.GotoDefinition;
+using CsDecompileLib.Roslyn;
 
 namespace IntegrationTests;
 

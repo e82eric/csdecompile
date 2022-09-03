@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
-using TryOmnisharpExtension;
-using TryOmnisharpExtension.GetSource;
+using CsDecompileLib;
+using CsDecompileLib.GetSource;
 
 namespace IntegrationTests;
 

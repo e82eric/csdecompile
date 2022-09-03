@@ -303,9 +303,9 @@
       <Analyzer Include="..\packages\Microsoft.CodeAnalysis.Analyzers.3.3.3\analyzers\dotnet\cs\Microsoft.CodeAnalysis.CSharp.Analyzers.dll" />
     </ItemGroup>
     <ItemGroup>
-      <ProjectReference Include="..\TryOmnisharpExtension\TryOmnisharpExtension.csproj">
+      <ProjectReference Include="..\CsDecompileLib\CsDecompileLib.csproj">
         <Project>{df3534c7-4df6-40aa-8d75-1d62d7619f84}</Project>
-        <Name>TryOmnisharpExtension</Name>
+        <Name>CsDecompileLib</Name>
       </ProjectReference>
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -11,8 +11,8 @@ public sealed class CleanTask : FrostingTask<BuildContext>
         context.CleanDirectory($"../AssembliesToTestAgainst/LibraryThatJustReferencesFramework/obj/{context.TestSolutionConfiguration}");
         context.CleanDirectory($"../AssembliesToTestAgainst/LibraryThatReferencesLibrary/bin/{context.TestSolutionConfiguration}");
         context.CleanDirectory($"../AssembliesToTestAgainst/LibraryThatReferencesLibrary/obj/{context.TestSolutionConfiguration}");
-        context.CleanDirectory($"../TryOmnisharpExtension/bin/{context.MsBuildConfiguration}");
-        context.CleanDirectory($"../TryOmnisharpExtension/obj/{context.MsBuildConfiguration}");
+        context.CleanDirectory($"../CsDecompileLib/bin/{context.MsBuildConfiguration}");
+        context.CleanDirectory($"../CsDecompileLib/obj/{context.MsBuildConfiguration}");
         context.CleanDirectory($"../StdIoHost/bin/{context.MsBuildConfiguration}");
         context.CleanDirectory($"../StdIoHost/obj/{context.MsBuildConfiguration}");
         context.CleanDirectory($"../Tests/IntegrationTests/bin/{context.MsBuildConfiguration}");

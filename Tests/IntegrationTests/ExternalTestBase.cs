@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
 using NUnit.Framework;
-using TryOmnisharpExtension;
-using TryOmnisharpExtension.GotoDefinition;
+using CsDecompileLib;
+using CsDecompileLib.GotoDefinition;
 
 namespace IntegrationTests;
 

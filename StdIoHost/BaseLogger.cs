@@ -1,6 +1,6 @@
 ﻿using System;
 using Microsoft.Extensions.Logging;
-using TryOmnisharpExtension;
+using CsDecompileLib;
 
 namespace StdIoHost;
 
