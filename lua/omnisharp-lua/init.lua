@@ -184,13 +184,6 @@ local on_output = function(err, data)
 				if json.Body.LogLevel == 'Error' then
 					log.Error(data)
 				end
-				-- if string.sub(json.Body.Message, 0, string.len("Queue project update")) == "Queue project update" then
-				-- 	-- M._state.NumberOfProjects = M._state.NumberOfProjects + 1
-				-- elseif string.sub(json.Body.Message, 0, string.len("Successfully loaded project file")) == "Successfully loaded project file" then
-				-- 	-- M._state.NumberOfProjectsLoaded = M._state.NumberOfProjectsLoaded + 1
-				-- elseif string.sub(json.Body.Message, 0, string.len("^Failed to load project")) == "^Failed to load project" then
-				-- 	M._state.NumberOfFailedProjects = M._state.NumberOfFailedProjects + 1
-				-- end
 			end
 		elseif mType == 'response' then
 			local commandState = M._state.OmniSharpRequests[json.Request_seq]
@@ -246,6 +239,8 @@ M.StartOmnisharpNoSolution = function ()
 	M._state.SolutionLoadingState = 'loading'
 
 	job:start()
+	M._state.SolutionName = 'Started (No Solution)'
+	M._state.SolutionLoadingState = 'done'
 
 	M._state["job"] = job
 end
