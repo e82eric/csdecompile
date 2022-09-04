@@ -316,6 +316,7 @@
         <Compile Include="IlSpy\IlSpyTypeSystemFactory.cs" />
         <Compile Include="IlSpy\IOmniSharpWorkspace.cs" />
         <Compile Include="IlSpy\MyAssemblyResolver.cs" />
+        <Compile Include="IlSpy\NoSolutionDecompileWorkspace.cs" />
         <Compile Include="IlSpy\PeFileCache.cs" />
         <Compile Include="IlSpy\SymbolHelper.cs" />
         <Compile Include="INavigationCommand.cs" />

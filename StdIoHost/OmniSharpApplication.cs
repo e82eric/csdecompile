@@ -24,7 +24,7 @@ internal static class OmniSharpApplication
     private static ILoggerFactory _loggerFactory;
     private static PeFileCache _peFileCache;
     private static IlSpyTypeSystemFactory _decompilerTypeSystemFactory;
-    private static DecompileWorkspace _decompileWorkspace;
+    private static IDecompileWorkspace _decompileWorkspace;
     private static TextReader _stdIn;
     private static SharedTextWriter _sharedTextWriter;
 
@@ -46,7 +46,8 @@ internal static class OmniSharpApplication
         _peFileCache = new PeFileCache();
         var resolverFactory = new AssemblyResolverFactory(_peFileCache);
         _decompilerTypeSystemFactory = new IlSpyTypeSystemFactory(resolverFactory, _peFileCache);
-        _decompileWorkspace = new DecompileWorkspace(_workspace, _peFileCache);
+        var decompileWorkspace = new DecompileWorkspace(_workspace, _peFileCache);
+        _decompileWorkspace = decompileWorkspace;
 
         var solutionFileInfo = new FileInfo(solutionPath);
         var projectsLoadTimer = Stopwatch.StartNew();
@@ -54,10 +55,10 @@ internal static class OmniSharpApplication
         projectsLoadTimer.Stop();
         
         var dllLoadTimer = Stopwatch.StartNew();
-        var assemblyCount = _decompileWorkspace.LoadDlls();
+        var assemblyCount = decompileWorkspace.LoadDlls();
         dllLoadTimer.Stop();
         var compilationsTimer = Stopwatch.StartNew();
-        await _decompileWorkspace.RunProjectCompilations();
+        await decompileWorkspace.RunProjectCompilations();
         compilationsTimer.Stop();
         eventEmitter.Emit("ASSEMBLIES_LOADED", new
         {
@@ -66,6 +67,27 @@ internal static class OmniSharpApplication
             DllLoadTime = dllLoadTimer.Elapsed,
             CompilationsTime = compilationsTimer.Elapsed
         });
+    }
+    
+    public static async Task InitNoSolution(TextWriter stdOut, TextReader stdIn)
+    {
+        _stdIn = stdIn;
+        _sharedTextWriter = new SharedTextWriter(stdOut);
+        _loggerFactory = LoggerFactory.Create(builder =>
+        {
+            builder
+                .AddFilter("Microsoft", LogLevel.Warning)
+                .AddFilter("System", LogLevel.Warning)
+                .AddConsole().AddStdio(_sharedTextWriter);
+        });
+
+        var eventEmitter = new StdioEventEmitter(_sharedTextWriter);
+        _workspace = GetWorkspace(eventEmitter);
+        
+        _peFileCache = new PeFileCache();
+        var resolverFactory = new AssemblyResolverFactory(_peFileCache);
+        _decompilerTypeSystemFactory = new IlSpyTypeSystemFactory(resolverFactory, _peFileCache);
+        _decompileWorkspace = new NoSolutionDecompileWorkspace(_peFileCache);
     }
 
     private static IOmniSharpWorkspace GetWorkspace(StdioEventEmitter eventEmitter)

@@ -96,20 +96,9 @@ public class RoslynFindUsagesCommand : INavigationCommand<FindImplementationsRes
     {
         var sourceText = await document.GetTextAsync(CancellationToken.None);
         var position = GetPositionFromLineAndOffset(sourceText, line -1, column);
-        var symbol = await SymbolFinder.FindSymbolAtPositionAsync(document, position, CancellationToken.None);
         var symanticModel = await document.GetSemanticModelAsync();
         var enclosingSymbol = symanticModel.GetEnclosingSymbol(position);
         return enclosingSymbol;
-
-        return symbol switch
-        {
-            INamespaceSymbol => null,
-            // Always prefer the partial implementation over the definition
-            IMethodSymbol { IsPartialDefinition: true, PartialImplementationPart: var impl } => impl,
-            // Don't return property getters/settings/initers
-            IMethodSymbol { AssociatedSymbol: IPropertySymbol } => null,
-            _ => symbol
-        };
     }
 
     private static int GetPositionFromLineAndOffset(SourceText text, int lineNumber, int offset)

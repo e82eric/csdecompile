@@ -232,6 +232,24 @@ M.StartOmnisharp = function (solutionPath)
 	M._state["job"] = job
 end
 
+M.StartOmnisharpNoSolution = function ()
+	M._state['StartSent'] = true
+	print('Starting Decompiler (No Solution)')
+	local job = Job:new({
+		command = '..:\\..\\StdIoHost\\bin\\Debug\\StdIoHost.exe',
+		args = { "--nosolution" },
+		cwd = '.',
+		on_stdout = on_output,
+		on_exit = function(j, return_val)
+		end,
+	})
+	M._state.SolutionLoadingState = 'loading'
+
+	job:start()
+
+	M._state["job"] = job
+end
+
 M._sendStdIoRequest = function(request, callback, callbackData)
 	local nextSequence = M._state.NextSequence + 1
 
