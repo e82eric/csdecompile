@@ -204,6 +204,7 @@ local on_output = function(err, data)
 end
 
 M.StartOmnisharp = function (solutionPath)
+	local pluginRootDir = vim.fn.fnamemodify(debug.getinfo(1).source:sub(2), ":h:h:h")
 	M._state['StartSent'] = true
 	print('Starting Decompiler ' .. solutionPath)
 	if solutionPath == nil then
@@ -211,7 +212,7 @@ M.StartOmnisharp = function (solutionPath)
 		-- M._state.SolutionName = vim.fn.expand('%:p:t')
 	end
 	local job = Job:new({
-		command = '..:\\..\\StdIoHost\\bin\\Debug\\StdIoHost.exe',
+		command = pluginRootDir .. '\\StdIoHost\\bin\\Debug\\StdIoHost.exe',
 		args = {  solutionPath },
 		cwd = '.',
 		on_stdout = on_output,
@@ -226,10 +227,11 @@ M.StartOmnisharp = function (solutionPath)
 end
 
 M.StartOmnisharpNoSolution = function ()
+	local pluginRootDir = vim.fn.fnamemodify(debug.getinfo(1).source:sub(2), ":h:h:h")
 	M._state['StartSent'] = true
 	print('Starting Decompiler (No Solution)')
 	local job = Job:new({
-		command = '..:\\..\\StdIoHost\\bin\\Debug\\StdIoHost.exe',
+		command = pluginRootDir .. '\\StdIoHost\\bin\\Debug\\StdIoHost.exe',
 		args = { "--nosolution" },
 		cwd = '.',
 		on_stdout = on_output,
