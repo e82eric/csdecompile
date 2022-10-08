@@ -1,8 +1,8 @@
-﻿using ICSharpCode.Decompiler.TypeSystem;
+﻿using ICSharpCode.Decompiler.CSharp.Syntax;
 
 namespace CsDecompileLib.FindImplementations;
 
 public interface IVariableCommandProvider<TCommandType>
 {
-    public (bool, TCommandType, ISymbol) GetNodeInformation(DecompiledLocationRequest request);
+    public (bool, TCommandType, AstNode) GetNodeInformation(DecompiledLocationRequest request);
 }

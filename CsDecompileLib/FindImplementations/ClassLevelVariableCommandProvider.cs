@@ -1,7 +1,6 @@
 ﻿using CsDecompileLib.IlSpy;
 using ICSharpCode.Decompiler.CSharp;
 using ICSharpCode.Decompiler.CSharp.Syntax;
-using ICSharpCode.Decompiler.TypeSystem;
 
 namespace CsDecompileLib.FindImplementations;
 
@@ -21,7 +20,7 @@ public class ClassLevelVariableCommandProvider<TCommandType> : IVariableCommandP
         _decompilerFactory = decompilerFactory;
     }
 
-    public (bool, TCommandType, ISymbol) GetNodeInformation(DecompiledLocationRequest request)
+    public (bool, TCommandType, AstNode) GetNodeInformation(DecompiledLocationRequest request)
     {
         bool found = false;
         TCommandType commandType = default;
@@ -49,8 +48,6 @@ public class ClassLevelVariableCommandProvider<TCommandType> : IVariableCommandP
             found = true;
         }
         
-        var symbolAtLocation = _symbolFinder.FindSymbolFromNode(node);
-
-        return (found, commandType, symbolAtLocation);
+        return (found, commandType, node);
     }
 }

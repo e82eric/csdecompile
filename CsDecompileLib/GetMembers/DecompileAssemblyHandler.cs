@@ -17,7 +17,7 @@ public class DecompileAssemblyHandler : HandlerBase<DecompileAssemblyRequest, De
     public override Task<ResponsePacket<DecompileGotoDefinitionResponse>> Handle(DecompileAssemblyRequest request)
     {
         var decompile = _decompilerFactory.Get(request.AssemblyFilePath);
-        var (syntaxTree, source) = decompile.DecompileWholeModule();
+        var (_, source) = decompile.DecompileWholeModule();
         var result = new DecompileGotoDefinitionResponse
         {
             Location = new DecompileAssemblyInfo

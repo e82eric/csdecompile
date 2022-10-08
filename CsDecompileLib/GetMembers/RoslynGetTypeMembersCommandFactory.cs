@@ -3,11 +3,11 @@ using System.Threading.Tasks;
 using CsDecompileLib.IlSpy;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
-using CsDecompileLib.FindImplementations;
 
 namespace CsDecompileLib.GetMembers;
 
 public class RoslynGetTypeMembersCommandFactory
+    : INavigationCommandFactoryAsync<INavigationCommand<FindImplementationsResponse>, DecompiledLocationRequest>
 {
     private readonly IOmniSharpWorkspace _workspace;
 
@@ -16,7 +16,7 @@ public class RoslynGetTypeMembersCommandFactory
         _workspace = workspace;
     }
     
-    public async Task<INavigationCommand<FindImplementationsResponse>> Get(LocationRequest request)
+    public async Task<INavigationCommand<FindImplementationsResponse>> Get(DecompiledLocationRequest request)
     {
         var document = _workspace.GetDocument(request.FileName);
         var symbol = await GetDefinitionSymbol(document, request.Line, request.Column);

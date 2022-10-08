@@ -1,56 +1,53 @@
 ﻿using CsDecompileLib.FindImplementations;
+using CsDecompileLib.IlSpy;
 using ICSharpCode.Decompiler.TypeSystem;
 
 namespace CsDecompileLib
 {
-    public class IlSpyCommandFactory<TCommandType>
+    public class IlSpyCommandFactory<TCommandType> : INavigationCommandFactory<TCommandType>
     {
         private readonly IVariableCommandProvider<TCommandType> _variableCommandProvider;
-        private readonly ICommandFactory<TCommandType> _commandCommandFactory;
+        private readonly ICommandFactory<TCommandType> _commandFactory;
+        private readonly IlSpySymbolFinder _symbolFinder;
 
         public IlSpyCommandFactory(
             IVariableCommandProvider<TCommandType> variableCommandProvider,
-            ICommandFactory<TCommandType> commandCommandFactory)
+            ICommandFactory<TCommandType> commandFactory,
+            IlSpySymbolFinder symbolFinder)
         {
             _variableCommandProvider = variableCommandProvider;
-            _commandCommandFactory = commandCommandFactory;
+            _commandFactory = commandFactory;
+            _symbolFinder = symbolFinder;
         }
         
         public TCommandType Find(DecompiledLocationRequest request)
         {
             TCommandType result = default;
-            var (isVariable, variableCommand, symbolAtLocation) = _variableCommandProvider.GetNodeInformation(request);
+            var (isVariable, variableCommand, node) = _variableCommandProvider.GetNodeInformation(request);
             if (isVariable)
             {
                 result = variableCommand;
             }
             else
             {
-                if (symbolAtLocation is ITypeDefinition entity)
+                var symbolAtLocation = _symbolFinder.FindSymbolFromNode(node);
+                switch (symbolAtLocation)
                 {
-                    return _commandCommandFactory.GetForType(
-                        entity,
-                        request.AssemblyFilePath);
-                }
-                    
-                if (symbolAtLocation is IProperty property)
-                {
-                    result = _commandCommandFactory.GetForProperty(property, request.AssemblyFilePath);
-                }
-                    
-                if (symbolAtLocation is IEvent eventSymbol)
-                {
-                    result = _commandCommandFactory.GetForEvent(eventSymbol, request.AssemblyFilePath);
-                }
-
-                if(symbolAtLocation is IMethod method)
-                {
-                    result = _commandCommandFactory.GetForMethod(method, request.AssemblyFilePath);
-                }
-                    
-                if(symbolAtLocation is IField field)
-                {
-                    result = _commandCommandFactory.GetForField(field, request.AssemblyFilePath);
+                    case ITypeDefinition entity:
+                        result = _commandFactory.GetForType(entity, request.AssemblyFilePath);
+                        break;
+                    case IProperty property:
+                        result = _commandFactory.GetForProperty(property, request.AssemblyFilePath);
+                        break;
+                    case IEvent eventSymbol:
+                        result = _commandFactory.GetForEvent(eventSymbol, request.AssemblyFilePath);
+                        break;
+                    case IMethod method:
+                        result = _commandFactory.GetForMethod(method, request.AssemblyFilePath);
+                        break;
+                    case IField field:
+                        result = _commandFactory.GetForField(field, request.AssemblyFilePath);
+                        break;
                 }
             }
 

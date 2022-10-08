@@ -13,7 +13,9 @@ using TypeKind = ICSharpCode.Decompiler.TypeSystem.TypeKind;
 
 namespace CsDecompileLib;
 
-public class EverywhereSymbolInfoFinder<TCommandResponseType> where TCommandResponseType : FindImplementationsResponse, new()
+public class EverywhereSymbolInfoFinder<TCommandResponseType>
+    : INavigationCommandFactoryAsync<INavigationCommand<TCommandResponseType>, DecompiledLocationRequest>
+    where TCommandResponseType :FindImplementationsResponse, new()
 {
     private readonly IOmniSharpWorkspace _workspace;
     private readonly IlSpySymbolFinder _ilSpySymbolFinder;
@@ -29,7 +31,7 @@ public class EverywhereSymbolInfoFinder<TCommandResponseType> where TCommandResp
         _ilSpySymbolFinder = ilSpySymbolFinder;
     }
         
-    public async Task<INavigationCommand<TCommandResponseType>> Get(LocationRequest request)
+    public async Task<INavigationCommand<TCommandResponseType>> Get(DecompiledLocationRequest request)
     {
         var document = _workspace.GetDocument(request.FileName);
         if (document == null)
@@ -151,4 +153,9 @@ public class EverywhereSymbolInfoFinder<TCommandResponseType> where TCommandResp
 
     public static int GetPositionFromLineAndOffset(SourceText text, int lineNumber, int offset)
         => text.Lines[lineNumber].Start + offset;
+
+    public TCommandResponseType Find(DecompiledLocationRequest request)
+    {
+        throw new NotImplementedException();
+    }
 }

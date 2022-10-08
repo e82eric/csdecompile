@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 
-namespace CsDecompileLib.GotoDefinition;
+namespace CsDecompileLib;
 
 class SymbolNotFoundAtLocationCommand<T> : INavigationCommand<T>
 {

@@ -1,5 +1,4 @@
 using System.Threading.Tasks;
-using CsDecompileLib.FindImplementations;
 
 namespace CsDecompileLib.GetMembers;
 

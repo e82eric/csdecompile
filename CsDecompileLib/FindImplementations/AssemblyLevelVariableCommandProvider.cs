@@ -1,6 +1,7 @@
 ﻿using CsDecompileLib.GotoDefinition;
 using CsDecompileLib.IlSpy;
 using ICSharpCode.Decompiler.CSharp;
+using ICSharpCode.Decompiler.CSharp.Syntax;
 using ICSharpCode.Decompiler.Semantics;
 using ICSharpCode.Decompiler.TypeSystem;
 
@@ -25,7 +26,7 @@ public class AssemblyLevelVariableCommandProvider<TCommandType> : IVariableComma
         _commandCommandFactory = commandCommandFactory;
     }
 
-    public (bool, TCommandType, ISymbol) GetNodeInformation(DecompiledLocationRequest request)
+    public (bool, TCommandType, AstNode) GetNodeInformation(DecompiledLocationRequest request)
     {
         var decompiler = _decompilerFactory.Get(request.AssemblyFilePath);
         var (syntaxTree, _) = decompiler.DecompileWholeModule();
@@ -53,7 +54,6 @@ public class AssemblyLevelVariableCommandProvider<TCommandType> : IVariableComma
             found = true;
         }
 
-        var symbolAtLocation = _symbolFinder.FindSymbolFromNode(node);
-        return (found, commandType, symbolAtLocation);
+        return (found, commandType, node);
     }
 }

@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using CsDecompileLib.FindImplementations;
 
 namespace CsDecompileLib.GetMembers;
 
@@ -23,16 +22,5 @@ public class GetTypesHandler : HandlerBase<GetTypesRequest, FindImplementationsR
 
         var result = ResponsePacket.Ok(body);
         return Task.FromResult(result);
-    }
-
-    public FindImplementationsResponse HandleGetAssemblyTypes(GetAssemblyTypesRequest request)
-    {
-        var types = _typesRepository.GetAssemblyType(request.AssemblyFilePath);
-        var response = new FindImplementationsResponse();
-        foreach (var type in types)
-        {
-            response.Implementations.Add(type);
-        }
-        return response;
     }
 }

@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 using ICSharpCode.Decompiler.TypeSystem;
-using Microsoft.Extensions.Logging;
 using StdIoHost.ProjectSystemExtraction;
 using StdIoHost.SimpleProjectSystem;
 using CsDecompileLib;
@@ -97,7 +96,7 @@ internal static class OmniSharpApplication
         return result;
     }
 
-    public static GetSymbolInfoHandler CreateGetSymbolInfoHandler()
+    public static NavigationHandlerBase<DecompiledLocationRequest, SymbolInfo> CreateGetSymbolInfoHandler()
     {
         var decompilerFactory = new DecompilerFactory(_decompilerTypeSystemFactory);
         var ilSpySymbolFinder = new IlSpySymbolFinder(_decompilerTypeSystemFactory);
@@ -106,19 +105,33 @@ internal static class OmniSharpApplication
             _workspace,
             ilSpySymbolFinder,
             getSymbolInfoCommandFactory);
-        var assemblyLevelVariableCommandProvider =
+        var classLevelVariableCommandProvider =
             new ClassLevelVariableCommandProvider<INavigationCommand<SymbolInfo>>(
                 ilSpySymbolFinder,
                 getSymbolInfoCommandFactory,
                 decompilerFactory);
-        var ilSpySymbolInfoFinder = new IlSpyCommandFactory<INavigationCommand<SymbolInfo>>(
+        var assemblyLevelVariableCommandProvider =
+            new AssemblyLevelVariableCommandProvider<INavigationCommand<SymbolInfo>>(
+                decompilerFactory,
+                new MemberInTypeFinder(),
+                ilSpySymbolFinder,
+                getSymbolInfoCommandFactory);
+        var classLevelCommandFactory = new IlSpyCommandFactory<INavigationCommand<SymbolInfo>>(
+            classLevelVariableCommandProvider,
+            getSymbolInfoCommandFactory,
+            ilSpySymbolFinder);
+        var assemblyLevelCommandFactory = new IlSpyCommandFactory<INavigationCommand<SymbolInfo>>(
             assemblyLevelVariableCommandProvider,
-            getSymbolInfoCommandFactory);
-        var result = new GetSymbolInfoHandler(roslynLocationToCommandFactory, ilSpySymbolInfoFinder);
+            getSymbolInfoCommandFactory,
+            ilSpySymbolFinder);
+        var result = new NavigationHandlerBase<DecompiledLocationRequest, SymbolInfo>(
+            roslynLocationToCommandFactory,
+            classLevelCommandFactory,
+            assemblyLevelCommandFactory);
         return result;
     }
 
-    public static DecompileGotoDefinitionHandler CreateGoToDefinitionHandler()
+    public static NavigationHandlerBase<DecompiledLocationRequest, DecompileGotoDefinitionResponse> CreateGoToDefinitionHandler()
     {
         var decompilerFactory = new DecompilerFactory(_decompilerTypeSystemFactory);
         var ilSpySymbolFinder = new IlSpySymbolFinder(_decompilerTypeSystemFactory);
@@ -150,11 +163,14 @@ internal static class OmniSharpApplication
             decompilerFactory);
         var classLevelCommandFactory = new IlSpyCommandFactory<INavigationCommand<DecompileGotoDefinitionResponse>>(
             classLevelVariableCommandProvider,
-            gotoDefinitionCommandFactory);
+            gotoDefinitionCommandFactory,
+            ilSpySymbolFinder);
         var assemblyLevelCommandFactory = new IlSpyCommandFactory<INavigationCommand<DecompileGotoDefinitionResponse>>(
             assemblyLevelVariableCommandProvider,
-            gotoDefinitionCommandFactory);
-        var result = new DecompileGotoDefinitionHandler(
+            gotoDefinitionCommandFactory,
+            ilSpySymbolFinder);
+        
+        var result = new NavigationHandlerBase<DecompiledLocationRequest, DecompileGotoDefinitionResponse>(
             roslynSymbolInfoFinder,
             classLevelCommandFactory,
             assemblyLevelCommandFactory);
@@ -170,7 +186,7 @@ internal static class OmniSharpApplication
         return result;
     }
 
-    public static DecompileFindImplementationsHandler CreateFindImplementationsHandler()
+    public static NavigationHandlerBase<DecompiledLocationRequest, FindImplementationsResponse> CreateFindImplementationsHandler()
     {
         var assemblyResolverFactory = new AssemblyResolverFactory(_peFileCache);
         var decompilerFactory = new DecompilerFactory(_decompilerTypeSystemFactory);
@@ -205,19 +221,21 @@ internal static class OmniSharpApplication
         var everyWhereFindImplementationsCommandFactory = new EveryWhereFindImplementationsCommandFactory<FindImplementationsResponse>(
             ilSpyFindImplementationsCommandFactoryTemp,
             _decompileWorkspace);
-        var classLevelFindImplementationsCommandFactory = new GenericIlSpyFindImplementationsCommandFactory<FindImplementationsResponse>(
+        var classLevelFindImplementationsCommandFactory = new IlSpyCommandFactory<INavigationCommand<FindImplementationsResponse>>(
             classLevelVariableCommandProvider,
-            everyWhereFindImplementationsCommandFactory);
-        var assemblyLevelFindImplementationsCommandFactory = new GenericIlSpyFindImplementationsCommandFactory<FindImplementationsResponse>(
+            everyWhereFindImplementationsCommandFactory,
+            ilSpySymbolFinder);
+        var assemblyLevelFindImplementationsCommandFactory = new IlSpyCommandFactory<INavigationCommand<FindImplementationsResponse>>(
             assemblyLevelVariableCommandProvider,
-            everyWhereFindImplementationsCommandFactory);
-        var result = new DecompileFindImplementationsHandler(
+            everyWhereFindImplementationsCommandFactory,
+            ilSpySymbolFinder);
+        var result = new NavigationHandlerBase<DecompiledLocationRequest, FindImplementationsResponse>(
             everywhereSymbolInfoFinder2,
             classLevelFindImplementationsCommandFactory,
             assemblyLevelFindImplementationsCommandFactory);
         return result;
     }
-    public static DecompileFindUsagesHandler CreateFindUsagesHandler()
+    public static NavigationHandlerBase<DecompiledLocationRequest, FindImplementationsResponse> CreateFindUsagesHandler()
     {
         var assemblyResolverFactory = new AssemblyResolverFactory(_peFileCache);
         var decompilerFactory = new DecompilerFactory(_decompilerTypeSystemFactory);
@@ -279,19 +297,21 @@ internal static class OmniSharpApplication
         var everyWhereFindImplementationsCommandFactory = new EveryWhereFindImplementationsCommandFactory<FindImplementationsResponse>(
             findUsagesCommandFactory,
             _decompileWorkspace);
-        var classLevelFindImplementationsCommandFactory = new GenericIlSpyFindImplementationsCommandFactory<FindImplementationsResponse>(
+        var classLevelFindImplementationsCommandFactory = new IlSpyCommandFactory<INavigationCommand<FindImplementationsResponse>>(
             classLevelVariableCommandProvider,
-            everyWhereFindImplementationsCommandFactory);
+            everyWhereFindImplementationsCommandFactory,
+            ilSpySymbolFinder);
         var memberInTypeFinder = new MemberInTypeFinder();
         var assemblyLevelVariableCommandProvider = new AssemblyLevelVariableCommandProvider<INavigationCommand<FindImplementationsResponse>>(
             decompilerFactory,
             memberInTypeFinder,
             ilSpySymbolFinder,
             findUsagesCommandFactory);
-        var assemblyLevelFindImplementationsCommandFactory = new GenericIlSpyFindImplementationsCommandFactory<FindImplementationsResponse>(
+        var assemblyLevelFindImplementationsCommandFactory = new IlSpyCommandFactory<INavigationCommand<FindImplementationsResponse>>(
             assemblyLevelVariableCommandProvider,
-            everyWhereFindImplementationsCommandFactory);
-        var result = new DecompileFindUsagesHandler(
+            everyWhereFindImplementationsCommandFactory,
+            ilSpySymbolFinder);
+        var result = new NavigationHandlerBase<DecompiledLocationRequest, FindImplementationsResponse>(
             everywhereSymbolInfoFinder2,
             classLevelFindImplementationsCommandFactory,
             assemblyLevelFindImplementationsCommandFactory);
@@ -312,15 +332,25 @@ internal static class OmniSharpApplication
         return allTypesRepository;
     }
 
-    public static GetTypeMembersHandler CreateGetTypeMembersHandler()
+    public static NavigationHandlerBase<DecompiledLocationRequest, FindImplementationsResponse> CreateGetTypeMembersHandler()
     {
         var decompilerFactory = new DecompilerFactory(_decompilerTypeSystemFactory);
         var ilSpySymbolFinder = new IlSpySymbolFinder(_decompilerTypeSystemFactory);
         var typeMembersFinder = new TypeMembersFinder();
         var ilSpyTypeMembersFinder = new IlSpyTypeMembersFinder(typeMembersFinder, decompilerFactory);
-        var ilSpyGetMembersCommandFactory = new IlSpyGetMembersCommandFactory(ilSpySymbolFinder, ilSpyTypeMembersFinder);
+        var ilSpyGetMembersCommandFactory = new ClassLevelGetMembersCommandFactory(
+            ilSpySymbolFinder,
+            ilSpyTypeMembersFinder,
+            decompilerFactory);
+        var assemblyLevelGetMembersCommandFactory = new AssemblyLevelGetMembersCommandFactory(
+            ilSpySymbolFinder,
+            ilSpyTypeMembersFinder,
+            decompilerFactory);
         var roslynGetTypeMembersCommandFactory = new RoslynGetTypeMembersCommandFactory(_workspace);
-        var result = new GetTypeMembersHandler(ilSpyGetMembersCommandFactory, roslynGetTypeMembersCommandFactory);
+        var result = new NavigationHandlerBase<DecompiledLocationRequest, FindImplementationsResponse>(
+            roslynGetTypeMembersCommandFactory,
+            ilSpyGetMembersCommandFactory,
+            assemblyLevelGetMembersCommandFactory);
         return result;
     }
 

@@ -223,7 +223,6 @@
         <Compile Include="FindImplementationsResponse.cs" />
         <Compile Include="FindImplementations\AssemblyLevelVariableCommandProvider.cs" />
         <Compile Include="FindImplementations\ClassLevelVariableCommandProvider.cs" />
-        <Compile Include="FindImplementations\DecompileFindImplementationsHandler.cs" />
         <Compile Include="FindImplementations\EveryWhereFindImplementationsCommandFactory.cs" />
         <Compile Include="FindImplementations\IVariableCommandProvider.cs" />
         <Compile Include="FindImplementations\RoslynFindImplementationsCommandFactory.cs" />
@@ -232,10 +231,8 @@
         <Compile Include="FindImplementations\TypeUsedAsBaseTypeFinder.cs" />
         <Compile Include="FindImplementations\EverywhereImplementationsCommand.cs" />
         <Compile Include="FindImplementations\IlSpyFindImplementationsCommandFactory.cs" />
-        <Compile Include="FindImplementations\GenericIlSpyFindImplementationsCommandFactory.cs" />
         <Compile Include="FindImplementations\TypesThatUseTypeAsBaseTypeMetadataScanner.cs" />
         <Compile Include="FindImplementations\RosylynFindImplementationsCommand.cs" />
-        <Compile Include="FindUsages\DecompileFindUsagesHandler.cs" />
         <Compile Include="FindUsages\EnumMemberParentUsedByTypeIlScanner.cs" />
         <Compile Include="FindUsages\EventUsedByMetadataScanner.cs" />
         <Compile Include="FindUsages\ExternalAssembliesFindUsagesCommandFactory.cs" />
@@ -259,6 +256,7 @@
         <Compile Include="FindUsages\VariableInMethodBodyFinder.cs" />
         <Compile Include="GetMembers\AllTypesRepository.cs" />
         <Compile Include="GetMembers\Assembly.cs" />
+        <Compile Include="GetMembers\AssemblyLevelGetMembersCommandFactory.cs" />
         <Compile Include="GetMembers\DecompileAssemblyHandler.cs" />
         <Compile Include="GetMembers\DecompileAssemblyRequest.cs" />
         <Compile Include="GetMembers\DecompileAssemblyResponse.cs" />
@@ -268,10 +266,9 @@
         <Compile Include="GetMembers\GetAssembliesResponse.cs" />
         <Compile Include="GetMembers\GetAssemblyTypesHandler.cs" />
         <Compile Include="GetMembers\GetAssemblyTypesRequest.cs" />
-        <Compile Include="GetMembers\GetTypeMembersHandler.cs" />
         <Compile Include="GetMembers\GetTypesHandler.cs" />
         <Compile Include="GetMembers\GetTypesRequest.cs" />
-        <Compile Include="GetMembers\IlSpyGetMembersCommandFactory.cs" />
+        <Compile Include="GetMembers\ClassLevelGetMembersCommandFactory.cs" />
         <Compile Include="GetMembers\IlSpyTypeMembersCommand.cs" />
         <Compile Include="GetMembers\IlSpyTypeMembersFinder.cs" />
         <Compile Include="GetMembers\RoslynGetTypeMembersCommand.cs" />
@@ -281,11 +278,9 @@
         <Compile Include="GetSource\DecompiledSourceRequest.cs" />
         <Compile Include="GetSource\DecompiledSourceResponse.cs" />
         <Compile Include="GetSource\IlSpyDecompiledSourceCommandFactory.cs" />
-        <Compile Include="GotoDefinition\DecompileGotoDefinitionHandler.cs" />
         <Compile Include="GotoDefinition\DecompileGotoDefinitionResponse.cs" />
         <Compile Include="GotoDefinition\FieldInTypeFinder.cs" />
         <Compile Include="GotoDefinition\GetSymbolInfoCommandFactory.cs" />
-        <Compile Include="GotoDefinition\GetSymbolInfoHandler.cs" />
         <Compile Include="GotoDefinition\GotoDefinitionCommandFactory.cs" />
         <Compile Include="GotoDefinition\GoToDefintionCommand.cs" />
         <Compile Include="GotoDefinition\GotoVariableDefintiionCommand.cs" />
@@ -330,7 +325,10 @@
         <Compile Include="IlSpy\SymbolHelper.cs" />
         <Compile Include="INavigationCommand.cs" />
         <Compile Include="DecompiledLocationRequest.cs" />
+        <Compile Include="INavigationCommandFactory.cs" />
+        <Compile Include="INavigationCommandFactoryAsync.cs" />
         <Compile Include="LocationRequest.cs" />
+        <Compile Include="NavigationHandlerBase.cs" />
         <Compile Include="NoOpCommand.cs" />
         <Compile Include="Packet.cs" />
         <Compile Include="RequestPacket.cs" />

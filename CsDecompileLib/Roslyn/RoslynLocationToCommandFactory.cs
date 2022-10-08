@@ -10,6 +10,7 @@ using Microsoft.CodeAnalysis.Text;
 namespace CsDecompileLib.Roslyn
 {
     public class RoslynLocationToCommandFactory<TCommandType>
+        : INavigationCommandFactoryAsync<TCommandType, DecompiledLocationRequest>
     {
         private readonly IOmniSharpWorkspace _workspace;
         private readonly IlSpySymbolFinder _ilSpySymbolFinder;
@@ -25,7 +26,7 @@ namespace CsDecompileLib.Roslyn
             _ilSpySymbolFinder = ilSpySymbolFinder;
         }
 
-        public async Task<TCommandType> Get(LocationRequest request)
+        public async Task<TCommandType> Get(DecompiledLocationRequest request)
         {
             var document = _workspace.GetDocument(request.FileName);
             if (document == null)
