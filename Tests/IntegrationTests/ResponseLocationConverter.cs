@@ -8,12 +8,12 @@ namespace IntegrationTests;
 
 public class ResponseLocationConverter : CustomCreationConverter<ResponseLocation>
 {
-    private ResponseLocationType _currentObjectType;
+    private LocationType _currentObjectType;
 
     public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
     {
         var jobj = JObject.ReadFrom(reader);
-        _currentObjectType = jobj["Type"].ToObject<ResponseLocationType>();
+        _currentObjectType = jobj["Type"].ToObject<LocationType>();
         return base.ReadJson(jobj.CreateReader(), objectType, existingValue, serializer);
     }
 
@@ -21,9 +21,9 @@ public class ResponseLocationConverter : CustomCreationConverter<ResponseLocatio
     {
         switch (_currentObjectType)
         {
-            case ResponseLocationType.Decompiled:
+            case LocationType.Decompiled:
                 return new DecompileInfo();
-            case ResponseLocationType.SourceCode:
+            case LocationType.SourceCode:
                 return new SourceFileInfo();
             default:
                 return null;

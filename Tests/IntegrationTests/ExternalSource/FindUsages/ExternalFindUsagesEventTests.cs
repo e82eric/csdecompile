@@ -18,13 +18,13 @@ public class ExternalFindUsagesEventTests : ExternalFindUsagesTestBase
             
             expected: new []
             {
-                (ResponseLocationType.SourceCode,
+                (LocationType.SourceCode,
                     "new ExternalFindUsagesEventTarget().ExternalBasicEvent += OnExternalBasicEvent;",
                     "ExternalFindUsagesEventCaller"),
-                (ResponseLocationType.Decompiled,
+                (LocationType.Decompiled,
                     "externalFindUsagesEventTarget.ExternalBasicEvent += ObjOnExternalBasicEvent;",
                     "ExternalFindUsagesEventCaller"),
-                (ResponseLocationType.Decompiled,
+                (LocationType.Decompiled,
                     "externalFindUsagesEventTarget.ExternalBasicEvent -= ObjOnExternalBasicEvent;",
                     "ExternalFindUsagesEventCaller")
             });

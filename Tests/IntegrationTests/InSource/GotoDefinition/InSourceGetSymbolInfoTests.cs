@@ -15,7 +15,7 @@ public class InSourceGetSymbolInfoTests : InSourceGetSymbolInfoBase
             filePath: FilePath,
             column:13,
             line:7,
-            expected:"LibraryThatReferencesLibrary.InSourceGetSymbolInfoTarget");
+            expected:"LibraryThatReferencesLibrary.InSourceGetSymbolInfoTarget()");
     }
     
     [Test]

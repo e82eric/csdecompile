@@ -22,7 +22,7 @@ public class ExternalTestBase : TestBase
             {
                 FileName = filePath,
                 Column = column,
-                IsDecompiled = false,
+                Type = LocationType.SourceCode,
                 Line = line
             }
         };
@@ -31,7 +31,7 @@ public class ExternalTestBase : TestBase
             .ExecuteCommand<DecompiledLocationRequest, DecompileGotoDefinitionResponse>(request);
 
         Assert.True(targetClasResponse.Success);
-        Assert.AreEqual(targetClasResponse.Body.Location.Type, ResponseLocationType.Decompiled);
+        Assert.AreEqual(targetClasResponse.Body.Location.Type, LocationType.Decompiled);
         var decompileInfo = (DecompileInfo)targetClasResponse.Body.Location;
 
         var targetLines = GetLines(targetClasResponse.Body.SourceText);
@@ -45,7 +45,7 @@ public class ExternalTestBase : TestBase
             AssemblyFilePath = decompileInfo.AssemblyFilePath,
             ContainingTypeFullName = decompileInfo.ContainingTypeFullName,
             Column = newColumn + 1,
-            IsDecompiled = true,
+            Type = LocationType.Decompiled,
             Line = newLine + 1
         };
         return decompiledLocationRequest;

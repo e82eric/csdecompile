@@ -18,7 +18,7 @@ public class InSourceFindUsagesFileDoesntExistTests : InSourceBase
             {
                 FileName = FilePath,
                 Column = 58,
-                IsDecompiled = false,
+                Type = LocationType.SourceCode,
                 Line = 3
             }
         };

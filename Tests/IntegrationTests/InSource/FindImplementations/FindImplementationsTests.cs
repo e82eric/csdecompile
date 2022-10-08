@@ -39,7 +39,7 @@ public class FindImplementationsTests
             {
                 FileName = filePath,
                 Column = column,
-                IsDecompiled = false,
+                Type = LocationType.SourceCode,
                 Line = line
             }
         };
@@ -57,7 +57,7 @@ public class FindImplementationsTests
 
         foreach (var implementation in response.Body.Implementations)
         {
-            Assert.AreEqual(implementation.Type, ResponseLocationType.SourceCode);
+            Assert.AreEqual(implementation.Type, LocationType.SourceCode);
 
             var location = (SourceFileInfo)implementation;
 

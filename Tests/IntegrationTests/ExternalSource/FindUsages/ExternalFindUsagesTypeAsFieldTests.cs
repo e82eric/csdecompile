@@ -17,16 +17,16 @@ public class ExternalFindUsagesTypeAsFieldTests : ExternalFindUsagesTestBase
             line: 9,
             expected: new []
             {
-                (ResponseLocationType.SourceCode,
+                (LocationType.SourceCode,
                     "ExternalFindUsagesTypeAsFieldTarget a = null;",
                     "ExternalFindUsagesTypeAsFieldCaller"),
-                (ResponseLocationType.Decompiled,
+                (LocationType.Decompiled,
                     "_field = new ExternalFindUsagesTypeAsFieldTarget();",
                     "ExternalFindUsagesTypeAsFieldUser"),
-                (ResponseLocationType.Decompiled,
+                (LocationType.Decompiled,
                     "ExternalFindUsagesTypeAsFieldTarget field = _field;",
                     "ExternalFindUsagesTypeAsFieldUser"),
-                (ResponseLocationType.Decompiled,
+                (LocationType.Decompiled,
                     "private ExternalFindUsagesTypeAsFieldTarget _field;",
                     "ExternalFindUsagesTypeAsFieldUser"),
             });

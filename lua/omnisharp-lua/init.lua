@@ -268,18 +268,26 @@ M._decompileRequest = function(url, callback, callbackData)
 	local line = cursorPos[1]
 	local column = cursorPos[2] + 1
 	local decompiled = vim.b.IsDecompiled == true
+	local decompiledAssembly = vim.b.IsDecompiledAssembly == true
 	local assemblyFilePath = vim.b.AssemblyFilePath
+	local assemblyName = vim.b.AssemblyName
 	local fileName = vim.fn.expand('%:p')
+
+	local locationType = vim.b.Type
+	if locationType == nil then
+		locationType = 1
+	end
 
 	local request = {
 		Command = url,
 		Arguments = {
 			FileName = fileName,
 			AssemblyFilePath = vim.b.AssemblyFilePath,
+			AssemblyName = vim.b.AssemblyName,
+			Type = locationType,
 			ContainingTypeFullName = vim.b.ContainingTypeFullName,
 			Column = column,
 			Line = line,
-			IsDecompiled = decompiled,
 		},
 	}
 	M._sendStdIoRequest(request, callback, callbackData)
@@ -309,11 +317,25 @@ M.StartGetAssemblies = function()
 	M._sendStdIoRequest(request, M.HandleGetAssemblies);
 end
 
-M.HandleGetAssemblies = function(response)
-	M._openAssembliesTelescope(response.Body.Assemblies)
+M.StartGetAssembliesForDecompile = function()
+	local request = {
+		Command = "/getassemblies",
+		Arguments = {
+			Load = true,
+		}
+	}
+	M._sendStdIoRequest(request, M.HandleGetAssembliesForDecompile);
 end
 
-M.StartGetAssemblyTypes = function(filePath)
+M.HandleGetAssemblies = function(response)
+	M._openAssembliesTelescope(response.Body.Assemblies, M.StartGetAssemblyTypes)
+end
+
+M.HandleGetAssembliesForDecompile = function(response)
+	M._openAssembliesTelescope(response.Body.Assemblies, M.StartDecompileAssembly)
+end
+
+M.StartGetAssemblyTypes = function(filePath, assemblyName)
 	local request = {
 		Command = "/getassemblytypes",
 		Arguments = {
@@ -323,7 +345,18 @@ M.StartGetAssemblyTypes = function(filePath)
 	M._sendStdIoRequest(request, M.HandleGetAllTypes)
 end
 
-M._openAssembliesTelescope = function(data)
+M.StartDecompileAssembly = function(filePath, assemblyName)
+	local request = {
+		Command = "/decompileassembly",
+		Arguments = {
+			AssemblyFilePath = filePath,
+			AssemblyName = assemblyName
+		}
+	}
+	M._sendStdIoRequest(request, M.HandleDecompileGotoDefinitionResponse)
+end
+
+M._openAssembliesTelescope = function(data, resultHandler)
 	local widths = {
 		FullName = 0,
 		TargetFrameworkId = 0,
@@ -372,7 +405,7 @@ M._openAssembliesTelescope = function(data)
 			actions.select_default:replace(function()
 				local selection = action_state.get_selected_entry()
 				actions.close(prompt_bufnr)
-				M.StartGetAssemblyTypes(selection.value.FilePath)
+				resultHandler(selection.value.FilePath, selection.value.FullName)
 			end)
 			return true
 		end,
@@ -495,12 +528,19 @@ M.HandleDecompileGotoDefinitionResponse = function(response)
 			vim.api.nvim_win_set_cursor(0, { line, column })
 		end))
 	else
-		local fileText = body.SourceText
 		if response.Request_seq == M._state.CurrentSeq then
 			local timer = vim.loop.new_timer()
 			timer:start(100, 0, vim.schedule_wrap(function()
-				local bufnr = vim.uri_to_bufnr("c:\\TEMP\\DECOMPILED_" .. location.ContainingTypeFullName .. ".cs")
+				local fileText = body.SourceText
+				if location.Type == 0 then
+					decompileFileName = location.ContainingTypeFullName .. '.cs'
+				elseif location.Type == 2 then
+					decompileFileName = location.AssemblyName .. '.cs'
+				end
+				local bufnr = vim.uri_to_bufnr("c:\\TEMP\\DECOMPILED_" .. decompileFileName)
 				local lines = {}
+				local decompileFileName = ''
+
 				vim.list_extend(lines, vim.split(fileText, "\r\n"))
 				vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, lines)
 				vim.api.nvim_win_set_buf(0, bufnr)
@@ -509,6 +549,7 @@ M.HandleDecompileGotoDefinitionResponse = function(response)
 				-- vim.api.nvim_buf_set_option(bufnr, "filetype", "cs")
 				vim.api.nvim_buf_set_option(bufnr, "buftype", "nofile")
 				vim.api.nvim_buf_set_option(bufnr, "buflisted", true)
+				vim.b.Type = location.Type
 				vim.b.IsDecompiled = body.IsDecompiled
 				vim.b.AssemblyFilePath = location.AssemblyFilePath
 				vim.b.ContainingTypeFullName = location.ContainingTypeFullName

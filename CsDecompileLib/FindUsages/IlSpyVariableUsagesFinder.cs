@@ -19,11 +19,11 @@ public class IlSpyVariableUsagesFinder : IlSpyToSourceInfoBase
         _variableInMethodBodyFinder = variableInMethodBodyFinder;
     }
         
-    public IEnumerable<DecompileInfo> Run(ITypeDefinition containingTypeDefinition, AstNode variable, string sourceText)
+    public IEnumerable<DecompileInfo> Run(ITypeDefinition containingTypeDefinition, AstNode methodBody, ILVariable variable, string sourceText)
     {
         var result = new List<DecompileInfo>();
 
-        var foundUses = _variableInMethodBodyFinder.Find((Identifier)variable);
+        var foundUses = _variableInMethodBodyFinder.Find(methodBody, variable);
 
         MapToSourceInfos(containingTypeDefinition, sourceText, foundUses, result);
 
@@ -41,9 +41,9 @@ public class IlSpyVariableDefintionFinder : IlSpyToSourceInfoBase
         _variableInMethodBodyFinder = variableInMethodBodyFinder;
     }
         
-    public DecompileInfo Run(ITypeDefinition containgTypeDefinition, SyntaxTree containingTypeSyntaxTree, ILVariable variable, string sourceText)
+    public DecompileInfo Run(ITypeDefinition containgTypeDefinition, AstNode methodNode, ILVariable variable, string sourceText)
     {
-        var foundNode = _variableInMethodBodyFinder.Find(variable, containingTypeSyntaxTree);
+        var foundNode = _variableInMethodBodyFinder.Find(variable, methodNode);
 
         var lines = sourceText.Split(new []{"\r\n"}, StringSplitOptions.None);
         var result = MapToSourceInfo(lines, foundNode, containgTypeDefinition);

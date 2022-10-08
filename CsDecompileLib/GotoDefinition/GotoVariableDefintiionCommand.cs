@@ -10,7 +10,7 @@ class GotoVariableDefintiionCommand : INavigationCommand<DecompileGotoDefinition
 {
     private readonly IlSpyVariableDefintionFinder _finder;
     private readonly ITypeDefinition _containingTypeDefinition;
-    private readonly SyntaxTree _containingTypeSyntaxTree;
+    private readonly AstNode _methodNode;
     private readonly ILVariable _variable;
     private readonly string _containingTypeSourceText;
     private readonly string _assemblyFileInfo;
@@ -18,14 +18,14 @@ class GotoVariableDefintiionCommand : INavigationCommand<DecompileGotoDefinition
     public GotoVariableDefintiionCommand(
         IlSpyVariableDefintionFinder finder,
         ITypeDefinition containingTypeDefinition,
-        SyntaxTree containingTypeSyntaxTree,
+        AstNode methodNode,
         ILVariable variable,
         string containingTypeSourceText,
         string assemblyFileInfo)
     {
         _finder = finder;
         _containingTypeDefinition = containingTypeDefinition;
-        _containingTypeSyntaxTree = containingTypeSyntaxTree;
+        _methodNode = methodNode;
         _variable = variable;
         _containingTypeSourceText = containingTypeSourceText;
         _assemblyFileInfo = assemblyFileInfo;
@@ -35,7 +35,7 @@ class GotoVariableDefintiionCommand : INavigationCommand<DecompileGotoDefinition
     {
         var defintion = _finder.Run(
             _containingTypeDefinition,
-            _containingTypeSyntaxTree,
+            _methodNode,
             _variable,
             _containingTypeSourceText);
             

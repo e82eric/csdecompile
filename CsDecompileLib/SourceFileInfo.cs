@@ -3,5 +3,5 @@ namespace CsDecompileLib;
 public class SourceFileInfo : ResponseLocation
 {
     public string FileName { get; set; }
-    public override ResponseLocationType Type => ResponseLocationType.SourceCode;
+    public override LocationType Type => LocationType.SourceCode;
 }

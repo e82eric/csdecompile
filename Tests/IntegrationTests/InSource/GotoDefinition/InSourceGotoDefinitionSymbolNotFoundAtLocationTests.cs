@@ -1,13 +1,13 @@
-﻿using NUnit.Framework;
-using CsDecompileLib;
+﻿using CsDecompileLib;
 using CsDecompileLib.GotoDefinition;
+using NUnit.Framework;
 
-namespace IntegrationTests;
+namespace IntegrationTests.InSource.GotoDefinition;
 
 [TestFixture]
 public class InSourceGotoDefinitionSymbolNotFoundAtLocationTests : InSourceBase
 {
-    private static string FilePath = TestHarness.GetLibraryThatReferencesLibraryFilePath("InSourceGotoDefinitionSymbolNotFoundAtLocationTarget.cs");
+    private static readonly string FilePath = TestHarness.GetLibraryThatReferencesLibraryFilePath("InSourceGotoDefinitionSymbolNotFoundAtLocationTarget.cs");
         
     [Test]
     public void GotoInSourceClassDefinition()
@@ -19,7 +19,7 @@ public class InSourceGotoDefinitionSymbolNotFoundAtLocationTests : InSourceBase
             {
                 FileName = FilePath,
                 Column = 10,
-                IsDecompiled = false,
+                Type = LocationType.SourceCode,
                 Line = 4
             }
         };

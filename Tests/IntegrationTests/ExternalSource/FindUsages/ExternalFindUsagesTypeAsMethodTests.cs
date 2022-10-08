@@ -17,13 +17,13 @@ public class ExternalFindUsagesTypeAsMethodTests : ExternalFindUsagesTestBase
             line: 10,
             expected: new []
             {
-                (ResponseLocationType.SourceCode,
+                (LocationType.SourceCode,
                     "new ExternalFindUsagesMethodTarget().ExternalBasicMethod();",
                     "ExternalFindUsagesMethodCaller"),
-                (ResponseLocationType.Decompiled,
+                (LocationType.Decompiled,
                     "new ExternalFindUsagesMethodTarget().ExternalBasicMethod();",
                     "ExternalFindUsagesMethodUser"),
-                (ResponseLocationType.Decompiled,
+                (LocationType.Decompiled,
                     "Run1(new ExternalFindUsagesMethodTarget().ExternalBasicMethod);",
                     "ExternalFindUsagesMethodUser"),
             });
@@ -38,13 +38,13 @@ public class ExternalFindUsagesTypeAsMethodTests : ExternalFindUsagesTestBase
             line: 11,
             expected: new []
             {
-                (ResponseLocationType.SourceCode,
+                (LocationType.SourceCode,
                     "new ExternalFindUsagesMethodTarget().ExternalBasicMethod(string.Empty);",
                     "ExternalFindUsagesMethodCaller"),
-                (ResponseLocationType.Decompiled,
+                (LocationType.Decompiled,
                     "new ExternalFindUsagesMethodTarget().ExternalBasicMethod(string.Empty);",
                     "ExternalFindUsagesMethodUser"),
-                (ResponseLocationType.Decompiled,
+                (LocationType.Decompiled,
                     "Run2(new ExternalFindUsagesMethodTarget().ExternalBasicMethod);",
                     "ExternalFindUsagesMethodUser"),
             });
@@ -59,13 +59,13 @@ public class ExternalFindUsagesTypeAsMethodTests : ExternalFindUsagesTestBase
             line: 12,
             expected: new []
             {
-                (ResponseLocationType.SourceCode,
+                (LocationType.SourceCode,
                     "new ExternalFindUsagesMethodTarget().ExternalBasicMethod(String.Empty, String.Empty);",
                     "ExternalFindUsagesMethodCaller"),
-                (ResponseLocationType.Decompiled,
+                (LocationType.Decompiled,
                     "new ExternalFindUsagesMethodTarget().ExternalBasicMethod(string.Empty, string.Empty);",
                     "ExternalFindUsagesMethodUser"),
-                (ResponseLocationType.Decompiled,
+                (LocationType.Decompiled,
                     "Run3(new ExternalFindUsagesMethodTarget().ExternalBasicMethod);",
                     "ExternalFindUsagesMethodUser"),
             });

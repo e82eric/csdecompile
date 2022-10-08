@@ -48,7 +48,8 @@ namespace CsDecompileLib.IlSpy
 
         public void LoadDllsInDirectory(DirectoryInfo directory)
         {
-            var binDirDlls = directory.GetFiles("*.dll", SearchOption.AllDirectories);
+            var binDirDlls = directory.GetFiles("*.*", SearchOption.AllDirectories)
+                .Where(s => s.Extension.Equals(".dll") || s.Extension.Equals(".exe"));;
 
             foreach (var dllFilePath in binDirDlls)
             {

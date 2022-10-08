@@ -45,4 +45,14 @@ public class Decompiler
         var result = Run(rootType);
         return result;
     }
+
+    public (SyntaxTree, string) DecompileWholeModule()
+    {
+        var stringWriter = new StringWriter();
+        var tokenWriter = TokenWriter.CreateWriterThatSetsLocationsInAST(stringWriter, "  ");
+        var syntaxTree = _decompiler.DecompileWholeModuleAsSingleFile();
+        syntaxTree.AcceptVisitor(new CSharpOutputVisitor(tokenWriter, _decompilerSettings.CSharpFormattingOptions));
+        var result = stringWriter.ToString();
+        return (syntaxTree, result);
+    }
 }

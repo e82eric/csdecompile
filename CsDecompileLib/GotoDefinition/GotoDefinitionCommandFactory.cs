@@ -81,7 +81,7 @@ namespace CsDecompileLib.GotoDefinition
         public INavigationCommand<DecompileGotoDefinitionResponse> GetForVariable(
             ILVariable variable,
             ITypeDefinition typeDefinition,
-            SyntaxTree syntaxTree,
+            AstNode methodNode,
             string sourceText,
             string assemblyFilePath)
         {
@@ -90,7 +90,7 @@ namespace CsDecompileLib.GotoDefinition
             var result = new GotoVariableDefintiionCommand(
                 ilSpyVariableDefintionFinder,
                 typeDefinition,
-                syntaxTree,
+                methodNode,
                 variable,
                 sourceText,
                 assemblyFilePath);

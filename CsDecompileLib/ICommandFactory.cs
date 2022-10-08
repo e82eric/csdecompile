@@ -1,8 +1,6 @@
 using ICSharpCode.Decompiler.IL;
 using ICSharpCode.Decompiler.TypeSystem;
-using Microsoft.CodeAnalysis;
-using CsDecompileLib.GotoDefinition;
-using SyntaxTree = ICSharpCode.Decompiler.CSharp.Syntax.SyntaxTree;
+using ICSharpCode.Decompiler.CSharp.Syntax;
 
 namespace CsDecompileLib;
 
@@ -16,7 +14,7 @@ public interface ICommandFactory<T> : IDecompilerCommandFactory<T>
     T GetForVariable(
         ILVariable variable,
         ITypeDefinition typeDefinition,
-        SyntaxTree syntaxTree,
+        AstNode methodNode,
         string sourceText,
         string assemblyFilePath);
 }

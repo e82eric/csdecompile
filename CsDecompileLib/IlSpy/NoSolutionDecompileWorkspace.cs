@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using ICSharpCode.Decompiler.Metadata;
 using Microsoft.CodeAnalysis;
 
@@ -23,7 +24,8 @@ public class NoSolutionDecompileWorkspace : IDecompileWorkspace
 
     public void LoadDllsInDirectory(DirectoryInfo directory)
     {
-        var binDirDlls = directory.GetFiles("*.dll", SearchOption.AllDirectories);
+        var binDirDlls = directory.GetFiles("*.*", SearchOption.AllDirectories)
+            .Where(s => s.Extension.Equals(".dll") || s.Extension.Equals(".exe"));;
 
         foreach (var dllFilePath in binDirDlls)
         {

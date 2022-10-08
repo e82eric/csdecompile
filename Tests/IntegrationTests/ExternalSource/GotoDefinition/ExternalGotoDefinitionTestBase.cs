@@ -22,7 +22,7 @@ public class ExternalGotoDefinitionTestBase : ExternalTestBase
         {
             FileName = filePath,
             Column = column,
-            IsDecompiled = false,
+            Type = LocationType.SourceCode,
             Line = line
         };
         
@@ -67,7 +67,7 @@ public class ExternalGotoDefinitionTestBase : ExternalTestBase
             .ExecuteCommand<DecompiledLocationRequest, DecompileGotoDefinitionResponse>(request);
 
         Assert.True(response.Success);
-        Assert.AreEqual(response.Body.Location.Type, ResponseLocationType.Decompiled);
+        Assert.AreEqual(response.Body.Location.Type, LocationType.Decompiled);
         var decompileInfo = (DecompileInfo)response.Body.Location;
 
         var lines = GetLines(response.Body.SourceText);

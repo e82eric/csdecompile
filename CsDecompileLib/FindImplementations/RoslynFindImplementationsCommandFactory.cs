@@ -48,7 +48,7 @@ public class RoslynFindImplementationsCommandFactory : IlSpyFindImplementationsC
         return result;
     }
 
-    public INavigationCommand<FindImplementationsResponse> GetForVariable(ILVariable variable, ITypeDefinition typeDefinition, SyntaxTree syntaxTree,
+    public INavigationCommand<FindImplementationsResponse> GetForVariable(ILVariable variable, ITypeDefinition typeDefinition, AstNode syntaxTree,
         string sourceText, string assemblyFilePath)
     {
         throw new System.NotImplementedException();

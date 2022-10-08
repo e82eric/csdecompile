@@ -1,47 +1,27 @@
 ﻿using System.Collections.Generic;
 using ICSharpCode.Decompiler.CSharp.Syntax;
+using ICSharpCode.Decompiler.IL;
 
 namespace CsDecompileLib.FindUsages;
 
 public class VariableInMethodBodyFinder
 {
-    public IEnumerable<AstNode> Find(Identifier variableNode)
+    public IEnumerable<AstNode> Find(AstNode methodBodyNode, ILVariable variable)
     {
         var foundUsages = new List<AstNode>();
-        var methodBodyNode = FindMethodBody(variableNode);
         if (methodBodyNode != null)
         {
-            FindUsagesOfIdentifier(methodBodyNode, variableNode, foundUsages);
+            FindUsagesOfIdentifier(methodBodyNode, variable, foundUsages);
         }
 
         return foundUsages;
     }
-
-    private AstNode FindMethodBody(AstNode node)
-    {
-        //TODO: Figure out if you can go directly to body
-        if (node is MethodDeclaration methodDeclaration)
-        {
-            return methodDeclaration.Body;
-        }
-
-        if (node.Parent != null)
-        {
-            var result = FindMethodBody(node.Parent);
-            if (result != null)
-            {
-                return result;
-            }
-        }
-
-        return null;
-    }
     
-    private void FindUsagesOfIdentifier(AstNode currentNode, Identifier variableNode, IList<AstNode> found)
+    private void FindUsagesOfIdentifier(AstNode currentNode, ILVariable variable, ICollection<AstNode> found)
     {
         if (currentNode is Identifier identifier)
         {
-            if (identifier.Name == variableNode.Name)
+            if (identifier.Name == variable.Name)
             {
                 found.Add(identifier);
             }
@@ -49,7 +29,7 @@ public class VariableInMethodBodyFinder
         
         foreach (var child in currentNode.Children)
         {
-            FindUsagesOfIdentifier(child, variableNode, found);
+            FindUsagesOfIdentifier(child, variable, found);
         }
     }
 }

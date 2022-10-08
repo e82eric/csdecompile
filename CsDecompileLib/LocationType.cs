@@ -1,4 +1,4 @@
-﻿namespace CsDecompileLib;
+namespace CsDecompileLib;
 
 public enum LocationType
 {

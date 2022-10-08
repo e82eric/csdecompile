@@ -9,7 +9,7 @@ public class ExternalFindUsagesTestBase : ExternalFindImplementationsBase
         string filePath,
         int column,
         int line,
-        IEnumerable<(ResponseLocationType type, string value, string shortTypeName)> expected)
+        IEnumerable<(LocationType type, string value, string shortTypeName)> expected)
     {
         SendRequestAndAssertLine(
             Endpoints.DecompileFindUsages,
@@ -25,7 +25,7 @@ public class ExternalFindUsagesTestBase : ExternalFindImplementationsBase
         string tokenToFind,
         int column,
         int line,
-        IEnumerable<(ResponseLocationType type, string value, string shortTypeName)> expected)
+        IEnumerable<(LocationType type, string value, string shortTypeName)> expected)
     {
         SendRequestAndAssertLine(
             Endpoints.DecompileFindUsages,

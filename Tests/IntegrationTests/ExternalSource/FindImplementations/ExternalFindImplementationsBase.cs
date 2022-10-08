@@ -13,14 +13,16 @@ public class ExternalFindImplementationsBase : ExternalTestBase
         string filePath,
         int column,
         int line,
-        IEnumerable<(ResponseLocationType type, string value, string shortTypeName)> expected)
+        IEnumerable<(LocationType type, string value, string shortTypeName)> expected)
     {
         var requestArguments = new DecompiledLocationRequest
         {
             FileName = filePath,
             Column = column,
-            IsDecompiled = false,
-            Line = line
+            Type = LocationType.SourceCode,
+            Line = line,
+            AssemblyName = null,
+            AssemblyFilePath = null
         };
 
         SendRequestAndAssertLine(command, expected, requestArguments);
@@ -33,7 +35,7 @@ public class ExternalFindImplementationsBase : ExternalTestBase
         string tokenToFind,
         int column,
         int line,
-        IEnumerable<(ResponseLocationType type, string value, string shortTypeName)> expected)
+        IEnumerable<(LocationType type, string value, string shortTypeName)> expected)
     {
         DecompiledLocationRequest definitionRequestArguments = GotoDefintionAndCreateRequestForToken(
             filePath,
@@ -47,7 +49,7 @@ public class ExternalFindImplementationsBase : ExternalTestBase
     
     private static void SendRequestAndAssertLine(
         string command,
-        IEnumerable<(ResponseLocationType type, string value, string shortTypeName)> expected,
+        IEnumerable<(LocationType type, string value, string shortTypeName)> expected,
         DecompiledLocationRequest requestArguments)
     {
         var request = new CommandPacket<DecompiledLocationRequest>
@@ -67,10 +69,10 @@ public class ExternalFindImplementationsBase : ExternalTestBase
             string[] lines = null;
             switch (implementation.Type)
             {
-                case ResponseLocationType.Decompiled:
+                case LocationType.Decompiled:
                     lines = ExternalGetLines(implementation);
                     break;
-                case ResponseLocationType.SourceCode:
+                case LocationType.SourceCode:
                     lines = InSourceGetLines(implementation);
                     break;
             }

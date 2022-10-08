@@ -42,7 +42,7 @@ public class InSourceBase : TestBase
             {
                 FileName = filePath,
                 Column = column,
-                IsDecompiled = false,
+                Type = LocationType.SourceCode,
                 Line = line
             }
         };
@@ -55,7 +55,7 @@ public class InSourceBase : TestBase
 
     private static void AssertInSource(ResponsePacket<DecompileGotoDefinitionResponse> response, string expected)
     {
-        Assert.AreEqual(response.Body.Location.Type, ResponseLocationType.SourceCode);
+        Assert.AreEqual(response.Body.Location.Type, LocationType.SourceCode);
         AssertInSourceLocation(response.Body.Location, expected);
     }
     

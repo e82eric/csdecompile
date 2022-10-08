@@ -19,7 +19,7 @@ public class InSourceFindUsagesSymbolNotFoundAtLocationTests : InSourceBase
             {
                 FileName = FilePath,
                 Column = 10,
-                IsDecompiled = false,
+                Type = LocationType.SourceCode,
                 Line = 4
             }
         };

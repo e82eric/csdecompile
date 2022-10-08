@@ -1,5 +1,4 @@
-﻿using System.Reflection.Metadata;
-using ICSharpCode.Decompiler.CSharp;
+﻿using ICSharpCode.Decompiler.CSharp;
 using ICSharpCode.Decompiler.CSharp.Syntax;
 using ICSharpCode.Decompiler.TypeSystem;
 
@@ -33,6 +32,22 @@ public static class AstExtensions
                     return method;
                 }
             }
+        }
+
+        return null;
+    }
+
+    public static AstNode FindParentMemberNode(this AstNode node)
+    {
+        if (node.NodeType == NodeType.Member)
+        {
+            return node;
+        }
+
+        var result = FindParentMemberNode(node.Parent);
+        if (result != null)
+        {
+            return result;
         }
 
         return null;

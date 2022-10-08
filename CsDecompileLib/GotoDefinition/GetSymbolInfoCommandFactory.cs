@@ -62,7 +62,7 @@ public class GetSymbolInfoCommandFactory : ICommandFactory<INavigationCommand<Sy
     public INavigationCommand<SymbolInfo> GetForVariable(
         ILVariable variable,
         ITypeDefinition typeDefinition,
-        SyntaxTree syntaxTree,
+        AstNode syntaxTree,
         string sourceText,
         string assemblyFilePath)
     {

@@ -7,9 +7,9 @@ public class VariableInTypeFinder
 {
     public AstNode Find(
         ILVariable variableIdentifier,
-        SyntaxTree rootTypeSyntaxTree)
+        AstNode methodNode)
     {
-        var usage = Find(rootTypeSyntaxTree, variableIdentifier);
+        var usage = Find(methodNode, variableIdentifier);
 
         return usage;
     }

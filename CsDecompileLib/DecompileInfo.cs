@@ -7,6 +7,6 @@ namespace CsDecompileLib
         public int EndColumn { get; set; }
         public string AssemblyFilePath { get; set; }
         public string NamespaceName { get; set; }
-        public override ResponseLocationType Type => ResponseLocationType.Decompiled;
+        public override LocationType Type => LocationType.Decompiled;
     }
 }

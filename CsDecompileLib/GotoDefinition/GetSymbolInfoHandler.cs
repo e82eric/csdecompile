@@ -20,7 +20,7 @@ public class GetSymbolInfoHandler : HandlerBase<DecompiledLocationRequest, Symbo
     public override async Task<ResponsePacket<SymbolInfo>> Handle(DecompiledLocationRequest request)
     {
         INavigationCommand<SymbolInfo> command = null;
-        if (!request.IsDecompiled)
+        if (request.Type == LocationType.SourceCode)
         {
             command = await _rosylnGotoDefinitionCommandFactory.Get(request);
         }

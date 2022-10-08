@@ -20,7 +20,7 @@ public class GetTypeMembersHandler : HandlerBase<DecompiledLocationRequest, Find
     {
         INavigationCommand<FindImplementationsResponse> command = null;
         
-        if (!request.IsDecompiled)
+        if (request.Type == LocationType.SourceCode)
         {
             command = await _roslynGetTypeMembersCommandFactory.Get(request);
         }

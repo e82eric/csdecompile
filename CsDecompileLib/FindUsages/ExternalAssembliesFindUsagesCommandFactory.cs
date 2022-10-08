@@ -1,6 +1,6 @@
 ﻿using ICSharpCode.Decompiler.CSharp.Syntax;
 using ICSharpCode.Decompiler.TypeSystem;
-using CsDecompileLib.FindImplementations;
+using ICSharpCode.Decompiler.IL;
 
 namespace CsDecompileLib.FindUsages;
 
@@ -80,12 +80,15 @@ public class ExternalAssembliesFindUsagesCommandFactory : IDecompilerCommandFact
         return result;
     }
     
-    public INavigationCommand<FindImplementationsResponse> GetForVariable(
-        ITypeDefinition containingTypeDefinition,
-        AstNode variableNode,
-        string sourceText)
+    public INavigationCommand<FindImplementationsResponse> GetForVariable(ILVariable variable, ITypeDefinition typeDefinition, AstNode methodNode,
+        string sourceText, string assemblyFilePath)
     {
-        var result = new FindVariableUsagesCommand(containingTypeDefinition, variableNode, _variableUsagesFinder, sourceText);
+        var result = new FindVariableUsagesCommand(
+            typeDefinition,
+            methodNode,
+            variable,
+            _variableUsagesFinder,
+            sourceText);
         return result;
     }
 }

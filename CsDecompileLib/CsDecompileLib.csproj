@@ -212,6 +212,7 @@
     </ItemGroup>
     <ItemGroup>
         <Compile Include="CachedStringBuilder.cs" />
+        <Compile Include="DecompileAssemblyInfo.cs" />
         <Compile Include="DecompileInfo.cs" />
         <Compile Include="Endpoints.cs" />
         <Compile Include="EverywhereSymbolInfoFinder.cs" />
@@ -220,7 +221,11 @@
         <Compile Include="ExternalAssemblies\AddExternalAssemblyDirectoryResponse.cs" />
         <Compile Include="FileNotFoundCommand.cs" />
         <Compile Include="FindImplementationsResponse.cs" />
+        <Compile Include="FindImplementations\AssemblyLevelVariableCommandProvider.cs" />
+        <Compile Include="FindImplementations\ClassLevelVariableCommandProvider.cs" />
         <Compile Include="FindImplementations\DecompileFindImplementationsHandler.cs" />
+        <Compile Include="FindImplementations\EveryWhereFindImplementationsCommandFactory.cs" />
+        <Compile Include="FindImplementations\IVariableCommandProvider.cs" />
         <Compile Include="FindImplementations\RoslynFindImplementationsCommandFactory.cs" />
         <Compile Include="FindImplementations\MemberOverrideInTypeFinder.cs" />
         <Compile Include="FindImplementations\TypesThatUseMemberAsBaseTypeMetadataScanner.cs" />
@@ -254,6 +259,9 @@
         <Compile Include="FindUsages\VariableInMethodBodyFinder.cs" />
         <Compile Include="GetMembers\AllTypesRepository.cs" />
         <Compile Include="GetMembers\Assembly.cs" />
+        <Compile Include="GetMembers\DecompileAssemblyHandler.cs" />
+        <Compile Include="GetMembers\DecompileAssemblyRequest.cs" />
+        <Compile Include="GetMembers\DecompileAssemblyResponse.cs" />
         <Compile Include="GetMembers\GetAssembliesCommand.cs" />
         <Compile Include="GetMembers\GetAssembliesCommandFactory.cs" />
         <Compile Include="GetMembers\GetAssembliesHandler.cs" />
@@ -291,6 +299,7 @@
         <Compile Include="GotoDefinition\IlSpyPropertySymbolInfoCommand.cs" />
         <Compile Include="GotoDefinition\IlSpyTypeDefinitionSymbolInfoCommand.cs" />
         <Compile Include="GotoDefinition\IlSpyVariableSymbolInfoCommand.cs" />
+        <Compile Include="GotoDefinition\MemberInTypeFinder.cs" />
         <Compile Include="GotoDefinition\MethodInTypeFinder.cs" />
         <Compile Include="GotoDefinition\PropertyInTypeFinder.cs" />
         <Compile Include="GotoDefinition\RoslynSymbolInfoCommand.cs" />
@@ -326,7 +335,7 @@
         <Compile Include="Packet.cs" />
         <Compile Include="RequestPacket.cs" />
         <Compile Include="ResponseLocation.cs" />
-        <Compile Include="ResponseLocationType.cs" />
+        <Compile Include="LocationType.cs" />
         <Compile Include="ResponsePacket.cs" />
         <Compile Include="Roslyn\RoslynSymbolHelpers.cs" />
         <Compile Include="Roslyn\RoslynToIlSpyEqualityExtensions.cs" />

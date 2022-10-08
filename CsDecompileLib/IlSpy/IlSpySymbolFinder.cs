@@ -5,21 +5,16 @@ using ICSharpCode.Decompiler.CSharp.Syntax;
 using ICSharpCode.Decompiler.TypeSystem;
 using Microsoft.CodeAnalysis;
 using ISymbol = ICSharpCode.Decompiler.TypeSystem.ISymbol;
-using SyntaxTree = ICSharpCode.Decompiler.CSharp.Syntax.SyntaxTree;
 
 namespace CsDecompileLib.IlSpy;
 
 public class IlSpySymbolFinder
 {
     private readonly IDecompilerTypeSystemFactory _typeSystemFactory;
-    private readonly DecompilerFactory _decompilerFactory;
 
-    public IlSpySymbolFinder(
-        IDecompilerTypeSystemFactory typeSystemFactory,
-        DecompilerFactory decompilerFactory)
+    public IlSpySymbolFinder(IDecompilerTypeSystemFactory typeSystemFactory)
     {
         _typeSystemFactory = typeSystemFactory;
-        _decompilerFactory = decompilerFactory;
     }
     
     public ITypeDefinition FindTypeDefinition(string projectAssemblyFilePath, string symbolFullName)
@@ -72,15 +67,6 @@ public class IlSpySymbolFinder
         return eventSymbol;
     }
     
-    public (AstNode, SyntaxTree, string) FindNode(ITypeDefinition typeDefinition, int line, int column)
-    {
-        var decompiler = _decompilerFactory.Get(typeDefinition.ParentModule.PEFile.FileName);
-        (SyntaxTree syntaxTree, string source) = decompiler.Run(typeDefinition);
-            
-        var node = GetNodeAt(syntaxTree, line, column);
-        return (node, syntaxTree, source);
-    }
-    
     public ISymbol FindSymbolFromNode(AstNode node)
     {
         var symbolAtLocation = node.GetSymbol();
@@ -94,25 +80,20 @@ public class IlSpySymbolFinder
         return symbolAtLocation;
     }
 
-    public ISymbol FindSymbolAtLocation(string projectAssemblyFilePath, string containingTypeFullName, int line, int column)
+    public ITypeDefinition FindParentType(AstNode node)
     {
-        var tempFile = FindTypeDefinition(projectAssemblyFilePath, containingTypeFullName);
-        var decompiler = _decompilerFactory.Get(tempFile.ParentModule.PEFile.FileName);
-        (SyntaxTree syntaxTree, string source) = decompiler.Run(containingTypeFullName);
-            
-        var node = GetNodeAt(syntaxTree, line, column);
-        var symbolAtLocation = node.GetSymbol();
-
-        while (symbolAtLocation == null && node.Parent != null)
+        if (node.NodeType == NodeType.TypeDeclaration)
         {
-            node = node.Parent;
-            symbolAtLocation = node?.GetSymbol();
+            var symbol = node.GetSymbol();
+            var result = symbol as ITypeDefinition;
+            return result;
         }
 
-        return symbolAtLocation;
+        var fromChild = FindParentType(node.Parent);
+        return fromChild;
     }
 
-    private AstNode GetNodeAt(AstNode node, int startLine, int startColumn)
+    public AstNode GetNodeAt(AstNode node, int startLine, int startColumn)
     {
         foreach (var child in node.Children)
         {

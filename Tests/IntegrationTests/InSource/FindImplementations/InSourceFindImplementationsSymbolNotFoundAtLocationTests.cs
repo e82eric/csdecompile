@@ -20,7 +20,7 @@ public class InSourceFindImplementationsSymbolNotFoundAtLocationTests : InSource
             {
                 FileName = FilePath,
                 Column = 10,
-                IsDecompiled = false,
+                Type = LocationType.SourceCode,
                 Line = 4
             }
         };

@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using ICSharpCode.Decompiler.CSharp.Syntax;
 using ICSharpCode.Decompiler.TypeSystem;
-using CsDecompileLib.FindImplementations;
+using ICSharpCode.Decompiler.IL;
 
 namespace CsDecompileLib.FindUsages;
 
@@ -9,12 +9,14 @@ internal class FindVariableUsagesCommand : INavigationCommand<FindImplementation
 {
     private readonly IlSpyVariableUsagesFinder _usagesFinder;
     private readonly string _sourceText;
-    private readonly AstNode _variable;
+    private readonly AstNode _methodBodyNode;
+    private readonly ILVariable _variable;
     private readonly ITypeDefinition _containingTypeDefinition;
 
     public FindVariableUsagesCommand(
         ITypeDefinition containingTypeDefinition,
-        AstNode variable,
+        AstNode methodBody,
+        ILVariable variable,
         IlSpyVariableUsagesFinder usagesFinder,
         string sourceText)
     {
@@ -22,12 +24,14 @@ internal class FindVariableUsagesCommand : INavigationCommand<FindImplementation
         _variable = variable;
         _usagesFinder = usagesFinder;
         _sourceText = sourceText;
+        _methodBodyNode = methodBody;
     }
         
     public Task<ResponsePacket<FindImplementationsResponse>> Execute()
     {
         var metadataSources = _usagesFinder.Run(
             _containingTypeDefinition,
+            _methodBodyNode,
             _variable,
             _sourceText);
 
@@ -35,7 +39,6 @@ internal class FindVariableUsagesCommand : INavigationCommand<FindImplementation
             
         foreach (var metadataSource in metadataSources)
         {
-            // DecompileInfo decompileInfo = DecompileInfoMapper.MapFromMetadataSource(metadataSource);
             body.Implementations.Add(metadataSource);
         }
 

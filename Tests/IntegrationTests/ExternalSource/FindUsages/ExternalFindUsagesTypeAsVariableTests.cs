@@ -17,16 +17,16 @@ public class ExternalFindUsagesTypeAsVariableTests : ExternalFindUsagesTestBase
             line: 9,
             expected: new []
             {
-                (ResponseLocationType.SourceCode,
+                (LocationType.SourceCode,
                     "ExternalFindUsagesTypeAsVariableTarget a = null;",
                     "ExternalFindUsagesTypeAsVariableCaller"),
-                (ResponseLocationType.Decompiled,
+                (LocationType.Decompiled,
                     "ExternalFindUsagesTypeAsVariableTarget externalFindUsagesTypeAsVariableTarget = null;",
                     "ExternalFindUsagesTypeAsVariableCaller"),
-                (ResponseLocationType.Decompiled,
+                (LocationType.Decompiled,
                     "ExternalFindUsagesTypeAsVariableTarget externalFindUsagesTypeAsVariableTarget2 = null;",
                     "ExternalFindUsagesTypeAsVariableCaller"),
-                (ResponseLocationType.Decompiled,
+                (LocationType.Decompiled,
                     "ExternalFindUsagesTypeAsVariableTarget externalFindUsagesTypeAsVariableTarget3 = null;",
                     "ExternalFindUsagesTypeAsVariableCaller"),
             });
