@@ -45,7 +45,6 @@ class GotoVariableDefintiionCommand : INavigationCommand<DecompileGotoDefinition
         {
             Location = defintion,
             SourceText = _containingTypeSourceText,
-            IsDecompiled = true
         };
 
         var response = new ResponsePacket<DecompileGotoDefinitionResponse>

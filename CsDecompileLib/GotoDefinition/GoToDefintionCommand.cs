@@ -30,7 +30,6 @@ public class GoToDefintionCommand<T> : INavigationCommand<DecompileGotoDefinitio
         {
             Location = ilSpyMetadataSource,
             SourceText = sourceText,
-            IsDecompiled = true
         };
 
         var response = new ResponsePacket<DecompileGotoDefinitionResponse>

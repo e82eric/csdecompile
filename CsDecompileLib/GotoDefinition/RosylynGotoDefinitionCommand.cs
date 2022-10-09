@@ -25,7 +25,6 @@ public class RosylynGotoDefinitionCommand : INavigationCommand<DecompileGotoDefi
                 Column = lineSpan.StartLinePosition.Character + 1,
                 Line = lineSpan.StartLinePosition.Line + 1,
             },
-            IsDecompiled = false,
         };
 
         var response = new ResponsePacket<DecompileGotoDefinitionResponse>()

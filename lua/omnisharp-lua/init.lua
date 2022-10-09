@@ -267,8 +267,6 @@ M._decompileRequest = function(url, callback, callbackData)
 	local cursorPos = vim.api.nvim_win_get_cursor(0)
 	local line = cursorPos[1]
 	local column = cursorPos[2] + 1
-	local decompiled = vim.b.IsDecompiled == true
-	local decompiledAssembly = vim.b.IsDecompiledAssembly == true
 	local assemblyFilePath = vim.b.AssemblyFilePath
 	local assemblyName = vim.b.AssemblyName
 	local fileName = vim.fn.expand('%:p')
@@ -513,79 +511,79 @@ M._openSourceFileOrDecompile = function(value)
 	end
 end
 
+M.HandleDecompiledSource = function(response, data)
+	print(vim.inspect(response))
+	local body = response.Body
+	local location = body.Location
+	local bufnr = data.BufferNumber
+	local winid = data.WindowId
+
+	if response.Request_seq == M._state.CurrentSeq then
+		M._setBufferTextFromDecompiledSource(location, body.SourceText, bufnr, winid)
+	end
+end
+
 M.HandleDecompileGotoDefinitionResponse = function(response)
 	local body = response.Body
 	local location = body.Location
 	local fileName = location.FileName
-	local column = location.Column - 1
-	local line = location.Line
 
 	if location.Type == 1 then
-		local timer = vim.loop.new_timer()
-		timer:start(100, 0, vim.schedule_wrap(function()
-			local bufnr = vim.uri_to_bufnr(fileName)
-			vim.api.nvim_win_set_buf(0, bufnr)
-			vim.api.nvim_win_set_cursor(0, { line, column })
-		end))
+		M._openSourceFile(location)
 	else
 		if response.Request_seq == M._state.CurrentSeq then
-			local timer = vim.loop.new_timer()
-			timer:start(100, 0, vim.schedule_wrap(function()
-				local fileText = body.SourceText
-				if location.Type == 0 then
-					decompileFileName = location.ContainingTypeFullName .. '.cs'
-				elseif location.Type == 2 then
-					decompileFileName = location.AssemblyName .. '.cs'
-				end
-				local bufnr = vim.uri_to_bufnr("c:\\TEMP\\DECOMPILED_" .. decompileFileName)
-				local lines = {}
-				local decompileFileName = ''
-
-				vim.list_extend(lines, vim.split(fileText, "\r\n"))
-				vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, lines)
-				vim.api.nvim_win_set_buf(0, bufnr)
-				vim.api.nvim_win_set_cursor(0, { line, column })
-				vim.api.nvim_buf_set_option(bufnr, "syntax", "cs")
-				-- vim.api.nvim_buf_set_option(bufnr, "filetype", "cs")
-				vim.api.nvim_buf_set_option(bufnr, "buftype", "nofile")
-				vim.api.nvim_buf_set_option(bufnr, "buflisted", true)
-				vim.b.Type = location.Type
-				vim.b.IsDecompiled = body.IsDecompiled
-				vim.b.AssemblyFilePath = location.AssemblyFilePath
-				vim.b.ContainingTypeFullName = location.ContainingTypeFullName
-			end))
+			M._setBufferTextFromDecompiledSource(location, body.SourceText, 0, 0)
 		end
 	end
 end
 
-M.HandleDecompiledSource = function(response, data)
-	local body = response.Body
-	local fileText = body.SourceText
-	local line = body.Line
-	local column = body.Column
-	local bufnr = data.BufferNumber
-	local winid = data.WindowId
+M._setCursorFromLocation = function(winid, location)
+	local column = 0
+	local line = location.Line
+
+	if location.Column ~= 0 then
+		column = location.Column - 1
+	end
+
+	vim.api.nvim_win_set_cursor(winid, { line, column })
+end
+
+M._openSourceFile = function(location)
+	local timer = vim.loop.new_timer()
+	timer:start(100, 0, vim.schedule_wrap(function()
+		local bufnr = vim.uri_to_bufnr(location.FileName)
+		vim.api.nvim_win_set_buf(0, bufnr)
+		M._setCursorFromLocation(0, location)
+	end))
+end
+
+M._setBufferTextFromDecompiledSource = function(location, sourceText, bufnr, winid)
+	local lines = {}
+	local decompileFileName = ''
+	local fileName = location.FileName
+	local column = location.Column - 1
 
 	local timer = vim.loop.new_timer()
 	timer:start(100, 0, vim.schedule_wrap(function()
-		if response.Request_seq == M._state.CurrentSeq then
-			if bufnr == 0 then
-				bufnr = vim.uri_to_bufnr("c:\\TEMP\\DECOMPILED_" .. data.Entry.ContainingTypeFullName .. ".cs")
+		if bufnr == 0 then
+			if location.Type == 0 then
+				decompileFileName = location.ContainingTypeFullName .. '.cs'
+			elseif location.Type == 2 then
+				decompileFileName = location.AssemblyName .. '.cs'
 			end
-			local lines = {}
-			vim.list_extend(lines, vim.split(fileText, "\r\n"))
-			vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, lines)
-			vim.api.nvim_win_set_buf(winid, bufnr)
-			vim.api.nvim_win_set_cursor(winid, { line, column })
-			vim.api.nvim_buf_set_option(bufnr, "syntax", "cs")
-			-- vim.api.nvim_buf_set_option(bufnr, "filetype", "cs")
-			vim.api.nvim_buf_set_option(bufnr, "buftype", "nofile")
-			vim.api.nvim_buf_set_option(bufnr, "buflisted", true)
-			vim.api.nvim_buf_add_highlight(bufnr, -1, "TelescopePreviewLine", line -1, 0, -1)
-			vim.b.IsDecompiled = body.IsDecompiled
-			vim.b.AssemblyFilePath = body.AssemblyFilePath
-			vim.b.ContainingTypeFullName = body.ContainingTypeFullName
+			local bufnr = vim.uri_to_bufnr("c:\\TEMP\\DECOMPILED_" .. decompileFileName)
 		end
+		vim.list_extend(lines, vim.split(sourceText, "\r\n"))
+		vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, lines)
+		vim.api.nvim_win_set_buf(winid, bufnr)
+		M._setCursorFromLocation(winid, location)
+		vim.api.nvim_buf_set_option(bufnr, "syntax", "cs")
+		vim.api.nvim_buf_set_option(bufnr, "buftype", "nofile")
+		vim.api.nvim_buf_set_option(bufnr, "buflisted", true)
+		vim.api.nvim_buf_add_highlight(bufnr, -1, "TelescopePreviewLine", location.Line -1, 0, -1)
+		vim.b.Type = location.Type
+		vim.b.AssemblyFilePath = location.AssemblyFilePath
+		vim.b.ContainingTypeFullName = location.ContainingTypeFullName
 	end))
 end
 

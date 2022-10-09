@@ -26,13 +26,17 @@ namespace CsDecompileLib.GetSource
 
             var body = new DecompiledSourceResponse
             {
-                AssemblyFilePath = request.AssemblyFilePath,
-                ContainingTypeFullName = request.ContainingTypeFullName,
-                IsDecompiled = true,
-                IsFromExternalAssemblies = request.IsFromExternalAssembly,
-                SourceText = source,
-                Line = request.Line,
-                Column = request.Column
+                Location = new DecompileInfo
+                {
+                    AssemblyFilePath = request.AssemblyFilePath,
+                    AssemblyName = null,
+                    Column = request.Column,
+                    Line = request.Line,
+                    ContainingTypeFullName = request.ContainingTypeFullName,
+                    ContainingTypeShortName = null,
+                    SourceText = null
+                },
+                SourceText = source
             };
 
             var response = ResponsePacket.Ok(body);

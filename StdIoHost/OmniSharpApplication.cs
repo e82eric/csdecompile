@@ -169,7 +169,6 @@ internal static class OmniSharpApplication
             assemblyLevelVariableCommandProvider,
             gotoDefinitionCommandFactory,
             ilSpySymbolFinder);
-        
         var result = new NavigationHandlerBase<DecompiledLocationRequest, DecompileGotoDefinitionResponse>(
             roslynSymbolInfoFinder,
             classLevelCommandFactory,
