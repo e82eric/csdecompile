@@ -126,6 +126,7 @@
         <Compile Include="ExternalSource\GotoDefinition\ExternalGotoDefinitionVariableTests.cs" />
         <Compile Include="ExternalTestBase.cs" />
         <Compile Include="CommandPacket.cs" />
+        <Compile Include="InSourceGetSymbolInfoBase.cs" />
         <Compile Include="InSource\FindImplementations\InSourceFindImplementationsFileDoesntExistTests.cs" />
         <Compile Include="InSource\FindImplementations\InSourceFindImplementationsSymbolNotFoundAtLocationTests.cs" />
         <Compile Include="InSource\FindUsages\InSourceFindUsagesFileDoesntExistTests.cs" />

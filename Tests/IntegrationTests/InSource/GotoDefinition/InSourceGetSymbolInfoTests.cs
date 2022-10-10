@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using NUnit.Framework;
 
 namespace IntegrationTests;
@@ -11,40 +12,52 @@ public class InSourceGetSymbolInfoTests : InSourceGetSymbolInfoBase
     [Test]
     public void Type()
     {
-        RequestAndAssertCorrectLine2(
+        RequestAndAssertContainsProperties(
             filePath: FilePath,
-            column:13,
-            line:7,
-            expected:"LibraryThatReferencesLibrary.InSourceGetSymbolInfoTarget()");
+            column: 23,
+            line: 7,
+            "NamedType",
+            "InSourceGetSymbolInfoTarget",
+            "LibraryThatReferencesLibrary");
     }
     
     [Test]
     public void Constructor()
     {
-        RequestAndAssertCorrectLine2(
+        RequestAndAssertContainsProperties(
             filePath: FilePath,
-            column:51,
-            line:7,
-            expected:"LibraryThatReferencesLibrary.InSourceGetSymbolInfoTarget.InSourceGetSymbolInfoTarget()");
+            column: 51,
+            line: 7,
+            "Method",
+            ".ctor",
+            "LibraryThatReferencesLibrary");
     }
     
     [Test]
     public void Method()
     {
-        RequestAndAssertCorrectLine2(
+        RequestAndAssertContainsProperties(
             filePath: FilePath,
             column:17,
             line:8,
-            expected:"LibraryThatReferencesLibrary.InSourceGetSymbolInfoTarget.Run()");
+            "Method",
+            "Run",
+            "LibraryThatReferencesLibrary",
+            new Dictionary<string, object>()
+            {
+                {"ReturnType", "void"}
+            });
     }
     
     [Test]
     public void Property()
     {
-        RequestAndAssertCorrectLine2(
+        RequestAndAssertContainsProperties(
             filePath: FilePath,
             column:17,
             line:9,
-            expected:"LibraryThatReferencesLibrary.InSourceGetSymbolInfoTarget.BasicProperty");
+            "Property",
+            "BasicProperty",
+            "LibraryThatReferencesLibrary");
     }
 }

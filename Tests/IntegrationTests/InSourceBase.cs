@@ -1,23 +1,8 @@
 ﻿using NUnit.Framework;
 using CsDecompileLib;
 using CsDecompileLib.GotoDefinition;
-using CsDecompileLib.Roslyn;
 
 namespace IntegrationTests;
-
-public class InSourceGetSymbolInfoBase : InSourceBase
-{
-    protected void RequestAndAssertCorrectLine2(string filePath, int column, int line, string expected)
-    {
-        var response = ExecuteRequest<SymbolInfo>(Endpoints.SymbolInfo, filePath, column, line);
-        AssertInSource(response, expected);
-    }
-    
-    private static void AssertInSource(ResponsePacket<SymbolInfo> response, string expected)
-    {
-        Assert.AreEqual(response.Body.Result, expected);
-    }
-}
 
 public class InSourceBase : TestBase
 {
