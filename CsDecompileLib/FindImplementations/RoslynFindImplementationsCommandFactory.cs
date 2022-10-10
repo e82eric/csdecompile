@@ -1,5 +1,4 @@
 ﻿using CsDecompileLib.FindUsages;
-using CsDecompileLib.GotoDefinition;
 using CsDecompileLib.IlSpy;
 using ICSharpCode.Decompiler.CSharp.Syntax;
 using ICSharpCode.Decompiler.IL;
@@ -32,7 +31,7 @@ public class RoslynFindImplementationsCommandFactory : IlSpyFindImplementationsC
 
     public INavigationCommand<FindImplementationsResponse> GetForInSource(Microsoft.CodeAnalysis.ISymbol roslynSymbol)
     {
-        var result = new RosylynFindImplementationsCommand(roslynSymbol, _omniSharpWorkspace);
+        var result = new RoslynFindImplementationsCommand(roslynSymbol, _omniSharpWorkspace);
         return result;
     }
 

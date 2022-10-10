@@ -2,7 +2,7 @@ using System.Threading.Tasks;
 using CsDecompileLib.Roslyn;
 using ICSharpCode.Decompiler.TypeSystem;
 
-namespace CsDecompileLib.GotoDefinition;
+namespace CsDecompileLib.GetSymbolInfo;
 
 public class IlSpyTypeDefinitionSymbolInfoCommand : INavigationCommand<SymbolInfo>
 {

@@ -1,5 +1,4 @@
-﻿using CsDecompileLib.GotoDefinition;
-using CsDecompileLib.IlSpy;
+﻿using CsDecompileLib.IlSpy;
 using ICSharpCode.Decompiler.TypeSystem;
 using ISymbol = Microsoft.CodeAnalysis.ISymbol;
 

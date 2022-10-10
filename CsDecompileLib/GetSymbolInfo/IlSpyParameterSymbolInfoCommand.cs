@@ -1,15 +1,14 @@
 using System.Threading.Tasks;
 using CsDecompileLib.Roslyn;
-using ICSharpCode.Decompiler.IL;
 using ICSharpCode.Decompiler.TypeSystem;
 
-namespace CsDecompileLib.GotoDefinition;
+namespace CsDecompileLib.GetSymbolInfo;
 
-public class IlSpyVariableSymbolInfoCommand : INavigationCommand<SymbolInfo>
+public class IlSpyParameterSymbolInfoCommand : INavigationCommand<SymbolInfo>
 {
-    private readonly ILVariable _symbol;
+    private readonly IParameter _symbol;
 
-    public IlSpyVariableSymbolInfoCommand(ILVariable symbol)
+    public IlSpyParameterSymbolInfoCommand(IParameter symbol)
     {
         _symbol = symbol;
     }

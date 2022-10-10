@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using NUnit.Framework;
 
-namespace IntegrationTests;
+namespace IntegrationTests.InSource.GetSymbolInfo;
 
 [TestFixture]
 public class InSourceGetSymbolInfoTests : InSourceGetSymbolInfoBase

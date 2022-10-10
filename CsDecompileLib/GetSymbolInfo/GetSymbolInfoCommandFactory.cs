@@ -1,10 +1,10 @@
-using System;
+using CsDecompileLib.GotoDefinition;
 using CsDecompileLib.Roslyn;
 using ICSharpCode.Decompiler.CSharp.Syntax;
 using ICSharpCode.Decompiler.IL;
 using ICSharpCode.Decompiler.TypeSystem;
 
-namespace CsDecompileLib.GotoDefinition;
+namespace CsDecompileLib.GetSymbolInfo;
 
 public class GetSymbolInfoCommandFactory : ICommandFactory<INavigationCommand<SymbolInfo>>
 {

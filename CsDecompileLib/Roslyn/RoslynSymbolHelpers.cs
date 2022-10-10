@@ -80,7 +80,8 @@ internal static class RoslynSymbolHelpers
         var topLevelSymbol = symbol.GetTopLevelContainingNamedType();
         return GetTypeDisplayString(topLevelSymbol);
     }
-    internal static INamedTypeSymbol GetTopLevelContainingNamedType(this ISymbol symbol)
+
+    private static INamedTypeSymbol GetTopLevelContainingNamedType(this ISymbol symbol)
     {
         // Traverse up until we find a named type that is parented by the namespace
         var topLevelNamedType = symbol;

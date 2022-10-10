@@ -2,12 +2,12 @@
 
 namespace CsDecompileLib.FindImplementations;
 
-public class EverywhereImplementationsCommand2<TResponseType> : INavigationCommand<TResponseType> where TResponseType : FindImplementationsResponse, new()
+public class EverywhereImplementationsCommand<TResponseType> : INavigationCommand<TResponseType> where TResponseType : FindImplementationsResponse, new()
 {
     private readonly INavigationCommand<TResponseType> _rosylynFindImplementationsCommand;
     private readonly INavigationCommand<TResponseType> _ilSpyCommand;
 
-    public EverywhereImplementationsCommand2(
+    public EverywhereImplementationsCommand(
         INavigationCommand<TResponseType> rosylynFindImplementationsCommand,
         INavigationCommand<TResponseType> ilSpyCommand)
     {

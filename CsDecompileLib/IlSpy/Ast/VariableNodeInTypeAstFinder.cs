@@ -1,9 +1,9 @@
 ﻿using ICSharpCode.Decompiler.CSharp.Syntax;
 using ICSharpCode.Decompiler.IL;
 
-namespace CsDecompileLib.GotoDefinition;
+namespace CsDecompileLib.IlSpy.Ast;
 
-public class VariableInTypeFinder
+public class VariableNodeInTypeAstFinder
 {
     public AstNode Find(
         ILVariable variableIdentifier,

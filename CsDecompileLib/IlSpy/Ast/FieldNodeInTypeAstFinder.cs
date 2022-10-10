@@ -1,18 +1,18 @@
 ﻿using System.Linq;
+using CsDecompileLib.GotoDefinition;
 using ICSharpCode.Decompiler.CSharp;
 using ICSharpCode.Decompiler.CSharp.Syntax;
 using ICSharpCode.Decompiler.TypeSystem;
-using CsDecompileLib.IlSpy;
 
-namespace CsDecompileLib.GotoDefinition;
+namespace CsDecompileLib.IlSpy.Ast;
 
-public class MethodInTypeFinder : IDefinitionInDecompiledSyntaxTreeFinder<IMethod>
+public class FieldNodeInTypeAstFinder : IDefinitionInDecompiledSyntaxTreeFinder<IField>
 {
     public AstNode Find(
-        IMethod handleToSearchFor,
+        IField field,
         SyntaxTree rootTypeSyntaxTree)
     {
-        var usage = Find(rootTypeSyntaxTree, handleToSearchFor);
+        var usage = Find(rootTypeSyntaxTree, field);
 
         return usage;
     }
@@ -23,7 +23,7 @@ public class MethodInTypeFinder : IDefinitionInDecompiledSyntaxTreeFinder<IMetho
 
         if (symbol != null)
         {
-            if(symbol is IEntity entity)
+            if(symbol is IField entity)
             {
                 if (entity.AreSameUsingToken(handleToSearchFor) && node.NodeType == NodeType.Member)
                 {

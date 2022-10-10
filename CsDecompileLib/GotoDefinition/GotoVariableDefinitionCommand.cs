@@ -6,17 +6,17 @@ using ICSharpCode.Decompiler.TypeSystem;
 
 namespace CsDecompileLib.GotoDefinition;
 
-class GotoVariableDefintiionCommand : INavigationCommand<DecompileGotoDefinitionResponse>
+class GotoVariableDefinitionCommand : INavigationCommand<GotoDefinitionResponse>
 {
-    private readonly IlSpyVariableDefintionFinder _finder;
+    private readonly IlSpyVariableDefinitionFinder _finder;
     private readonly ITypeDefinition _containingTypeDefinition;
     private readonly AstNode _methodNode;
     private readonly ILVariable _variable;
     private readonly string _containingTypeSourceText;
     private readonly string _assemblyFileInfo;
 
-    public GotoVariableDefintiionCommand(
-        IlSpyVariableDefintionFinder finder,
+    public GotoVariableDefinitionCommand(
+        IlSpyVariableDefinitionFinder finder,
         ITypeDefinition containingTypeDefinition,
         AstNode methodNode,
         ILVariable variable,
@@ -31,23 +31,23 @@ class GotoVariableDefintiionCommand : INavigationCommand<DecompileGotoDefinition
         _assemblyFileInfo = assemblyFileInfo;
     }
 
-    public Task<ResponsePacket<DecompileGotoDefinitionResponse>> Execute()
+    public Task<ResponsePacket<GotoDefinitionResponse>> Execute()
     {
-        var defintion = _finder.Run(
+        var definition = _finder.Run(
             _containingTypeDefinition,
             _methodNode,
             _variable,
             _containingTypeSourceText);
             
-        defintion.AssemblyFilePath = _assemblyFileInfo;
+        definition.AssemblyFilePath = _assemblyFileInfo;
                 
-        var result = new DecompileGotoDefinitionResponse
+        var result = new GotoDefinitionResponse
         {
-            Location = defintion,
+            Location = definition,
             SourceText = _containingTypeSourceText,
         };
 
-        var response = new ResponsePacket<DecompileGotoDefinitionResponse>
+        var response = new ResponsePacket<GotoDefinitionResponse>
         {
             Body = result,
             Success = true

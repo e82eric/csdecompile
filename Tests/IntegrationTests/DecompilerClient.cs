@@ -5,7 +5,7 @@ namespace IntegrationTests;
 
 class DecompilerClient
 {
-    public ResponsePacket<DecompileGotoDefinitionResponse> GotoDefinition(DecompiledLocationRequest request)
+    public ResponsePacket<GotoDefinitionResponse> GotoDefinition(DecompiledLocationRequest request)
     {
         var definitionRequest = new CommandPacket<DecompiledLocationRequest>
         {
@@ -14,7 +14,7 @@ class DecompilerClient
         };
 
         var definitionResponse = TestHarness.IoClient
-            .ExecuteCommand<DecompiledLocationRequest, DecompileGotoDefinitionResponse>(definitionRequest);
+            .ExecuteCommand<DecompiledLocationRequest, GotoDefinitionResponse>(definitionRequest);
 
         return definitionResponse;
     }

@@ -74,7 +74,7 @@ public static class RoslynToIlSpyEqualityExtensions
         return true;
     }
 
-    public static bool AreSameType(ITypeSymbol roslynSymbol, ITypeDefinition ilSpySymbol)
+    private static bool AreSameType(ITypeSymbol roslynSymbol, ITypeDefinition ilSpySymbol)
     {
         var areSameUsingToken = AreSameUsingToken(roslynSymbol, ilSpySymbol);
         if (areSameUsingToken)
@@ -114,8 +114,8 @@ public static class RoslynToIlSpyEqualityExtensions
         
         return true;
     }
-    
-    public static bool AreSameType(ITypeSymbol roslynSymbol, IType ilSpySymbol)
+
+    private static bool AreSameType(ITypeSymbol roslynSymbol, IType ilSpySymbol)
     {
         ITypeDefinition typeDefinition = ilSpySymbol.GetDefinition();
         if (typeDefinition is null)

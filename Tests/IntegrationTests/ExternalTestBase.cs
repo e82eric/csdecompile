@@ -28,7 +28,7 @@ public class ExternalTestBase : TestBase
         };
 
         var targetClasResponse = TestHarness.IoClient
-            .ExecuteCommand<DecompiledLocationRequest, DecompileGotoDefinitionResponse>(request);
+            .ExecuteCommand<DecompiledLocationRequest, GotoDefinitionResponse>(request);
 
         Assert.True(targetClasResponse.Success);
         Assert.AreEqual(targetClasResponse.Body.Location.Type, LocationType.Decompiled);

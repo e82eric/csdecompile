@@ -64,7 +64,7 @@ public class ExternalGotoDefinitionTestBase : ExternalTestBase
     private void RequestAndCompare(CommandPacket<DecompiledLocationRequest> request, string expected)
     {
         var response = TestHarness.IoClient
-            .ExecuteCommand<DecompiledLocationRequest, DecompileGotoDefinitionResponse>(request);
+            .ExecuteCommand<DecompiledLocationRequest, GotoDefinitionResponse>(request);
 
         Assert.True(response.Success);
         Assert.AreEqual(response.Body.Location.Type, LocationType.Decompiled);

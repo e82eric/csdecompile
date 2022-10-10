@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using ISymbol = Microsoft.CodeAnalysis.ISymbol;
-using SymbolInfo = CsDecompileLib.Roslyn.SymbolInfo;
 
 namespace CsDecompileLib.GotoDefinition;
 

@@ -1,12 +1,12 @@
 ﻿using System.Linq;
+using CsDecompileLib.GotoDefinition;
 using ICSharpCode.Decompiler.CSharp;
 using ICSharpCode.Decompiler.CSharp.Syntax;
 using ICSharpCode.Decompiler.TypeSystem;
-using CsDecompileLib.IlSpy;
 
-namespace CsDecompileLib.GotoDefinition;
+namespace CsDecompileLib.IlSpy.Ast;
 
-public class TypeInTypeFinder : IDefinitionInDecompiledSyntaxTreeFinder<ITypeDefinition>
+public class TypeNodeInTypeAstFinder : IDefinitionInDecompiledSyntaxTreeFinder<ITypeDefinition>
 {
     public AstNode Find(
         ITypeDefinition symbol,

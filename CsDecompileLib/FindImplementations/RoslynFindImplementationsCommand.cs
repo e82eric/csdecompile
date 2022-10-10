@@ -7,12 +7,12 @@ using CsDecompileLib.Roslyn;
 
 namespace CsDecompileLib.FindImplementations;
 
-public class RosylynFindImplementationsCommand : INavigationCommand<FindImplementationsResponse>
+public class RoslynFindImplementationsCommand : INavigationCommand<FindImplementationsResponse>
 {
     private readonly ISymbol _symbol;
     private readonly IOmniSharpWorkspace _workspace;
 
-    public RosylynFindImplementationsCommand(
+    public RoslynFindImplementationsCommand(
         ISymbol symbol,
         IOmniSharpWorkspace workspace)
     {

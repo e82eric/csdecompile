@@ -71,8 +71,8 @@
         <Compile Include="..\..\CsDecompileLib\GetSource\DecompiledSourceResponse.cs">
           <Link>LinkedModels\DecompiledSourceResponse.cs</Link>
         </Compile>
-        <Compile Include="..\..\CsDecompileLib\GotoDefinition\DecompileGotoDefinitionResponse.cs">
-          <Link>LinkedModels\DecompileGotoDefinitionResponse.cs</Link>
+        <Compile Include="..\..\CsDecompileLib\GotoDefinition\GotoDefinitionResponse.cs">
+          <Link>LinkedModels\GotoDefinitionResponse.cs</Link>
         </Compile>
         <Compile Include="..\..\CsDecompileLib\LocationRequest.cs">
           <Link>LinkedModels\LocationRequest.cs</Link>
@@ -114,6 +114,8 @@
         <Compile Include="ExternalSource\FindUsages\ExternalFindUsagesTypeAsMethodTests.cs" />
         <Compile Include="ExternalSource\FindUsages\ExternalFindUsagesTypeAsVariableTests.cs" />
         <Compile Include="ExternalSource\FindUsages\ExternalFindUsagesVariableTests.cs" />
+        <Compile Include="ExternalSource\GetSymbolInfo\ExternalGetSymbolInfoTestBase.cs" />
+        <Compile Include="ExternalSource\GetSymbolInfo\ExternalGetSymbolInfoTests.cs" />
         <Compile Include="ExternalSource\GotoDefinition\ExternalGotoDefinitionBaseClassTests.cs" />
         <Compile Include="ExternalSource\GotoDefinition\ExternalGotoDefinitionConstructorTests.cs" />
         <Compile Include="ExternalSource\GotoDefinition\ExternalGotoDefinitionDefaultConstructorTests.cs" />
@@ -131,7 +133,7 @@
         <Compile Include="InSource\FindImplementations\InSourceFindImplementationsSymbolNotFoundAtLocationTests.cs" />
         <Compile Include="InSource\FindUsages\InSourceFindUsagesFileDoesntExistTests.cs" />
         <Compile Include="InSource\FindUsages\InSourceFindUsagesSymbolNotFoundAtLocationTests.cs" />
-        <Compile Include="InSource\GotoDefinition\InSourceGetSymbolInfoTests.cs" />
+        <Compile Include="InSource\GetSymbolInfo\InSourceGetSymbolInfoTests.cs" />
         <Compile Include="ResponseLocationConverter.cs" />
         <Compile Include="InSourceBase.cs" />
         <Compile Include="InSource\FindImplementations\FindImplementationsTests.cs" />

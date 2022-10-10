@@ -2,10 +2,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ICSharpCode.Decompiler.TypeSystem;
-using Microsoft.CodeAnalysis;
-using SymbolInfo = CsDecompileLib.Roslyn.SymbolInfo;
 
-namespace CsDecompileLib.GotoDefinition;
+namespace CsDecompileLib.GetSymbolInfo;
 
 public class IlSpyMethodSymbolInfoCommand : INavigationCommand<Roslyn.SymbolInfo>
 {

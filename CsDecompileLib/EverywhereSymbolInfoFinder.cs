@@ -52,11 +52,11 @@ public class EverywhereSymbolInfoFinder<TCommandResponseType>
             return symbolNotFoundAtLocationCommand;
         }
         
-        var rosylnCommand = _commandFactory.GetForInSource(roslynSymbol);
+        var roslynCommand = _commandFactory.GetForInSource(roslynSymbol);
             
         if (roslynSymbol.Locations.First().IsInSource)
         {
-            return rosylnCommand;
+            return roslynCommand;
         }
             
         INavigationCommand<TCommandResponseType> ilSpyCommand = default;
@@ -130,7 +130,7 @@ public class EverywhereSymbolInfoFinder<TCommandResponseType>
                 throw new Exception();
         }
 
-        var result = new EverywhereImplementationsCommand2<TCommandResponseType>(rosylnCommand, ilSpyCommand);
+        var result = new EverywhereImplementationsCommand<TCommandResponseType>(roslynCommand, ilSpyCommand);
         return result;
     }
         
@@ -153,9 +153,4 @@ public class EverywhereSymbolInfoFinder<TCommandResponseType>
 
     public static int GetPositionFromLineAndOffset(SourceText text, int lineNumber, int offset)
         => text.Lines[lineNumber].Start + offset;
-
-    public TCommandResponseType Find(DecompiledLocationRequest request)
-    {
-        throw new NotImplementedException();
-    }
 }

@@ -40,16 +40,5 @@ namespace StdIoHost
         public Stream ArgumentsStream { get; set; }
 
         public RequestPacket() : base("request") { }
-
-        public ResponsePacket Reply()
-        {
-            return new ResponsePacket()
-            {
-                Request_seq = Seq,
-                Success = true,
-                Running = true,
-                Command = Command
-            };
-        }
     }
 }

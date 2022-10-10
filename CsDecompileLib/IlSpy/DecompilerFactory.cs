@@ -17,7 +17,7 @@ public class DecompilerFactory
         var typeSystem = _typeSystemFactory.GetTypeSystem(projectAssemblyFilePath);
         if (typeSystem == null)
         {
-            throw new Exception($"Could not load typbe system for {projectAssemblyFilePath}");
+            throw new Exception($"Could not load type system for {projectAssemblyFilePath}");
         }
         var result = new Decompiler(typeSystem);
         return result;

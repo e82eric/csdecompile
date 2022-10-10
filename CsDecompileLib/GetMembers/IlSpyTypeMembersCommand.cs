@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using ICSharpCode.Decompiler.TypeSystem;
-using CsDecompileLib.FindImplementations;
 
 namespace CsDecompileLib.GetMembers;
 

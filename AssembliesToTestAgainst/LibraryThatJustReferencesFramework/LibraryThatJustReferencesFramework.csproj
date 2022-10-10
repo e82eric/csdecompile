@@ -71,6 +71,8 @@
         <Compile Include="ExternalGotoDefinitionMethodTarget.cs" />
         <Compile Include="ExternalGotoDefinitionPropertyTarget.cs" />
         <Compile Include="ExternalGotoDefinitionVariableTarget.cs" />
+        <Compile Include="ExternalSourceGetSymbolInfoUser.cs" />
+        <Compile Include="ExternalSourceGetSymbolInfoTarget.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

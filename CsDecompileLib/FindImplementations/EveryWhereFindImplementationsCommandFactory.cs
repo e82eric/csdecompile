@@ -34,7 +34,7 @@ public class EveryWhereFindImplementationsCommandFactory<TResponseType>
         if (symbol != null)
         {
             var roslynCommand = _commandCommandFactory.GetForInSource(symbol);
-            var result = new EverywhereImplementationsCommand2<TResponseType>(roslynCommand, ilSpyCommand);
+            var result = new EverywhereImplementationsCommand<TResponseType>(roslynCommand, ilSpyCommand);
 
             return result;
         }
@@ -55,7 +55,7 @@ public class EveryWhereFindImplementationsCommandFactory<TResponseType>
         {
             var roslynCommand = _commandCommandFactory.GetForInSource(symbol);
 
-            var result = new EverywhereImplementationsCommand2<TResponseType>(roslynCommand, ilSpyCommand);
+            var result = new EverywhereImplementationsCommand<TResponseType>(roslynCommand, ilSpyCommand);
             return result;
         }
 
@@ -69,7 +69,7 @@ public class EveryWhereFindImplementationsCommandFactory<TResponseType>
         if (propertySymbol != null)
         {
             var roslynCommand = _commandCommandFactory.GetForInSource(propertySymbol);
-            var result = new EverywhereImplementationsCommand2<TResponseType>(roslynCommand, ilSpyCommand);
+            var result = new EverywhereImplementationsCommand<TResponseType>(roslynCommand, ilSpyCommand);
             
             return result;
         }
@@ -85,7 +85,7 @@ public class EveryWhereFindImplementationsCommandFactory<TResponseType>
         {
             var roslynCommand = _commandCommandFactory.GetForInSource(roslynEvent);
 
-            var result = new EverywhereImplementationsCommand2<TResponseType>(roslynCommand, ilSpyCommand);
+            var result = new EverywhereImplementationsCommand<TResponseType>(roslynCommand, ilSpyCommand);
             return result;
         }
 
@@ -114,7 +114,7 @@ public class EveryWhereFindImplementationsCommandFactory<TResponseType>
         {
             var roslynCommand = _commandCommandFactory.GetForInSource(roslynField);
 
-            var result = new EverywhereImplementationsCommand2<TResponseType>(roslynCommand, ilSpyCommand);
+            var result = new EverywhereImplementationsCommand<TResponseType>(roslynCommand, ilSpyCommand);
             return result;
         }
         return ilSpyCommand;

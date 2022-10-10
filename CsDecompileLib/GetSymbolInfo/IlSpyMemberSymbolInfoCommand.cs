@@ -2,13 +2,13 @@ using System.Threading.Tasks;
 using CsDecompileLib.Roslyn;
 using ICSharpCode.Decompiler.TypeSystem;
 
-namespace CsDecompileLib.GotoDefinition;
+namespace CsDecompileLib.GetSymbolInfo;
 
-public class IlSpyFieldSymbolInfoCommand : INavigationCommand<SymbolInfo>
+public class IlSpyMemberSymbolInfoCommand : INavigationCommand<SymbolInfo>
 {
-    private readonly IField _symbol;
+    private readonly IMember _symbol;
 
-    public IlSpyFieldSymbolInfoCommand(IField symbol)
+    public IlSpyMemberSymbolInfoCommand(IMember symbol)
     {
         _symbol = symbol;
     }

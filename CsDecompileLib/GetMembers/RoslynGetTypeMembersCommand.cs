@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
 using CsDecompileLib.IlSpy;
 using Microsoft.CodeAnalysis;
-using CsDecompileLib.FindImplementations;
 using CsDecompileLib.Roslyn;
 
 namespace CsDecompileLib.GetMembers;

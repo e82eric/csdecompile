@@ -5,7 +5,7 @@ namespace CsDecompileLib.FindUsages;
 
 class TypeDefinitionUsedVisitor : TypeVisitor
 {
-    public readonly ITypeDefinition TypeDefinition;
+    private readonly ITypeDefinition TypeDefinition;
 
     public bool Found { get; set; }
 

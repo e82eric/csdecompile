@@ -30,17 +30,6 @@ namespace CsDecompileLib.IlSpy
                 var projectBinDir = projectDllFile.Directory;
                 LoadDllsInDirectory(projectBinDir);
             });
-            // foreach (var path in projectAssemblyPaths)
-            // {
-            //     var projectDllFile = new FileInfo(path);
-            //     var projectBinDir = projectDllFile.Directory;
-            //     var binDirDlls = projectBinDir.GetFiles("*.dll", SearchOption.AllDirectories);
-            //
-            //     foreach (var dllFilePath in binDirDlls)
-            //     {
-            //         _peFileCache.TryOpen(dllFilePath.FullName, out _);
-            //     }
-            // }
 
             var result = _peFileCache.GetAssemblyCount();
             return result;
@@ -59,18 +48,15 @@ namespace CsDecompileLib.IlSpy
 
         public async Task RunProjectCompilations()
         {
-            var result = new List<Compilation>();
             foreach (var project in _workspace.CurrentSolution.Projects)
             {
                 if (_compilations.TryGetValue(project.AssemblyName, out var compilation))
                 {
-                   result.Add(compilation);
                 }
                 else
                 {
                     compilation = await project.GetCompilationAsync();
                     _compilations.TryAdd(project.AssemblyName, compilation);
-                    result.Add(compilation);
                 }
             }
         }

@@ -1,23 +1,22 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.Elfie.Model;
 
 namespace CsDecompileLib.GotoDefinition;
 
-public class RosylynGotoDefinitionCommand : INavigationCommand<DecompileGotoDefinitionResponse>
+public class RoslynGotoDefinitionCommand : INavigationCommand<GotoDefinitionResponse>
 {
     private readonly ISymbol _symbol;
 
-    public RosylynGotoDefinitionCommand(ISymbol symbol)
+    public RoslynGotoDefinitionCommand(ISymbol symbol)
     {
         _symbol = symbol;
     }
         
-    public Task<ResponsePacket<DecompileGotoDefinitionResponse>> Execute()
+    public Task<ResponsePacket<GotoDefinitionResponse>> Execute()
     {
         var lineSpan = _symbol.Locations.First().GetMappedLineSpan();
-        var result = new DecompileGotoDefinitionResponse
+        var result = new GotoDefinitionResponse
         { 
             Location = new SourceFileInfo
             {
@@ -27,7 +26,7 @@ public class RosylynGotoDefinitionCommand : INavigationCommand<DecompileGotoDefi
             },
         };
 
-        var response = new ResponsePacket<DecompileGotoDefinitionResponse>()
+        var response = new ResponsePacket<GotoDefinitionResponse>()
         {
             Body = result,
             Success = true

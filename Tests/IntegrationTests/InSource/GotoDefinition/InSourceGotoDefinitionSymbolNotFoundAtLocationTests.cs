@@ -25,7 +25,7 @@ public class InSourceGotoDefinitionSymbolNotFoundAtLocationTests : InSourceBase
         };
 
         var response = TestHarness.IoClient
-            .ExecuteCommand<DecompiledLocationRequest, DecompileGotoDefinitionResponse>(request);
+            .ExecuteCommand<DecompiledLocationRequest, GotoDefinitionResponse>(request);
 
         Assert.False(response.Success);
         Assert.AreEqual($"SYMBOL_NOT_FOUND_AT_LOCATION {FilePath}:4:10", response.Message);

@@ -1,11 +1,11 @@
-﻿using CsDecompileLib.IlSpy;
+﻿using CsDecompileLib.GotoDefinition;
 using ICSharpCode.Decompiler.CSharp;
 using ICSharpCode.Decompiler.CSharp.Syntax;
 using ICSharpCode.Decompiler.TypeSystem;
 
-namespace CsDecompileLib.GotoDefinition;
+namespace CsDecompileLib.IlSpy.Ast;
 
-public class MemberInTypeFinder : IDefinitionInDecompiledSyntaxTreeFinder<IMember>
+public class MemberNodeInTypeAstFinder : IDefinitionInDecompiledSyntaxTreeFinder<IMember>
 {
     public AstNode Find(
         IMember handleToSearchFor,

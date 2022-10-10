@@ -5,7 +5,6 @@ using CsDecompileLib.IlSpy;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.FindSymbols;
 using Microsoft.CodeAnalysis.Text;
-using CsDecompileLib.FindImplementations;
 using CsDecompileLib.Roslyn;
 using ISymbol = Microsoft.CodeAnalysis.ISymbol;
 

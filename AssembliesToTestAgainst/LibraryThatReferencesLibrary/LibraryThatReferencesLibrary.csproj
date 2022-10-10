@@ -61,6 +61,7 @@
         <Compile Include="ExternalGotoDefinitionMethodOfGenericTypeCaller.cs" />
         <Compile Include="ExternalGotoDefinitionPropertyCaller.cs" />
         <Compile Include="ExternalGotoDefinitionVariableCaller.cs" />
+        <Compile Include="ExternalSourceGetSymbolInfoCaller.cs" />
         <Compile Include="InSourceFindImplementationsBaseClass.cs" />
         <Compile Include="InSourceFindImplementationsBaseClassInheritor.cs" />
         <Compile Include="InSourceGetSymbolInfoCaller.cs" />

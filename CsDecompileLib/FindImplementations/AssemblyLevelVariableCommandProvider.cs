@@ -1,5 +1,6 @@
 ﻿using CsDecompileLib.GotoDefinition;
 using CsDecompileLib.IlSpy;
+using CsDecompileLib.IlSpy.Ast;
 using ICSharpCode.Decompiler.CSharp;
 using ICSharpCode.Decompiler.CSharp.Syntax;
 using ICSharpCode.Decompiler.Semantics;
@@ -11,17 +12,17 @@ public class AssemblyLevelVariableCommandProvider<TCommandType> : IVariableComma
 {
     private readonly ICommandFactory<TCommandType> _commandCommandFactory;
     private readonly DecompilerFactory _decompilerFactory;
-    private readonly MemberInTypeFinder _memberInTypeFinder;
+    private readonly MemberNodeInTypeAstFinder _memberNodeInTypeAstFinder;
     private readonly IlSpySymbolFinder _symbolFinder;
 
     public AssemblyLevelVariableCommandProvider(
         DecompilerFactory decompilerFactory,
-        MemberInTypeFinder memberInTypeFinder,
+        MemberNodeInTypeAstFinder memberNodeInTypeAstFinder,
         IlSpySymbolFinder symbolFinder,
         ICommandFactory<TCommandType> commandCommandFactory)
     {
         _decompilerFactory = decompilerFactory;
-        _memberInTypeFinder = memberInTypeFinder;
+        _memberNodeInTypeAstFinder = memberNodeInTypeAstFinder;
         _symbolFinder = symbolFinder;
         _commandCommandFactory = commandCommandFactory;
     }
@@ -41,7 +42,7 @@ public class AssemblyLevelVariableCommandProvider<TCommandType> : IVariableComma
             var memberSymbol = methodNodeFromAssembly.GetSymbol() as IMember;
             var containingTypeDefinition = _symbolFinder.FindParentType(methodNodeFromAssembly);
             var (syntaxTree1, sourceText) = decompiler.Run(containingTypeDefinition);
-            var typeLevelMethodNode = _memberInTypeFinder.Find(memberSymbol, syntaxTree1);
+            var typeLevelMethodNode = _memberNodeInTypeAstFinder.Find(memberSymbol, syntaxTree1);
             
             var variableCommand = _commandCommandFactory.GetForVariable(
                 variableResolveResult.Variable,

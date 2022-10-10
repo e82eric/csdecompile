@@ -9,14 +9,14 @@ using Microsoft.CodeAnalysis.Text;
 
 namespace CsDecompileLib.Roslyn
 {
-    public class RoslynLocationToCommandFactory<TCommandType>
+    public class RoslynLocationCommandFactory<TCommandType>
         : INavigationCommandFactoryAsync<TCommandType, DecompiledLocationRequest>
     {
         private readonly IOmniSharpWorkspace _workspace;
         private readonly IlSpySymbolFinder _ilSpySymbolFinder;
         private readonly ICommandFactory<TCommandType> _gotoDefinitionCommandFactory;
 
-        public RoslynLocationToCommandFactory(
+        public RoslynLocationCommandFactory(
             IOmniSharpWorkspace workspace,
             IlSpySymbolFinder ilSpySymbolFinder,
             ICommandFactory<TCommandType> gotoDefinitionCommandFactory)

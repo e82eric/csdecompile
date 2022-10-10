@@ -13,7 +13,7 @@ public class InSourceBase : TestBase
     
     protected void RequestAndAssertCorrectLine(string command, string filePath, int column, int line, string expected)
     {
-        var response = ExecuteRequest<DecompileGotoDefinitionResponse>(command, filePath, column, line);
+        var response = ExecuteRequest<GotoDefinitionResponse>(command, filePath, column, line);
 
         AssertInSource(response, expected);
     }
@@ -38,7 +38,7 @@ public class InSourceBase : TestBase
         return response;
     }
 
-    private static void AssertInSource(ResponsePacket<DecompileGotoDefinitionResponse> response, string expected)
+    private static void AssertInSource(ResponsePacket<GotoDefinitionResponse> response, string expected)
     {
         Assert.AreEqual(response.Body.Location.Type, LocationType.SourceCode);
         AssertInSourceLocation(response.Body.Location, expected);

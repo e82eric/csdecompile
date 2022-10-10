@@ -21,7 +21,7 @@ namespace CsDecompileLib.IlSpy
             _assemblyResolverFactory = assemblyResolverFactory;
         }
 
-        public IEnumerable<PEFile> GetModulesInScope(IEntity entity)
+        private IEnumerable<PEFile> GetModulesInScope(IEntity entity)
         {
             Accessibility effectiveAccessibility;
             ITypeDefinition typeScope;
@@ -169,7 +169,6 @@ namespace CsDecompileLib.IlSpy
             return accessibility;
         }
 
-        #region Find modules
         private IEnumerable<PEFile> GetReferencingModules(PEFile self, ITypeDefinition typeScope)
         {
             var result = new List<PEFile>();
@@ -248,6 +247,5 @@ namespace CsDecompileLib.IlSpy
             }
             return hasRef;
         }
-        #endregion
     }
 }

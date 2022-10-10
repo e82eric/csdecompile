@@ -4,7 +4,7 @@ using CsDecompileLib.IlSpy;
 
 namespace CsDecompileLib.GetMembers;
 
-public class DecompileAssemblyHandler : HandlerBase<DecompileAssemblyRequest, DecompileGotoDefinitionResponse>
+public class DecompileAssemblyHandler : HandlerBase<DecompileAssemblyRequest, GotoDefinitionResponse>
 {
     private readonly DecompilerFactory _decompilerFactory;
 
@@ -14,11 +14,11 @@ public class DecompileAssemblyHandler : HandlerBase<DecompileAssemblyRequest, De
         _decompilerFactory = decompilerFactory;
     }
     
-    public override Task<ResponsePacket<DecompileGotoDefinitionResponse>> Handle(DecompileAssemblyRequest request)
+    public override Task<ResponsePacket<GotoDefinitionResponse>> Handle(DecompileAssemblyRequest request)
     {
         var decompile = _decompilerFactory.Get(request.AssemblyFilePath);
         var (_, source) = decompile.DecompileWholeModule();
-        var result = new DecompileGotoDefinitionResponse
+        var result = new GotoDefinitionResponse
         {
             Location = new DecompileAssemblyInfo
             {
