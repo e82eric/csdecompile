@@ -64,6 +64,7 @@
         <Compile Include="ExternalSourceGetSymbolInfoCaller.cs" />
         <Compile Include="InSourceFindImplementationsBaseClass.cs" />
         <Compile Include="InSourceFindImplementationsBaseClassInheritor.cs" />
+        <Compile Include="InSourceGetMembersTarget.cs" />
         <Compile Include="InSourceGetSymbolInfoCaller.cs" />
         <Compile Include="InSourceGetSymbolInfoTarget.cs" />
         <Compile Include="InSourceGotoDefinitionConstructorCaller.cs" />

@@ -30,6 +30,7 @@ public class RoslynGetTypeMembersCommand : INavigationCommand<FindImplementation
                 foreach (var location in member.Locations)
                 {
                     var sourceFileInfo = location.GetSourceLineInfo(_workspace);
+                    sourceFileInfo.ContainingTypeShortName = _symbol.Name;
                     body.Implementations.Add(sourceFileInfo);
                 }
             }

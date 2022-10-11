@@ -134,6 +134,7 @@
         <Compile Include="InSource\FindUsages\InSourceFindUsagesFileDoesntExistTests.cs" />
         <Compile Include="InSource\FindUsages\InSourceFindUsagesSymbolNotFoundAtLocationTests.cs" />
         <Compile Include="InSource\GetSymbolInfo\InSourceGetSymbolInfoTests.cs" />
+        <Compile Include="InSource\GetTypeMembers\GetTypeMembersTests.cs" />
         <Compile Include="ResponseLocationConverter.cs" />
         <Compile Include="InSourceBase.cs" />
         <Compile Include="InSource\FindImplementations\FindImplementationsTests.cs" />
