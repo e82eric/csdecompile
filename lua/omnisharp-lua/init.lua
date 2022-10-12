@@ -553,6 +553,7 @@ M._openSourceFile = function(location)
 	timer:start(100, 0, vim.schedule_wrap(function()
 		local bufnr = vim.uri_to_bufnr(location.FileName)
 		vim.api.nvim_win_set_buf(0, bufnr)
+		vim.api.nvim_buf_set_option(bufnr, "buflisted", true)
 		M._setCursorFromLocation(0, location)
 	end))
 end
@@ -571,7 +572,7 @@ M._setBufferTextFromDecompiledSource = function(location, sourceText, bufnr, win
 			elseif location.Type == 2 then
 				decompileFileName = location.AssemblyName .. '.cs'
 			end
-			local bufnr = vim.uri_to_bufnr("c:\\TEMP\\DECOMPILED_" .. decompileFileName)
+			bufnr = vim.uri_to_bufnr("c:\\TEMP\\DECOMPILED_" .. decompileFileName)
 		end
 		vim.list_extend(lines, vim.split(sourceText, "\r\n"))
 		vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, lines)
