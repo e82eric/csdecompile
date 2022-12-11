@@ -5,7 +5,7 @@ using ICSharpCode.Decompiler.TypeSystem;
 
 namespace CsDecompileLib.GetSymbolInfo;
 
-public class IlSpyMethodSymbolInfoCommand : INavigationCommand<Roslyn.SymbolInfo>
+public class IlSpyMethodSymbolInfoCommand : IlSpySymbolInfoCommandBase, INavigationCommand<Roslyn.SymbolInfo>
 {
     private readonly IMethod _symbol;
 
@@ -17,11 +17,8 @@ public class IlSpyMethodSymbolInfoCommand : INavigationCommand<Roslyn.SymbolInfo
     public Task<ResponsePacket<Roslyn.SymbolInfo>> Execute()
     {
         var result = new Roslyn.SymbolInfo();
-        result.Properties.Add("AssemblyPath", _symbol?.ParentModule.PEFile.FileName);
+        AddIlSpyEntityCommonHeaderProperties(result, _symbol);
         result.Properties.Add("FullName", _symbol.ReflectionName);
-        result.Properties.Add("ShortName", _symbol.Name);
-        result.Properties.Add("Namespace", _symbol.Namespace);
-        result.Properties.Add("Kind", _symbol.SymbolKind.ToString());
         result.Properties.Add("ReturnType", _symbol.ReturnType.ReflectionName);
 
         var parameters = new Dictionary<string, string>();

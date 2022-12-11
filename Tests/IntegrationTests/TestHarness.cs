@@ -37,6 +37,12 @@ static class TestHarness
 
     public static StdIoClient IoClient => StdIoClient;
 
+    public static string GetLibraryThatReferencesLibraryAssemblyFilePath()
+    {
+        var result = @$"{_projectsToTestAgainstRoot}\LibraryThatReferencesLibrary\bin\debug\LibraryThatReferencesLibrary.dll";
+        return result;
+    }
+
     public static string GetLibraryThatReferencesLibraryFilePath(string fileName)
     {
         var result = @$"{_projectsToTestAgainstRoot}\LibraryThatReferencesLibrary\{fileName}";

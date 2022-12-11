@@ -23,6 +23,8 @@ public class ResponseLocationConverter : CustomCreationConverter<ResponseLocatio
         {
             case LocationType.Decompiled:
                 return new DecompileInfo();
+            case LocationType.DecompiledAssembly:
+                return new DecompileInfo();
             case LocationType.SourceCode:
                 return new SourceFileInfo();
             default:

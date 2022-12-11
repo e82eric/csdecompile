@@ -62,6 +62,12 @@
         <Compile Include="..\..\CsDecompileLib\GetMembers\Assembly.cs">
           <Link>LinkedModels\Assembly.cs</Link>
         </Compile>
+        <Compile Include="..\..\CsDecompileLib\GetMembers\DecompileAssemblyRequest.cs">
+          <Link>LinkedModels\DecompileAssemblyRequest.cs</Link>
+        </Compile>
+        <Compile Include="..\..\CsDecompileLib\GetMembers\DecompileAssemblyResponse.cs">
+          <Link>LinkedModels\DecompileAssemblyResponse.cs</Link>
+        </Compile>
         <Compile Include="..\..\CsDecompileLib\GetMembers\GetAssembliesResponse.cs">
           <Link>LinkedModels\GetAssembliesResponse.cs</Link>
         </Compile>
@@ -92,12 +98,17 @@
         <Compile Include="..\..\CsDecompileLib\ResponsePacket.cs">
           <Link>LinkedModels\ResponsePacket.cs</Link>
         </Compile>
-        <Compile Include="..\..\CsDecompileLib\Roslyn\SymbolInfo.cs">
-          <Link>LinkedModels\SymbolInfo.cs</Link>
-        </Compile>
         <Compile Include="..\..\CsDecompileLib\SourceFileInfo.cs">
           <Link>LinkedModels\SourceFileInfo.cs</Link>
         </Compile>
+        <Compile Include="..\..\CsDecompileLib\SymbolInfo.cs">
+          <Link>LinkedModels\SymbolInfo.cs</Link>
+        </Compile>
+        <Compile Include="DecompileAssembly\DecompileAssemblyAndFindImplementationsTests.cs" />
+        <Compile Include="DecompileAssembly\DecompileAssemblyAndFindUsagesTests.cs" />
+        <Compile Include="DecompileAssembly\DecompileAssemblyAndGotoDefinitionTests.cs" />
+        <Compile Include="DecompileAssembly\DecompileAssemblyGetSymbolInfo.cs" />
+        <Compile Include="DecompileAssembly\DecompileAssemblyTestBase.cs" />
         <Compile Include="DecompilerClient.cs" />
         <Compile Include="ExternalSource\FindImplementations\ExternalFindImplementationsBase.cs" />
         <Compile Include="ExternalSource\FindImplementations\ExternalFindImplementationsBase2.cs" />

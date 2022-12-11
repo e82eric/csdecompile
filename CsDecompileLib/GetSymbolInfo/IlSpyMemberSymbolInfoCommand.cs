@@ -4,7 +4,7 @@ using ICSharpCode.Decompiler.TypeSystem;
 
 namespace CsDecompileLib.GetSymbolInfo;
 
-public class IlSpyMemberSymbolInfoCommand : INavigationCommand<SymbolInfo>
+public class IlSpyMemberSymbolInfoCommand : IlSpySymbolInfoCommandBase, INavigationCommand<SymbolInfo>
 {
     private readonly IMember _symbol;
 
@@ -16,12 +16,10 @@ public class IlSpyMemberSymbolInfoCommand : INavigationCommand<SymbolInfo>
     public Task<ResponsePacket<SymbolInfo>> Execute()
     {
         var result = new SymbolInfo();
-        result.Properties.Add("AssemblyPath", _symbol?.ParentModule.PEFile.FileName);
         result.Properties.Add("FullName", _symbol.ReflectionName);
-        result.Properties.Add("ShortName", _symbol.Name);
-        result.Properties.Add("Namespace", _symbol.Namespace);
-        result.Properties.Add("Kind", _symbol.SymbolKind.ToString());
         result.Properties.Add("ReturnType", _symbol.ReturnType.ReflectionName);
+
+        AddIlSpyEntityCommonHeaderProperties(result, _symbol);
 
         var response = new ResponsePacket<SymbolInfo>
         {

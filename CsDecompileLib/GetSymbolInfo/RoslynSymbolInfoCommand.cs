@@ -18,9 +18,11 @@ public class RoslynSymbolInfoCommand : INavigationCommand<Roslyn.SymbolInfo>
     {
         var result = new Roslyn.SymbolInfo();
         result.Properties.Add("FullName", _symbol.ToDisplayString(SymbolDisplayFormat.MinimallyQualifiedFormat));
-        result.Properties.Add("ShortName", _symbol.Name);
-        result.Properties.Add("Namespace", _symbol.ContainingNamespace.ToDisplayString());
-        result.Properties.Add("Kind", _symbol.Kind.ToString());
+        
+        result.HeaderProperties.Add("AssemblyPath", _symbol.ToDisplayString(SymbolDisplayFormat.MinimallyQualifiedFormat));
+        result.HeaderProperties.Add("Namespace", _symbol.ContainingNamespace.ToDisplayString());
+        result.HeaderProperties.Add("DisplayName", _symbol.Name);
+        result.HeaderProperties.Add("Kind", _symbol.Kind.ToString());
 
         if (_symbol is ILocalSymbol localSymbol)
         {

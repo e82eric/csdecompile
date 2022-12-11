@@ -14,7 +14,7 @@ class StdioLogger : BaseLogger
 
     protected override void WriteMessage(LogLevel logLevel, string message)
     {
-        var packet = new EventPacket()
+        var packet = new EventPacket
         {
             Event = "log",
             Body = new

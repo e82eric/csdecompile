@@ -25,7 +25,6 @@ public class DecompileAssemblyHandler : HandlerBase<DecompileAssemblyRequest, Go
                 AssemblyFilePath = request.AssemblyFilePath,
                 AssemblyName = request.AssemblyName,
                 FileName = $"{request.AssemblyName}.cs",
-                SourceText = source,
                 Column = 1,
                 Line = 1
             },

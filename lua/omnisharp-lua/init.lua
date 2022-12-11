@@ -446,7 +446,7 @@ M.HandleGetSymbolName = function(response)
 	print(vim.inspect(response))
 	local timer = vim.loop.new_timer()
 	timer:start(100, 0, vim.schedule_wrap(function()
-		M._navigationFloatingWin(response.Body.Properties)
+		M._navigationFloatingWin(response.Body)
 	end))
 end
 
@@ -739,9 +739,12 @@ M._navigationFloatingWin = function(data)
 	)
 
 	local toDisplay = {}
+	local headerText = data.DisplayName .. ' (' .. data.Kind .. ')'
+	table.insert(toDisplay, headerText)
+	table.insert(toDisplay, '')
 
 	print(vim.inspect(data))
-	for key, value in pairs(data) do
+	for key, value in pairs(data.Properties) do
 		print(key)
 		if (type(value) == "table") then
 			print(vim.inspect(value))
@@ -752,7 +755,7 @@ M._navigationFloatingWin = function(data)
 			end
 		else
 			print(value)
-			local l = key .. ': ' .. value
+			local l = M._blankIfNil(key) .. ': ' .. M._blankIfNil(value)
 			table.insert(toDisplay, l)
 		end
 

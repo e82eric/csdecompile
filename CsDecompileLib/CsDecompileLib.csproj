@@ -214,6 +214,7 @@
         <Compile Include="CachedStringBuilder.cs" />
         <Compile Include="DecompileAssemblyInfo.cs" />
         <Compile Include="DecompileInfo.cs" />
+        <Compile Include="DecompileWorkspace.cs" />
         <Compile Include="Endpoints.cs" />
         <Compile Include="EverywhereSymbolInfoFinder.cs" />
         <Compile Include="ExternalAssemblies\AddExternalAssemblyDirectoryHandler.cs" />
@@ -301,7 +302,6 @@
         <Compile Include="IlSpy\Ast\VariableNodeInTypeAstFinder.cs" />
         <Compile Include="IlSpy\Decompiler.cs" />
         <Compile Include="IlSpy\DecompilerFactory.cs" />
-        <Compile Include="IlSpy\DecompileWorkspace.cs" />
         <Compile Include="IlSpy\AssemblyResolverFactory.cs" />
         <Compile Include="IlSpy\IDecompilerTypeSystemFactory.cs" />
         <Compile Include="IlSpy\IDecompileWorkspace.cs" />
@@ -309,18 +309,18 @@
         <Compile Include="IlSpy\IlSpySymbolFinder.cs" />
         <Compile Include="IlSpy\IlSpyToSourceInfoBase.cs" />
         <Compile Include="IlSpy\IlSpyTypeSystemFactory.cs" />
-        <Compile Include="IlSpy\IOmniSharpWorkspace.cs" />
         <Compile Include="IlSpy\MyAssemblyResolver.cs" />
-        <Compile Include="IlSpy\NoSolutionDecompileWorkspace.cs" />
         <Compile Include="IlSpy\PeFileCache.cs" />
         <Compile Include="IlSpy\SymbolHelper.cs" />
         <Compile Include="INavigationCommand.cs" />
         <Compile Include="DecompiledLocationRequest.cs" />
         <Compile Include="INavigationCommandFactory.cs" />
         <Compile Include="INavigationCommandFactoryAsync.cs" />
+        <Compile Include="IOmniSharpWorkspace.cs" />
         <Compile Include="LocationRequest.cs" />
         <Compile Include="NavigationHandlerBase.cs" />
         <Compile Include="NoOpCommand.cs" />
+        <Compile Include="NoSolutionDecompileWorkspace.cs" />
         <Compile Include="Packet.cs" />
         <Compile Include="RequestPacket.cs" />
         <Compile Include="ResponseLocation.cs" />
@@ -330,7 +330,6 @@
         <Compile Include="Roslyn\RoslynToIlSpyEqualityExtensions.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
         <Compile Include="Roslyn\RoslynLocationCommandFactory.cs" />
-        <Compile Include="Roslyn\SymbolInfo.cs" />
         <Compile Include="SourceFileInfo.cs" />
         <Compile Include="GetSymbolInfo\GetSymbolInfoCommandFactory.cs" />
         <Compile Include="GetSymbolInfo\IlSpyMemberSymbolInfoCommand.cs" />
@@ -339,6 +338,7 @@
         <Compile Include="GetSymbolInfo\IlSpyTypeDefinitionSymbolInfoCommand.cs" />
         <Compile Include="GetSymbolInfo\IlSpyVariableSymbolInfoCommand.cs" />
         <Compile Include="GetSymbolInfo\RoslynSymbolInfoCommand.cs" />
+        <Compile Include="SymbolInfo.cs" />
         <Compile Include="SymbolNotFoundAtLocationCommand.cs" />
     </ItemGroup>
     <ItemGroup>

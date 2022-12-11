@@ -19,7 +19,7 @@ using CsDecompileLib.Roslyn;
 
 namespace StdIoHost;
 
-internal static class OmniSharpApplication
+internal static class HandlerFactory
 {
     private static IOmniSharpWorkspace _workspace;
     // private static ILoggerFactory _loggerFactory;

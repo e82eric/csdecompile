@@ -2,7 +2,6 @@
 using System.IO;
 using System.Text;
 using Newtonsoft.Json.Linq;
-using CsDecompileLib;
 
 namespace StdIoHost
 {

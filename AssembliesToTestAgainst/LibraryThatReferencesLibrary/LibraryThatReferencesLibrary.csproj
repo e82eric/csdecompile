@@ -41,6 +41,9 @@
         <Reference Include="System.Xml" />
     </ItemGroup>
     <ItemGroup>
+        <Compile Include="DecompileAsemblyGetSymbolInfoUser.cs" />
+        <Compile Include="DecompileAssemblyTypeCaller.cs" />
+        <Compile Include="DecompileAssemtlyTypeTarget.cs" />
         <Compile Include="ExternalFindImplementationsBaseClassCaller.cs" />
         <Compile Include="ExternalFindImplementationsInterfaceCaller.cs" />
         <Compile Include="ExternalFindUsagesEnumCaller.cs" />

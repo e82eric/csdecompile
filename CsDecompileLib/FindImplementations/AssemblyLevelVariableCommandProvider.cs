@@ -1,5 +1,4 @@
-﻿using CsDecompileLib.GotoDefinition;
-using CsDecompileLib.IlSpy;
+﻿using CsDecompileLib.IlSpy;
 using CsDecompileLib.IlSpy.Ast;
 using ICSharpCode.Decompiler.CSharp;
 using ICSharpCode.Decompiler.CSharp.Syntax;

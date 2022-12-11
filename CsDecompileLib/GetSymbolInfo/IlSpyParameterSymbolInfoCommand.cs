@@ -4,7 +4,7 @@ using ICSharpCode.Decompiler.TypeSystem;
 
 namespace CsDecompileLib.GetSymbolInfo;
 
-public class IlSpyParameterSymbolInfoCommand : INavigationCommand<SymbolInfo>
+public class IlSpyParameterSymbolInfoCommand : IlSpySymbolInfoCommandBase, INavigationCommand<SymbolInfo>
 {
     private readonly IParameter _symbol;
 
@@ -16,8 +16,7 @@ public class IlSpyParameterSymbolInfoCommand : INavigationCommand<SymbolInfo>
     public Task<ResponsePacket<SymbolInfo>> Execute()
     {
         var result = new SymbolInfo();
-        result.Properties.Add("ShortName", _symbol.Name);
-        result.Properties.Add("Type", _symbol.Type.ReflectionName);
+        AddIlSpyEntityCommonHeaderProperties(result, _symbol);
 
         var response = new ResponsePacket<SymbolInfo>
         {
