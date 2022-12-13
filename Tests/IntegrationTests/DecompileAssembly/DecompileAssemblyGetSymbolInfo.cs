@@ -18,9 +18,9 @@ public class DecompileAssemblyGetSymbolInfo : DecompileAssemblyTestBase
             tokenToRequest: "ExternalSourceGetSymbolInfoTarget",
             new Dictionary<string, object>()
             {
-                { "Kind", "TypeDefinition" },
-                { "ShortName", "ExternalSourceGetSymbolInfoTarget" },
-                { "Namespace", "LibraryThatJustReferencesFramework" }
+                { "FullName", "LibraryThatJustReferencesFramework.ExternalSourceGetSymbolInfoTarget" },
+                { "IsStatic", "False" },
+                { "IsSealed", "False" }
             });
     }
 }

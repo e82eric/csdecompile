@@ -11,28 +11,34 @@ public class InSourceGetSymbolInfoBase : InSourceBase
         string filePath,
         int column,
         int line,
-        string kind,
-        string shortName,
-        string @namespace,
+        Dictionary<string, string> expectedHeaderProperties = null,
         Dictionary<string, object> expectProperties = null)
     {
         if (expectProperties == null)
         {
             expectProperties = new Dictionary<string, object>();
         }
-        expectProperties.Add("Kind", kind);
-        expectProperties.Add("ShortName", shortName);
-        expectProperties.Add("Namespace", @namespace);
         var response = ExecuteRequest<SymbolInfo>(Endpoints.SymbolInfo, filePath, column, line);
-        AssertItemsInProperties(response, expectProperties);
+        AssertItemsInHeaderProperties(response.Body.HeaderProperties, expectedHeaderProperties);
+        AssertItemsInProperties(response.Body.Properties, expectProperties);
     }
 
-    private static void AssertItemsInProperties(ResponsePacket<SymbolInfo> response, Dictionary<string, object> expectedProperties)
+    private static void AssertItemsInProperties(Dictionary<string, object> actualProperties, Dictionary<string, object> expectedProperties)
     {
         foreach (var key in expectedProperties.Keys)
         {
             var expected = expectedProperties[key];
-            var actual = response.Body.Properties[key];
+            var actual = actualProperties[key];
+            Assert.AreEqual(expected, actual);
+        }
+    }
+    
+    private static void AssertItemsInHeaderProperties(Dictionary<string, string> actualProperties, Dictionary<string, string> expectedProperties)
+    {
+        foreach (var key in expectedProperties.Keys)
+        {
+            var expected = expectedProperties[key];
+            var actual = actualProperties[key];
             Assert.AreEqual(expected, actual);
         }
     }

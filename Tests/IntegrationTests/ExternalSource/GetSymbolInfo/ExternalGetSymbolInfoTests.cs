@@ -21,9 +21,9 @@ public class ExternalGetSymbolInfoTests : ExternalGetSymbolInfoTestBase
             tokenToRequest: "ExternalSourceGetSymbolInfoTarget",
             new Dictionary<string, object>()
             {
-                { "Kind", "TypeDefinition" },
-                { "ShortName", "ExternalSourceGetSymbolInfoTarget" },
-                { "Namespace", "LibraryThatJustReferencesFramework" }
+                { "FullName", "LibraryThatJustReferencesFramework.ExternalSourceGetSymbolInfoTarget" },
+                { "IsStatic", "False" },
+                { "IsSealed", "False" }
             });
     }
 
@@ -39,9 +39,9 @@ public class ExternalGetSymbolInfoTests : ExternalGetSymbolInfoTestBase
             tokenToRequest: "ExternalRun",
             new Dictionary<string, object>
             {
-                { "Kind", "Method" },
-                { "ShortName", "ExternalRun" },
-                { "Namespace", "LibraryThatJustReferencesFramework" }
+                { "FullName", "LibraryThatJustReferencesFramework.ExternalSourceGetSymbolInfoTarget.ExternalRun" },
+                { "ReturnType", "System.Void" },
+                // { "Namespace", "LibraryThatJustReferencesFramework" }
             });
     }
     
@@ -57,9 +57,9 @@ public class ExternalGetSymbolInfoTests : ExternalGetSymbolInfoTestBase
             tokenToRequest: "ExternalBasicProperty",
             new Dictionary<string, object>()
             {
-                { "Kind", "Property" },
-                { "ShortName", "ExternalBasicProperty" },
-                { "Namespace", "LibraryThatJustReferencesFramework" }
+                { "FullName", "LibraryThatJustReferencesFramework.ExternalSourceGetSymbolInfoTarget.ExternalBasicProperty" },
+                { "ReturnType", "System.String" },
+                // { "Namespace", "LibraryThatJustReferencesFramework" }
             });
     }
 }

@@ -16,9 +16,17 @@ public class InSourceGetSymbolInfoTests : InSourceGetSymbolInfoBase
             filePath: FilePath,
             column: 23,
             line: 7,
-            "NamedType",
-            "InSourceGetSymbolInfoTarget",
-            "LibraryThatReferencesLibrary");
+            new Dictionary<string, string>()
+            {
+                {"AssemblyPath", "InSourceGetSymbolInfoTarget"},
+                {"Namespace", "LibraryThatReferencesLibrary"},
+                {"DisplayName", "InSourceGetSymbolInfoTarget"},
+                {"Kind", "NamedType"}
+            },
+            new Dictionary<string, object>()
+            {
+                {"FullName", "InSourceGetSymbolInfoTarget"},
+            });
     }
     
     [Test]
@@ -28,9 +36,18 @@ public class InSourceGetSymbolInfoTests : InSourceGetSymbolInfoBase
             filePath: FilePath,
             column: 51,
             line: 7,
-            "Method",
-            ".ctor",
-            "LibraryThatReferencesLibrary");
+            new Dictionary<string, string>()
+            {
+                {"AssemblyPath", "InSourceGetSymbolInfoTarget.InSourceGetSymbolInfoTarget()"},
+                {"Namespace", "LibraryThatReferencesLibrary"},
+                {"DisplayName", ".ctor"},
+                {"Kind", "Method"}
+            },
+            new Dictionary<string, object>()
+            {
+                {"FullName", "InSourceGetSymbolInfoTarget.InSourceGetSymbolInfoTarget()"},
+                {"ReturnType", "void"},
+            });
     }
     
     [Test]
@@ -40,12 +57,17 @@ public class InSourceGetSymbolInfoTests : InSourceGetSymbolInfoBase
             filePath: FilePath,
             column:17,
             line:8,
-            "Method",
-            "Run",
-            "LibraryThatReferencesLibrary",
+            new Dictionary<string, string>()
+            {
+                {"AssemblyPath", "void InSourceGetSymbolInfoTarget.Run()"},
+                {"Namespace", "LibraryThatReferencesLibrary"},
+                {"DisplayName", "Run"},
+                {"Kind", "Method"}
+            },
             new Dictionary<string, object>()
             {
-                {"ReturnType", "void"}
+                {"FullName", "void InSourceGetSymbolInfoTarget.Run()"},
+                {"ReturnType", "void"},
             });
     }
     
@@ -56,8 +78,17 @@ public class InSourceGetSymbolInfoTests : InSourceGetSymbolInfoBase
             filePath: FilePath,
             column:17,
             line:9,
-            "Property",
-            "BasicProperty",
-            "LibraryThatReferencesLibrary");
+            new Dictionary<string, string>()
+            {
+                {"AssemblyPath", "string InSourceGetSymbolInfoTarget.BasicProperty"},
+                {"Namespace", "LibraryThatReferencesLibrary"},
+                {"DisplayName", "BasicProperty"},
+                {"Kind", "Property"}
+            },
+            new Dictionary<string, object>()
+            {
+                {"FullName", "string InSourceGetSymbolInfoTarget.BasicProperty"},
+                {"Type", "string"},
+            });
     }
 }
