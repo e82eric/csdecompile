@@ -50,6 +50,8 @@
         <Compile Include="ExternalFindUsagesEventCaller.cs" />
         <Compile Include="ExternalFindUsagesFieldCaller.cs" />
         <Compile Include="ExternalFindUsagesMethodCaller.cs" />
+        <Compile Include="ExternalFindUsagesMethodOfInterfaceUser1.cs" />
+        <Compile Include="ExternalFindUsagesMethodOfInterfaceUser2.cs" />
         <Compile Include="ExternalFindUsagesTypeAsFieldCaller.cs" />
         <Compile Include="ExternalFindUsagesTypeAsGenericCaller.cs" />
         <Compile Include="ExternalFindUsagesTypeAsMethodCaller.cs" />

@@ -47,6 +47,8 @@
         <Compile Include="ExternalFindUsagesEventCaller.cs" />
         <Compile Include="ExternalFindUsagesEventTarget.cs" />
         <Compile Include="ExternalFindUsagesFieldTarget.cs" />
+        <Compile Include="ExternalFindUsagesMethodOfInterfaceImplementation.cs" />
+        <Compile Include="ExternalFindUsagesMethodOfInterfaceInterface.cs" />
         <Compile Include="ExternalFindUsagesMethodTarget.cs" />
         <Compile Include="ExternalFindUsagesMethodUser.cs" />
         <Compile Include="ExternalFindUsagesPropertyTarget.cs" />

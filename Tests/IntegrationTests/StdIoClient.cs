@@ -51,6 +51,29 @@ namespace IntegrationTests
 
             _startResetEvent.WaitOne(TimeSpan.FromSeconds(30));
         }
+        
+        public void StartNoSolution()
+        {
+            var startInfo = new ProcessStartInfo
+            {
+                FileName = _exePath,
+                Arguments = "--nosolution",
+                RedirectStandardInput = true,
+                RedirectStandardOutput = true,
+                UseShellExecute = false
+            };
+
+            _process = new Process();
+            _process.StartInfo = startInfo;
+            _process.OutputDataReceived += ProcessOnOutputDataReceived;
+            _process.Start();
+
+            _process.BeginOutputReadLine();
+
+            _writer = _process.StandardInput;
+
+            _startResetEvent.WaitOne(TimeSpan.FromSeconds(30));
+        }
 
         public void Stop()
         {

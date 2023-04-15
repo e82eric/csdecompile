@@ -143,7 +143,6 @@ M.GetSolutionLoadingStatus = function()
 end
 
 local on_output = function(err, data)
-	-- print(data)
 	local timer = vim.loop.new_timer()
 	timer:start(100, 0, vim.schedule_wrap(function()
 		log.debug(data)
@@ -158,19 +157,15 @@ local on_output = function(err, data)
 		if messageType == "SOLUTION_PARSED" then
 			M._state.NumberOfProjects	= json.Body.NumberOfProjects
 			M._state.SolutionName = json.Body.SolutionName
-			print(vim.inspect(json))
 		end
 		if messageType == "PROJECT_LOADED" then
 			M._state.NumberOfProjectsLoaded = M._state.NumberOfProjectsLoaded + 1
-			print(vim.inspect(json))
 		end
 		if messageType == "PROJECT_FAILED" then
 			M._state.NumberOfFailedProjects = M._state.NumberOfFailedProjects + 1
-			print(vim.inspect(json))
 		end
 		if messageType == "ASSEMBLIES_LOADED" then
 			M._state.AssembliesLoaded = true
-			print(vim.inspect(json))
 			if M._state.SolutionLoadingState ~= 'done' and
 				M._state.NumberOfProjects > 0 and
 				M._state.NumberOfProjectsLoaded + M._state.NumberOfFailedProjects == M._state.NumberOfProjects and
@@ -206,10 +201,8 @@ end
 M.StartOmnisharp = function (solutionPath)
 	local pluginRootDir = vim.fn.fnamemodify(debug.getinfo(1).source:sub(2), ":h:h:h")
 	M._state['StartSent'] = true
-	print('Starting Decompiler ' .. solutionPath)
 	if solutionPath == nil then
 		solutionPath = vim.fn.expand('%:p')
-		-- M._state.SolutionName = vim.fn.expand('%:p:t')
 	end
 	local job = Job:new({
 		command = pluginRootDir .. '\\StdIoHost\\bin\\Debug\\StdIoHost.exe',
@@ -229,7 +222,6 @@ end
 M.StartOmnisharpNoSolution = function ()
 	local pluginRootDir = vim.fn.fnamemodify(debug.getinfo(1).source:sub(2), ":h:h:h")
 	M._state['StartSent'] = true
-	print('Starting Decompiler (No Solution)')
 	local job = Job:new({
 		command = pluginRootDir .. '\\StdIoHost\\bin\\Debug\\StdIoHost.exe',
 		args = { "--nosolution" },
@@ -302,7 +294,6 @@ M.StartAddExternalDirectory = function(directoryFilePath)
 end
 
 M.HandleAddExternalDirectory = function(response)
-	print(vim.inspect(response))
 end
 
 M.StartGetAssemblies = function()
@@ -443,7 +434,6 @@ M.StartGetSymbolName = function()
 end
 
 M.HandleGetSymbolName = function(response)
-	print(vim.inspect(response))
 	local timer = vim.loop.new_timer()
 	timer:start(100, 0, vim.schedule_wrap(function()
 		M._navigationFloatingWin(response.Body)
@@ -512,7 +502,6 @@ M._openSourceFileOrDecompile = function(value)
 end
 
 M.HandleDecompiledSource = function(response, data)
-	print(vim.inspect(response))
 	local body = response.Body
 	local location = body.Location
 	local bufnr = data.BufferNumber
@@ -743,18 +732,14 @@ M._navigationFloatingWin = function(data)
 	table.insert(toDisplay, headerText)
 	table.insert(toDisplay, '')
 
-	print(vim.inspect(data))
 	for key, value in pairs(data.Properties) do
-		print(key)
 		if (type(value) == "table") then
-			print(vim.inspect(value))
 			table.insert(toDisplay, key)
 			for innerKey, innerValue in pairs(value) do
 				local l = '- ' .. innerKey .. ': ' .. innerValue
 				table.insert(toDisplay, l)
 			end
 		else
-			print(value)
 			local l = M._blankIfNil(key) .. ': ' .. M._blankIfNil(value)
 			table.insert(toDisplay, l)
 		end

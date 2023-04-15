@@ -7,6 +7,7 @@ namespace IntegrationTests;
 static class TestHarness
 {
     private static StdIoClient StdIoClient;
+    private static StdIoClient StdIoNoSolutionClient;
     private static string _projectsToTestAgainstRoot;
 
     public static void Init()
@@ -27,16 +28,25 @@ static class TestHarness
         TestContext.Out.WriteLine($"Resolved TargetSolutionPath: {targetSolutionPath}");
         
         StdIoClient = new StdIoClient(exePath, targetSolutionPath);
+        StdIoNoSolutionClient = new StdIoClient(exePath, targetSolutionPath);
         IoClient.Start();
+        IoNoSolutionClient.StartNoSolution();
     }
 
     public static void Destroy()
     {
         IoClient.Stop();
+        IoNoSolutionClient.Stop();
     }
 
     public static StdIoClient IoClient => StdIoClient;
+    public static StdIoClient IoNoSolutionClient => StdIoNoSolutionClient;
 
+    public static string GetLibraryThatReferencesLibraryAssemblyBinDir()
+    {
+        var result = @$"{_projectsToTestAgainstRoot}\LibraryThatReferencesLibrary\bin\debug";
+        return result;
+    }
     public static string GetLibraryThatReferencesLibraryAssemblyFilePath()
     {
         var result = @$"{_projectsToTestAgainstRoot}\LibraryThatReferencesLibrary\bin\debug\LibraryThatReferencesLibrary.dll";

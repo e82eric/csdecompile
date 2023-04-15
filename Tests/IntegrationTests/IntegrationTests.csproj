@@ -56,6 +56,12 @@
         <Compile Include="..\..\CsDecompileLib\Endpoints.cs">
           <Link>LinkedModels\Endpoints.cs</Link>
         </Compile>
+        <Compile Include="..\..\CsDecompileLib\ExternalAssemblies\AddExternalAssemblyDirectoryRequest.cs">
+          <Link>LinkedModels\AddExternalAssemblyDirectoryRequest.cs</Link>
+        </Compile>
+        <Compile Include="..\..\CsDecompileLib\ExternalAssemblies\AddExternalAssemblyDirectoryResponse.cs">
+          <Link>LinkedModels\AddExternalAssemblyDirectoryResponse.cs</Link>
+        </Compile>
         <Compile Include="..\..\CsDecompileLib\FindImplementationsResponse.cs">
           <Link>LinkedModels\FindImplementationsResponse.cs</Link>
         </Compile>
@@ -70,6 +76,9 @@
         </Compile>
         <Compile Include="..\..\CsDecompileLib\GetMembers\GetAssembliesResponse.cs">
           <Link>LinkedModels\GetAssembliesResponse.cs</Link>
+        </Compile>
+        <Compile Include="..\..\CsDecompileLib\GetMembers\GetTypesRequest.cs">
+          <Link>LinkedModels\GetTypesRequest.cs</Link>
         </Compile>
         <Compile Include="..\..\CsDecompileLib\GetSource\DecompiledSourceRequest.cs">
           <Link>LinkedModels\DecompiledSourceRequest.cs</Link>
@@ -104,6 +113,8 @@
         <Compile Include="..\..\CsDecompileLib\SymbolInfo.cs">
           <Link>LinkedModels\SymbolInfo.cs</Link>
         </Compile>
+        <Compile Include="AddExternalDirectory\AddExternalDirectoryAndFindUsagesTests.cs" />
+        <Compile Include="AddExternalDirectory\AddExternalDirectoryTestBase.cs" />
         <Compile Include="DecompileAssembly\DecompileAssemblyAndFindImplementationsTests.cs" />
         <Compile Include="DecompileAssembly\DecompileAssemblyAndFindUsagesTests.cs" />
         <Compile Include="DecompileAssembly\DecompileAssemblyAndGotoDefinitionTests.cs" />
@@ -146,6 +157,7 @@
         <Compile Include="InSource\FindUsages\InSourceFindUsagesSymbolNotFoundAtLocationTests.cs" />
         <Compile Include="InSource\GetSymbolInfo\InSourceGetSymbolInfoTests.cs" />
         <Compile Include="InSource\GetTypeMembers\GetTypeMembersTests.cs" />
+        <Compile Include="Models\DecompiledFindImplementationsResponse.cs" />
         <Compile Include="ResponseLocationConverter.cs" />
         <Compile Include="InSourceBase.cs" />
         <Compile Include="InSource\FindImplementations\FindImplementationsTests.cs" />
