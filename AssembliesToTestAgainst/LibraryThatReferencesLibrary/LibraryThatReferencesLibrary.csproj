@@ -48,10 +48,16 @@
         <Compile Include="ExternalFindImplementationsInterfaceCaller.cs" />
         <Compile Include="ExternalFindUsagesEnumCaller.cs" />
         <Compile Include="ExternalFindUsagesEventCaller.cs" />
+        <Compile Include="ExternalFindUsagesEventOfInterfaceUser1.cs" />
+        <Compile Include="ExternalFindUsagesEventOfInterfaceUser2.cs" />
         <Compile Include="ExternalFindUsagesFieldCaller.cs" />
         <Compile Include="ExternalFindUsagesMethodCaller.cs" />
+        <Compile Include="ExternalFindUsagesMethodOfAbstractClassUser1.cs" />
+        <Compile Include="ExternalFindUsagesMethodOfAbstractClassUser2.cs" />
         <Compile Include="ExternalFindUsagesMethodOfInterfaceUser1.cs" />
         <Compile Include="ExternalFindUsagesMethodOfInterfaceUser2.cs" />
+        <Compile Include="ExternalFindUsagesPropertyOfInterfaceUser1.cs" />
+        <Compile Include="ExternalFindUsagesPropertyOfInterfaceUser2.cs" />
         <Compile Include="ExternalFindUsagesTypeAsFieldCaller.cs" />
         <Compile Include="ExternalFindUsagesTypeAsGenericCaller.cs" />
         <Compile Include="ExternalFindUsagesTypeAsMethodCaller.cs" />

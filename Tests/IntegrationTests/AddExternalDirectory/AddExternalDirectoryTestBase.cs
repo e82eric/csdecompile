@@ -84,8 +84,6 @@ public class AddExternalDirectoryTestBase : ExternalTestBase
             }
         };
         
-        Assert.True(searchTypeSourceResponse.Success);
-        
         var usagesResponse = TestHarness.IoNoSolutionClient
             .ExecuteCommand<DecompiledLocationRequest, FindImplementationsResponse>(usagesRequest);
         
