@@ -104,6 +104,7 @@ public class AddExternalDirectoryTestBase : ExternalTestBase
             var sourceLine = lines[implementation.Line - 1].Trim();
 
             var foundExpected = expected.FirstOrDefault(e =>
+                e.shortTypeName == implementation.ContainingTypeFullName &&
                 e.type == implementation.Type &&
                 e.value.Contains(sourceLine));
             Assert.NotNull(foundExpected);

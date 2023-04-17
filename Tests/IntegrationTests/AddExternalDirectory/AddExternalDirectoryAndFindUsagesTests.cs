@@ -38,11 +38,11 @@ public class AddExternalDirectoryAndFindUsagesTests : AddExternalDirectoryTestBa
             expected: new []
             {
                 (LocationType.Decompiled,
-                    "_externalFindUsagesMethodOfInterfaceInterface2.Run2();",
-                    "_abstractClass.Run();"),
+                    "_abstractClass.Run();",
+                    "ExternalFindUsagesMethodOfAbstractClassUser1"),
                 (LocationType.Decompiled,
                     "_abstractClass.Run();",
-                    "ExternalFindUsagesMethodOfInterfaceUser2"),
+                    "ExternalFindUsagesMethodOfAbstractClassUser2")
             });
     }
     
