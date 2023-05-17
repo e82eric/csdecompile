@@ -62,38 +62,35 @@
           <HintPath>..\packages\Microsoft.Build.Utilities.Core.17.2.0\lib\net472\Microsoft.Build.Utilities.Core.dll</HintPath>
           <Private>False</Private>
         </Reference>
-        <Reference Include="Microsoft.CodeAnalysis, Version=4.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-          <HintPath>..\packages\Microsoft.CodeAnalysis.Common.4.3.0-2.22225.6\lib\netstandard2.0\Microsoft.CodeAnalysis.dll</HintPath>
+        <Reference Include="Microsoft.CodeAnalysis, Version=4.6.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+          <HintPath>..\packages\Microsoft.CodeAnalysis.Common.4.6.0-1.final\lib\netstandard2.0\Microsoft.CodeAnalysis.dll</HintPath>
         </Reference>
         <Reference Include="Microsoft.CodeAnalysis.AnalyzerUtilities, Version=3.3.2.30504, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
           <HintPath>..\packages\Microsoft.CodeAnalysis.AnalyzerUtilities.3.3.0\lib\netstandard2.0\Microsoft.CodeAnalysis.AnalyzerUtilities.dll</HintPath>
         </Reference>
-        <Reference Include="Microsoft.CodeAnalysis.CSharp, Version=4.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-          <HintPath>..\packages\Microsoft.CodeAnalysis.CSharp.4.3.0-2.22225.6\lib\netstandard2.0\Microsoft.CodeAnalysis.CSharp.dll</HintPath>
+        <Reference Include="Microsoft.CodeAnalysis.CSharp, Version=4.6.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+          <HintPath>..\packages\Microsoft.CodeAnalysis.CSharp.4.6.0-1.final\lib\netstandard2.0\Microsoft.CodeAnalysis.CSharp.dll</HintPath>
         </Reference>
-        <Reference Include="Microsoft.CodeAnalysis.CSharp.Features, Version=4.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-          <HintPath>..\packages\Microsoft.CodeAnalysis.CSharp.Features.4.3.0-2.22225.6\lib\netstandard2.0\Microsoft.CodeAnalysis.CSharp.Features.dll</HintPath>
+        <Reference Include="Microsoft.CodeAnalysis.CSharp.Features, Version=4.6.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+          <HintPath>..\packages\Microsoft.CodeAnalysis.CSharp.Features.4.6.0-1.final\lib\netstandard2.0\Microsoft.CodeAnalysis.CSharp.Features.dll</HintPath>
         </Reference>
-        <Reference Include="Microsoft.CodeAnalysis.CSharp.Workspaces, Version=4.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-          <HintPath>..\packages\Microsoft.CodeAnalysis.CSharp.Workspaces.4.3.0-2.22225.6\lib\netstandard2.0\Microsoft.CodeAnalysis.CSharp.Workspaces.dll</HintPath>
+        <Reference Include="Microsoft.CodeAnalysis.CSharp.Workspaces, Version=4.6.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+          <HintPath>..\packages\Microsoft.CodeAnalysis.CSharp.Workspaces.4.6.0-1.final\lib\netstandard2.0\Microsoft.CodeAnalysis.CSharp.Workspaces.dll</HintPath>
         </Reference>
         <Reference Include="Microsoft.CodeAnalysis.Elfie, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-          <HintPath>..\packages\Microsoft.CodeAnalysis.Elfie.1.0.0-rc14\lib\net45\Microsoft.CodeAnalysis.Elfie.dll</HintPath>
+          <HintPath>..\packages\Microsoft.CodeAnalysis.Elfie.1.0.0\lib\net45\Microsoft.CodeAnalysis.Elfie.dll</HintPath>
         </Reference>
-        <Reference Include="Microsoft.CodeAnalysis.Features, Version=4.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-          <HintPath>..\packages\Microsoft.CodeAnalysis.Features.4.3.0-2.22225.6\lib\netstandard2.0\Microsoft.CodeAnalysis.Features.dll</HintPath>
+        <Reference Include="Microsoft.CodeAnalysis.Features, Version=4.6.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+          <HintPath>..\packages\Microsoft.CodeAnalysis.Features.4.6.0-1.final\lib\netstandard2.0\Microsoft.CodeAnalysis.Features.dll</HintPath>
         </Reference>
-        <Reference Include="Microsoft.CodeAnalysis.Scripting, Version=4.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-          <HintPath>..\packages\Microsoft.CodeAnalysis.Scripting.Common.4.3.0-2.22225.6\lib\netstandard2.0\Microsoft.CodeAnalysis.Scripting.dll</HintPath>
+        <Reference Include="Microsoft.CodeAnalysis.Scripting, Version=4.6.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+          <HintPath>..\packages\Microsoft.CodeAnalysis.Scripting.Common.4.6.0-1.final\lib\netstandard2.0\Microsoft.CodeAnalysis.Scripting.dll</HintPath>
         </Reference>
-        <Reference Include="Microsoft.CodeAnalysis.Workspaces, Version=4.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-          <HintPath>..\packages\Microsoft.CodeAnalysis.Workspaces.Common.4.3.0-2.22225.6\lib\netstandard2.0\Microsoft.CodeAnalysis.Workspaces.dll</HintPath>
+        <Reference Include="Microsoft.CodeAnalysis.Workspaces, Version=4.6.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+          <HintPath>..\packages\Microsoft.CodeAnalysis.Workspaces.Common.4.6.0-1.final\lib\netstandard2.0\Microsoft.CodeAnalysis.Workspaces.dll</HintPath>
         </Reference>
-        <Reference Include="Microsoft.CodeAnalysis.Workspaces.MSBuild">
-          <HintPath>..\packages\Microsoft.CodeAnalysis.Workspaces.MSBuild.4.3.0-2.22225.6\lib\net472\Microsoft.CodeAnalysis.Workspaces.MSBuild.dll</HintPath>
-        </Reference>
-        <Reference Include="Microsoft.CodeAnalysis.Workspaces.MSBuild, Version=4.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-          <HintPath>..\packages\Microsoft.CodeAnalysis.Workspaces.MSBuild.4.3.0-2.22225.6\lib\net472\Microsoft.CodeAnalysis.Workspaces.MSBuild.dll</HintPath>
+        <Reference Include="Microsoft.CodeAnalysis.Workspaces.MSBuild, Version=4.6.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+          <HintPath>..\packages\Microsoft.CodeAnalysis.Workspaces.MSBuild.4.6.0-1.final\lib\net472\Microsoft.CodeAnalysis.Workspaces.MSBuild.dll</HintPath>
         </Reference>
         <Reference Include="Microsoft.DiaSymReader, Version=1.4.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
           <HintPath>..\packages\Microsoft.DiaSymReader.1.4.0\lib\net20\Microsoft.DiaSymReader.dll</HintPath>
@@ -169,8 +166,8 @@
         <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
           <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
         </Reference>
-        <Reference Include="System.Collections.Immutable, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-          <HintPath>..\packages\System.Collections.Immutable.5.0.0\lib\net461\System.Collections.Immutable.dll</HintPath>
+        <Reference Include="System.Collections.Immutable, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <HintPath>..\packages\System.Collections.Immutable.6.0.0\lib\net461\System.Collections.Immutable.dll</HintPath>
         </Reference>
         <Reference Include="System.ComponentModel.Composition" />
         <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -206,11 +203,11 @@
           <HintPath>..\packages\System.IO.4.3.0\lib\net462\System.IO.dll</HintPath>
         </Reference>
         <Reference Include="System.IO.Compression" />
-        <Reference Include="System.IO.Pipelines, Version=6.0.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-          <HintPath>..\packages\System.IO.Pipelines.6.0.1\lib\net461\System.IO.Pipelines.dll</HintPath>
+        <Reference Include="System.IO.Pipelines, Version=6.0.0.3, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+          <HintPath>..\packages\System.IO.Pipelines.6.0.3\lib\net461\System.IO.Pipelines.dll</HintPath>
         </Reference>
-        <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-          <HintPath>..\packages\System.Memory.4.5.4\lib\net461\System.Memory.dll</HintPath>
+        <Reference Include="System.Memory, Version=4.0.1.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+          <HintPath>..\packages\System.Memory.4.5.5\lib\net461\System.Memory.dll</HintPath>
         </Reference>
         <Reference Include="System.Net" />
         <Reference Include="System.Net.Http" />
@@ -222,8 +219,8 @@
         <Reference Include="System.Reflection.DispatchProxy, Version=4.0.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
           <HintPath>..\packages\System.Reflection.DispatchProxy.4.5.1\lib\net461\System.Reflection.DispatchProxy.dll</HintPath>
         </Reference>
-        <Reference Include="System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-          <HintPath>..\packages\System.Reflection.Metadata.5.0.0\lib\net461\System.Reflection.Metadata.dll</HintPath>
+        <Reference Include="System.Reflection.Metadata, Version=6.0.0.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <HintPath>..\packages\System.Reflection.Metadata.6.0.1\lib\net461\System.Reflection.Metadata.dll</HintPath>
         </Reference>
         <Reference Include="System.Runtime, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
           <HintPath>..\packages\System.Runtime.4.3.0\lib\net462\System.Runtime.dll</HintPath>
@@ -264,6 +261,9 @@
         <Reference Include="System.Text.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
           <HintPath>..\packages\System.Text.Json.7.0.0-preview.5.22301.12\lib\net462\System.Text.Json.dll</HintPath>
         </Reference>
+        <Reference Include="System.Threading.Channels, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+          <HintPath>..\packages\System.Threading.Channels.6.0.0\lib\net461\System.Threading.Channels.dll</HintPath>
+        </Reference>
         <Reference Include="System.Threading.Tasks.Dataflow, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
           <HintPath>..\packages\System.Threading.Tasks.Dataflow.6.0.0\lib\net461\System.Threading.Tasks.Dataflow.dll</HintPath>
         </Reference>
@@ -301,6 +301,8 @@
     <ItemGroup>
       <Analyzer Include="..\packages\Microsoft.CodeAnalysis.Analyzers.3.3.3\analyzers\dotnet\cs\Microsoft.CodeAnalysis.Analyzers.dll" />
       <Analyzer Include="..\packages\Microsoft.CodeAnalysis.Analyzers.3.3.3\analyzers\dotnet\cs\Microsoft.CodeAnalysis.CSharp.Analyzers.dll" />
+      <Analyzer Include="..\packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\analyzers\dotnet\cs\Microsoft.CodeAnalysis.Analyzers.dll" />
+      <Analyzer Include="..\packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\analyzers\dotnet\cs\Microsoft.CodeAnalysis.CSharp.Analyzers.dll" />
     </ItemGroup>
     <ItemGroup>
       <ProjectReference Include="..\CsDecompileLib\CsDecompileLib.csproj">
