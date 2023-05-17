@@ -255,10 +255,29 @@ M._sendStdIoRequest = function(request, callback, callbackData)
 	M._state.CurrentSeq = nextSequence
 end
 
+M.getStartOfCurrentWord = function()
+ local curLine = vim.api.nvim_get_current_line()
+ local currentCol = vim.api.nvim_win_get_cursor(0)[2]
+
+ local result = 0
+ while(currentCol > 0)
+ do
+   local curChar = string.sub(curLine, currentCol + 1 , currentCol + 1)
+   if curChar == ' ' then
+     result = currentCol + 2
+     break
+   end
+   currentCol = currentCol - 1
+ end
+
+ return result
+end
+
 M._decompileRequest = function(url, callback, callbackData)
 	local cursorPos = vim.api.nvim_win_get_cursor(0)
 	local line = cursorPos[1]
 	local column = cursorPos[2] + 1
+  column = M.getStartOfCurrentWord()
 	local assemblyFilePath = vim.b.AssemblyFilePath
 	local assemblyName = vim.b.AssemblyName
 	local fileName = vim.fn.expand('%:p')
