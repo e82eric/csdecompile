@@ -205,7 +205,7 @@ M.Start = function (solutionPath)
 		solutionPath = vim.fn.expand('%:p')
 	end
 	local job = Job:new({
-		command = pluginRootDir .. '\\StdIoHost\\bin\\Debug\\StdIoHost.exe',
+		command = pluginRootDir .. '\\StdIoHost\\bin\\Debug\\csdecompile.exe',
 		args = {  solutionPath },
 		cwd = '.',
 		on_stdout = on_output,
@@ -223,7 +223,7 @@ M.StartNoSolution = function ()
 	local pluginRootDir = vim.fn.fnamemodify(debug.getinfo(1).source:sub(2), ":h:h:h")
 	M._state['StartSent'] = true
 	local job = Job:new({
-		command = pluginRootDir .. '\\StdIoHost\\bin\\Debug\\StdIoHost.exe',
+		command = pluginRootDir .. '\\StdIoHost\\bin\\Debug\\csdecompile.exe',
 		args = { "--nosolution" },
 		cwd = '.',
 		on_stdout = on_output,
