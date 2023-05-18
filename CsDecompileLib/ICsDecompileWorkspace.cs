@@ -3,7 +3,7 @@ using Microsoft.CodeAnalysis;
 
 namespace CsDecompileLib.IlSpy;
 
-public interface IOmniSharpWorkspace
+public interface ICsDecompileWorkspace
 {
     public IEnumerable<string> GetProjectAssemblyPaths();
     Solution CurrentSolution { get; }

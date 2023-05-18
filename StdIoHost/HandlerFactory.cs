@@ -21,7 +21,7 @@ namespace StdIoHost;
 
 internal static class HandlerFactory
 {
-    private static IOmniSharpWorkspace _workspace;
+    private static ICsDecompileWorkspace _workspace;
     // private static ILoggerFactory _loggerFactory;
     private static PeFileCache _peFileCache;
     private static IlSpyTypeSystemFactory _decompilerTypeSystemFactory;
@@ -92,7 +92,7 @@ internal static class HandlerFactory
         return Task.FromResult(0);
     }
 
-    private static IOmniSharpWorkspace GetWorkspace(StdioEventEmitter eventEmitter)
+    private static ICsDecompileWorkspace GetWorkspace(StdioEventEmitter eventEmitter)
     {
         var result = new SimpleDecompileWorkspace(eventEmitter);
         return result;

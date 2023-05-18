@@ -153,7 +153,7 @@ internal static class RoslynSymbolHelpers
 
         return false;
     }
-    public static SourceFileInfo GetSourceLineInfo(this Location location, IOmniSharpWorkspace workspace)
+    public static SourceFileInfo GetSourceLineInfo(this Location location, ICsDecompileWorkspace workspace)
     {
         var lineSpan = location.GetMappedLineSpan();
         
@@ -206,7 +206,7 @@ internal static class RoslynSymbolHelpers
             return location.SourceTree.GetText().Lines[fallBackLineSpan.StartLinePosition.Line].ToString();
         }
     }
-    public static SourceFileInfo GetSourceLineInfo(this ISymbol symbol, IOmniSharpWorkspace workspace)
+    public static SourceFileInfo GetSourceLineInfo(this ISymbol symbol, ICsDecompileWorkspace workspace)
     {
         var location = symbol.Locations.First();
         if (location.IsInSource == false)

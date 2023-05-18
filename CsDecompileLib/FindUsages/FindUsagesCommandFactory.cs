@@ -6,7 +6,7 @@ namespace CsDecompileLib.FindUsages;
 
 public class FindUsagesCommandFactory : ExternalAssembliesFindUsagesCommandFactory, ICommandFactory<INavigationCommand<FindImplementationsResponse>>
 {
-    private readonly IOmniSharpWorkspace _omniSharpWorkspace;
+    private readonly ICsDecompileWorkspace _csDecompileWorkspace;
 
     public FindUsagesCommandFactory(
         IlSpyUsagesFinderBase<ITypeDefinition> usagesFinder,
@@ -16,7 +16,7 @@ public class FindUsagesCommandFactory : ExternalAssembliesFindUsagesCommandFacto
         IlSpyUsagesFinderBase<IMember> enumFieldUsagesFinder,
         IlSpyVariableUsagesFinder variableUsagesFinder,
         IlSpyUsagesFinderBase<IMember> eventUsagesFinder,
-        IOmniSharpWorkspace omniSharpWorkspace):base(
+        ICsDecompileWorkspace csDecompileWorkspace):base(
             usagesFinder,
             methodUsagesFinder,
             propertyUsagesFinder,
@@ -25,12 +25,12 @@ public class FindUsagesCommandFactory : ExternalAssembliesFindUsagesCommandFacto
             eventUsagesFinder,
             variableUsagesFinder)
     {
-        _omniSharpWorkspace = omniSharpWorkspace;
+        _csDecompileWorkspace = csDecompileWorkspace;
     }
 
     public INavigationCommand<FindImplementationsResponse> GetForInSource(ISymbol roslynSymbol)
     {
-        var result = new RoslynFindUsagesCommand(roslynSymbol, _omniSharpWorkspace);
+        var result = new RoslynFindUsagesCommand(roslynSymbol, _csDecompileWorkspace);
         return result;
     }
 

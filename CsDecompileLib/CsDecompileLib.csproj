@@ -316,7 +316,7 @@
         <Compile Include="DecompiledLocationRequest.cs" />
         <Compile Include="INavigationCommandFactory.cs" />
         <Compile Include="INavigationCommandFactoryAsync.cs" />
-        <Compile Include="IOmniSharpWorkspace.cs" />
+        <Compile Include="ICsDecompileWorkspace.cs" />
         <Compile Include="LocationRequest.cs" />
         <Compile Include="NavigationHandlerBase.cs" />
         <Compile Include="NoOpCommand.cs" />

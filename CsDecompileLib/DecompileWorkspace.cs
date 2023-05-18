@@ -10,11 +10,11 @@ namespace CsDecompileLib.IlSpy
 {
     public class DecompileWorkspace : IDecompileWorkspace
     {
-        private readonly IOmniSharpWorkspace _workspace;
+        private readonly ICsDecompileWorkspace _workspace;
         private readonly PeFileCache _peFileCache;
         private readonly ConcurrentDictionary<string, Compilation> _compilations = new ();
 
-        public DecompileWorkspace(IOmniSharpWorkspace workspace, PeFileCache peFileCache)
+        public DecompileWorkspace(ICsDecompileWorkspace workspace, PeFileCache peFileCache)
         {
             _workspace = workspace;
             _peFileCache = peFileCache;

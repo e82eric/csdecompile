@@ -10,11 +10,11 @@ namespace CsDecompileLib.FindImplementations;
 public class RoslynFindImplementationsCommand : INavigationCommand<FindImplementationsResponse>
 {
     private readonly ISymbol _symbol;
-    private readonly IOmniSharpWorkspace _workspace;
+    private readonly ICsDecompileWorkspace _workspace;
 
     public RoslynFindImplementationsCommand(
         ISymbol symbol,
-        IOmniSharpWorkspace workspace)
+        ICsDecompileWorkspace workspace)
     {
         _symbol = symbol;
         _workspace = workspace;

@@ -9,9 +9,9 @@ namespace CsDecompileLib.GetMembers;
 public class RoslynGetTypeMembersCommandFactory
     : INavigationCommandFactoryAsync<INavigationCommand<FindImplementationsResponse>, DecompiledLocationRequest>
 {
-    private readonly IOmniSharpWorkspace _workspace;
+    private readonly ICsDecompileWorkspace _workspace;
 
-    public RoslynGetTypeMembersCommandFactory(IOmniSharpWorkspace workspace)
+    public RoslynGetTypeMembersCommandFactory(ICsDecompileWorkspace workspace)
     {
         _workspace = workspace;
     }

@@ -9,14 +9,14 @@ namespace CsDecompileLib.FindImplementations;
 public class RoslynFindImplementationsCommandFactory : IlSpyFindImplementationsCommandFactory,
     ICommandFactory<INavigationCommand<FindImplementationsResponse>>
 {
-    private readonly IOmniSharpWorkspace _omniSharpWorkspace;
+    private readonly ICsDecompileWorkspace _csDecompileWorkspace;
 
     public RoslynFindImplementationsCommandFactory(
         IlSpyUsagesFinderBase<ITypeDefinition> typeFinder,
         IlSpyUsagesFinderBase<IMember> memberImplementationFinder,
-        IOmniSharpWorkspace omniSharpWorkspace):base(typeFinder, memberImplementationFinder)
+        ICsDecompileWorkspace csDecompileWorkspace):base(typeFinder, memberImplementationFinder)
     {
-        _omniSharpWorkspace = omniSharpWorkspace;
+        _csDecompileWorkspace = csDecompileWorkspace;
     }
 
     public INavigationCommand<FindImplementationsResponse> GetForEnumField(IField field, string projectAssemblyFilePath)
@@ -31,7 +31,7 @@ public class RoslynFindImplementationsCommandFactory : IlSpyFindImplementationsC
 
     public INavigationCommand<FindImplementationsResponse> GetForInSource(Microsoft.CodeAnalysis.ISymbol roslynSymbol)
     {
-        var result = new RoslynFindImplementationsCommand(roslynSymbol, _omniSharpWorkspace);
+        var result = new RoslynFindImplementationsCommand(roslynSymbol, _csDecompileWorkspace);
         return result;
     }
 

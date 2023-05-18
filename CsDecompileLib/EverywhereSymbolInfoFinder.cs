@@ -17,12 +17,12 @@ public class EverywhereSymbolInfoFinder<TCommandResponseType>
     : INavigationCommandFactoryAsync<INavigationCommand<TCommandResponseType>, DecompiledLocationRequest>
     where TCommandResponseType :FindImplementationsResponse, new()
 {
-    private readonly IOmniSharpWorkspace _workspace;
+    private readonly ICsDecompileWorkspace _workspace;
     private readonly IlSpySymbolFinder _ilSpySymbolFinder;
     private readonly ICommandFactory<INavigationCommand<TCommandResponseType>> _commandFactory;
 
     public EverywhereSymbolInfoFinder(
-        IOmniSharpWorkspace workspace,
+        ICsDecompileWorkspace workspace,
         IlSpySymbolFinder ilSpySymbolFinder,
         ICommandFactory<INavigationCommand<TCommandResponseType>> commandFactory)
     {

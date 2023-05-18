@@ -8,11 +8,11 @@ namespace CsDecompileLib.GetMembers;
 public class RoslynGetTypeMembersCommand : INavigationCommand<FindImplementationsResponse>
 {
     private readonly INamedTypeSymbol _symbol;
-    private readonly IOmniSharpWorkspace _workspace;
+    private readonly ICsDecompileWorkspace _workspace;
 
     public RoslynGetTypeMembersCommand(
         INamedTypeSymbol symbol,
-        IOmniSharpWorkspace workspace)
+        ICsDecompileWorkspace workspace)
     {
         _symbol = symbol;
         _workspace = workspace;

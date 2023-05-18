@@ -12,7 +12,7 @@ using CsDecompileLib.IlSpy;
 
 namespace StdIoHost.SimpleProjectSystem;
 
-internal class SimpleDecompileWorkspace : IOmniSharpWorkspace
+internal class SimpleDecompileWorkspace : ICsDecompileWorkspace
 {
     private readonly StdioEventEmitter _eventEmitter;
     private readonly MSBuildWorkspace _workspace;

@@ -12,12 +12,12 @@ namespace CsDecompileLib.Roslyn
     public class RoslynLocationCommandFactory<TCommandType>
         : INavigationCommandFactoryAsync<TCommandType, DecompiledLocationRequest>
     {
-        private readonly IOmniSharpWorkspace _workspace;
+        private readonly ICsDecompileWorkspace _workspace;
         private readonly IlSpySymbolFinder _ilSpySymbolFinder;
         private readonly ICommandFactory<TCommandType> _gotoDefinitionCommandFactory;
 
         public RoslynLocationCommandFactory(
-            IOmniSharpWorkspace workspace,
+            ICsDecompileWorkspace workspace,
             IlSpySymbolFinder ilSpySymbolFinder,
             ICommandFactory<TCommandType> gotoDefinitionCommandFactory)
         {
