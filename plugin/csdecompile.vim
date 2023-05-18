@@ -1,0 +1,7 @@
+command! -nargs=1 -complete=dir AddExternalAssemblyDirectory :call luaeval("require('csdecompile').StartAddExternalDirectory(_A)", <f-args>)
+command -nargs=1 SearchForType :call luaeval("require('csdecompile').StartGetAllTypes(_A)", <q-args>)
+command OpenDecompilerLog :lua require('csdecompile').OpenLog()
+command StartDecompiler :lua require('csdecompile').Start()
+command -bar StartDecompilerNoSolution :lua require('csdecompile').StartNoSolution()
+command GetAssemblies :lua require('csdecompile').StartGetAssemblies()
+command DecompileAssembly :lua require('csdecompile').StartGetAssembliesForDecompile()

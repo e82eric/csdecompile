@@ -8,13 +8,13 @@ local previewers = require "telescope.previewers"
 local entry_display = require("telescope.pickers.entry_display")
 local strings = require "plenary.strings"
 local Job = require('plenary.job')
-local log = require('omnisharp-lua.log')
+local log = require('csdecompile.log')
 
 local M = {}
 
 M._state = {
 	SolutionLoadingState = nil,
-	OmniSharpRequests = {},
+	Requests = {},
 	SolutionLoaded = false,
 	NumberOfProjects = 0,
 	NumberOfFailedProjects = 0,
@@ -39,7 +39,7 @@ M.StartDecompiler = function()
 		if next(slnFiles) == nil then
 			print('No solution file found')
 		elseif table.getn(slnFiles) == 1 then
-			M.StartOmnisharp(slnFiles[1])
+			M.Start(slnFiles[1])
 		else
 			M._openSolutionTelescope(slnFiles, M._createSolutionFileDisplayer)
 		end
@@ -101,7 +101,7 @@ M._openSolutionTelescope = function(data)
 		attach_mappings = function(prompt_bufnr, map)
 			actions.select_default:replace(function()
 				local selection = action_state.get_selected_entry()
-				M.StartOmnisharp(selection.value)
+				M.Start(selection.value)
 				actions.close(prompt_bufnr)
 			end)
 			return true
@@ -181,8 +181,8 @@ local on_output = function(err, data)
 				end
 			end
 		elseif mType == 'response' then
-			local commandState = M._state.OmniSharpRequests[json.Request_seq]
-			M._state.OmniSharpRequests[json.Request_seq] = nil
+			local commandState = M._state.Requests[json.Request_seq]
+			M._state.Requests[json.Request_seq] = nil
 			local duration = os.difftime(os.time(), M._state.CommandStartTime)
 			commandState.Duration = duration
 			if json.Success then
@@ -198,7 +198,7 @@ local on_output = function(err, data)
 	end
 end
 
-M.StartOmnisharp = function (solutionPath)
+M.Start = function (solutionPath)
 	local pluginRootDir = vim.fn.fnamemodify(debug.getinfo(1).source:sub(2), ":h:h:h")
 	M._state['StartSent'] = true
 	if solutionPath == nil then
@@ -219,7 +219,7 @@ M.StartOmnisharp = function (solutionPath)
 	M._state["job"] = job
 end
 
-M.StartOmnisharpNoSolution = function ()
+M.StartNoSolution = function ()
 	local pluginRootDir = vim.fn.fnamemodify(debug.getinfo(1).source:sub(2), ":h:h:h")
 	M._state['StartSent'] = true
 	local job = Job:new({
@@ -243,7 +243,7 @@ M._sendStdIoRequest = function(request, callback, callbackData)
 	local nextSequence = M._state.NextSequence + 1
 
 	local command = { Callback = callback, StartTime = os.time(), Data = callbackData, Name = request.Command, Status = 'Running' }
-	M._state.OmniSharpRequests[nextSequence] = command
+	M._state.Requests[nextSequence] = command
 
 	M._state.NextSequence = nextSequence
 	request["Seq"] = nextSequence
