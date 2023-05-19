@@ -29,6 +29,14 @@ M.OpenLog = function()
 	log.open()
 end
 
+M._checkNotRunning = function()
+  local result = M._state.StartSent == false
+  if result then
+    print 'Decompiler not running.  Skipping operation'
+  end
+  return result
+end
+
 M.StartDecompiler = function()
 	if M._state.StartSent then
 		print 'Decompiler has already been started'
@@ -255,7 +263,7 @@ M._sendStdIoRequest = function(request, callback, callbackData)
 	M._state.CurrentSeq = nextSequence
 end
 
-M.getStartOfCurrentWord = function()
+M._getStartOfCurrentWord = function()
  local curLine = vim.api.nvim_get_current_line()
  local currentCol = vim.api.nvim_win_get_cursor(0)[2]
 
@@ -277,7 +285,7 @@ M._decompileRequest = function(url, callback, callbackData)
 	local cursorPos = vim.api.nvim_win_get_cursor(0)
 	local line = cursorPos[1]
 	local column = cursorPos[2] + 1
-  column = M.getStartOfCurrentWord()
+  column = M._getStartOfCurrentWord()
 	local assemblyFilePath = vim.b.AssemblyFilePath
 	local assemblyName = vim.b.AssemblyName
 	local fileName = vim.fn.expand('%:p')
@@ -303,6 +311,9 @@ M._decompileRequest = function(url, callback, callbackData)
 end
 
 M.StartAddExternalDirectory = function(directoryFilePath)
+  if M._checkNotRunning() then
+    return
+  end
 	local request = {
 		Command = "/addexternalassemblydirectory",
 		Arguments = {
@@ -316,6 +327,9 @@ M.HandleAddExternalDirectory = function(response)
 end
 
 M.StartGetAssemblies = function()
+  if M._checkNotRunning() then
+    return
+  end
 	local request = {
 		Command = "/getassemblies",
 		Arguments = {
@@ -326,6 +340,9 @@ M.StartGetAssemblies = function()
 end
 
 M.StartGetAssembliesForDecompile = function()
+  if M._checkNotRunning() then
+    return
+  end
 	local request = {
 		Command = "/getassemblies",
 		Arguments = {
@@ -423,6 +440,9 @@ M._openAssembliesTelescope = function(data, resultHandler)
 end
 
 M.StartGetAllTypes = function(searchString)
+  if M._checkNotRunning() then
+    return
+  end
 	local request = {
 		Command = "/gettypes",
 		Arguments = {
@@ -437,10 +457,16 @@ M.HandleGetAllTypes = function(response)
 end
 
 M.StartDecompileGotoDefinition = function()
+  if M._checkNotRunning() then
+    return
+  end
 	M._decompileRequest('/gotodefinition', M.HandleDecompileGotoDefinitionResponse)
 end
 
 M.StartFindUsages = function()
+  if M._checkNotRunning() then
+    return
+  end
 	M._decompileRequest("/findusages", M.HandleUsages)
 end
 
@@ -449,6 +475,9 @@ M.HandleUsages = function(response)
 end
 
 M.StartGetSymbolName = function()
+  if M._checkNotRunning() then
+    return
+  end
 	M._decompileRequest("/symbolinfo", M.HandleGetSymbolName)
 end
 
@@ -481,6 +510,9 @@ M.StartGetDecompiledSource = function(
 end
 
 M.StartGetTypeMembers = function()
+  if M._checkNotRunning() then
+    return
+  end
 	M._decompileRequest('/gettypemembers', M.HandleGetTypeMembers)
 end
 
@@ -489,6 +521,9 @@ M.HandleGetTypeMembers = function(response)
 end
 
 M.StartFindImplementations = function()
+  if M._checkNotRunning() then
+    return
+  end
 	M._decompileRequest('/findimplementations', M.HandleFindImplementations)
 end
 
@@ -928,7 +963,7 @@ M.Setup = function()
   vim.api.nvim_create_user_command(
       'StartDecompiler',
       function(opts)
-        M.Start()
+        M.StartDecompiler()
       end,
       {}
   )
