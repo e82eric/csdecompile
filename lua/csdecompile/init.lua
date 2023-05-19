@@ -903,4 +903,56 @@ M._openTelescope = function(data, displayFunc, promptTitle)
 	end))
 end
 
+M.Setup = function()
+  vim.api.nvim_create_user_command(
+      'AddExternalAssemblyDirectory',
+      function(opts)
+        M.StartAddExternalDirectory(opts.args[0])
+      end,
+      { nargs = '?', complete='file' }
+  )
+  vim.api.nvim_create_user_command(
+      'SearchForType',
+      function(opts)
+        M.StartGetAllTypes(opts.args[0])
+      end,
+      { nargs = '?', complete='file' }
+  )
+  vim.api.nvim_create_user_command(
+      'OpenDecompilerLog',
+      function(opts)
+        M.OpenLog()
+      end,
+      {}
+  )
+  vim.api.nvim_create_user_command(
+      'StartDecompiler',
+      function(opts)
+        M.Start()
+      end,
+      {}
+  )
+  vim.api.nvim_create_user_command(
+      'StartDecompilerNoSolution',
+      function(opts)
+        M.StartNoSolution()
+      end,
+      {}
+  )
+  vim.api.nvim_create_user_command(
+      'StartGetAssemblies',
+      function(opts)
+        M.StartGetAssemblies()
+      end,
+      {}
+  )
+  vim.api.nvim_create_user_command(
+      'DecompileAssembly',
+      function(opts)
+        M.StartGetAssembliesForDecompile()
+      end,
+      {}
+  )
+end
+
 return M
