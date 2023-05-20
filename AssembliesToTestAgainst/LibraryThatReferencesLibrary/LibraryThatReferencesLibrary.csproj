@@ -64,7 +64,10 @@
         <Compile Include="ExternalFindUsagesPropertyCaller.cs" />
         <Compile Include="ExternalFindUsagesTypeAsVariableCaller.cs" />
         <Compile Include="ExternalFindUsagesVariableCaller.cs" />
+        <Compile Include="ExternalGotoDefinitionAttributeInternalUserUser.cs" />
+        <Compile Include="ExternalGotoDefinitionAttributeUser.cs" />
         <Compile Include="ExternalGotoDefinitionBaseClassCaller.cs" />
+        <Compile Include="ExternalGotoDefinitionConstructorAttributeUser.cs" />
         <Compile Include="ExternalGotoDefinitionConstructorCaller.cs" />
         <Compile Include="ExternalGotoDefinitionDefaultConstructorCaller.cs" />
         <Compile Include="ExternalGotoDefinitionEventCaller.cs" />

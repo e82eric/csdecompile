@@ -33,3 +33,22 @@ public class ExternalGotoDefinitionFieldTests : ExternalGotoDefinitionTestBase
             expected:"private string _basicField;");
     }
 }
+
+[TestFixture]
+public class ExternalGotoDefinitionAttributeInternalUserUserTests : ExternalGotoDefinitionTestBase
+{
+    private static string FilePath =
+        TestHarness.GetLibraryThatReferencesLibraryFilePath("ExternalGotoDefinitionAttributeInternalUserUser.cs");
+
+    [Test]
+    public void Test()
+    {
+        SendRequestFindLocationInDecompiledClassRequestAgainAndAssertLine(
+            filePath: FilePath,
+            column: 17,
+            line: 9,
+            lineToFind: "[ExternalGotoDefinition]",
+            tokenToRequest: "ExternalGotoDefinition",
+            expected: "public class ExternalGotoDefinitionAttribute : Attribute");
+    }
+}

@@ -138,7 +138,9 @@
         <Compile Include="ExternalSource\FindUsages\ExternalFindUsagesVariableTests.cs" />
         <Compile Include="ExternalSource\GetSymbolInfo\ExternalGetSymbolInfoTestBase.cs" />
         <Compile Include="ExternalSource\GetSymbolInfo\ExternalGetSymbolInfoTests.cs" />
+        <Compile Include="ExternalSource\GotoDefinition\ExternalGotoDefinitionAttributeTests.cs" />
         <Compile Include="ExternalSource\GotoDefinition\ExternalGotoDefinitionBaseClassTests.cs" />
+        <Compile Include="ExternalSource\GotoDefinition\ExternalGotoDefinitionConstructorAttributeTests.cs" />
         <Compile Include="ExternalSource\GotoDefinition\ExternalGotoDefinitionConstructorTests.cs" />
         <Compile Include="ExternalSource\GotoDefinition\ExternalGotoDefinitionDefaultConstructorTests.cs" />
         <Compile Include="ExternalSource\GotoDefinition\ExternalGotoDefinitionEventTests.cs" />

@@ -271,7 +271,7 @@ M._getStartOfCurrentWord = function()
  while(currentCol > 0)
  do
    local curChar = string.sub(curLine, currentCol + 1 , currentCol + 1)
-   if curChar == ' ' then
+   if string.match(curChar, "%W") then
      result = currentCol + 2
      break
    end
