@@ -16,6 +16,8 @@ public class InSourceGetSymbolInfoTests : InSourceGetSymbolInfoBase
             filePath: FilePath,
             column: 23,
             line: 7,
+            "NamedType",
+            "InSourceGetSymbolInfoTarget",
             new Dictionary<string, string>()
             {
                 {"AssemblyPath", "InSourceGetSymbolInfoTarget"},
@@ -36,6 +38,8 @@ public class InSourceGetSymbolInfoTests : InSourceGetSymbolInfoBase
             filePath: FilePath,
             column: 51,
             line: 7,
+            "Method",
+            ".ctor",
             new Dictionary<string, string>()
             {
                 {"AssemblyPath", "InSourceGetSymbolInfoTarget.InSourceGetSymbolInfoTarget()"},
@@ -57,6 +61,8 @@ public class InSourceGetSymbolInfoTests : InSourceGetSymbolInfoBase
             filePath: FilePath,
             column:17,
             line:8,
+            "Method",
+            "Run",
             new Dictionary<string, string>()
             {
                 {"AssemblyPath", "void InSourceGetSymbolInfoTarget.Run()"},
@@ -78,6 +84,8 @@ public class InSourceGetSymbolInfoTests : InSourceGetSymbolInfoBase
             filePath: FilePath,
             column:17,
             line:9,
+            "Property",
+            "BasicProperty",
             new Dictionary<string, string>()
             {
                 {"AssemblyPath", "string InSourceGetSymbolInfoTarget.BasicProperty"},

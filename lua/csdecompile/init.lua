@@ -635,9 +635,13 @@ end
 
 M._blankIfNil = function(val)
 	local result = ''
-	if val ~= nil then
-		return val
-	end
+  if val ~= nil then
+    if type(val) == "string" then
+      return val
+    else
+      return '[object]'
+    end
+  end
 	return ''
 end
 
@@ -784,7 +788,7 @@ M._navigationFloatingWin = function(data)
 	)
 
 	local toDisplay = {}
-	local headerText = data.DisplayName .. ' (' .. data.Kind .. ')'
+	local headerText = M._blankIfNil(data.DisplayName) .. ' (' .. M._blankIfNil(data.Kind) .. ')'
 	table.insert(toDisplay, headerText)
 	table.insert(toDisplay, '')
 
@@ -792,7 +796,7 @@ M._navigationFloatingWin = function(data)
 		if (type(value) == "table") then
 			table.insert(toDisplay, key)
 			for innerKey, innerValue in pairs(value) do
-				local l = '- ' .. innerKey .. ': ' .. innerValue
+				local l = '- ' .. innerKey .. ': ' .. M._blankIfNil(innerValue)
 				table.insert(toDisplay, l)
 			end
 		else

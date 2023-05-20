@@ -11,6 +11,8 @@ public class InSourceGetSymbolInfoBase : InSourceBase
         string filePath,
         int column,
         int line,
+        string expectedKind,
+        string expectedDisplayName,
         Dictionary<string, string> expectedHeaderProperties = null,
         Dictionary<string, object> expectProperties = null)
     {
@@ -19,6 +21,8 @@ public class InSourceGetSymbolInfoBase : InSourceBase
             expectProperties = new Dictionary<string, object>();
         }
         var response = ExecuteRequest<SymbolInfo>(Endpoints.SymbolInfo, filePath, column, line);
+        Assert.AreEqual(expectedKind, response.Body.Kind);
+        Assert.AreEqual(expectedDisplayName, response.Body.DisplayName);
         AssertItemsInHeaderProperties(response.Body.HeaderProperties, expectedHeaderProperties);
         AssertItemsInProperties(response.Body.Properties, expectProperties);
     }
