@@ -40,6 +40,8 @@ end
 M.StartDecompiler = function()
 	if M._state.StartSent then
 		print 'Decompiler has already been started'
+  elseif vim.fn.expand('%:e') == 'sln' then
+    M.Start(vim.fn.expand('%'))
 	else
 		local dir = vim.fn.fnamemodify(vim.fn.expand('%'), ':p:h')
 		local slnFiles = {}
