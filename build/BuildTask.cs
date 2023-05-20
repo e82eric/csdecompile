@@ -9,7 +9,11 @@ public sealed class BuildTask : FrostingTask<BuildContext>
 {
     public override void Run(BuildContext context)
     {
-        context.DotNetBuild("../CsDecompile.sln", new DotNetBuildSettings
+        context.DotNetBuild("../StdIoHost/StdIoHost.csproj", new DotNetBuildSettings
+        {
+            Configuration = context.MsBuildConfiguration
+        });
+        context.DotNetBuild("../Tests/IntegrationTests/IntegrationTests.csproj", new DotNetBuildSettings
         {
             Configuration = context.MsBuildConfiguration
         });
