@@ -69,6 +69,7 @@
         <Compile Include="ExternalFindUsagesTypeAsVariableCaller.cs" />
         <Compile Include="ExternalFindUsagesTypeAsVariableTarget.cs" />
         <Compile Include="ExternalFindUsagesVariableTarget.cs" />
+        <Compile Include="ExternalGetTypeMembersTarget.cs" />
         <Compile Include="ExternalGotoDefinitionAttribute.cs" />
         <Compile Include="ExternalGotoDefinitionAttributeInternalUser.cs" />
         <Compile Include="ExternalGotoDefinitionBaseClassTarget.cs" />

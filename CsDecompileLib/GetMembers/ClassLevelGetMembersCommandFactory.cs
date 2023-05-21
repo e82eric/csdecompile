@@ -20,7 +20,11 @@ public class ClassLevelGetMembersCommandFactory : INavigationCommandFactory<INav
         
     public INavigationCommand<FindImplementationsResponse>Find(DecompiledLocationRequest request)
     {
-        var decompiler = _decompilerFactory.Get(request.AssemblyFilePath);
+        var containingTypeDefinition = _symbolFinder.FindTypeDefinition(
+            request.AssemblyFilePath,
+            request.ContainingTypeFullName);
+        
+        var decompiler = _decompilerFactory.Get(containingTypeDefinition.ParentModule.PEFile.FileName);
         var (syntaxTree, _) = decompiler.Run(request.ContainingTypeFullName);
         var node = _symbolFinder.GetNodeAt(syntaxTree, request.Line, request.Column);
         var typeDefinition = _symbolFinder.FindParentType(node);
