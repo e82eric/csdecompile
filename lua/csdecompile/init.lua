@@ -8,7 +8,7 @@ local previewers = require "telescope.previewers"
 local entry_display = require("telescope.pickers.entry_display")
 local strings = require "plenary.strings"
 local Job = require('plenary.job')
-local log = require('csdecompile.log')
+-- local log = require('csdecompile.log')
 
 local M = {}
 
@@ -22,11 +22,13 @@ M._state = {
 	SolutionName = '',
 	AssembliesLoaded = false,
 	NextSequence = 1001,
-	StartSent = false
+	StartSent = false,
 }
 
 M.OpenLog = function()
-	log.open()
+  local outfile = string.format("%s/%s.log", vim.api.nvim_call_function("stdpath", { "cache" }), M.log.plugin)
+	local vimScriptCommand = 'e ' .. outfile
+	vim.cmd(vimScriptCommand)
 end
 
 M._checkNotRunning = function()
@@ -155,7 +157,7 @@ end
 local on_output = function(err, data)
 	local timer = vim.loop.new_timer()
 	timer:start(100, 0, vim.schedule_wrap(function()
-		log.debug(data)
+		M.log.debug(data)
 	end))
 	local ok, json = pcall(
 		vim.json.decode,
@@ -187,7 +189,7 @@ local on_output = function(err, data)
 		if mType == "event" then
 			if messageType == "log" then
 				if json.Body.LogLevel == 'Error' then
-					log.Error(data)
+					M.log.Error(data)
 				end
 			end
 		elseif mType == 'response' then
@@ -258,6 +260,7 @@ M._sendStdIoRequest = function(request, callback, callbackData)
 	M._state.NextSequence = nextSequence
 	request["Seq"] = nextSequence
 	local requestJson = vim.json.encode(request) .. '\n'
+  M.log.debug(requestJson)
 	M._state.CurrentCommand = command
 	M._state.job.stdin:write(requestJson)
 	M._state.CommandStartTime = os.time()
@@ -944,7 +947,20 @@ M._openTelescope = function(data, displayFunc, promptTitle)
 	end))
 end
 
-M.Setup = function()
+M.Setup = function(config)
+  if not config then
+    config = {}
+  end
+
+  local logLevel = "warn"
+  if config.logLevel then
+    logLevel = config.logLevel
+  end
+  M.log = require("plenary.log").new({
+    plugin = "csdecompile",
+    level = logLevel
+  })
+
   vim.api.nvim_create_user_command(
       'AddExternalAssemblyDirectory',
       function(opts)
