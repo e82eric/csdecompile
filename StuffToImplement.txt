@@ -1,6 +1,0 @@
-all searches have to start from first char
-- status bar stuff to indicate how many project assemblies and how many satelite and how many transient
-UI to list all types in assembly
-UI to list all members of a type
-Find usages of this seems to not work
-Find usages of enum members doesn't seem to work
