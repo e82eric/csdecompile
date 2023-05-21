@@ -45,7 +45,7 @@ public class ExternalGotoDefinitionTestBase : ExternalTestBase
         string tokenToRequest,
         string expected)
     {
-        var requestArguments = GotoDefintionAndCreateRequestForToken(
+        var requestArguments = GotoDefinitionAndCreateRequestForToken(
             filePath,
             column,
             line,

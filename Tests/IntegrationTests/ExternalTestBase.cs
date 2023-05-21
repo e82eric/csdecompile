@@ -8,12 +8,32 @@ namespace IntegrationTests;
 
 public class ExternalTestBase : TestBase
 {
-    protected DecompiledLocationRequest GotoDefintionAndCreateRequestForToken(
+    protected DecompiledLocationRequest GotoDefinitionAndCreateRequestForToken(
         string filePath,
         int column,
         int line,
         string lineToFind,
         string tokenToRequest)
+    {
+        var result = GotoDefinitionAndCreateRequestForToken(
+            filePath,
+            column,
+            line,
+            delegate(string[] targetLines)
+            {
+                var lineText = targetLines.FirstOrDefault(l => l.Contains(lineToFind));
+                var newLine = Array.IndexOf(targetLines, lineText) + 1;
+                var newColumn = lineText.IndexOf(tokenToRequest) + 1;
+                return (newLine, newColumn);
+            });
+        return result;
+    }
+    
+    protected DecompiledLocationRequest GotoDefinitionAndCreateRequestForToken(
+        string filePath,
+        int column,
+        int line,
+        Func<string[], (int line, int column)> findLineColumnInDecompiledSource) 
     {
         var request = new CommandPacket<DecompiledLocationRequest>
         {
@@ -35,18 +55,16 @@ public class ExternalTestBase : TestBase
         var decompileInfo = (DecompileInfo)targetClasResponse.Body.Location;
 
         var targetLines = GetLines(targetClasResponse.Body.SourceText);
-        var lineText = targetLines.FirstOrDefault(l => l.Contains(lineToFind));
-        var newLine = Array.IndexOf(targetLines, lineText);
-        var newColumn = lineText.IndexOf(tokenToRequest);
+        var findInDecompiledSourceResult = findLineColumnInDecompiledSource(targetLines);
 
         var decompiledLocationRequest = new DecompiledLocationRequest
         {
             FileName = null,
             AssemblyFilePath = decompileInfo.AssemblyFilePath,
             ContainingTypeFullName = decompileInfo.ContainingTypeFullName,
-            Column = newColumn + 1,
+            Column = findInDecompiledSourceResult.column,
             Type = LocationType.Decompiled,
-            Line = newLine + 1
+            Line = findInDecompiledSourceResult.line
         };
         return decompiledLocationRequest;
     }

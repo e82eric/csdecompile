@@ -16,7 +16,7 @@ public class ExternalGetSymbolInfoTestBase : ExternalTestBase
         string tokenToRequest,
         Dictionary<string,object> expected)
     {
-        var requestArguments = GotoDefintionAndCreateRequestForToken(
+        var requestArguments = GotoDefinitionAndCreateRequestForToken(
             filePath,
             column,
             line,

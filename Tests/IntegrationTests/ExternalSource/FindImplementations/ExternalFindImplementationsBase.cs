@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
 using CsDecompileLib;
@@ -37,14 +38,31 @@ public class ExternalFindImplementationsBase : ExternalTestBase
         int line,
         IEnumerable<(LocationType type, string value, string shortTypeName)> expected)
     {
-        DecompiledLocationRequest definitionRequestArguments = GotoDefintionAndCreateRequestForToken(
+        DecompiledLocationRequest definitionRequestArguments = GotoDefinitionAndCreateRequestForToken(
             filePath,
             column,
             line,
             lineToFind,
             tokenToFind);
         
-        SendRequestAndAssertLine(command,  expected, definitionRequestArguments);
+        SendRequestAndAssertLine(command, expected, definitionRequestArguments);
+    }
+    
+    protected void SendRequestAndAssertLine(
+        string command,
+        string filePath,
+        int column,
+        int line,
+        Func<string[], (int line, int column)> findInDecompiledSource,
+        IEnumerable<(LocationType type, string value, string shortTypeName)> expected)
+    {
+        DecompiledLocationRequest definitionRequestArguments = GotoDefinitionAndCreateRequestForToken(
+            filePath,
+            column,
+            line,
+            findInDecompiledSource);
+        
+        SendRequestAndAssertLine(command, expected, definitionRequestArguments);
     }
     
     private static void SendRequestAndAssertLine(
