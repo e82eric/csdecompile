@@ -10,12 +10,35 @@ public class GetTypeMembersTests : ExternalFindImplementationsBase
         TestHarness.GetLibraryThatReferencesLibraryFilePath("ExternalGetTypeMembersCaller.cs");
 
     [Test]
-    public void Publish()
+    public void GetWithinClass()
     {
         SendRequestAndAssertLine(
             command: Endpoints.GetTypeMembers,
             filePath: FilePath,
             lineToFind: "public class ExternalGetTypeMembersTarget",
+            tokenToFind: "ExternalGetTypeMembersTarget",
+            line: 9,
+            column: 17,
+            expected: new[]
+            {
+                (LocationType.Decompiled,
+                    "public ExternalGetTypeMembersTarget(string param1)",
+                    "ExternalGetTypeMembersTarget"),
+                (LocationType.Decompiled,
+                    "public void Method1()",
+                    "ExternalGetTypeMembersTarget"),
+                (LocationType.Decompiled,
+                    "public string Prop1 { get; set; }",
+                    "ExternalGetTypeMembersTarget")
+            });
+    }
+    [Test]
+    public void GetFromOutsideOfClas()
+    {
+        SendRequestAndAssertLine(
+            command: Endpoints.GetTypeMembers,
+            filePath: FilePath,
+            lineToFind: "namespace LibraryThatJustReferencesFramework",
             tokenToFind: "ExternalGetTypeMembersTarget",
             line: 9,
             column: 17,

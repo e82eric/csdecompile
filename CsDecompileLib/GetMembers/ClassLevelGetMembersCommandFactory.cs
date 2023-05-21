@@ -1,4 +1,5 @@
 ﻿using CsDecompileLib.IlSpy;
+using ICSharpCode.Decompiler.TypeSystem;
 
 namespace CsDecompileLib.GetMembers;
 
@@ -27,7 +28,15 @@ public class ClassLevelGetMembersCommandFactory : INavigationCommandFactory<INav
         var decompiler = _decompilerFactory.Get(containingTypeDefinition.ParentModule.PEFile.FileName);
         var (syntaxTree, _) = decompiler.Run(request.ContainingTypeFullName);
         var node = _symbolFinder.GetNodeAt(syntaxTree, request.Line, request.Column);
-        var typeDefinition = _symbolFinder.FindParentType(node);
+        ITypeDefinition typeDefinition;
+        if (node == null)
+        {
+            typeDefinition = containingTypeDefinition;
+        }
+        else
+        {
+            typeDefinition = _symbolFinder.FindParentType(node);
+        }
 
         var command = new IlSpyTypeMembersCommand(typeDefinition, _typeMembersFinder);
         return command;
