@@ -10,7 +10,7 @@ using CsDecompileLib;
 
 namespace IntegrationTests
 {
-    class StdIoClient
+    public class StdIoClient
     {
         private readonly string _exePath;
         private readonly string _targetSolutionPath;

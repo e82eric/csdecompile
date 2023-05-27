@@ -8,6 +8,7 @@ static class TestHarness
 {
     private static StdIoClient StdIoClient;
     private static StdIoClient StdIoNoSolutionClient;
+    private static StdIoClient DotNetCoreStdIoClient;
     private static string _projectsToTestAgainstRoot;
 
     public static void Init()
@@ -27,9 +28,14 @@ static class TestHarness
         var targetSolutionPath = @$"{rootDir}\AssembliesToTestAgainst\LibrariesThatReferenceOtherLibraries.sln";
         TestContext.Out.WriteLine($"Resolved TargetSolutionPath: {targetSolutionPath}");
         
+        var netCoreTargetSolutionPath = @$"{rootDir}\AssembliesToTestAgainst\LibrariesThatReferenceOtherLibrariesCore.sln";
+        TestContext.Out.WriteLine($"Resolved NetCoreTargetSolutionPath: {netCoreTargetSolutionPath}");
+        
         StdIoClient = new StdIoClient(exePath, targetSolutionPath);
+        DotNetCoreStdIoClient = new StdIoClient(exePath, netCoreTargetSolutionPath);
         StdIoNoSolutionClient = new StdIoClient(exePath, targetSolutionPath);
         IoClient.Start();
+        DotNetCoreStdIoClient.Start();
         IoNoSolutionClient.StartNoSolution();
     }
 
@@ -37,9 +43,11 @@ static class TestHarness
     {
         IoClient.Stop();
         IoNoSolutionClient.Stop();
+        DotNetCoreStdIoClient.Stop();
     }
 
     public static StdIoClient IoClient => StdIoClient;
+    public static StdIoClient DotNetCoreIoClient => DotNetCoreStdIoClient;
     public static StdIoClient IoNoSolutionClient => StdIoNoSolutionClient;
 
     public static string GetLibraryThatReferencesLibraryAssemblyBinDir()
@@ -56,6 +64,11 @@ static class TestHarness
     public static string GetLibraryThatReferencesLibraryFilePath(string fileName)
     {
         var result = @$"{_projectsToTestAgainstRoot}\LibraryThatReferencesLibrary\{fileName}";
+        return result;
+    }
+    public static string GetLibraryThatReferencesCoreLibraryFilePath(string fileName)
+    {
+        var result = @$"{_projectsToTestAgainstRoot}\LibraryThatReferencesCoreLibrary\{fileName}";
         return result;
     }
     public static string GetAnotherLibraryThatReferencesLibraryFilePath(string fileName)

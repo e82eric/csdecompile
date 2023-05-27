@@ -6,6 +6,7 @@ namespace CsDecompileLib
         public int StartColumn { get; set; }
         public int EndColumn { get; set; }
         public string AssemblyFilePath { get; set; }
+        public string ParentAssemblyFilePath { get; set; }
         public string NamespaceName { get; set; }
         public override LocationType Type => LocationType.Decompiled;
     }

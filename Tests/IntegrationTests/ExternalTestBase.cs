@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Text.RegularExpressions;
 using NUnit.Framework;
 using CsDecompileLib;
 using CsDecompileLib.GotoDefinition;
@@ -8,6 +9,18 @@ namespace IntegrationTests;
 
 public class ExternalTestBase : TestBase
 {
+    protected StdIoClient IoClient { get; }
+
+    protected ExternalTestBase()
+    {
+        IoClient = TestHarness.IoClient;
+    }
+
+    protected ExternalTestBase(StdIoClient stdIoClient)
+    {
+        IoClient = stdIoClient;
+    }
+
     protected DecompiledLocationRequest GotoDefinitionAndCreateRequestForToken(
         string filePath,
         int column,
@@ -19,7 +32,7 @@ public class ExternalTestBase : TestBase
             filePath,
             column,
             line,
-            delegate(string[] targetLines)
+            targetLines =>
             {
                 var lineText = targetLines.FirstOrDefault(l => l.Contains(lineToFind));
                 var newLine = Array.IndexOf(targetLines, lineText) + 1;
@@ -33,21 +46,70 @@ public class ExternalTestBase : TestBase
         string filePath,
         int column,
         int line,
+        string lineToFind,
+        string tokenToRequest,
+        string lineToFind2,
+        string line2TokenRegex)
+    {
+        var result = GotoDefinitionAndCreateRequestForToken(
+            filePath,
+            column,
+            line,
+            delegate(string[] targetLines)
+            {
+                var lineText = targetLines.FirstOrDefault(l => l.Contains(lineToFind));
+                var newLine = Array.IndexOf(targetLines, lineText) + 1;
+                var newColumn = lineText.IndexOf(tokenToRequest) + 1;
+                return (newLine, newColumn);
+            });
+
+        var result2 = GotoDefinitionAndCreateRequestForToken(
+            Endpoints.DecompileGotoDefinition,
+            result,
+            targetLines =>
+            {
+                var lineText = targetLines.FirstOrDefault(l => l.Contains(lineToFind2));
+                var newLine = Array.IndexOf(targetLines, lineText) + 1;
+                var match = Regex.Match(lineText, line2TokenRegex);
+                var newColumn = match.Index + 2;
+                return (newLine, newColumn);
+            });
+        return result2;
+    }
+    
+    protected DecompiledLocationRequest GotoDefinitionAndCreateRequestForToken(
+        string filePath,
+        int column,
+        int line,
         Func<string[], (int line, int column)> findLineColumnInDecompiledSource) 
     {
-        var request = new CommandPacket<DecompiledLocationRequest>
+        var decompiledLocationRequest = new DecompiledLocationRequest
         {
-            Command = Endpoints.DecompileGotoDefinition,
-            Arguments = new DecompiledLocationRequest
-            {
-                FileName = filePath,
-                Column = column,
-                Type = LocationType.SourceCode,
-                Line = line
-            }
+            FileName = filePath,
+            Column = column,
+            Type = LocationType.SourceCode,
+            Line = line
         };
 
-        var targetClasResponse = TestHarness.IoClient
+        var result = GotoDefinitionAndCreateRequestForToken(
+            Endpoints.DecompileGotoDefinition,
+            decompiledLocationRequest,
+            findLineColumnInDecompiledSource);
+
+        return result;
+    }
+    
+    protected DecompiledLocationRequest GotoDefinitionAndCreateRequestForToken(
+        string command,
+        DecompiledLocationRequest requestArguments,
+        Func<string[], (int line, int column)> findLineColumnInDecompiledSource)
+    {
+        var request = new CommandPacket<DecompiledLocationRequest>()
+        {
+            Command = command,
+            Arguments = requestArguments
+        };
+        var targetClasResponse = IoClient
             .ExecuteCommand<DecompiledLocationRequest, GotoDefinitionResponse>(request);
 
         Assert.True(targetClasResponse.Success);
@@ -61,6 +123,7 @@ public class ExternalTestBase : TestBase
         {
             FileName = null,
             AssemblyFilePath = decompileInfo.AssemblyFilePath,
+            ParentAssemblyFilePath = decompileInfo.ParentAssemblyFilePath,
             ContainingTypeFullName = decompileInfo.ContainingTypeFullName,
             Column = findInDecompiledSourceResult.column,
             Type = LocationType.Decompiled,

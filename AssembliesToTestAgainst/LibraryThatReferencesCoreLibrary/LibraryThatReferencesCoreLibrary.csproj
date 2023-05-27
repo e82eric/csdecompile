@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net7.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <Reference Include="LibraryThatReferencesFrameworkCore">
+        <HintPath>..\LibraryThatReferencesFrameworkCore\bin\Debug\net7.0\LibraryThatReferencesFrameworkCore.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
+</Project>

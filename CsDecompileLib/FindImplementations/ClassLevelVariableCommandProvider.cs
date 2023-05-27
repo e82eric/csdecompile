@@ -29,6 +29,13 @@ public class ClassLevelVariableCommandProvider<TCommandType> : IVariableCommandP
             request.AssemblyFilePath,
             request.ContainingTypeFullName);
 
+        if (containingTypeDefinition == null)
+        {
+            containingTypeDefinition = _symbolFinder.FindTypeDefinition(
+                request.ParentAssemblyFilePath,
+                request.ContainingTypeFullName);
+        }
+
         var decompiler = _decompilerFactory.Get(containingTypeDefinition.ParentModule.PEFile.FileName);
         (SyntaxTree syntaxTree, string source) = decompiler.Run(containingTypeDefinition);
         

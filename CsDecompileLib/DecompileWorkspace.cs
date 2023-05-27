@@ -31,6 +31,17 @@ namespace CsDecompileLib.IlSpy
                 LoadDllsInDirectory(projectBinDir);
             });
 
+            foreach (var project in _workspace.CurrentSolution.Projects)
+            {
+                foreach (var metadataReference in project.MetadataReferences)
+                {
+                    if (metadataReference is PortableExecutableReference pe)
+                    {
+                        _peFileCache.TryOpen(pe.FilePath, out _);
+                    }
+                }
+            }
+
             var result = _peFileCache.GetAssemblyCount();
             return result;
         }

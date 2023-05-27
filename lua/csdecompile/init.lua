@@ -292,6 +292,7 @@ M._decompileRequest = function(url, callback, callbackData)
 	local column = cursorPos[2] + 1
   column = M._getStartOfCurrentWord()
 	local assemblyFilePath = vim.b.AssemblyFilePath
+	local parentAssemblyFilePath = vim.b.parentAssemblyFilePath
 	local assemblyName = vim.b.AssemblyName
 	local fileName = vim.fn.expand('%:p')
 
@@ -305,6 +306,7 @@ M._decompileRequest = function(url, callback, callbackData)
 		Arguments = {
 			FileName = fileName,
 			AssemblyFilePath = vim.b.AssemblyFilePath,
+			ParentAssemblyFilePath = vim.b.ParentAssemblyFilePath,
 			AssemblyName = vim.b.AssemblyName,
 			Type = locationType,
 			ContainingTypeFullName = vim.b.ContainingTypeFullName,
@@ -632,6 +634,7 @@ M._setBufferTextFromDecompiledSource = function(location, sourceText, bufnr, win
 		vim.api.nvim_buf_add_highlight(bufnr, -1, "TelescopePreviewLine", location.Line -1, 0, -1)
 		vim.b.Type = location.Type
 		vim.b.AssemblyFilePath = location.AssemblyFilePath
+		vim.b.ParentAssemblyFilePath = location.ParentAssemblyFilePath
 		vim.b.ContainingTypeFullName = location.ContainingTypeFullName
 	end))
 end

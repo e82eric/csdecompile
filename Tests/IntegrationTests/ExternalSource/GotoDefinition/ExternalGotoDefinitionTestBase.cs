@@ -6,6 +6,13 @@ namespace IntegrationTests;
 
 public class ExternalGotoDefinitionTestBase : ExternalTestBase
 {
+    public ExternalGotoDefinitionTestBase() : base()
+    {
+    }
+
+    public ExternalGotoDefinitionTestBase(StdIoClient stdIoClient) : base(stdIoClient)
+    {
+    }
     protected void SendRequestAndAssertLine(string filePath, int column, int line, string expected)
     {
         SendRequestAndAssertLine(
@@ -61,9 +68,37 @@ public class ExternalGotoDefinitionTestBase : ExternalTestBase
         RequestAndCompare(request, expected);
     }
     
+    protected void SendRequestFindLocationInDecompiledClassRequestAgainAndAssertLine(
+        string filePath,
+        int column,
+        int line,
+        string lineToFind,
+        string tokenToRequest,
+        string lineToFind2,
+        string line2TokenRegex,
+        string expected)
+    {
+        var requestArguments = GotoDefinitionAndCreateRequestForToken(
+            filePath,
+            column,
+            line,
+            lineToFind,
+            tokenToRequest,
+            lineToFind2,
+            line2TokenRegex);
+        
+        var request = new CommandPacket<DecompiledLocationRequest>
+        {
+            Command = Endpoints.DecompileGotoDefinition,
+            Arguments = requestArguments,
+        };
+
+        RequestAndCompare(request, expected);
+    }
+    
     private void RequestAndCompare(CommandPacket<DecompiledLocationRequest> request, string expected)
     {
-        var response = TestHarness.IoClient
+        var response = IoClient
             .ExecuteCommand<DecompiledLocationRequest, GotoDefinitionResponse>(request);
 
         Assert.True(response.Success);
