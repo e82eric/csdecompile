@@ -48,6 +48,29 @@ public class ExternalFindImplementationsBase : ExternalTestBase
         SendRequestAndAssertLine(command, expected, definitionRequestArguments);
     }
     
+    protected void SendRequestAndAssertNumberOfImplementations(
+        string command,
+        string filePath,
+        string lineToFind,
+        string tokenToFind,
+        string lineToFind2,
+        string tokenPatternToFind2,
+        int column,
+        int line,
+        int numberOfImplementations)
+    {
+        DecompiledLocationRequest definitionRequestArguments = GotoDefinitionAndCreateRequestForToken(
+            filePath,
+            column,
+            line,
+            lineToFind,
+            tokenToFind,
+            lineToFind2,
+            tokenPatternToFind2);
+        
+        SendRequestAndAssertNumberOfImplementations(command, numberOfImplementations, definitionRequestArguments);
+    }
+    
     protected void SendRequestAndAssertLine(
         string command,
         string filePath,
@@ -70,19 +93,12 @@ public class ExternalFindImplementationsBase : ExternalTestBase
         IEnumerable<(LocationType type, string value, string shortTypeName)> expected,
         DecompiledLocationRequest requestArguments)
     {
-        var request = new CommandPacket<DecompiledLocationRequest>
-        {
-            Command = command,
-            Arguments = requestArguments
-        };
+        var implementations = SendRequestAndAssertNumberOfImplementations(
+            command,
+            expected.Count(),
+            requestArguments);
 
-        var response = TestHarness.IoClient
-            .ExecuteCommand<DecompiledLocationRequest, FindImplementationsResponse>(request);
-
-        Assert.True(response.Success);
-        Assert.AreEqual(expected.Count(), response.Body.Implementations.Count());
-
-        foreach (var implementation in response.Body.Implementations)
+        foreach (var implementation in implementations)
         {
             string[] lines = null;
             switch (implementation.Type)
@@ -105,6 +121,26 @@ public class ExternalFindImplementationsBase : ExternalTestBase
             Assert.AreEqual(implementation.SourceText, sourceLine);
             Assert.AreEqual(foundExpected.shortTypeName, implementation.ContainingTypeShortName);
         }
+    }
+    
+    private static IList<ResponseLocation> SendRequestAndAssertNumberOfImplementations(
+        string command,
+        int expected,
+        DecompiledLocationRequest requestArguments)
+    {
+        var request = new CommandPacket<DecompiledLocationRequest>
+        {
+            Command = command,
+            Arguments = requestArguments
+        };
+
+        var response = TestHarness.IoClient
+            .ExecuteCommand<DecompiledLocationRequest, FindImplementationsResponse>(request);
+
+        Assert.True(response.Success);
+        Assert.AreEqual(expected, response.Body.Implementations.Count);
+        
+        return response.Body.Implementations;
     }
 
     private static string[] ExternalGetLines(ResponseLocation implementation)

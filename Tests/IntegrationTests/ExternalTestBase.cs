@@ -71,7 +71,7 @@ public class ExternalTestBase : TestBase
                 var lineText = targetLines.FirstOrDefault(l => l.Contains(lineToFind2));
                 var newLine = Array.IndexOf(targetLines, lineText) + 1;
                 var match = Regex.Match(lineText, line2TokenRegex);
-                var newColumn = match.Index + 2;
+                var newColumn = match.Index + 1;
                 return (newLine, newColumn);
             });
         return result2;

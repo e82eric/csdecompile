@@ -36,4 +36,26 @@ public class ExternalFindUsagesTestBase : ExternalFindImplementationsBase
             line,
             expected);
     }
+    
+    protected void SendRequestAndAssertNumberOfImplementations(
+        string filePath,
+        string lineToFind,
+        string tokenToFind,
+        string lineToFind2,
+        string tokenToFind2,
+        int column,
+        int line,
+        int numberOfImplementations)
+    {
+        SendRequestAndAssertNumberOfImplementations(
+            Endpoints.DecompileFindUsages,
+            filePath,
+            lineToFind,
+            tokenToFind,
+            lineToFind2,
+            tokenToFind2,
+            column,
+            line,
+            numberOfImplementations);
+    }
 }

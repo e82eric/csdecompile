@@ -1,0 +1,23 @@
+using NUnit.Framework;
+
+namespace IntegrationTests;
+
+[TestFixture]
+public class ExternalFindUsagesFrameworkInterface : ExternalFindUsagesTestBase
+{
+    private static string FilePath = TestHarness.GetLibraryThatReferencesLibraryFilePath(
+        "ExternalFindUsagesStringCaller.cs");
+    [Test]
+    public void GotoExternalClassDefinition()
+    {
+        SendRequestAndAssertNumberOfImplementations(
+            filePath: FilePath,
+            "private string _field;",
+            "string",
+            "public sealed class String : IComparable, ICloneable, IConvertible, IEnumerable, IComparable<string>, IEnumerable<char>, IEquatable<string>",
+            "(IComparable),",
+            column: 13,
+            line: 9,
+            33);
+    }
+}

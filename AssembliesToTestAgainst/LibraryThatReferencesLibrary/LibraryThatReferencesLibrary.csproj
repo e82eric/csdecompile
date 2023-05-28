@@ -58,6 +58,7 @@
         <Compile Include="ExternalFindUsagesMethodOfInterfaceUser2.cs" />
         <Compile Include="ExternalFindUsagesPropertyOfInterfaceUser1.cs" />
         <Compile Include="ExternalFindUsagesPropertyOfInterfaceUser2.cs" />
+        <Compile Include="ExternalFindUsagesStringCaller.cs" />
         <Compile Include="ExternalFindUsagesTypeAsFieldCaller.cs" />
         <Compile Include="ExternalFindUsagesTypeAsGenericCaller.cs" />
         <Compile Include="ExternalFindUsagesTypeAsMethodCaller.cs" />

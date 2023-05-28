@@ -59,6 +59,7 @@
         <Compile Include="ExternalFindUsagesPropertyOfInterfaceInterface.cs" />
         <Compile Include="ExternalFindUsagesPropertyTarget.cs" />
         <Compile Include="ExternalFindUsagesPropertyUser.cs" />
+        <Compile Include="ExternalFindUsagesStringTarget.cs" />
         <Compile Include="ExternalFindUsagesTypeAsFieldTarget.cs" />
         <Compile Include="ExternalFindUsagesTypeAsFieldUser.cs" />
         <Compile Include="ExternalFindUsagesTypeAsGenericTarget.cs" />
