@@ -145,6 +145,7 @@
         <Compile Include="ExternalSource\GotoDefinition\ExternalGotoDefinitionConstructorTests.cs" />
         <Compile Include="ExternalSource\GotoDefinition\ExternalGotoDefinitionDefaultConstructorTests.cs" />
         <Compile Include="ExternalSource\GotoDefinition\ExternalGotoDefinitionDotNetCoreFrameworkClassTests.cs" />
+        <Compile Include="ExternalSource\GotoDefinition\ExternalGotoDefinitionDotNetCoreFrameworkClassThroughNugetPackageTests.cs" />
         <Compile Include="ExternalSource\GotoDefinition\ExternalGotoDefinitionEventTests.cs" />
         <Compile Include="ExternalSource\GotoDefinition\ExternalGotoDefinitionFieldTests.cs" />
         <Compile Include="ExternalSource\GotoDefinition\ExternalGotoDefinitionMethodOfGenericTypeTests.cs" />

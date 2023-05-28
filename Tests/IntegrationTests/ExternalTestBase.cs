@@ -81,6 +81,55 @@ public class ExternalTestBase : TestBase
         string filePath,
         int column,
         int line,
+        string lineToFind,
+        string tokenToRequest,
+        string lineToFind2,
+        string line2TokenRegex,
+        string lineToFind3,
+        string line3TokenRegex)
+    {
+        var result = GotoDefinitionAndCreateRequestForToken(
+            filePath,
+            column,
+            line,
+            delegate(string[] targetLines)
+            {
+                var lineText = targetLines.FirstOrDefault(l => l.Contains(lineToFind));
+                var newLine = Array.IndexOf(targetLines, lineText) + 1;
+                var newColumn = lineText.IndexOf(tokenToRequest) + 1;
+                return (newLine, newColumn);
+            });
+
+        var result2 = GotoDefinitionAndCreateRequestForToken(
+            Endpoints.DecompileGotoDefinition,
+            result,
+            targetLines =>
+            {
+                var lineText = targetLines.FirstOrDefault(l => l.Contains(lineToFind2));
+                var newLine = Array.IndexOf(targetLines, lineText) + 1;
+                var match = Regex.Match(lineText, line2TokenRegex);
+                var newColumn = match.Index + 2;
+                return (newLine, newColumn);
+            });
+        
+        var result3 = GotoDefinitionAndCreateRequestForToken(
+            Endpoints.DecompileGotoDefinition,
+            result2,
+            targetLines =>
+            {
+                var lineText = targetLines.FirstOrDefault(l => l.Contains(lineToFind3));
+                var newLine = Array.IndexOf(targetLines, lineText) + 1;
+                var match = Regex.Match(lineText, line3TokenRegex);
+                var newColumn = match.Index + 1;
+                return (newLine, newColumn);
+            });
+        return result3;
+    }
+    
+    protected DecompiledLocationRequest GotoDefinitionAndCreateRequestForToken(
+        string filePath,
+        int column,
+        int line,
         Func<string[], (int line, int column)> findLineColumnInDecompiledSource) 
     {
         var decompiledLocationRequest = new DecompiledLocationRequest

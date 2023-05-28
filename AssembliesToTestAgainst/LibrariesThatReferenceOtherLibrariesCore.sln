@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibraryThatReferencesCoreLibrary", "LibraryThatReferencesCoreLibrary\LibraryThatReferencesCoreLibrary.csproj", "{E9CF43D4-0E94-4224-83D6-4D961436B445}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibraryThatReferencesFirly", "LibraryThatReferencesFirly\LibraryThatReferencesFirly.csproj", "{F483AB63-DBEB-4D9E-90C4-20D9955DF961}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{E9CF43D4-0E94-4224-83D6-4D961436B445}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E9CF43D4-0E94-4224-83D6-4D961436B445}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E9CF43D4-0E94-4224-83D6-4D961436B445}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F483AB63-DBEB-4D9E-90C4-20D9955DF961}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F483AB63-DBEB-4D9E-90C4-20D9955DF961}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F483AB63-DBEB-4D9E-90C4-20D9955DF961}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F483AB63-DBEB-4D9E-90C4-20D9955DF961}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

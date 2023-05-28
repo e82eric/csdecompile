@@ -1,6 +1,7 @@
 ﻿using CsDecompileLib.IlSpy;
 using ICSharpCode.Decompiler.CSharp;
 using ICSharpCode.Decompiler.CSharp.Syntax;
+using ICSharpCode.Decompiler.TypeSystem;
 
 namespace CsDecompileLib.FindImplementations;
 
@@ -25,9 +26,19 @@ public class ClassLevelVariableCommandProvider<TCommandType> : IVariableCommandP
         bool found = false;
         TCommandType commandType = default;
 
-        var containingTypeDefinition = _symbolFinder.FindTypeDefinition(
-            request.AssemblyFilePath,
-            request.ContainingTypeFullName);
+        ITypeDefinition containingTypeDefinition = null;
+        if (request.ParentAssemblyFilePath != null)
+        {
+            containingTypeDefinition = _symbolFinder.FindTypeDefinition(
+                request.ParentAssemblyFilePath,
+                request.ContainingTypeFullName);
+        }
+        if (containingTypeDefinition == null)
+        {
+            containingTypeDefinition = _symbolFinder.FindTypeDefinition(
+                request.AssemblyFilePath,
+                request.ContainingTypeFullName);
+        }
 
         if (containingTypeDefinition == null)
         {

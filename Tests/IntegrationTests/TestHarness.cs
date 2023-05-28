@@ -71,6 +71,11 @@ static class TestHarness
         var result = @$"{_projectsToTestAgainstRoot}\LibraryThatReferencesCoreLibrary\{fileName}";
         return result;
     }
+    public static string GetLibraryThatReferencesFirlyFilePath(string fileName)
+    {
+        var result = @$"{_projectsToTestAgainstRoot}\LibraryThatReferencesFirly\{fileName}";
+        return result;
+    }
     public static string GetAnotherLibraryThatReferencesLibraryFilePath(string fileName)
     {
         var result = @$"{_projectsToTestAgainstRoot}\AnotherLibraryThatReferencesLibrary\{fileName}";

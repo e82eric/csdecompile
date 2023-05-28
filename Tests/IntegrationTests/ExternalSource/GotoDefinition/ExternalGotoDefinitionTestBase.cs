@@ -95,6 +95,37 @@ public class ExternalGotoDefinitionTestBase : ExternalTestBase
 
         RequestAndCompare(request, expected);
     }
+    protected void SendRequestFindLocationInDecompiledClassRequestAgainAndAssertLine(
+        string filePath,
+        int column,
+        int line,
+        string lineToFind,
+        string tokenToRequest,
+        string lineToFind2,
+        string line2TokenRegex,
+        string lineToFind3,
+        string line3TokenRegex,
+        string expected)
+    {
+        var requestArguments = GotoDefinitionAndCreateRequestForToken(
+            filePath,
+            column,
+            line,
+            lineToFind,
+            tokenToRequest,
+            lineToFind2,
+            line2TokenRegex,
+            lineToFind3,
+            line3TokenRegex);
+        
+        var request = new CommandPacket<DecompiledLocationRequest>
+        {
+            Command = Endpoints.DecompileGotoDefinition,
+            Arguments = requestArguments,
+        };
+
+        RequestAndCompare(request, expected);
+    }
     
     private void RequestAndCompare(CommandPacket<DecompiledLocationRequest> request, string expected)
     {
