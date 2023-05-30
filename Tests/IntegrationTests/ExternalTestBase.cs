@@ -26,27 +26,6 @@ public class ExternalTestBase : TestBase
         int column,
         int line,
         string lineToFind,
-        string tokenToRequest)
-    {
-        var result = GotoDefinitionAndCreateRequestForToken(
-            filePath,
-            column,
-            line,
-            targetLines =>
-            {
-                var lineText = targetLines.FirstOrDefault(l => l.Contains(lineToFind));
-                var newLine = Array.IndexOf(targetLines, lineText) + 1;
-                var newColumn = lineText.IndexOf(tokenToRequest) + 1;
-                return (newLine, newColumn);
-            });
-        return result;
-    }
-    
-    protected DecompiledLocationRequest GotoDefinitionAndCreateRequestForToken(
-        string filePath,
-        int column,
-        int line,
-        string lineToFind,
         string tokenToRequest,
         string lineToFind2,
         string line2TokenRegex)
@@ -55,25 +34,14 @@ public class ExternalTestBase : TestBase
             filePath,
             column,
             line,
-            delegate(string[] targetLines)
-            {
-                var lineText = targetLines.FirstOrDefault(l => l.Contains(lineToFind));
-                var newLine = Array.IndexOf(targetLines, lineText) + 1;
-                var newColumn = lineText.IndexOf(tokenToRequest) + 1;
-                return (newLine, newColumn);
-            });
+            lineToFind,
+            tokenToRequest);
 
         var result2 = GotoDefinitionAndCreateRequestForToken(
             Endpoints.DecompileGotoDefinition,
             result,
-            targetLines =>
-            {
-                var lineText = targetLines.FirstOrDefault(l => l.Contains(lineToFind2));
-                var newLine = Array.IndexOf(targetLines, lineText) + 1;
-                var match = Regex.Match(lineText, line2TokenRegex);
-                var newColumn = match.Index + 1;
-                return (newLine, newColumn);
-            });
+            lineToFind2,
+            line2TokenRegex);
         return result2;
     }
     
@@ -92,37 +60,20 @@ public class ExternalTestBase : TestBase
             filePath,
             column,
             line,
-            delegate(string[] targetLines)
-            {
-                var lineText = targetLines.FirstOrDefault(l => l.Contains(lineToFind));
-                var newLine = Array.IndexOf(targetLines, lineText) + 1;
-                var newColumn = lineText.IndexOf(tokenToRequest) + 1;
-                return (newLine, newColumn);
-            });
+            lineToFind,
+            tokenToRequest);
 
         var result2 = GotoDefinitionAndCreateRequestForToken(
             Endpoints.DecompileGotoDefinition,
             result,
-            targetLines =>
-            {
-                var lineText = targetLines.FirstOrDefault(l => l.Contains(lineToFind2));
-                var newLine = Array.IndexOf(targetLines, lineText) + 1;
-                var match = Regex.Match(lineText, line2TokenRegex);
-                var newColumn = match.Index + 2;
-                return (newLine, newColumn);
-            });
-        
+            lineToFind2,
+            line2TokenRegex);
+
         var result3 = GotoDefinitionAndCreateRequestForToken(
             Endpoints.DecompileGotoDefinition,
             result2,
-            targetLines =>
-            {
-                var lineText = targetLines.FirstOrDefault(l => l.Contains(lineToFind3));
-                var newLine = Array.IndexOf(targetLines, lineText) + 1;
-                var match = Regex.Match(lineText, line3TokenRegex);
-                var newColumn = match.Index + 1;
-                return (newLine, newColumn);
-            });
+            lineToFind3,
+            line3TokenRegex);
         return result3;
     }
     
@@ -130,7 +81,8 @@ public class ExternalTestBase : TestBase
         string filePath,
         int column,
         int line,
-        Func<string[], (int line, int column)> findLineColumnInDecompiledSource) 
+        string lineToFind,
+        string tokenRegex)
     {
         var decompiledLocationRequest = new DecompiledLocationRequest
         {
@@ -143,7 +95,8 @@ public class ExternalTestBase : TestBase
         var result = GotoDefinitionAndCreateRequestForToken(
             Endpoints.DecompileGotoDefinition,
             decompiledLocationRequest,
-            findLineColumnInDecompiledSource);
+            lineToFind,
+            tokenRegex);
 
         return result;
     }
@@ -151,9 +104,10 @@ public class ExternalTestBase : TestBase
     protected DecompiledLocationRequest GotoDefinitionAndCreateRequestForToken(
         string command,
         DecompiledLocationRequest requestArguments,
-        Func<string[], (int line, int column)> findLineColumnInDecompiledSource)
+        string lineToFind,
+        string tokenRegex)
     {
-        var request = new CommandPacket<DecompiledLocationRequest>()
+        var request = new CommandPacket<DecompiledLocationRequest>
         {
             Command = command,
             Arguments = requestArguments
@@ -166,17 +120,27 @@ public class ExternalTestBase : TestBase
         var decompileInfo = (DecompileInfo)targetClasResponse.Body.Location;
 
         var targetLines = GetLines(targetClasResponse.Body.SourceText);
-        var findInDecompiledSourceResult = findLineColumnInDecompiledSource(targetLines);
-
+        
+        var lineText = targetLines.FirstOrDefault(line =>
+        {
+            var match = Regex.Match(line, lineToFind);
+            return match.Success;
+        });
+        
+        var newLine = Array.IndexOf(targetLines, lineText) + 1;
+        var match = Regex.Match(lineText, tokenRegex);
+        var group = match.Groups["token"];
+        var newColumn = group.Index + 1;
+        
         var decompiledLocationRequest = new DecompiledLocationRequest
         {
             FileName = null,
             AssemblyFilePath = decompileInfo.AssemblyFilePath,
             ParentAssemblyFilePath = decompileInfo.ParentAssemblyFilePath,
             ContainingTypeFullName = decompileInfo.ContainingTypeFullName,
-            Column = findInDecompiledSourceResult.column,
+            Column = newColumn,
             Type = LocationType.Decompiled,
-            Line = findInDecompiledSourceResult.line
+            Line = newLine
         };
         return decompiledLocationRequest;
     }

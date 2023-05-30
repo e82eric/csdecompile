@@ -17,10 +17,10 @@ public class ExternalGotoDefinitionDotNetCoreFrameworkClassTests : ExternalGotoD
             FilePath,
             13,
             9,
-            "[DataContract]",
-            "DataContract",
+            "\\[DataContract\\]",
+            "\\[(?<token>DataContract)\\]",
             "public sealed class DataContractAttribute : Attribute",
-            " (Attribute)$",
+            ": (?<token>Attribute)$",
             "public abstract class Attribute");
     }
 }

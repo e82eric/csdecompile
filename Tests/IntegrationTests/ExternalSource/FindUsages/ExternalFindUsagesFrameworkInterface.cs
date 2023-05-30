@@ -13,9 +13,9 @@ public class ExternalFindUsagesFrameworkInterface : ExternalFindUsagesTestBase
         SendRequestAndAssertNumberOfImplementations(
             filePath: FilePath,
             "private string _field;",
-            "string",
+            "(?<token>string)",
             "public sealed class String : IComparable, ICloneable, IConvertible, IEnumerable, IComparable<string>, IEnumerable<char>, IEquatable<string>",
-            "(IComparable),",
+            "(?<token>IComparable),",
             column: 13,
             line: 9,
             33);

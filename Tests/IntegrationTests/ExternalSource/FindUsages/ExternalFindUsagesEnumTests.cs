@@ -89,7 +89,7 @@ public class ExternalFindUsagesEnumTests : ExternalFindUsagesTestBase
         this.SendRequestAndAssertLine(
             filePath: FilePath,
             lineToFind: "ExternalFindUsagesEnumTarget externalFindUsagesEnumTarget3 = ExternalFindUsagesEnumTarget.Type3;",
-            tokenToFind: "Type3",
+            tokenToFind: "(?<token>Type3);$",
             column: 13,
             line: 12,
             expected: new []

@@ -35,8 +35,8 @@ public class ExternalGotoDefinitionEventTests : ExternalGotoDefinitionTestBase
             filePath:FilePath,
             column:13,
             line:10,
-            lineToFind:"BasicEvent(this, EventArgs.Empty);",
-            tokenToRequest:"BasicEvent",
+            lineToFind:"BasicEvent\\(this, EventArgs.Empty\\);",
+            tokenToRequest:"(?<token>BasicEvent)\\(",
             expected:"public event EventHandler BasicEvent;");
     }
 }

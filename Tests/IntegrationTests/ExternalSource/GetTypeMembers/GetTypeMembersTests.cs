@@ -41,7 +41,7 @@ public class GetTypeMembersTests : ExternalFindImplementationsBase
             command: Endpoints.GetTypeMembers,
             filePath: FilePath,
             lineToFind: "namespace LibraryThatJustReferencesFramework",
-            tokenToFind: "ExternalGetTypeMembersTarget",
+            tokenToFind: " (?<token>LibraryThatJustReferencesFramework)$",
             line: 9,
             column: 17,
             expected: new[]
@@ -63,14 +63,10 @@ public class GetTypeMembersTests : ExternalFindImplementationsBase
         SendRequestAndAssertLine(
             command: Endpoints.GetTypeMembers,
             filePath: FilePath,
+            "^$", //blank line
+            "(?<token>^$)", //column 0
             line: 9,
             column: 17,
-            findInDecompiledSource:(decompiledSourcelines) =>
-            {
-                var lineText = decompiledSourcelines.FirstOrDefault(l => l.Length == 0);
-                var newLine = Array.IndexOf(decompiledSourcelines, lineText) + 1;
-                return (newLine, 0);
-            },
             expected: new[]
             {
                 (LocationType.Decompiled,
@@ -90,14 +86,10 @@ public class GetTypeMembersTests : ExternalFindImplementationsBase
         SendRequestAndAssertLine(
             command: Endpoints.GetTypeMembers,
             filePath: FilePath,
+            "public ExternalGetTypeMembersTarget\\(string param1\\)",
+            "$(<token> )",
             line: 9,
             column: 17,
-            findInDecompiledSource:(decompiledSourceLines) =>
-            {
-                var lineText = decompiledSourceLines.FirstOrDefault(l => l.Contains("public ExternalGetTypeMembersTarget(string param1)"));
-                var newLine = Array.IndexOf(decompiledSourceLines, lineText) + 1;
-                return (newLine, 1);
-            },
             expected: new[]
             {
                 (LocationType.Decompiled,

@@ -15,8 +15,8 @@ public class ExternalGotoDefinitionMethodOfGenericTypeTests : ExternalGotoDefini
             filePath: FilePath,
             column: 17,
             line: 9,
-            "externalGotoDefinitionMethodOfGenericTypeTarget.ExternalBasicMethod(string.Empty);",
-            "ExternalBasicMethod",
+            "externalGotoDefinitionMethodOfGenericTypeTarget.ExternalBasicMethod\\(string.Empty\\);",
+            "\\.(?<token>ExternalBasicMethod)\\(",
             expected: "public void ExternalBasicMethod(T param1)");
     }
 }

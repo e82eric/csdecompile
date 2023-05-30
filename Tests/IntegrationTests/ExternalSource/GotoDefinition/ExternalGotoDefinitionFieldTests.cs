@@ -16,7 +16,7 @@ public class ExternalGotoDefinitionFieldTests : ExternalGotoDefinitionTestBase
             column:13,
             line:9,
             lineToFind:"_basicField = \"0\"",
-            tokenToRequest:"_basicField",
+            tokenToRequest:"(?<token>_basicField) =",
             expected:"private string _basicField;");
     }
     [Test]
@@ -29,7 +29,7 @@ public class ExternalGotoDefinitionFieldTests : ExternalGotoDefinitionTestBase
             column:13,
             line:9,
             lineToFind:"string basicField = _basicField",
-            tokenToRequest:"_basicField",
+            tokenToRequest:" (?<token>_basicField)",
             expected:"private string _basicField;");
     }
 }
@@ -47,8 +47,8 @@ public class ExternalGotoDefinitionAttributeInternalUserUserTests : ExternalGoto
             filePath: FilePath,
             column: 17,
             line: 9,
-            lineToFind: "[ExternalGotoDefinition]",
-            tokenToRequest: "ExternalGotoDefinition",
+            lineToFind: "\\[ExternalGotoDefinition\\]",
+            tokenToRequest: "\\[(?<token>ExternalGotoDefinition)\\]",
             expected: "public class ExternalGotoDefinitionAttribute : Attribute");
     }
 }

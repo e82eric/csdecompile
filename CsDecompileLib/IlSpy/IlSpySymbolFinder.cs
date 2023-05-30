@@ -82,6 +82,10 @@ public class IlSpySymbolFinder
 
     public ITypeDefinition FindParentType(AstNode node)
     {
+        if (node == null)
+        {
+            return null;
+        }
         if (node.NodeType == NodeType.TypeDeclaration)
         {
             var symbol = node.GetSymbol();

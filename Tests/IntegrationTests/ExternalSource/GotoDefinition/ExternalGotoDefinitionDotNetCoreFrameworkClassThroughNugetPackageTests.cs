@@ -17,12 +17,12 @@ public class ExternalGotoDefinitionDotNetCoreFrameworkClassThroughNugetPackageTe
             FilePath,
             21,
             9,
-            "[DataContract]",
-            "DataContract",
+            "\\[DataContract\\]",
+            "\\[(?<token>DataContract)\\]",
             "public sealed class DataContractAttribute : Attribute",
-            " (Attribute)$",
-            lineToFind3: "[Serializable]",
-            line3TokenRegex: "Serializable",
+            " (?<token>Attribute)$",
+            lineToFind3: "\\[Serializable\\]",
+            line3TokenRegex: "\\[(?<token>Serializable)\\]",
             "public sealed class SerializableAttribute : Attribute");
     }
 }

@@ -14,7 +14,7 @@ public class ExternalFindUsagesFieldTests : ExternalFindUsagesTestBase
         SendRequestAndAssertLine(
             filePath: FilePath,
             "private string _field;",
-            "_field",
+            "(?<token>_field);$",
             column: 13,
             line: 9,
             

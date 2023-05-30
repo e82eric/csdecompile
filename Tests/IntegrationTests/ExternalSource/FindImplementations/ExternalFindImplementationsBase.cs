@@ -76,14 +76,16 @@ public class ExternalFindImplementationsBase : ExternalTestBase
         string filePath,
         int column,
         int line,
-        Func<string[], (int line, int column)> findInDecompiledSource,
+        string lineToFind,
+        string tokenRegex,
         IEnumerable<(LocationType type, string value, string shortTypeName)> expected)
     {
         DecompiledLocationRequest definitionRequestArguments = GotoDefinitionAndCreateRequestForToken(
             filePath,
             column,
             line,
-            findInDecompiledSource);
+            lineToFind,
+            tokenRegex);
         
         SendRequestAndAssertLine(command, expected, definitionRequestArguments);
     }

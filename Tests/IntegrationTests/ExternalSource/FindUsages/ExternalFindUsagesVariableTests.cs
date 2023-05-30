@@ -14,7 +14,7 @@ public class ExternalFindUsagesVariableTests : ExternalFindUsagesTestBase
         SendRequestAndAssertLine(
             filePath: FilePath,
             "int num = 1;",
-            "num",
+            "(?<token>num) =",
             column: 13,
             line: 9,
             

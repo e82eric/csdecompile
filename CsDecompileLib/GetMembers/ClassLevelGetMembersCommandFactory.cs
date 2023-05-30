@@ -38,6 +38,11 @@ public class ClassLevelGetMembersCommandFactory : INavigationCommandFactory<INav
             typeDefinition = _symbolFinder.FindParentType(node);
         }
 
+        if (typeDefinition == null)
+        {
+            typeDefinition = containingTypeDefinition;
+        }
+
         var command = new IlSpyTypeMembersCommand(typeDefinition, _typeMembersFinder);
         return command;
     }

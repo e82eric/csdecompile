@@ -17,8 +17,8 @@ public class ExternalGetSymbolInfoTests : ExternalGetSymbolInfoTestBase
             column: 13,
             line: 9,
             lineToFind:
-            "ExternalSourceGetSymbolInfoTarget externalSourceGetSymbolInfoTarget = new ExternalSourceGetSymbolInfoTarget();",
-            tokenToRequest: "ExternalSourceGetSymbolInfoTarget",
+            "ExternalSourceGetSymbolInfoTarget externalSourceGetSymbolInfoTarget = new ExternalSourceGetSymbolInfoTarget\\(\\);",
+            tokenToRequest: "(?<token>ExternalSourceGetSymbolInfoTarget) ",
             new Dictionary<string, object>()
             {
                 { "FullName", "LibraryThatJustReferencesFramework.ExternalSourceGetSymbolInfoTarget" },
@@ -35,8 +35,8 @@ public class ExternalGetSymbolInfoTests : ExternalGetSymbolInfoTestBase
             column: 13,
             line: 9,
             lineToFind:
-            "externalSourceGetSymbolInfoTarget.ExternalRun();",
-            tokenToRequest: "ExternalRun",
+            "externalSourceGetSymbolInfoTarget.ExternalRun\\(\\);",
+            tokenToRequest: "(?<token>ExternalRun)\\(\\);$",
             new Dictionary<string, object>
             {
                 { "FullName", "LibraryThatJustReferencesFramework.ExternalSourceGetSymbolInfoTarget.ExternalRun" },
@@ -54,7 +54,7 @@ public class ExternalGetSymbolInfoTests : ExternalGetSymbolInfoTestBase
             line: 9,
             lineToFind:
             "externalSourceGetSymbolInfoTarget.ExternalBasicProperty = string.Empty;",
-            tokenToRequest: "ExternalBasicProperty",
+            tokenToRequest: "(?<token>ExternalBasicProperty) =",
             new Dictionary<string, object>()
             {
                 { "FullName", "LibraryThatJustReferencesFramework.ExternalSourceGetSymbolInfoTarget.ExternalBasicProperty" },
