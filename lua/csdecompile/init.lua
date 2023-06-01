@@ -8,7 +8,6 @@ local previewers = require "telescope.previewers"
 local entry_display = require("telescope.pickers.entry_display")
 local strings = require "plenary.strings"
 local Job = require('plenary.job')
--- local log = require('csdecompile.log')
 
 local M = {}
 
@@ -967,16 +966,16 @@ M.Setup = function(config)
   vim.api.nvim_create_user_command(
       'AddExternalAssemblyDirectory',
       function(opts)
-        M.StartAddExternalDirectory(opts.args[0])
+        M.StartAddExternalDirectory(opts.args)
       end,
-      { nargs = '?', complete='file' }
+      { nargs = '?', complete='dir' }
   )
   vim.api.nvim_create_user_command(
       'SearchForType',
       function(opts)
-        M.StartGetAllTypes(opts.args[0])
+        M.StartGetAllTypes(opts.args)
       end,
-      { nargs = '?', complete='file' }
+      { nargs = 1 }
   )
   vim.api.nvim_create_user_command(
       'OpenDecompilerLog',
