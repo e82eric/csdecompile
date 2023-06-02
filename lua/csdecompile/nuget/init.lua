@@ -12,46 +12,6 @@ M._updateProgress = function(action, level, message)
   vim.cmd('normal G')
 end
 
-M.SearchNuget = function(searchString, searchAllVersions)
-  vim.cmd("botright copen")
-  M._updateProgress('r', 'INFO', 'Starting Nuget Search')
-  if(require('csdecompile')._state.StartSent == false) then
-    M._updateProgress('a', 'ERRO', 'Decompiler not started. Run StartDecompiler or StartDecompilerNoSolution')
-    return
-  end
-
-  M._searchNuget(searchString, searchAllVersions)
-end
-
-M._installPackage = function(packageName, version)
-  M._updateProgress('a', 'INFO', 'Starting to install package: ' .. packageName .. ' version: ' .. version)
-  job:new({
-    command = 'nuget',
-    args = { 'install', packageName, '-version', version, '-source', M._nugetFeedUri, '-DependencyVersion', 'ignore', '-NoCache', '-OutputDirectory', M._packageDirectory},
-    on_exit = function(install, installReturnVal)
-      local timer = vim.loop.new_timer()
-      timer:start(100, 0, vim.schedule_wrap(function ()
-        M._updateProgress('a', 'INFO', 'install completed')
-        for k,v in ipairs(install:result()) do
-          M._updateProgress('a', 'INFO', v)
-        end
-        M._updateProgress('a', 'INFO', 'install nuget command completed with return code ' ..installReturnVal)
-
-        if(installReturnVal == 0) then
-          local installDir = M._packageDirectory .. packageName .. '.' .. version
-          M._updateProgress('a', 'INFO', 'Adding dll directory to decompiler: ' ..installDir)
-          require('csdecompile').StartAddExternalDirectory(installDir)
-          M._updateProgress('a', 'INFO', 'Added dll directory to decompiler: ' .. installDir)
-          vim.cmd('cclose')
-          M._updateProgress('a', 'INFO', 'Successfully added ' ..installDir .. ' to decompiler ')
-        else
-          M._updateProgress('a', 'INFO', 'Skipping adding dlls to decompiler since nuget command failed with return code ' .. installReturnVal)
-        end
-      end))
-    end
-  }):start()
-end
-
 M._splitOnSpace = function(val)
   local parts = {}
 
@@ -93,25 +53,59 @@ M._displaySelector = function(items, selectionFn)
   local s = picker:find()
 end
 
+M.SearchNuget = function(searchString, searchAllVersions)
+  vim.cmd("botright copen")
+  M._updateProgress('r', 'INFO', 'Starting Nuget Search')
+  if(require('csdecompile')._state.StartSent == false) then
+    M._updateProgress('a', 'ERRO', 'Decompiler not started. Run StartDecompiler or StartDecompilerNoSolution')
+    return
+  end
+
+  M._searchNuget(searchString, searchAllVersions)
+end
+
+M._installPackage = function(packageName, version)
+  M._updateProgress('a', 'INFO', 'Starting to install package: ' .. packageName .. ' version: ' .. version)
+  job:new({
+    command = 'nuget',
+    args = { 'install', packageName, '-version', version, '-source', M._nugetFeedUri, '-DependencyVersion', 'ignore', '-NoCache', '-OutputDirectory', M._packageDirectory},
+    on_exit = vim.schedule_wrap(function(install, installReturnVal)
+      M._updateProgress('a', 'INFO', 'install completed')
+      for k,v in ipairs(install:result()) do
+        M._updateProgress('a', 'INFO', v)
+      end
+      M._updateProgress('a', 'INFO', 'install nuget command completed with return code ' ..installReturnVal)
+
+      if(installReturnVal == 0) then
+        local installDir = M._packageDirectory .. packageName .. '.' .. version
+        M._updateProgress('a', 'INFO', 'Adding dll directory to decompiler: ' ..installDir)
+        require('csdecompile').StartAddExternalDirectory(installDir)
+        M._updateProgress('a', 'INFO', 'Added dll directory to decompiler: ' .. installDir)
+        vim.cmd('cclose')
+        M._updateProgress('a', 'INFO', 'Successfully added ' ..installDir .. ' to decompiler ')
+      else
+        M._updateProgress('a', 'INFO', 'Skipping adding dlls to decompiler since nuget command failed with return code ' .. installReturnVal)
+      end
+    end)
+  }):start()
+end
+
 M._searchNuget = function(searchString, searchAllVersions)
   job:new({
     command = 'nuget',
     args = { 'list', searchString, '-source', M._nugetFeedUri },
-    on_exit = function(j, return_val)
-      local timer = vim.loop.new_timer()
-      timer:start(100, 0, vim.schedule_wrap(function()
-        local cleanedResults = M._cleanNugetResults(j:result())
-        M._updateProgress('a', 'INFO', 'Done Searching')
+    on_exit = vim.schedule_wrap(function(j, return_val)
+      local cleanedResults = M._cleanNugetResults(j:result())
+      M._updateProgress('a', 'INFO', 'Done Searching')
 
-        M._displaySelector(cleanedResults, function(selectionParts)
-          if(searchAllVersions) then
-            M._searchNugetForVersions(selectionParts[1])
-          else
-            M._installPackage(selectionParts[1], selectionParts[2])
-          end
-        end)
-      end))
-    end
+      M._displaySelector(cleanedResults, function(selectionParts)
+        if(searchAllVersions) then
+          M._searchNugetForVersions(selectionParts[1])
+        else
+          M._installPackage(selectionParts[1], selectionParts[2])
+        end
+      end)
+    end)
   }):start()
   M._updateProgress('a', 'INFO', 'Starting nuget search. searchString: ' .. searchString .. ' searchAllVersions: ' .. tostring(searchAllVersions))
 end
@@ -120,17 +114,14 @@ M._searchNugetForVersions = function(packageName)
   job:new({
     command = 'nuget',
     args = { 'list', '"packageName"', '-source', M._nugetFeedUri, '-AllVersions'},
-    on_exit = function(j, return_val)
-      local timer = vim.loop.new_timer()
-      timer:start(100, 0, vim.schedule_wrap(function()
-        local cleanedResults = M._cleanNugetResults(j:result())
-        M._updateProgress('a', 'INFO', 'Done Searching')
+    on_exit = vim.schedule_wrap(function(j, return_val)
+      local cleanedResults = M._cleanNugetResults(j:result())
+      M._updateProgress('a', 'INFO', 'Done Searching')
 
-        M._displaySelector(cleanedResults, function(selectionParts)
-            M._installPackage(selectionParts[1], selectionParts[2])
-        end)
-      end))
-    end
+      M._displaySelector(cleanedResults, function(selectionParts)
+        M._installPackage(selectionParts[1], selectionParts[2])
+      end)
+    end)
   }):start()
 
   M._updateProgress('a', 'INFO', 'Starting search for ' .. packageName .. ' versions. feed: ' .. M._nugetFeedUri)

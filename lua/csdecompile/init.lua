@@ -101,8 +101,6 @@ end
 
 M._openSolutionTelescope = function(data)
 	opts = opts or {}
-	local timer = vim.loop.new_timer()
-	timer:start(1000, 0, vim.schedule_wrap(function()
 	pickers.new(opts, {
 		layout_strategy='vertical',
 		prompt_title = "Select Solution File",
@@ -119,7 +117,6 @@ M._openSolutionTelescope = function(data)
 		end,
 		sorter = conf.generic_sorter(opts),
 	}):find()
-	end))
 end
 
 M.GetCurrentOperationMessage = function()
@@ -144,7 +141,6 @@ M.GetSolutionLoadingStatus = function()
 	if M._state.SolutionLoadingState == nil then
 		statusString = "Not running"
 	elseif M._state.SolutionLoadingState == "loading" then
-		-- statusString = M._state.SolutionName .. ' loading...' .. numberOfProjectsString
 		statusString = M._state.SolutionName .. ' loading... ' .. numberOfProjectsString
 	elseif M._state.SolutionLoadingState == "done" then
 		statusString = M._state.SolutionName .. ' ' .. numberOfProjectsString
@@ -154,10 +150,9 @@ M.GetSolutionLoadingStatus = function()
 end
 
 local on_output = function(err, data)
-	local timer = vim.loop.new_timer()
-	timer:start(100, 0, vim.schedule_wrap(function()
+  vim.schedule(function()
 		M.log.debug(data)
-	end))
+	end)
 	local ok, json = pcall(
 		vim.json.decode,
 		data	
@@ -201,7 +196,9 @@ local on_output = function(err, data)
 				local commandCallback = commandState.Callback
 				local startTime = commandState.StartTime
 				local data = commandState.Data
-				commandCallback(json, data)
+				vim.schedule(function()
+          commandCallback(json, data)
+        end)
 			else
 				commandState.Status = 'Failed'
 			end
@@ -404,45 +401,42 @@ M._openAssembliesTelescope = function(data, resultHandler)
 	end
 
 	opts = opts or {}
-	local timer = vim.loop.new_timer()
-	timer:start(1000, 0, vim.schedule_wrap(function()
-	pickers.new(opts, {
-		layout_strategy='vertical',
-		prompt_title = "Assemblies",
-		finder = finders.new_table {
-			results = data,
-			entry_maker = function(entry)
-				local displayer = entry_display.create {
-					separator = "  ",
-					items = {
-						{ width = widths.FullName },
-						{ remaining = true },
-					},
-				}
-				local make_display = function(entry)
-					return displayer {
-						{ M._blankIfNil(entry.value.FullName), "TelescopeResultsIdentifier" },
-						{ M._blankIfNil(entry.value.TargetFrameworkId), "TelescopeResultsClass" },
-					}
-				end
-				return {
-					value = entry,
-					display = make_display,
-					ordinal = entry.FullName
-				}
-			end
-		},
-		attach_mappings = function(prompt_bufnr, map)
-			actions.select_default:replace(function()
-				local selection = action_state.get_selected_entry()
-				actions.close(prompt_bufnr)
-				resultHandler(selection.value.FilePath, selection.value.FullName)
-			end)
-			return true
-		end,
-		sorter = conf.generic_sorter(opts),
-	}):find()
-	end))
+  pickers.new(opts, {
+    layout_strategy='vertical',
+    prompt_title = "Assemblies",
+    finder = finders.new_table {
+      results = data,
+      entry_maker = function(entry)
+        local displayer = entry_display.create {
+          separator = "  ",
+          items = {
+            { width = widths.FullName },
+            { remaining = true },
+          },
+        }
+        local make_display = function(entry)
+          return displayer {
+            { M._blankIfNil(entry.value.FullName), "TelescopeResultsIdentifier" },
+            { M._blankIfNil(entry.value.TargetFrameworkId), "TelescopeResultsClass" },
+          }
+        end
+        return {
+          value = entry,
+          display = make_display,
+          ordinal = entry.FullName
+        }
+      end
+    },
+    attach_mappings = function(prompt_bufnr, map)
+      actions.select_default:replace(function()
+        local selection = action_state.get_selected_entry()
+        actions.close(prompt_bufnr)
+        resultHandler(selection.value.FilePath, selection.value.FullName)
+      end)
+      return true
+    end,
+    sorter = conf.generic_sorter(opts),
+  }):find()
 end
 
 M.StartGetAllTypes = function(searchString)
@@ -459,7 +453,7 @@ M.StartGetAllTypes = function(searchString)
 end
 
 M.HandleGetAllTypes = function(response)
-	M._openTelescope(response.Body.Implementations, M._createSearchTypesDisplayer, 'Search Types')
+  M._openTelescope(response.Body.Implementations, M._createSearchTypesDisplayer, 'Search Types')
 end
 
 M.StartDecompileGotoDefinition = function()
@@ -477,7 +471,7 @@ M.StartFindUsages = function()
 end
 
 M.HandleUsages = function(response)
-	M._openTelescope(response.Body.Implementations, M._createUsagesDisplayer, 'Find Usages')
+  M._openTelescope(response.Body.Implementations, M._createUsagesDisplayer, 'Find Usages')
 end
 
 M.StartGetSymbolName = function()
@@ -488,10 +482,7 @@ M.StartGetSymbolName = function()
 end
 
 M.HandleGetSymbolName = function(response)
-	local timer = vim.loop.new_timer()
-	timer:start(100, 0, vim.schedule_wrap(function()
-		M._navigationFloatingWin(response.Body)
-	end))
+  M._navigationFloatingWin(response.Body)
 end
 
 M.StartGetDecompiledSource = function(
@@ -523,7 +514,7 @@ M.StartGetTypeMembers = function()
 end
 
 M.HandleGetTypeMembers = function(response)
-	M._openTelescope(response.Body.Implementations, M._createUsagesDisplayer, 'Type Members')
+  M._openTelescope(response.Body.Implementations, M._createUsagesDisplayer, 'Type Members')
 end
 
 M.StartFindImplementations = function()
@@ -534,16 +525,13 @@ M.StartFindImplementations = function()
 end
 
 M.HandleFindImplementations = function(response)
-	if #response.Body.Implementations == 0 then
-		print 'No implementations found'
-	elseif #response.Body.Implementations == 1 then
-		local timer = vim.loop.new_timer()
-		timer:start(1000, 0, vim.schedule_wrap(function()
-			M._openSourceFileOrDecompile(response.Body.Implementations[1])
-		end))
-	else
-		M._openTelescope(response.Body.Implementations, M._createUsagesDisplayer, 'Find Implementations')
-	end
+  if #response.Body.Implementations == 0 then
+    print 'No implementations found'
+  elseif #response.Body.Implementations == 1 then
+    M._openSourceFileOrDecompile(response.Body.Implementations[1])
+  else
+    M._openTelescope(response.Body.Implementations, M._createUsagesDisplayer, 'Find Implementations')
+  end
 end
 
 M._openSourceFileOrDecompile = function(value)
@@ -598,13 +586,10 @@ M._setCursorFromLocation = function(winid, location)
 end
 
 M._openSourceFile = function(location)
-	local timer = vim.loop.new_timer()
-	timer:start(100, 0, vim.schedule_wrap(function()
 		local bufnr = vim.uri_to_bufnr(location.FileName)
 		vim.api.nvim_win_set_buf(0, bufnr)
 		vim.api.nvim_buf_set_option(bufnr, "buflisted", true)
 		M._setCursorFromLocation(0, location)
-	end))
 end
 
 M._setBufferTextFromDecompiledSource = function(location, sourceText, bufnr, winid)
@@ -613,8 +598,6 @@ M._setBufferTextFromDecompiledSource = function(location, sourceText, bufnr, win
 	local fileName = location.FileName
 	local column = location.Column - 1
 
-	local timer = vim.loop.new_timer()
-	timer:start(100, 0, vim.schedule_wrap(function()
 		if bufnr == 0 then
 			if location.Type == 0 then
 				decompileFileName = location.ContainingTypeFullName .. '.cs'
@@ -635,7 +618,6 @@ M._setBufferTextFromDecompiledSource = function(location, sourceText, bufnr, win
 		vim.b.AssemblyFilePath = location.AssemblyFilePath
 		vim.b.ParentAssemblyFilePath = location.ParentAssemblyFilePath
 		vim.b.ContainingTypeFullName = location.ContainingTypeFullName
-	end))
 end
 
 M._blankIfNil = function(val)
@@ -874,8 +856,6 @@ M._openTelescope = function(data, displayFunc, promptTitle)
 	local entryMaker = displayFunc(widths)
 
 	opts = {}
-	local timer = vim.loop.new_timer()
-	timer:start(1000, 0, vim.schedule_wrap(function()
 	pickers.new(opts, {
 		layout_strategy='vertical',
 		layout_config = {
@@ -946,7 +926,6 @@ M._openTelescope = function(data, displayFunc, promptTitle)
 		},
 		sorter = conf.generic_sorter(opts),
 	}):find()
-	end))
 end
 
 M.Setup = function(config)
