@@ -136,6 +136,13 @@ public class IlSpySymbolFinder
                     return ilSpyMethod;
                 }
 
+                if (roslynMethod != null)
+                {
+                    if (RoslynToIlSpyEqualityExtensions.AreSameMethod(roslynMethod.OriginalDefinition, ilSpyMethod))
+                    {
+                        return ilSpyMethod;
+                    }
+                }
                 //Fallback for checking extension methods.  Roslyn seems to add a higher level method symbol without
                 //The this parameter
                 if (roslynMethod.IsExtensionMethod)

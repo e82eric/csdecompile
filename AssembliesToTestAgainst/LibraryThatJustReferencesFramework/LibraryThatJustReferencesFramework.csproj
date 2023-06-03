@@ -70,6 +70,9 @@
         <Compile Include="ExternalFindUsagesTypeAsVariableCaller.cs" />
         <Compile Include="ExternalFindUsagesTypeAsVariableTarget.cs" />
         <Compile Include="ExternalFindUsagesVariableTarget.cs" />
+        <Compile Include="ExternalGetSymbolFrameworkGenericMethodTarget.cs" />
+        <Compile Include="ExternalGetSymbolInfoGenericMethod.cs" />
+        <Compile Include="ExternalGetSymbolInfoGenericMethodBase.cs" />
         <Compile Include="ExternalGetTypeMembersTarget.cs" />
         <Compile Include="ExternalGotoDefinitionAttribute.cs" />
         <Compile Include="ExternalGotoDefinitionAttributeInternalUser.cs" />

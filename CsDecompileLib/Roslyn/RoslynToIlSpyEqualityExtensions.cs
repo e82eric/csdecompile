@@ -1,8 +1,10 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using ICSharpCode.Decompiler.Metadata;
 using ICSharpCode.Decompiler.TypeSystem;
 using Microsoft.CodeAnalysis;
 using ISymbol = Microsoft.CodeAnalysis.ISymbol;
+using TypeKind = Microsoft.CodeAnalysis.TypeKind;
 
 namespace CsDecompileLib.Roslyn;
 
@@ -47,14 +49,21 @@ public static class RoslynToIlSpyEqualityExtensions
     //This can be done as an initial check and then fallback to check stuff using names
     private static bool AreSameUsingToken(ISymbol roslynSymbol, IEntity ilSpySymbol)
     {
-        var sameAssembly = roslynSymbol.ContainingAssembly.Name == ilSpySymbol.ParentModule.AssemblyName;
-        if (!sameAssembly)
+        try
         {
-            return false;
+            var sameAssembly = roslynSymbol.ContainingAssembly.Name == ilSpySymbol.ParentModule.AssemblyName;
+            if (!sameAssembly)
+            {
+                return false;
+            }
+            var roslynEntityHandle = MetadataTokenHelpers.EntityHandleOrNil(roslynSymbol.MetadataToken);
+            var sameHandle = roslynEntityHandle == ilSpySymbol.MetadataToken;
+            return sameHandle;
         }
-        var roslynEntityHandle = MetadataTokenHelpers.EntityHandleOrNil(roslynSymbol.MetadataToken);
-        var sameHandle = roslynEntityHandle == ilSpySymbol.MetadataToken;
-        return sameHandle;
+        catch (Exception e)
+        {
+            throw;
+        }
     }
     
     //This works for properties and fields.  Methods should be checked using its method
@@ -126,7 +135,20 @@ public static class RoslynToIlSpyEqualityExtensions
             }
         }
 
-        var result = AreSameType(roslynSymbol, typeDefinition);
-        return result;
+        if (typeDefinition != null)
+        {
+            var result = AreSameType(roslynSymbol, typeDefinition);
+            return result;
+        }
+
+        if(roslynSymbol.TypeKind == TypeKind.TypeParameter)
+        {
+            if (roslynSymbol.Name == ilSpySymbol.FullName)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

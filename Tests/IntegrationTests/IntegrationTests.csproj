@@ -137,6 +137,8 @@
         <Compile Include="ExternalSource\FindUsages\ExternalFindUsagesTypeAsMethodTests.cs" />
         <Compile Include="ExternalSource\FindUsages\ExternalFindUsagesTypeAsVariableTests.cs" />
         <Compile Include="ExternalSource\FindUsages\ExternalFindUsagesVariableTests.cs" />
+        <Compile Include="ExternalSource\GetSymbolInfo\ExternalGetSymbolFrameworkGenericMethodUserTests.cs" />
+        <Compile Include="ExternalSource\GetSymbolInfo\ExternalGetSymbolInfoGenericMethodTests.cs" />
         <Compile Include="ExternalSource\GetSymbolInfo\ExternalGetSymbolInfoTestBase.cs" />
         <Compile Include="ExternalSource\GetSymbolInfo\ExternalGetSymbolInfoTests.cs" />
         <Compile Include="ExternalSource\GetTypeMembers\GetTypeMembersTests.cs" />
