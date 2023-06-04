@@ -127,6 +127,11 @@ M._searchNugetForVersions = function(packageName)
   M._updateProgress('a', 'INFO', 'Starting search for ' .. packageName .. ' versions. feed: ' .. M._nugetFeedUri)
 end
 
+M.CleanPackageDirectory = function()
+  local cmd = '!rd /s /q ' .. M._packageDirectory
+  vim.cmd(cmd)
+end
+
 M.setup = function(opts)
   if opts == nil then
     opts = {}
@@ -155,6 +160,13 @@ M.setup = function(opts)
     M.SearchNuget(args.args, true)
   end,
   { nargs = 1 })
+
+  vim.api.nvim_create_user_command(
+  "CleanPackageDirectory",
+  function(args)
+    M.CleanPackageDirectory()
+  end,
+  {})
 end
 
 return M
