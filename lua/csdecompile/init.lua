@@ -26,8 +26,14 @@ M._state = {
 
 M.OpenLog = function()
   local outfile = string.format("%s/%s.log", vim.api.nvim_call_function("stdpath", { "cache" }), M.log.plugin)
-	local vimScriptCommand = 'e ' .. outfile
+	local vimScriptCommand = 'e ' .. M._state.LogFilePath
 	vim.cmd(vimScriptCommand)
+end
+
+M.ClearLog = function()
+  local outfile = string.format("%s/%s.log", vim.api.nvim_call_function("stdpath", { "cache" }), M.log.plugin)
+  local cmd = '!del ' .. M._state.LogFilePath
+  vim.cmd(cmd)
 end
 
 M._checkNotRunning = function()
@@ -937,10 +943,13 @@ M.Setup = function(config)
   if config.logLevel then
     logLevel = config.logLevel
   end
+
   M.log = require("plenary.log").new({
     plugin = "csdecompile",
     level = logLevel
   })
+
+  M._state.LogFilePath = string.format("%s\\%s.log", vim.api.nvim_call_function("stdpath", { "cache" }), M.log.plugin)
 
   vim.api.nvim_create_user_command(
       'AddExternalAssemblyDirectory',
@@ -988,6 +997,13 @@ M.Setup = function(config)
       'DecompileAssembly',
       function(opts)
         M.StartGetAssembliesForDecompile()
+      end,
+      {}
+  )
+  vim.api.nvim_create_user_command(
+      'DeleteDecompileLog',
+      function(opts)
+        M.ClearLog()
       end,
       {}
   )
