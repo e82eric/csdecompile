@@ -15,6 +15,7 @@ using CsDecompileLib.GetSymbolInfo;
 using CsDecompileLib.GotoDefinition;
 using CsDecompileLib.IlSpy;
 using CsDecompileLib.IlSpy.Ast;
+using CsDecompileLib.Nuget;
 using CsDecompileLib.Roslyn;
 
 namespace StdIoHost;
@@ -389,6 +390,7 @@ internal static class HandlerFactory
             { Endpoints.GetAssemblies, getAssembliesHandler },
             { Endpoints.SymbolInfo, getSymbolInfoHandler },
             { Endpoints.DecompileAssembly, decompileAssemblyHandler },
+            { Endpoints.SearchNuget, new SearchNugetHandler() },
         };
 
         var router = new Router(handlers);

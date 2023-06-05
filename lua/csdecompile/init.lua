@@ -2,10 +2,12 @@ require'plenary.job'
 local pickers = require "telescope.pickers"
 local finders = require "telescope.finders"
 local conf = require("telescope.config").values
+local telescope = require("telescope")
 local actions = require "telescope.actions"
 local action_state = require "telescope.actions.state"
 local previewers = require "telescope.previewers"
 local entry_display = require("telescope.pickers.entry_display")
+local make_entry = require "telescope.make_entry"
 local strings = require "plenary.strings"
 local Job = require('plenary.job')
 
@@ -445,6 +447,19 @@ M._openAssembliesTelescope = function(data, resultHandler)
   }):find()
 end
 
+M.StartSearchNuget = function(searchString)
+  if M._checkNotRunning() then
+    return
+  end
+  local request = {
+    Command = "/searchnuget",
+    Arguments = {
+      SearchString = searchString
+    }
+  }
+  M._sendStdIoRequest(request, M.HandleSearchNuget);
+end
+
 M.StartGetAllTypes = function(searchString)
   if M._checkNotRunning() then
     return
@@ -458,8 +473,17 @@ M.StartGetAllTypes = function(searchString)
 	M._sendStdIoRequest(request, M.HandleGetAllTypes);
 end
 
+M.HandleSearchNuget = function(response)
+  M._openTelescope(response.Body.Packages, M._createSearchNugetDisplayer, nil, function(selection)
+  end,
+  'Search Nuget')
+end
+
 M.HandleGetAllTypes = function(response)
-  M._openTelescope(response.Body.Implementations, M._createSearchTypesDisplayer, 'Search Types')
+  M._openTelescope(response.Body.Implementations, M._createSearchTypesDisplayer, M._sourcePreviewer, function(selection)
+      M._openSourceFileOrDecompile(selection.value)
+  end,
+  'Search Types')
 end
 
 M.StartDecompileGotoDefinition = function()
@@ -477,7 +501,10 @@ M.StartFindUsages = function()
 end
 
 M.HandleUsages = function(response)
-  M._openTelescope(response.Body.Implementations, M._createUsagesDisplayer, 'Find Usages')
+  M._openTelescope(response.Body.Implementations, M._createUsagesDisplayer, M._sourcePreviewer, function(selection)
+      M._openSourceFileOrDecompile(selection.value)
+  end,
+  'Find Usages')
 end
 
 M.StartGetSymbolName = function()
@@ -520,7 +547,10 @@ M.StartGetTypeMembers = function()
 end
 
 M.HandleGetTypeMembers = function(response)
-  M._openTelescope(response.Body.Implementations, M._createUsagesDisplayer, 'Type Members')
+  M._openTelescope(response.Body.Implementations, M._createUsagesDisplayer, M._sourcePreviewer, function(selection)
+      M._openSourceFileOrDecompile(selection.value)
+  end,
+  'Type Members')
 end
 
 M.StartFindImplementations = function()
@@ -536,7 +566,10 @@ M.HandleFindImplementations = function(response)
   elseif #response.Body.Implementations == 1 then
     M._openSourceFileOrDecompile(response.Body.Implementations[1])
   else
-    M._openTelescope(response.Body.Implementations, M._createUsagesDisplayer, 'Find Implementations')
+    M._openTelescope(response.Body.Implementations, M._createUsagesDisplayer, M._sourcePreviewer, function(selection)
+      M._openSourceFileOrDecompile(selection.value)
+    end,
+    'Find Implementations')
   end
 end
 
@@ -719,6 +752,30 @@ M._createSearchTypesDisplayer = function(widths)
 	return resultFunc
 end
 
+M._createSearchNugetDisplayer = function(widths)
+	local resultFunc = function(entry)
+		local displayer = entry_display.create {
+			separator = "  ",
+			items = {
+				{ remaining = true },
+			},
+		}
+
+		local make_display = function(entry)
+			return displayer {
+				{ M._blankIfNil(entry.value.Identity), "TelescopeResultsClass" },
+			}
+		end
+
+		return {
+			value = entry,
+			display = make_display,
+			ordinal = entry.Identity
+		}
+	end
+	return resultFunc
+end
+
 M._createUsagesDisplayer = function(widths)
 	local resultFunc = function(entry)
 		local make_display = nil
@@ -834,7 +891,67 @@ M._navigationFloatingWin = function(data)
 	)
 end
 
-M._openTelescope = function(data, displayFunc, promptTitle)
+M._testFinder = function (prompt, process_result, process_complete)
+  local request = {
+    Command = "/searchnuget",
+    Arguments = {
+      SearchString = ''
+    }
+  }
+  M._sendStdIoRequest(request, M.HandleSearchNuget);
+
+end
+
+M._sourcePreviewer = previewers.new_buffer_previewer {
+  dyn_title = function (_, entry)
+    local titleResult = ''
+    if entry.value.Type == 1 then
+      titleResult = vim.fn.fnamemodify(entry.value.FileName, ':.')
+    else
+      titleResult = entry.value.ContainingTypeShortName
+    end
+    return titleResult
+  end,
+  get_buffer_by_name = function(_, entry)
+    return entry.value
+  end,
+  define_preview = function(self, entry)
+    if entry.value.Type == 1 then
+      local bufnr = self.state.bufnr
+      local winid = self.state.winid
+
+      conf.buffer_previewer_maker(entry.value.FileName, self.state.bufnr, {
+        use_ft_detect = true,
+        bufname = self.state.bufname,
+        winid = self.state.winid,
+        callback = function(bufnr)
+          local currentWinId = vim.fn.bufwinnr(bufnr)
+          if currentWinId ~= -1 then
+            local startColumn = entry.value.Column
+            local endColumn = entry.value.Column
+            vim.api.nvim_buf_add_highlight(bufnr, -1, "TelescopePreviewLine", entry.value.Line -1, 0, -1)
+            vim.api.nvim_win_set_cursor(self.state.winid, { entry.value.Line, 0 })
+          end
+        end
+      })
+    else
+      local bufnr = self.state.bufnr
+      local winid = self.state.winid
+
+      M.StartGetDecompiledSource(
+      entry.value.AssemblyFilePath,
+      entry.value.ContainingTypeFullName,
+      entry.value.Line,
+      entry.value.Column,
+      { Entry = entry.value, BufferNumber = bufnr, WindowId = winid, })
+
+      vim.api.nvim_buf_set_option(self.state.bufnr, "syntax", "cs")
+      vim.api.nvim_buf_set_lines(self.state.bufnr, 0, -1, false, { 'Decompiling ' .. entry.value.SourceText .. '...'})
+    end
+  end
+}
+
+M._openTelescope = function(data, displayFunc, previewer, onSelection, promptTitle)
 	local widths = {
 		ContainingTypeFullName = 0,
 		ContainingTypeShortName = 0,
@@ -847,6 +964,7 @@ M._openTelescope = function(data, displayFunc, promptTitle)
 		Column = 0,
 		FileName = 0,
 		SourceText = 0,
+    Identity = 0,
 	}
 
 	local parse_line = function(entry)
@@ -873,63 +991,15 @@ M._openTelescope = function(data, displayFunc, promptTitle)
 			results = data,
 			entry_maker = entryMaker,
 		},
-		preview = opts.previewer,
 		attach_mappings = function(prompt_bufnr, map)
 			actions.select_default:replace(function()
 				local selection = action_state.get_selected_entry()
 				actions.close(prompt_bufnr)
-				M._openSourceFileOrDecompile(selection.value)
+        onSelection(selection.value)
 			end)
 			return true
 		end,
-		previewer = previewers.new_buffer_previewer {
-			dyn_title = function (_, entry)
-				local titleResult = ''
-				if entry.value.Type == 1 then
-					titleResult = vim.fn.fnamemodify(entry.value.FileName, ':.')
-				else
-					titleResult = entry.value.ContainingTypeShortName
-				end
-				return titleResult
-			end,
-			get_buffer_by_name = function(_, entry)
-				return entry.value
-			end,
-			define_preview = function(self, entry)
-				if entry.value.Type == 1 then
-					local bufnr = self.state.bufnr
-					local winid = self.state.winid
-
-					conf.buffer_previewer_maker(entry.value.FileName, self.state.bufnr, {
-						use_ft_detect = true,
-						bufname = self.state.bufname,
-						winid = self.state.winid,
-						callback = function(bufnr)
-							local currentWinId = vim.fn.bufwinnr(bufnr)
-							if currentWinId ~= -1 then
-								local startColumn = entry.value.Column
-								local endColumn = entry.value.Column
-								vim.api.nvim_buf_add_highlight(bufnr, -1, "TelescopePreviewLine", entry.value.Line -1, 0, -1)
-								vim.api.nvim_win_set_cursor(self.state.winid, { entry.value.Line, 0 })
-							end
-						end
-					})
-				else
-					local bufnr = self.state.bufnr
-					local winid = self.state.winid
-
-					M.StartGetDecompiledSource(
-						entry.value.AssemblyFilePath,
-						entry.value.ContainingTypeFullName,
-						entry.value.Line,
-						entry.value.Column,
-						{ Entry = entry.value, BufferNumber = bufnr, WindowId = winid, })
-
-					vim.api.nvim_buf_set_option(self.state.bufnr, "syntax", "cs")
-					vim.api.nvim_buf_set_lines(self.state.bufnr, 0, -1, false, { 'Decompiling ' .. entry.value.SourceText .. '...'})
-				end
-			end
-		},
+		previewer = previewer,
 		sorter = conf.generic_sorter(opts),
 	}):find()
 end
@@ -1006,6 +1076,13 @@ M.Setup = function(config)
         M.ClearLog()
       end,
       {}
+  )
+  vim.api.nvim_create_user_command(
+      'SearchNuget2',
+      function(opts)
+        M.StartSearchNuget(opts.args)
+      end,
+      { nargs = 1 }
   )
 end
 
