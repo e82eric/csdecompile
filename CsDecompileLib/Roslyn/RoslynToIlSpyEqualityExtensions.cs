@@ -49,21 +49,14 @@ public static class RoslynToIlSpyEqualityExtensions
     //This can be done as an initial check and then fallback to check stuff using names
     private static bool AreSameUsingToken(ISymbol roslynSymbol, IEntity ilSpySymbol)
     {
-        try
+        var sameAssembly = roslynSymbol.ContainingAssembly.Name == ilSpySymbol.ParentModule.AssemblyName;
+        if (!sameAssembly)
         {
-            var sameAssembly = roslynSymbol.ContainingAssembly.Name == ilSpySymbol.ParentModule.AssemblyName;
-            if (!sameAssembly)
-            {
-                return false;
-            }
-            var roslynEntityHandle = MetadataTokenHelpers.EntityHandleOrNil(roslynSymbol.MetadataToken);
-            var sameHandle = roslynEntityHandle == ilSpySymbol.MetadataToken;
-            return sameHandle;
+            return false;
         }
-        catch (Exception e)
-        {
-            throw;
-        }
+        var roslynEntityHandle = MetadataTokenHelpers.EntityHandleOrNil(roslynSymbol.MetadataToken);
+        var sameHandle = roslynEntityHandle == ilSpySymbol.MetadataToken;
+        return sameHandle;
     }
     
     //This works for properties and fields.  Methods should be checked using its method

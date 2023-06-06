@@ -1,34 +1,13 @@
+using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using NuGet.Common;
-using NuGet.Packaging;
 using NuGet.Protocol;
 using NuGet.Protocol.Core.Types;
-using NuGet.Versioning;
 
 namespace CsDecompileLib.Nuget;
-
-public class SearchNugetRequest
-{
-    public string SearchString { get; set; }
-}
-
-public class Package
-{
-    public string Identity { get; set; }
-}
-public class SearchNugetResponse
-{
-    public SearchNugetResponse()
-    {
-        Packages = new List<Package>();
-    }
-
-    public IList<Package> Packages { get; }
-}
 
 public class SearchNugetHandler : HandlerBase<SearchNugetRequest, SearchNugetResponse>
 {
@@ -60,7 +39,7 @@ public class SearchNugetHandler : HandlerBase<SearchNugetRequest, SearchNugetRes
             {
                 var package = new Package
                 {
-                    Identity = result.Identity.Id
+                    Identity = result.Identity.Id,
                 };
                 response.Packages.Add(package);
             }

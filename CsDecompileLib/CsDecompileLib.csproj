@@ -346,7 +346,13 @@
         <Compile Include="NavigationHandlerBase.cs" />
         <Compile Include="NoOpCommand.cs" />
         <Compile Include="NoSolutionDecompileWorkspace.cs" />
+        <Compile Include="Nuget\GetNugetVersionsHandler.cs" />
+        <Compile Include="Nuget\GetNugetVersionsRequest.cs" />
+        <Compile Include="Nuget\GetNugetVersionsResponse.cs" />
+        <Compile Include="Nuget\Package.cs" />
         <Compile Include="Nuget\SearchNugetHandler.cs" />
+        <Compile Include="Nuget\SearchNugetRequest.cs" />
+        <Compile Include="Nuget\SearchNugetResponse.cs" />
         <Compile Include="Packet.cs" />
         <Compile Include="RequestPacket.cs" />
         <Compile Include="ResponseLocation.cs" />

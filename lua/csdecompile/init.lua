@@ -475,8 +475,36 @@ end
 
 M.HandleSearchNuget = function(response)
   M._openTelescope(response.Body.Packages, M._createSearchNugetDisplayer, nil, function(selection)
+    local request = {
+      Command = "/getnugetversions",
+      Arguments = {
+        Identity = selection.Identity
+      }
+    }
+    M._sendStdIoRequest(request, M.HandleGetNugetVersions);
   end,
   'Search Nuget')
+end
+
+M.HandleGetNugetVersions = function(response)
+  table.sort(response.Body.Packages, function(a, b) 
+    if a.MajorVersion == b.MajorVersion then
+      if a.MinorVersion == b.MinorVersion then
+        if a.Build == b.Build then
+          return a.Revision > b.Revision
+        end
+        return a.Patch > b.Patch
+      end
+      return a.MinorVersion > b.MinorVersion
+    end
+    return a.MajorVersion > b.MajorVersion
+  end)
+
+  M._openTelescope(response.Body.Packages, M._createGetNugetVersionsDisplayer, nil, function(selection)
+    vim.cmd("botright copen")
+    require('csdecompile.nuget')._installPackage(selection.Identity, selection.Version)
+  end,
+  'Nuget Versions')
 end
 
 M.HandleGetAllTypes = function(response)
@@ -776,6 +804,32 @@ M._createSearchNugetDisplayer = function(widths)
 	return resultFunc
 end
 
+M._createGetNugetVersionsDisplayer = function(widths)
+	local resultFunc = function(entry)
+		local displayer = entry_display.create {
+			separator = "  ",
+			items = {
+        { width = widths.Identity },
+				{ remaining = true },
+			},
+		}
+
+		local make_display = function(entry)
+			return displayer {
+				{ M._blankIfNil(entry.value.Identity), "TelescopeResultsClass" },
+				{ M._blankIfNil(entry.value.Version), "TelescopeResultsClass" },
+			}
+		end
+
+		return {
+			value = entry,
+			display = make_display,
+			ordinal = entry.Version
+		}
+	end
+	return resultFunc
+end
+
 M._createUsagesDisplayer = function(widths)
 	local resultFunc = function(entry)
 		local make_display = nil
@@ -889,17 +943,6 @@ M._navigationFloatingWin = function(data)
 			"wrap",
 			true
 	)
-end
-
-M._testFinder = function (prompt, process_result, process_complete)
-  local request = {
-    Command = "/searchnuget",
-    Arguments = {
-      SearchString = ''
-    }
-  }
-  M._sendStdIoRequest(request, M.HandleSearchNuget);
-
 end
 
 M._sourcePreviewer = previewers.new_buffer_previewer {
