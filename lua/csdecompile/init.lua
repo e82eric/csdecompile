@@ -501,14 +501,41 @@ M.HandleGetNugetVersions = function(response)
   end)
 
   M._openTelescope(response.Body.Packages, M._createGetNugetVersionsDisplayer, nil, function(selection)
-    vim.cmd("botright copen")
-    require('csdecompile.nuget')._installPackage(selection.Identity, selection.Version)
+    local request = {
+      Command = "/getnugetdependencygroups",
+      Arguments = {
+        Identity = selection.Identity,
+        Version = selection.Version
+      }
+    }
+    M._sendStdIoRequest(request, M.HandleGetNugetDependencyGroups, { Identity = selection.Identity, Version = selection.Version });
   end,
   'Nuget Versions')
 end
 
+M.HandleGetNugetDependencyGroups = function(response, data)
+  M._openTelescope(response.Body.Groups, M._createNugetDependencyGroupDisplayer, nil, function(selection)
+    local request = {
+      Command = "/getnugetdependencies",
+      Arguments = {
+        Identity = data.Identity,
+        Version = data.Version,
+        DependencyGroup = selection,
+      }
+    }
+    M._sendStdIoRequest(request, M.HandleGetNugetDependencies);
+  end,
+  'Search Nuget')
+end
+
+M.HandleGetNugetDependencies = function(response, data)
+  M._openTelescope(response.Body.Packages, M._createGetNugetVersionsDisplayer, nil, function(selection)
+  end,
+  'Search Nuget')
+end
+
 M.HandleGetAllTypes = function(response)
-  M._openTelescope(response.Body.Implementations, M._createSearchTypesDisplayer, M._sourcePreviewer, function(selection)
+  M._openTelescope(response.Body.Implementations, M._createSearchNugetDisplayer, M._sourcePreviewer, function(selection)
       M._openSourceFileOrDecompile(selection.value)
   end,
   'Search Types')
@@ -799,6 +826,30 @@ M._createSearchNugetDisplayer = function(widths)
 			value = entry,
 			display = make_display,
 			ordinal = entry.Identity
+		}
+	end
+	return resultFunc
+end
+
+M._createNugetDependencyGroupDisplayer = function(widths)
+	local resultFunc = function(entry)
+		local displayer = entry_display.create {
+			separator = "  ",
+			items = {
+				{ remaining = true },
+			},
+		}
+
+		local make_display = function(entry)
+			return displayer {
+				{ M._blankIfNil(entry.value), "TelescopeResultsClass" },
+			}
+		end
+
+		return {
+			value = entry,
+			display = make_display,
+			ordinal = entry
 		}
 	end
 	return resultFunc

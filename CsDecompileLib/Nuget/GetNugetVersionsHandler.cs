@@ -14,11 +14,11 @@ public class GetNugetVersionsHandler : HandlerBase<GetNugetVersionsRequest, Sear
     {
         ILogger logger = NullLogger.Instance;
         CancellationToken cancellationToken = CancellationToken.None;
-        
+
         SourceCacheContext cache = new SourceCacheContext();
         SourceRepository repository = Repository.Factory.GetCoreV3("https://api.nuget.org/v3/index.json");
         FindPackageByIdResource resource = await repository.GetResourceAsync<FindPackageByIdResource>();
-        
+
         IEnumerable<NuGetVersion> versions = await resource.GetAllVersionsAsync(
             request.Identity,
             cache,
@@ -39,7 +39,7 @@ public class GetNugetVersionsHandler : HandlerBase<GetNugetVersionsRequest, Sear
                 Patch = version.Patch
             });
         }
-        
+
         return new ResponsePacket<SearchNugetResponse>
         {
             Body = response,
