@@ -11,6 +11,7 @@ public class IlSpySymbolInfoCommandBase
 {
     protected void AddIlSpyEntityCommonHeaderProperties(SymbolInfo result, IEntity symbol)
     {
+        result.ParentAssemblyFullName = symbol.ParentModule?.FullAssemblyName;
         // AddIlSpyEntityCommonHeaderProperties(result, symbol);
         // AddIlSpyEntityCommonHeaderProperties(result, (ISymbol)symbol);
         AddNameAndKind(result, symbol.Name, symbol.SymbolKind.ToString());

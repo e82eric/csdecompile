@@ -17,6 +17,7 @@ public class RoslynSymbolInfoCommand : INavigationCommand<Roslyn.SymbolInfo>
     public Task<ResponsePacket<Roslyn.SymbolInfo>> Execute()
     {
         var result = new Roslyn.SymbolInfo();
+        result.ParentAssemblyFullName = _symbol.ContainingAssembly.MetadataName;
         result.Kind = _symbol.Kind.ToString();
         result.DisplayName = _symbol.Name;
         result.Properties.Add("FullName", _symbol.ToDisplayString(SymbolDisplayFormat.MinimallyQualifiedFormat));

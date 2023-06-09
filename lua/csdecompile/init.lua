@@ -535,8 +535,8 @@ M.HandleGetNugetDependencies = function(response, data)
 end
 
 M.HandleGetAllTypes = function(response)
-  M._openTelescope(response.Body.Implementations, M._createSearchNugetDisplayer, M._sourcePreviewer, function(selection)
-      M._openSourceFileOrDecompile(selection.value)
+  M._openTelescope(response.Body.Implementations, M._createFindImplementationsDisplayer, M._sourcePreviewer, function(selection)
+      M._openSourceFileOrDecompile(selection)
   end,
   'Search Types')
 end
@@ -945,6 +945,7 @@ M._navigationFloatingWin = function(data)
 	local toDisplay = {}
 	local headerText = M._blankIfNil(data.DisplayName) .. ' (' .. M._blankIfNil(data.Kind) .. ')'
 	table.insert(toDisplay, headerText)
+	table.insert(toDisplay, M._blankIfNil(data.ParentAssemblyFullName))
 	table.insert(toDisplay, '')
 
 	for key, value in pairs(data.Properties) do

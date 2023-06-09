@@ -4,6 +4,7 @@ namespace CsDecompileLib.Roslyn;
 
 public class SymbolInfo
 {
+    public string ParentAssemblyFullName { get; set; }
     public string DisplayName { get; set; }
     public string Kind { get; set; }
     public Dictionary<string, string> HeaderProperties { get; }
