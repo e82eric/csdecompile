@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using CsDecompileLib.Roslyn;
 using ICSharpCode.Decompiler.IL;
+using ICSharpCode.Decompiler.Metadata;
 using ICSharpCode.Decompiler.TypeSystem;
 
 namespace CsDecompileLib.GetSymbolInfo;
@@ -11,7 +12,9 @@ public class IlSpySymbolInfoCommandBase
 {
     protected void AddIlSpyEntityCommonHeaderProperties(SymbolInfo result, IEntity symbol)
     {
-        result.ParentAssemblyFullName = symbol.ParentModule?.FullAssemblyName;
+        result.ParentAssemblyFullName = symbol.ParentModule.FullAssemblyName;
+        result.TargetFramework = symbol.ParentModule.PEFile?.DetectTargetFrameworkId();
+        result.FilePath = symbol.ParentModule.PEFile?.FileName;
         // AddIlSpyEntityCommonHeaderProperties(result, symbol);
         // AddIlSpyEntityCommonHeaderProperties(result, (ISymbol)symbol);
         AddNameAndKind(result, symbol.Name, symbol.SymbolKind.ToString());

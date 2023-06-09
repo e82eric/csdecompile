@@ -40,5 +40,10 @@ namespace CsDecompileLib.IlSpy
             }
             return null;
         }
+
+        public void ClearCache()
+        {
+            _projectTypeSystemCache.Clear();
+        }
     }
 }

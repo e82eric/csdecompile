@@ -89,7 +89,7 @@ internal static class HandlerFactory
         _peFileCache = new PeFileCache();
         var resolverFactory = new AssemblyResolverFactory(_peFileCache);
         _decompilerTypeSystemFactory = new IlSpyTypeSystemFactory(resolverFactory, _peFileCache);
-        _decompileWorkspace = new NoSolutionDecompileWorkspace(_peFileCache);
+        _decompileWorkspace = new NoSolutionDecompileWorkspace(_peFileCache, _decompilerTypeSystemFactory);
         return Task.FromResult(0);
     }
 

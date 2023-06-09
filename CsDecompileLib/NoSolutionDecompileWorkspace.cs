@@ -10,10 +10,12 @@ namespace CsDecompileLib.IlSpy;
 public class NoSolutionDecompileWorkspace : IDecompileWorkspace
 {
     private readonly PeFileCache _peFileCache;
+    private readonly IlSpyTypeSystemFactory _typeSystemFactory;
 
-    public NoSolutionDecompileWorkspace(PeFileCache peFileCache)
+    public NoSolutionDecompileWorkspace(PeFileCache peFileCache, IlSpyTypeSystemFactory typeSystemFactory)
     {
         _peFileCache = peFileCache;
+        _typeSystemFactory = typeSystemFactory;
     }
 
     public int LoadDlls()
@@ -31,6 +33,8 @@ public class NoSolutionDecompileWorkspace : IDecompileWorkspace
         {
             _peFileCache.TryOpen(dllFilePath.FullName, out _);
         }
+        
+        _typeSystemFactory.ClearCache();
     }
 
     public IReadOnlyList<Compilation> GetProjectCompilations()

@@ -501,14 +501,15 @@ M.HandleGetNugetVersions = function(response)
   end)
 
   M._openTelescope(response.Body.Packages, M._createGetNugetVersionsDisplayer, nil, function(selection)
-    local request = {
-      Command = "/getnugetdependencygroups",
-      Arguments = {
-        Identity = selection.Identity,
-        Version = selection.Version
-      }
-    }
-    M._sendStdIoRequest(request, M.HandleGetNugetDependencyGroups, { Identity = selection.Identity, Version = selection.Version });
+    -- local request = {
+    --   Command = "/getnugetdependencygroups",
+    --   Arguments = {
+    --     Identity = selection.Identity,
+    --     Version = selection.Version
+    --   }
+    -- }
+    -- M._sendStdIoRequest(request, M.HandleGetNugetDependencyGroups, { Identity = selection.Identity, Version = selection.Version });
+    require('csdecompile.nuget')._installPackage(selection.Identity, selection.Version)
   end,
   'Nuget Versions')
 end
@@ -946,6 +947,8 @@ M._navigationFloatingWin = function(data)
 	local headerText = M._blankIfNil(data.DisplayName) .. ' (' .. M._blankIfNil(data.Kind) .. ')'
 	table.insert(toDisplay, headerText)
 	table.insert(toDisplay, M._blankIfNil(data.ParentAssemblyFullName))
+	table.insert(toDisplay, M._blankIfNil(data.TargetFramework))
+	table.insert(toDisplay, M._blankIfNil(data.FilePath))
 	table.insert(toDisplay, '')
 
 	for key, value in pairs(data.Properties) do
