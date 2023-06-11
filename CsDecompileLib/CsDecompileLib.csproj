@@ -346,8 +346,9 @@
         <Compile Include="NavigationHandlerBase.cs" />
         <Compile Include="NoOpCommand.cs" />
         <Compile Include="NoSolutionDecompileWorkspace.cs" />
-        <Compile Include="Nuget\GetNugetDependenciesHandler.cs" />
-        <Compile Include="Nuget\GetNugetDependenciesRequest.cs" />
+        <Compile Include="Nuget\AddPackageAndDependenciesResponse.cs" />
+        <Compile Include="Nuget\AddNugetPackageAndDependenciesHandler.cs" />
+        <Compile Include="Nuget\AddNugetPackageAndDependenciesRequest.cs" />
         <Compile Include="Nuget\GetNugetDependencyGroupsHandler.cs" />
         <Compile Include="Nuget\GetNugetVersionsHandler.cs" />
         <Compile Include="Nuget\GetNugetVersionsRequest.cs" />

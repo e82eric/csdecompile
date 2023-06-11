@@ -501,38 +501,39 @@ M.HandleGetNugetVersions = function(response)
   end)
 
   M._openTelescope(response.Body.Packages, M._createGetNugetVersionsDisplayer, nil, function(selection)
-    -- local request = {
-    --   Command = "/getnugetdependencygroups",
-    --   Arguments = {
-    --     Identity = selection.Identity,
-    --     Version = selection.Version
-    --   }
-    -- }
-    -- M._sendStdIoRequest(request, M.HandleGetNugetDependencyGroups, { Identity = selection.Identity, Version = selection.Version });
-    require('csdecompile.nuget')._installPackage(selection.Identity, selection.Version)
+    local request = {
+      Command = "/getnugetdependencygroups",
+      Arguments = {
+        Identity = selection.Identity,
+        Version = selection.Version
+      }
+    }
+    M._sendStdIoRequest(request, M.HandleGetNugetDependencyGroups, { Identity = selection.Identity, Version = selection.Version });
   end,
   'Nuget Versions')
 end
 
 M.HandleGetNugetDependencyGroups = function(response, data)
   M._openTelescope(response.Body.Groups, M._createNugetDependencyGroupDisplayer, nil, function(selection)
+    local packageDirectory = vim.F.if_nil(
+      opts._packageDirectory,
+      string.format("%s\\%s\\packages\\", vim.api.nvim_call_function("stdpath", { "cache" }), 'csdecompile.nuget'))
+
     local request = {
-      Command = "/getnugetdependencies",
+      Command = "/addnugetpackageanddependencies",
       Arguments = {
         Identity = data.Identity,
         Version = data.Version,
         DependencyGroup = selection,
+        RootPackageDirectory = packageDirectory
       }
     }
-    M._sendStdIoRequest(request, M.HandleGetNugetDependencies);
+    M._sendStdIoRequest(request, M.HandleAddNugetPackageAndDependencies);
   end,
   'Search Nuget')
 end
 
-M.HandleGetNugetDependencies = function(response, data)
-  M._openTelescope(response.Body.Packages, M._createGetNugetVersionsDisplayer, nil, function(selection)
-  end,
-  'Search Nuget')
+M.HandleAddNugetPackageAndDependencies = function(response, data)
 end
 
 M.HandleGetAllTypes = function(response)

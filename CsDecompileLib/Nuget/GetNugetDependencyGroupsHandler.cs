@@ -10,10 +10,10 @@ using NuGet.Versioning;
 
 namespace CsDecompileLib.Nuget;
 
-public class GetNugetDependencyGroupsHandler : HandlerBase<GetNugetDependenciesRequest, GetNugetDependencyGroupsResponse>
+public class GetNugetDependencyGroupsHandler : HandlerBase<AddNugetPackageAndDependenciesRequest, GetNugetDependencyGroupsResponse>
 {
     public override async Task<ResponsePacket<GetNugetDependencyGroupsResponse>> Handle(
-        GetNugetDependenciesRequest request)
+        AddNugetPackageAndDependenciesRequest request)
     {
         ILogger logger = NullLogger.Instance;
         CancellationToken cancellationToken = CancellationToken.None;
