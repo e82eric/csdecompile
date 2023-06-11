@@ -574,6 +574,27 @@ M.HandleGetSymbolName = function(response)
   M._navigationFloatingWin(response.Body)
 end
 
+M.StartRefreshBuffer = function()
+	local cursorPos = vim.api.nvim_win_get_cursor(0)
+	local line = cursorPos[1]
+	local column = cursorPos[2] + 1
+
+	local request = {
+		Command = "/decompiledsource",
+		Arguments = {
+			AssemblyFilePath = vim.b.AssemblyFilePath,
+			ContainingTypeFullName = vim.b.ContainingTypeFullName,
+			Line = line,
+			Column = column,
+		},
+		Seq = M._state.NextSequence,
+	}
+
+  local bufnr = vim.fn.bufnr()
+  local winid = vim.api.nvim_get_current_win()
+	M._sendStdIoRequest(request, M.HandleDecompiledSource, { Entry = nil, BufferNumber = bufnr, WindowId = winid, })
+end
+
 M.StartGetDecompiledSource = function(
 	assemblyFilePath,
 	containingTypeFullName,
@@ -1182,6 +1203,13 @@ M.Setup = function(config)
         M.StartSearchNuget(opts.args)
       end,
       { nargs = 1 }
+  )
+  vim.api.nvim_create_user_command(
+      'RefreshDecompiledBuffer',
+      function(opts)
+        M.StartRefreshBuffer()
+      end,
+      {}
   )
 end
 
