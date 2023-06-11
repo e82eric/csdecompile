@@ -946,9 +946,6 @@ M._navigationFloatingWin = function(data)
 	local toDisplay = {}
 	local headerText = M._blankIfNil(data.DisplayName) .. ' (' .. M._blankIfNil(data.Kind) .. ')'
 	table.insert(toDisplay, headerText)
-	table.insert(toDisplay, M._blankIfNil(data.ParentAssemblyFullName))
-	table.insert(toDisplay, M._blankIfNil(data.TargetFramework))
-	table.insert(toDisplay, M._blankIfNil(data.FilePath))
 	table.insert(toDisplay, '')
 
 	for key, value in pairs(data.Properties) do
@@ -962,8 +959,12 @@ M._navigationFloatingWin = function(data)
 			local l = M._blankIfNil(key) .. ': ' .. M._blankIfNil(value)
 			table.insert(toDisplay, l)
 		end
-
 	end
+
+  table.insert(toDisplay, '')
+	table.insert(toDisplay, 'Assembly Full Name: ' .. M._blankIfNil(data.ParentAssemblyFullName))
+	table.insert(toDisplay, 'Target Framework: ' .. M._blankIfNil(data.TargetFramework))
+	table.insert(toDisplay, 'Assembly File Path:' .. M._blankIfNil(data.FilePath))
 
 	vim.api.nvim_buf_set_lines(buf, 0, -1, true, toDisplay)
   vim.api.nvim_buf_set_option(buf, 'buftype', 'nofile')
