@@ -1,6 +1,8 @@
-﻿using CsDecompileLib.IlSpy;
+﻿using System.Linq;
+using CsDecompileLib.IlSpy;
 using ICSharpCode.Decompiler.CSharp;
 using ICSharpCode.Decompiler.CSharp.Syntax;
+using ICSharpCode.Decompiler.Semantics;
 using ICSharpCode.Decompiler.TypeSystem;
 
 namespace CsDecompileLib.FindImplementations;
@@ -67,5 +69,51 @@ public class ClassLevelVariableCommandProvider<TCommandType> : IVariableCommandP
         }
         
         return (found, commandType, node);
+    }
+}
+
+public class NodeFinder
+{
+    private readonly IlSpySymbolFinder _symbolFinder;
+    private readonly DecompilerFactory _decompilerFactory;
+
+    public NodeFinder(
+        IlSpySymbolFinder symbolFinder,
+        DecompilerFactory decompilerFactory)
+    {
+        _symbolFinder = symbolFinder;
+        _decompilerFactory = decompilerFactory;
+    }
+
+    public AstNode GetNode(DecompiledLocationRequest request)
+    {
+        bool found = false;
+
+        ITypeDefinition containingTypeDefinition = null;
+        if (request.ParentAssemblyFilePath != null)
+        {
+            containingTypeDefinition = _symbolFinder.FindTypeDefinition(
+                request.ParentAssemblyFilePath,
+                request.ContainingTypeFullName);
+        }
+        if (containingTypeDefinition == null)
+        {
+            containingTypeDefinition = _symbolFinder.FindTypeDefinition(
+                request.AssemblyFilePath,
+                request.ContainingTypeFullName);
+        }
+
+        if (containingTypeDefinition == null)
+        {
+            containingTypeDefinition = _symbolFinder.FindTypeDefinition(
+                request.ParentAssemblyFilePath,
+                request.ContainingTypeFullName);
+        }
+
+        var decompiler = _decompilerFactory.Get(containingTypeDefinition.ParentModule.PEFile.FileName);
+        (SyntaxTree syntaxTree, string source) = decompiler.Run(containingTypeDefinition);
+        
+        var node = _symbolFinder.GetNodeAt(syntaxTree, request.Line, request.Column);
+        return node;
     }
 }

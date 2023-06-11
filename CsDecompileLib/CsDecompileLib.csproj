@@ -354,6 +354,7 @@
         <Compile Include="Nuget\GetNugetVersionsResponse.cs" />
         <Compile Include="Nuget\GetNugetDependencyGroupsResponse.cs" />
         <Compile Include="Nuget\Package.cs" />
+        <Compile Include="Nuget\SearchNugetFromLocationHandler.cs" />
         <Compile Include="Nuget\SearchNugetHandler.cs" />
         <Compile Include="Nuget\SearchNugetRequest.cs" />
         <Compile Include="Nuget\SearchNugetResponse.cs" />

@@ -19,7 +19,8 @@ public class Decompiler
         _decompilerTypeSystem = decompilerTypeSystem;
         _decompilerSettings = new DecompilerSettings
         {
-            ShowXmlDocumentation = false
+            ShowXmlDocumentation = false,
+            
         };
         _decompiler = new CSharpDecompiler(decompilerTypeSystem, _decompilerSettings);
     }

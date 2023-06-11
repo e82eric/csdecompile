@@ -13,6 +13,7 @@ public class IlSpySymbolInfoCommandBase
     protected void AddIlSpyEntityCommonHeaderProperties(SymbolInfo result, IEntity symbol)
     {
         result.ParentAssemblyFullName = symbol.ParentModule.FullAssemblyName;
+        result.ContainingModuleName = symbol.ParentModule.Name;
         result.TargetFramework = symbol.ParentModule.PEFile?.DetectTargetFrameworkId();
         result.FilePath = symbol.ParentModule.PEFile?.FileName;
         // AddIlSpyEntityCommonHeaderProperties(result, symbol);

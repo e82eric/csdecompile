@@ -460,6 +460,13 @@ M.StartSearchNuget = function(searchString)
   M._sendStdIoRequest(request, M.HandleSearchNuget);
 end
 
+M.StartSearchNugetFromLocation = function(searchString)
+  if M._checkNotRunning() then
+    return
+  end
+  M._decompileRequest("/searchnugetfromlocation", M.HandleSearchNuget);
+end
+
 M.StartGetAllTypes = function(searchString)
   if M._checkNotRunning() then
     return
@@ -1181,6 +1188,13 @@ M.Setup = function(config)
         M.StartSearchNuget(opts.args)
       end,
       { nargs = 1 }
+  )
+  vim.api.nvim_create_user_command(
+      'SearchNugetFromLocation',
+      function(opts)
+        M.StartSearchNugetFromLocation()
+      end,
+      {}
   )
 end
 
