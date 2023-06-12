@@ -391,9 +391,9 @@ internal static class HandlerFactory
             { Endpoints.SymbolInfo, getSymbolInfoHandler },
             { Endpoints.DecompileAssembly, decompileAssemblyHandler },
             { Endpoints.SearchNuget, new SearchNugetHandler() },
-            { Endpoints.GetNugetVersions, new GetNugetVersionsHandler() },
+            { Endpoints.GetNugetPackageVersions, new GetNugetPackageVersionsHandler() },
             { Endpoints.AddNugetPackageAndDependencies, new AddNugetPackageAndDependenciesHandler(_decompileWorkspace) },
-            { Endpoints.GetNugetDependencyGroups, new GetNugetDependencyGroupsHandler() },
+            { Endpoints.GetNugetPackageDependencyGroups, new GetNugetPackageDependencyGroupsHandler() },
         };
 
         var router = new Router(handlers);

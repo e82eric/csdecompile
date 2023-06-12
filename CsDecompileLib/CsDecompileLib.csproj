@@ -349,10 +349,11 @@
         <Compile Include="Nuget\AddPackageAndDependenciesResponse.cs" />
         <Compile Include="Nuget\AddNugetPackageAndDependenciesHandler.cs" />
         <Compile Include="Nuget\AddNugetPackageAndDependenciesRequest.cs" />
-        <Compile Include="Nuget\GetNugetDependencyGroupsHandler.cs" />
-        <Compile Include="Nuget\GetNugetVersionsHandler.cs" />
-        <Compile Include="Nuget\GetNugetVersionsRequest.cs" />
-        <Compile Include="Nuget\GetNugetVersionsResponse.cs" />
+        <Compile Include="Nuget\GetNugetPackageDependencyGroupsHandler.cs" />
+        <Compile Include="Nuget\GetNugetPackageDependencyGroupsRequest.cs" />
+        <Compile Include="Nuget\GetNugetPackageVersionsResponse.cs" />
+        <Compile Include="Nuget\GetNugetPackageVersionsHandler.cs" />
+        <Compile Include="Nuget\GetNugetPackageVersionsRequest.cs" />
         <Compile Include="Nuget\GetNugetDependencyGroupsResponse.cs" />
         <Compile Include="Nuget\Package.cs" />
         <Compile Include="Nuget\SearchNugetHandler.cs" />

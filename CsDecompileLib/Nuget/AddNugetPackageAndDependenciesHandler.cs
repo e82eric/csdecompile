@@ -31,10 +31,9 @@ public class AddNugetPackageAndDependenciesHandler : HandlerBase<AddNugetPackage
         var source = "https://api.nuget.org/v3/index.json";
         SourceRepository repository = Repository.Factory.GetCoreV3(source);
         var packages = new HashSet<SourcePackageDependencyInfo>(PackageIdentityComparer.Default);
-        var response = new SearchNugetResponse();
 
         SourceCacheContext cache = new SourceCacheContext();
-        var packageIdentity = new PackageIdentity(request.Identity, NuGetVersion.Parse(request.Version));
+        var packageIdentity = new PackageIdentity(request.PackageId, NuGetVersion.Parse(request.PackageVersion));
 
         var settings = Settings.LoadDefaultSettings(null);
 

@@ -10,24 +10,28 @@ using NuGet.Versioning;
 
 namespace CsDecompileLib.Nuget;
 
-public class GetNugetDependencyGroupsHandler : HandlerBase<AddNugetPackageAndDependenciesRequest, GetNugetDependencyGroupsResponse>
+public class GetNugetPackageDependencyGroupsHandler : HandlerBase<GetNugetPackageDependencyGroupsRequest, GetNugetDependencyGroupsResponse>
 {
     public override async Task<ResponsePacket<GetNugetDependencyGroupsResponse>> Handle(
-        AddNugetPackageAndDependenciesRequest request)
+        GetNugetPackageDependencyGroupsRequest request)
     {
         ILogger logger = NullLogger.Instance;
         CancellationToken cancellationToken = CancellationToken.None;
         SourceCacheContext cache = new SourceCacheContext();
         SourceRepository repository = Repository.Factory.GetCoreV3("https://api.nuget.org/v3/index.json");
-        NuGetVersion packageVersion = new NuGetVersion(request.Version);
-        FindPackageByIdResource resource = await repository.GetResourceAsync<FindPackageByIdResource>();
+        NuGetVersion packageVersion = new NuGetVersion(request.PackageVersion);
+        FindPackageByIdResource resource = await repository.GetResourceAsync<FindPackageByIdResource>(cancellationToken);
 
-        var response = new GetNugetDependencyGroupsResponse();
+        var response = new GetNugetDependencyGroupsResponse
+        {
+            PackageId = request.PackageId,
+            PackageVersion = request.PackageVersion
+        };
 
         using (MemoryStream packageStream = new MemoryStream())
         {
             await resource.CopyNupkgToStreamAsync(
-                request.Identity,
+                request.PackageId,
                 packageVersion,
                 packageStream,
                 cache,

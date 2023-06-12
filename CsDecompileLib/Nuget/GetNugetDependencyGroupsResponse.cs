@@ -10,4 +10,7 @@ public class GetNugetDependencyGroupsResponse
     {
         Groups = new List<string>();
     }
+    
+    public string PackageId { get; set; }
+    public string PackageVersion { get; set; }
 }

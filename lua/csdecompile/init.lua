@@ -476,17 +476,17 @@ end
 M.HandleSearchNuget = function(response)
   M._openTelescope(response.Body.Packages, M._createSearchNugetDisplayer, nil, function(selection)
     local request = {
-      Command = "/getnugetversions",
+      Command = "/getnugetpackageversions",
       Arguments = {
-        Identity = selection.Identity
+        PackageId = selection.PackageId
       }
     }
-    M._sendStdIoRequest(request, M.HandleGetNugetVersions);
+    M._sendStdIoRequest(request, M.HandleGetNugetPackageVersions);
   end,
-  'Search Nuget')
+  'Search Nuget: ' .. response.Body.SearchString)
 end
 
-M.HandleGetNugetVersions = function(response)
+M.HandleGetNugetPackageVersions = function(response)
   table.sort(response.Body.Packages, function(a, b) 
     if a.MajorVersion == b.MajorVersion then
       if a.MinorVersion == b.MinorVersion then
@@ -502,18 +502,18 @@ M.HandleGetNugetVersions = function(response)
 
   M._openTelescope(response.Body.Packages, M._createGetNugetVersionsDisplayer, nil, function(selection)
     local request = {
-      Command = "/getnugetdependencygroups",
+      Command = "/getnugetpackagedependencygroups",
       Arguments = {
-        Identity = selection.Identity,
-        Version = selection.Version
+        PackageId = selection.PackageId,
+        PackageVersion = selection.PackageVersion
       }
     }
-    M._sendStdIoRequest(request, M.HandleGetNugetDependencyGroups, { Identity = selection.Identity, Version = selection.Version });
+    M._sendStdIoRequest(request, M.HandleGetNugetPackageDependencyGroups, { PackageId = selection.PackageId, PackageVersion = selection.PackageVersion });
   end,
-  'Nuget Versions')
+  'Nuget Versions: ' .. response.Body.PackageId)
 end
 
-M.HandleGetNugetDependencyGroups = function(response, data)
+M.HandleGetNugetPackageDependencyGroups = function(response, data)
   M._openTelescope(response.Body.Groups, M._createNugetDependencyGroupDisplayer, nil, function(selection)
     local packageDirectory = vim.F.if_nil(
       opts._packageDirectory,
@@ -522,15 +522,15 @@ M.HandleGetNugetDependencyGroups = function(response, data)
     local request = {
       Command = "/addnugetpackageanddependencies",
       Arguments = {
-        Identity = data.Identity,
-        Version = data.Version,
+        PackageId = data.PackageId,
+        PackageVersion = data.PackageVersion,
         DependencyGroup = selection,
         RootPackageDirectory = packageDirectory
       }
     }
     M._sendStdIoRequest(request, M.HandleAddNugetPackageAndDependencies);
   end,
-  'Search Nuget')
+  'Dependency Group: ' .. response.Body.PackageId .. ' ' .. response.Body.PackageVersion)
 end
 
 M.HandleAddNugetPackageAndDependencies = function(response, data)
@@ -841,14 +841,14 @@ M._createSearchNugetDisplayer = function(widths)
 
 		local make_display = function(entry)
 			return displayer {
-				{ M._blankIfNil(entry.value.Identity), "TelescopeResultsClass" },
+				{ M._blankIfNil(entry.value.PackageId), "TelescopeResultsClass" },
 			}
 		end
 
 		return {
 			value = entry,
 			display = make_display,
-			ordinal = entry.Identity
+			ordinal = entry.PackageId
 		}
 	end
 	return resultFunc
@@ -883,22 +883,22 @@ M._createGetNugetVersionsDisplayer = function(widths)
 		local displayer = entry_display.create {
 			separator = "  ",
 			items = {
-        { width = widths.Identity },
+        { width = widths.PackageId },
 				{ remaining = true },
 			},
 		}
 
 		local make_display = function(entry)
 			return displayer {
-				{ M._blankIfNil(entry.value.Identity), "TelescopeResultsClass" },
-				{ M._blankIfNil(entry.value.Version), "TelescopeResultsClass" },
+				{ M._blankIfNil(entry.value.PackageId), "TelescopeResultsClass" },
+				{ M._blankIfNil(entry.value.PackageVersion), "TelescopeResultsClass" },
 			}
 		end
 
 		return {
 			value = entry,
 			display = make_display,
-			ordinal = entry.Version
+			ordinal = entry.PackageVersion
 		}
 	end
 	return resultFunc
@@ -1178,7 +1178,7 @@ M.Setup = function(config)
       {}
   )
   vim.api.nvim_create_user_command(
-      'StartGetAssemblies',
+      'GetAssemblies',
       function(opts)
         M.StartGetAssemblies()
       end,
@@ -1199,7 +1199,7 @@ M.Setup = function(config)
       {}
   )
   vim.api.nvim_create_user_command(
-      'SearchNuget2',
+      'SearchNugetAndDecompile',
       function(opts)
         M.StartSearchNuget(opts.args)
       end,

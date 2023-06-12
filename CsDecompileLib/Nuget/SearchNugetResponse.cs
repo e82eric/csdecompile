@@ -10,4 +10,5 @@ public class SearchNugetResponse
     }
 
     public IList<Package> Packages { get; }
+    public string SearchString { get; set; }
 }

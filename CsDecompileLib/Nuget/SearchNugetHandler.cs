@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -23,7 +22,10 @@ public class SearchNugetHandler : HandlerBase<SearchNugetRequest, SearchNugetRes
 
         var itemsPerPage = 100;
         var offset = 0;
-        var response = new SearchNugetResponse();
+        var response = new SearchNugetResponse()
+        {
+            SearchString = request.SearchString
+        };
         bool anyResults = true;
         while (anyResults)
         {
@@ -39,7 +41,7 @@ public class SearchNugetHandler : HandlerBase<SearchNugetRequest, SearchNugetRes
             {
                 var package = new Package
                 {
-                    Identity = result.Identity.Id,
+                    PackageId = result.Identity.Id,
                 };
                 response.Packages.Add(package);
             }

@@ -8,30 +8,33 @@ using NuGet.Versioning;
 
 namespace CsDecompileLib.Nuget;
 
-public class GetNugetVersionsHandler : HandlerBase<GetNugetVersionsRequest, SearchNugetResponse>
+public class GetNugetPackageVersionsHandler : HandlerBase<GetNugetPackageVersionsRequest, GetNugetPackageVersionsResponse>
 {
-    public override async Task<ResponsePacket<SearchNugetResponse>> Handle(GetNugetVersionsRequest request)
+    public override async Task<ResponsePacket<GetNugetPackageVersionsResponse>> Handle(GetNugetPackageVersionsRequest request)
     {
         ILogger logger = NullLogger.Instance;
         CancellationToken cancellationToken = CancellationToken.None;
 
         SourceCacheContext cache = new SourceCacheContext();
         SourceRepository repository = Repository.Factory.GetCoreV3("https://api.nuget.org/v3/index.json");
-        FindPackageByIdResource resource = await repository.GetResourceAsync<FindPackageByIdResource>();
+        FindPackageByIdResource resource = await repository.GetResourceAsync<FindPackageByIdResource>(cancellationToken);
 
         IEnumerable<NuGetVersion> versions = await resource.GetAllVersionsAsync(
-            request.Identity,
+            request.PackageId,
             cache,
             logger,
             cancellationToken);
 
-        var response = new SearchNugetResponse();
+        var response = new GetNugetPackageVersionsResponse
+        {
+            PackageId = request.PackageId
+        };
         foreach (NuGetVersion version in versions)
         {
             response.Packages.Add(new Package
             {
-                Identity = request.Identity,
-                Version = version.ToString(),
+                PackageId = request.PackageId,
+                PackageVersion = version.ToString(),
                 MajorVersion = version.Version.Major,
                 MinorVersion = version.Version.Minor,
                 Build = version.Version.Build,
@@ -40,7 +43,7 @@ public class GetNugetVersionsHandler : HandlerBase<GetNugetVersionsRequest, Sear
             });
         }
 
-        return new ResponsePacket<SearchNugetResponse>
+        return new ResponsePacket<GetNugetPackageVersionsResponse>
         {
             Body = response,
             Success = true
