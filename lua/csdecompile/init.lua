@@ -559,7 +559,7 @@ end
 
 M.HandleUsages = function(response)
   M._openTelescope(response.Body.Implementations, M._createUsagesDisplayer, M._sourcePreviewer, function(selection)
-      M._openSourceFileOrDecompile(selection.value)
+      M._openSourceFileOrDecompile(selection)
   end,
   'Find Usages')
 end
