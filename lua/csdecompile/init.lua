@@ -743,7 +743,7 @@ M._blankIfNil = function(val)
     if type(val) == "string" then
       return val
     else
-      return '[object]'
+      return ''
     end
   end
 	return ''
@@ -986,7 +986,7 @@ M._navigationFloatingWin = function(data)
   table.insert(toDisplay, '')
 	table.insert(toDisplay, 'Assembly Full Name: ' .. M._blankIfNil(data.ParentAssemblyFullName))
 	table.insert(toDisplay, 'Target Framework: ' .. M._blankIfNil(data.TargetFramework))
-	table.insert(toDisplay, 'Assembly File Path:' .. M._blankIfNil(data.FilePath))
+	table.insert(toDisplay, 'Assembly File Path: ' .. M._blankIfNil(data.FilePath))
 
 	vim.api.nvim_buf_set_lines(buf, 0, -1, true, toDisplay)
   vim.api.nvim_buf_set_option(buf, 'buftype', 'nofile')

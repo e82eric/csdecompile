@@ -103,7 +103,7 @@ internal static class HandlerFactory
     {
         var decompilerFactory = new DecompilerFactory(_decompilerTypeSystemFactory);
         var ilSpySymbolFinder = new IlSpySymbolFinder(_decompilerTypeSystemFactory);
-        var getSymbolInfoCommandFactory = new GetSymbolInfoCommandFactory();
+        var getSymbolInfoCommandFactory = new GetSymbolInfoCommandFactory(_decompileWorkspace);
         var roslynLocationToCommandFactory = new RoslynLocationCommandFactory<INavigationCommand<SymbolInfo>>(
             _workspace,
             ilSpySymbolFinder,

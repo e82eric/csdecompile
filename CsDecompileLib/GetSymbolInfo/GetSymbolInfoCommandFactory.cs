@@ -1,4 +1,5 @@
 using CsDecompileLib.GotoDefinition;
+using CsDecompileLib.IlSpy;
 using CsDecompileLib.Roslyn;
 using ICSharpCode.Decompiler.CSharp.Syntax;
 using ICSharpCode.Decompiler.IL;
@@ -8,6 +9,12 @@ namespace CsDecompileLib.GetSymbolInfo;
 
 public class GetSymbolInfoCommandFactory : ICommandFactory<INavigationCommand<SymbolInfo>>
 {
+    private readonly IDecompileWorkspace _decompileWorkspace;
+
+    public GetSymbolInfoCommandFactory(IDecompileWorkspace decompileWorkspace)
+    {
+        _decompileWorkspace = decompileWorkspace;
+    }
     public INavigationCommand<SymbolInfo> GetForFileNotFound(string filePath)
     {
         var result = new FileNotFoundCommand<SymbolInfo>(filePath);
@@ -32,12 +39,22 @@ public class GetSymbolInfoCommandFactory : ICommandFactory<INavigationCommand<Sy
 
     public INavigationCommand<SymbolInfo> GetForType(ITypeDefinition typeDefinition, string assemblyFilePath)
     {
+        if (typeDefinition.ParentModule == null)
+        {
+            var peFile = _decompileWorkspace.GetAssembly(assemblyFilePath);
+            return new UnresolvedTypeSymbolInfoCommand(peFile, typeDefinition);
+        }
         var result = new IlSpyTypeDefinitionSymbolInfoCommand(typeDefinition);
         return result;
     }
 
     public INavigationCommand<SymbolInfo> GetForMethod(IMethod method, string assemblyFilePath)
     {
+        if (method.ParentModule == null)
+        {
+            var peFile = _decompileWorkspace.GetAssembly(assemblyFilePath);
+            return new UnresolvedMemberSymbolInfoCommand(peFile, method);
+        }
         var result = new IlSpyMethodSymbolInfoCommand(method);
         return result;
     }
@@ -49,12 +66,22 @@ public class GetSymbolInfoCommandFactory : ICommandFactory<INavigationCommand<Sy
 
     public INavigationCommand<SymbolInfo> GetForField(IField field, string assemblyFilePath)
     {
+        if (field.ParentModule == null)
+        {
+            var peFile = _decompileWorkspace.GetAssembly(assemblyFilePath);
+            return new UnresolvedMemberSymbolInfoCommand(peFile, field);
+        }
         var result = new IlSpyMemberSymbolInfoCommand(field);
         return result;
     }
 
     public INavigationCommand<SymbolInfo> GetForProperty(IProperty property, string assemblyFilePath)
     {
+        if (property.ParentModule == null)
+        {
+            var peFile = _decompileWorkspace.GetAssembly(assemblyFilePath);
+            return new UnresolvedMemberSymbolInfoCommand(peFile, property);
+        }
         var result = new IlSpyMemberSymbolInfoCommand(property);
         return result;
     }

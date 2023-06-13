@@ -1,13 +1,184 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection.Metadata;
 using CsDecompileLib.Roslyn;
 using ICSharpCode.Decompiler.CSharp;
 using ICSharpCode.Decompiler.CSharp.Syntax;
+using ICSharpCode.Decompiler.Semantics;
 using ICSharpCode.Decompiler.TypeSystem;
 using Microsoft.CodeAnalysis;
+using Accessibility = ICSharpCode.Decompiler.TypeSystem.Accessibility;
 using ISymbol = ICSharpCode.Decompiler.TypeSystem.ISymbol;
+using SymbolKind = ICSharpCode.Decompiler.TypeSystem.SymbolKind;
+using TypeKind = ICSharpCode.Decompiler.TypeSystem.TypeKind;
 
 namespace CsDecompileLib.IlSpy;
 
+public class FakeType : ITypeDefinition
+{
+    private readonly TypeResolveResult _resolveResult;
+
+    public FakeType(TypeResolveResult resolveResult)
+    {
+        _resolveResult = resolveResult;
+    }
+
+    public string FullName => _resolveResult.Type.FullName;
+
+    public SymbolKind SymbolKind => SymbolKind.TypeDefinition;
+
+    public IEnumerable<IAttribute> GetAttributes()
+    {
+        throw new NotImplementedException();
+    }
+
+    public EntityHandle MetadataToken => throw new NotImplementedException();
+
+    public string Name => _resolveResult.Type.Name;
+
+    public ITypeDefinition DeclaringTypeDefinition => throw new NotImplementedException();
+
+    public string ReflectionName => throw new NotImplementedException();
+
+    public string Namespace => _resolveResult.Type.Namespace;
+
+    public bool Equals(IType other)
+    {
+        throw new NotImplementedException();
+    }
+
+    public IType ChangeNullability(Nullability newNullability)
+    {
+        throw new NotImplementedException();
+    }
+
+    public ITypeDefinition GetDefinition()
+    {
+        throw new NotImplementedException();
+    }
+
+    public IType AcceptVisitor(TypeVisitor visitor)
+    {
+        throw new NotImplementedException();
+    }
+
+    public IType VisitChildren(TypeVisitor visitor)
+    {
+        throw new NotImplementedException();
+    }
+
+    public TypeParameterSubstitution GetSubstitution()
+    {
+        throw new NotImplementedException();
+    }
+
+    public IEnumerable<IType> GetNestedTypes(Predicate<ITypeDefinition> filter = null, GetMemberOptions options = GetMemberOptions.None)
+    {
+        throw new NotImplementedException();
+    }
+
+    public IEnumerable<IType> GetNestedTypes(IReadOnlyList<IType> typeArguments, Predicate<ITypeDefinition> filter = null, GetMemberOptions options = GetMemberOptions.None)
+    {
+        throw new NotImplementedException();
+    }
+
+    public IEnumerable<IMethod> GetConstructors(Predicate<IMethod> filter = null, GetMemberOptions options = GetMemberOptions.IgnoreInheritedMembers)
+    {
+        throw new NotImplementedException();
+    }
+
+    public IEnumerable<IMethod> GetMethods(Predicate<IMethod> filter = null, GetMemberOptions options = GetMemberOptions.None)
+    {
+        throw new NotImplementedException();
+    }
+
+    public IEnumerable<IMethod> GetMethods(IReadOnlyList<IType> typeArguments, Predicate<IMethod> filter = null, GetMemberOptions options = GetMemberOptions.None)
+    {
+        throw new NotImplementedException();
+    }
+
+    public IEnumerable<IProperty> GetProperties(Predicate<IProperty> filter = null, GetMemberOptions options = GetMemberOptions.None)
+    {
+        throw new NotImplementedException();
+    }
+
+    public IEnumerable<IField> GetFields(Predicate<IField> filter = null, GetMemberOptions options = GetMemberOptions.None)
+    {
+        throw new NotImplementedException();
+    }
+
+    public IEnumerable<IEvent> GetEvents(Predicate<IEvent> filter = null, GetMemberOptions options = GetMemberOptions.None)
+    {
+        throw new NotImplementedException();
+    }
+
+    public IEnumerable<IMember> GetMembers(Predicate<IMember> filter = null, GetMemberOptions options = GetMemberOptions.None)
+    {
+        throw new NotImplementedException();
+    }
+
+    public IEnumerable<IMethod> GetAccessors(Predicate<IMethod> filter = null, GetMemberOptions options = GetMemberOptions.None)
+    {
+        throw new NotImplementedException();
+    }
+
+    public TypeKind Kind => throw new NotImplementedException();
+
+    public bool? IsReferenceType => throw new NotImplementedException();
+
+    public bool IsByRefLike => throw new NotImplementedException();
+
+    public Nullability Nullability => throw new NotImplementedException();
+
+    public IReadOnlyList<ITypeDefinition> NestedTypes => throw new NotImplementedException();
+
+    public IReadOnlyList<IMember> Members => throw new NotImplementedException();
+
+    public IEnumerable<IField> Fields => throw new NotImplementedException();
+
+    public IEnumerable<IMethod> Methods => throw new NotImplementedException();
+
+    public IEnumerable<IProperty> Properties => throw new NotImplementedException();
+
+    public IEnumerable<IEvent> Events => throw new NotImplementedException();
+
+    public KnownTypeCode KnownTypeCode => throw new NotImplementedException();
+
+    public IType EnumUnderlyingType => throw new NotImplementedException();
+
+    public bool IsReadOnly => throw new NotImplementedException();
+
+    public FullTypeName FullTypeName => throw new NotImplementedException();
+
+    public IType DeclaringType => throw new NotImplementedException();
+
+    public bool HasExtensionMethods => throw new NotImplementedException();
+
+    public Nullability NullableContext => throw new NotImplementedException();
+
+    public bool IsRecord => throw new NotImplementedException();
+
+    public IModule ParentModule => null;
+
+    public Accessibility Accessibility => throw new NotImplementedException();
+
+    public bool IsStatic => throw new NotImplementedException();
+
+    public bool IsAbstract => throw new NotImplementedException();
+
+    public bool IsSealed => throw new NotImplementedException();
+
+    public int TypeParameterCount => throw new NotImplementedException();
+
+    public IReadOnlyList<ITypeParameter> TypeParameters => throw new NotImplementedException();
+
+    public IReadOnlyList<IType> TypeArguments => throw new NotImplementedException();
+
+    public IEnumerable<IType> DirectBaseTypes => throw new NotImplementedException();
+
+    public ICompilation Compilation => throw new NotImplementedException();
+}
 public class IlSpySymbolFinder
 {
     private readonly IDecompilerTypeSystemFactory _typeSystemFactory;
@@ -75,6 +246,11 @@ public class IlSpySymbolFinder
         {
             node = node.Parent;
             symbolAtLocation = node?.GetSymbol();
+            var resolveResult = node?.GetResolveResult();
+            if (symbolAtLocation == null && resolveResult is TypeResolveResult typeResolveResult)
+            {
+                symbolAtLocation = new FakeType(typeResolveResult);
+            }
         }
 
         return symbolAtLocation;

@@ -304,6 +304,10 @@
         <Compile Include="GetSource\DecompiledSourceRequest.cs" />
         <Compile Include="GetSource\DecompiledSourceResponse.cs" />
         <Compile Include="GetSource\IlSpyDecompiledSourceCommandFactory.cs" />
+        <Compile Include="GetSymbolInfo\IlSpySymbolInfoCommandBase.cs" />
+        <Compile Include="GetSymbolInfo\SymbolInfoExtensions.cs" />
+        <Compile Include="GetSymbolInfo\UnresolvedMemberSymbolInfoCommand.cs" />
+        <Compile Include="GetSymbolInfo\UnresolvedTypeSymbolInfoCommand.cs" />
         <Compile Include="GotoDefinition\GotoDefinitionResponse.cs" />
         <Compile Include="GotoDefinition\GotoDefinitionCommandFactory.cs" />
         <Compile Include="GotoDefinition\GoToDefinitionCommand.cs" />
