@@ -14,6 +14,7 @@ namespace CsDecompileLib
         public const string GetAssemblyTypes = "/getassemblytypes";
         public const string DecompileAssembly = "/decompileassembly";
         public const string SearchNuget = "/searchnuget";
+        public const string SearchNugetFromLocation = "/searchnugetfromlocation";
         public const string GetNugetPackageVersions = "/getnugetpackageversions";
         public const string AddNugetPackageAndDependencies = "/addnugetpackageanddependencies";
         public const string GetNugetPackageDependencyGroups = "/getnugetpackagedependencygroups";

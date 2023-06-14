@@ -27,7 +27,10 @@ public class GetNugetPackageVersionsHandler : HandlerBase<GetNugetPackageVersion
 
         var response = new GetNugetPackageVersionsResponse
         {
-            PackageId = request.PackageId
+            PackageId = request.PackageId,
+            ParentAssemblyMajorVersion = request.ParentAssemblyMajorVersion,
+            ParentAssemblyMinorVersion = request.ParentAssemblyMinorVersion,
+            ParentAssemblyBuildVersion = request.ParentAssemblyBuildVersion
         };
         foreach (NuGetVersion version in versions)
         {

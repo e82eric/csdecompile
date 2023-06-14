@@ -32,7 +32,7 @@ public class UnresolvedTypeSymbolInfoCommand : INavigationCommand<SymbolInfo>
             {
                 var assemblyReference = _peFile.AssemblyReferences.FirstOrDefault(
                     r => r.Handle == typeDef.ResolutionScope);
-                toFill.ParentAssemblyFullName = assemblyReference.FullName;
+                toFill.FillFromAssemblyReference(assemblyReference);
                 break;
             }
         }

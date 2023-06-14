@@ -39,7 +39,7 @@ public class UnresolvedMemberSymbolInfoCommand : INavigationCommand<SymbolInfo>
                             _peFile.Metadata.GetTypeReference((TypeReferenceHandle)member.Parent);
                         var assemblyReference = _peFile.AssemblyReferences.FirstOrDefault(ar =>
                             ar.Handle == typeReference.ResolutionScope);
-                        toFill.ParentAssemblyFullName = assemblyReference.FullName;
+                        toFill.FillFromAssemblyReference(assemblyReference);
                         break;
                     }
                 }

@@ -376,6 +376,7 @@ internal static class HandlerFactory
         var getAssembliesHandler = GetAssembliesHandler();
         var getSymbolInfoHandler = CreateGetSymbolInfoHandler();
         var decompileAssemblyHandler = CreateDecompileAssemblyHandler();
+        var nugetSearcher = new NugetSearcher();
         
         var handlers = new Dictionary<string, IHandler>
         {
@@ -390,10 +391,13 @@ internal static class HandlerFactory
             { Endpoints.GetAssemblies, getAssembliesHandler },
             { Endpoints.SymbolInfo, getSymbolInfoHandler },
             { Endpoints.DecompileAssembly, decompileAssemblyHandler },
-            { Endpoints.SearchNuget, new SearchNugetHandler() },
+            { Endpoints.SearchNuget, new SearchNugetHandler(nugetSearcher) },
             { Endpoints.GetNugetPackageVersions, new GetNugetPackageVersionsHandler() },
             { Endpoints.AddNugetPackageAndDependencies, new AddNugetPackageAndDependenciesHandler(_decompileWorkspace) },
             { Endpoints.GetNugetPackageDependencyGroups, new GetNugetPackageDependencyGroupsHandler() },
+            { Endpoints.SearchNugetFromLocation, new SearchNugetForLocationHandler(
+                nugetSearcher,
+                getSymbolInfoHandler) },
         };
 
         var router = new Router(handlers);

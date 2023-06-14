@@ -4,6 +4,10 @@ namespace CsDecompileLib.Roslyn;
 
 public class SymbolInfo
 {
+    public int? ParentAssemblyMajorVersion { get; set; }
+    public int? ParentAssemblyMinorVersion { get; set; }
+    public int? ParentAssemblyBuildVersion { get; set; }
+    public string ParentAssemblyName { get; set; }
     public string ParentAssemblyFullName { get; set; }
     public string TargetFramework { get; set; }
     public string FilePath { get; set; }

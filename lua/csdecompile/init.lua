@@ -460,6 +460,13 @@ M.StartSearchNuget = function(searchString)
   M._sendStdIoRequest(request, M.HandleSearchNuget);
 end
 
+M.StartSearchNugetFromLocation = function()
+  if M._checkNotRunning() then
+    return
+  end
+  M._decompileRequest("/searchnugetfromlocation", M.HandleSearchNugetFromLocation)
+end
+
 M.StartGetAllTypes = function(searchString)
   if M._checkNotRunning() then
     return
@@ -471,6 +478,22 @@ M.StartGetAllTypes = function(searchString)
 		}
 	}
 	M._sendStdIoRequest(request, M.HandleGetAllTypes);
+end
+
+M.HandleSearchNugetFromLocation = function(response)
+  M._openTelescope(response.Body.Packages, M._createSearchNugetDisplayer, nil, function(selection)
+    local request = {
+      Command = "/getnugetpackageversions",
+      Arguments = {
+        PackageId = selection.PackageId,
+        ParentAssemblyMajorVersion = response.Body.ParentAssemblyMajorVersion,
+        ParentAssemblyMinorVersion = response.Body.ParentAssemblyMinorVersion,
+        ParentAssemblyBuildVersion = response.Body.ParentAssemblyBuildVersion
+      }
+    }
+    M._sendStdIoRequest(request, M.HandleGetNugetPackageVersionsFromLocation);
+  end,
+  'Search Nuget: ' .. response.Body.SearchString)
 end
 
 M.HandleSearchNuget = function(response)
@@ -511,6 +534,35 @@ M.HandleGetNugetPackageVersions = function(response)
     M._sendStdIoRequest(request, M.HandleGetNugetPackageDependencyGroups, { PackageId = selection.PackageId, PackageVersion = selection.PackageVersion });
   end,
   'Nuget Versions: ' .. response.Body.PackageId)
+end
+
+M.HandleGetNugetPackageVersionsFromLocation = function(response)
+  table.sort(response.Body.Packages, function(a, b) 
+    if a.MajorVersion == b.MajorVersion then
+      if a.MinorVersion == b.MinorVersion then
+        if a.Build == b.Build then
+          return a.Revision > b.Revision
+        end
+        return a.Patch > b.Patch
+      end
+      return a.MinorVersion > b.MinorVersion
+    end
+    return a.MajorVersion > b.MajorVersion
+  end)
+
+  local versionSearchString = response.Body.ParentAssemblyMajorVersion .. '.' .. response.Body.ParentAssemblyMinorVersion .. '.' .. response.Body.ParentAssemblyBuildVersion
+  M._openTelescope(response.Body.Packages, M._createGetNugetVersionsDisplayer, nil, function(selection)
+    local request = {
+      Command = "/getnugetpackagedependencygroups",
+      Arguments = {
+        PackageId = selection.PackageId,
+        PackageVersion = selection.PackageVersion
+      }
+    }
+    M._sendStdIoRequest(request, M.HandleGetNugetPackageDependencyGroups, { PackageId = selection.PackageId, PackageVersion = selection.PackageVersion });
+  end,
+  'Nuget Versions: ' .. response.Body.PackageId,
+  versionSearchString)
 end
 
 M.HandleGetNugetPackageDependencyGroups = function(response, data)
@@ -1072,7 +1124,8 @@ M._sourcePreviewer = previewers.new_buffer_previewer {
   end
 }
 
-M._openTelescope = function(data, displayFunc, previewer, onSelection, promptTitle)
+M._openTelescope = function(data, displayFunc, previewer, onSelection, promptTitle, prompt)
+  print(prompt)
 	local widths = {
 		ContainingTypeFullName = 0,
 		ContainingTypeShortName = 0,
@@ -1107,6 +1160,7 @@ M._openTelescope = function(data, displayFunc, previewer, onSelection, promptTit
 			width = 0.95,
 			height = 0.95,
 		},
+    default_text = prompt,
 		prompt_title = promptTitle,
 		finder = finders.new_table {
 			results = data,
@@ -1211,6 +1265,13 @@ M.Setup = function(config)
         M.StartRefreshBuffer()
       end,
       {}
+  )
+  vim.api.nvim_create_user_command(
+    'SearchNugetFromLocation',
+    function(opts)
+      M.StartSearchNugetFromLocation()
+    end,
+    {}
   )
 end
 
