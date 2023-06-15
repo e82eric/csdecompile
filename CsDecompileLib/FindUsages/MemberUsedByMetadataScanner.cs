@@ -45,6 +45,14 @@ public class MemberUsedByMetadataScanner : IMetadataUsagesScanner<IMember>
 
     private bool TypeUsesMethod(IMember analyzedSymbol, ITypeDefinition type)
     {
+        foreach (var attribute in type.GetAttributes())
+        {
+            if (attribute.Constructor?.MetadataToken == analyzedSymbol.MetadataToken)
+            {
+                return true;
+            }
+        }
+        
         var isUsedInMethods = IsUsedInMethods(analyzedSymbol, type);
         if (isUsedInMethods)
         {

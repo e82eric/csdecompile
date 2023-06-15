@@ -6,6 +6,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.FindSymbols;
 using Microsoft.CodeAnalysis.Text;
 using CsDecompileLib.Roslyn;
+using Microsoft.CodeAnalysis.CSharp;
 using ISymbol = Microsoft.CodeAnalysis.ISymbol;
 
 namespace CsDecompileLib.FindUsages;
@@ -22,19 +23,20 @@ public class RoslynFindUsagesCommand : INavigationCommand<FindImplementationsRes
         _symbol = symbol;
         _workspace = workspace;
     }
+
     public async Task<ResponsePacket<FindImplementationsResponse>> Execute()
     {
         var definition = await SymbolFinder.FindSourceDefinitionAsync(_symbol, _workspace.CurrentSolution);
-        IEnumerable<ReferencedSymbol> usages = await SymbolFinder.FindReferencesAsync(definition ?? _symbol, _workspace.CurrentSolution);
+        IEnumerable<ReferencedSymbol> usages =
+            await SymbolFinder.FindReferencesAsync(definition ?? _symbol, _workspace.CurrentSolution);
 
         var body = new FindImplementationsResponse();
         foreach (var usage in usages)
         {
             foreach (var location in usage.Locations)
             {
-                var shortName = await GetShortName(location);
                 var sourceFileInfo = location.Location.GetSourceLineInfo(_workspace);
-                sourceFileInfo.ContainingTypeShortName = shortName;
+                await FillContainingTypeNames(location, sourceFileInfo);
                 body.Implementations.Add(sourceFileInfo);
             }
 
@@ -42,7 +44,7 @@ public class RoslynFindUsagesCommand : INavigationCommand<FindImplementationsRes
             //The associated symbol check gets rid of getters and setters
             if (!usage.Definition.IsImplicitlyDeclared &&
                 !(usage.Definition is IMethodSymbol methodSymbol && methodSymbol.AssociatedSymbol is IPropertySymbol)
-                )
+               )
             {
                 foreach (var location in usage.Definition.Locations)
                 {
@@ -72,29 +74,67 @@ public class RoslynFindUsagesCommand : INavigationCommand<FindImplementationsRes
         return result;
     }
 
-    private async Task<string> GetShortName(ReferenceLocation location)
+    private async Task FillContainingTypeNames(ReferenceLocation location, SourceFileInfo toFill)
     {
         var lineSpan = location.Location.GetLineSpan();
         var enclosingSymbol = await GetDefinitionSymbol(location.Document, lineSpan.StartLinePosition.Line,
             lineSpan.StartLinePosition.Character);
 
-        string shortName = null;
         if (enclosingSymbol.ContainingType != null)
         {
-            shortName = enclosingSymbol.ContainingType.Name;
+            toFill.ContainingTypeShortName = enclosingSymbol.ContainingType.Name;
+            toFill.ContainingTypeFullName = enclosingSymbol.ContainingType.MetadataName;
         }
         else
         {
-            shortName = enclosingSymbol.Name;
+            var fallbackParentClassSymbol = await GetParentTypeSymbol(location.Document, location.Location);
+            if (fallbackParentClassSymbol != null)
+            {
+                toFill.ContainingTypeShortName = fallbackParentClassSymbol.Name;
+                toFill.ContainingTypeFullName = fallbackParentClassSymbol.MetadataName;
+            }
+            else
+            {
+                toFill.ContainingTypeShortName = enclosingSymbol.Name;
+                toFill.ContainingTypeFullName = enclosingSymbol.MetadataName;
+            }
+        }
+    }
+
+    public async Task<INamedTypeSymbol> GetParentTypeSymbol(Document document, Location location)
+    {
+        var syntaxRoot = await document.GetSyntaxRootAsync();
+        var node = syntaxRoot.FindNode(location.SourceSpan);
+
+        var symanticModel = await document.GetSemanticModelAsync();
+        SyntaxNode classDeclarationNode = null;
+        while (node.Parent != null)
+        {
+            if (node.IsKind(SyntaxKind.ClassDeclaration))
+            {
+                classDeclarationNode = node;
+                break;
+            }
+
+            node = node.Parent;
         }
 
-        return shortName;
+        if (classDeclarationNode != null)
+        {
+            var symbol = symanticModel.GetDeclaredSymbol(classDeclarationNode);
+            if (symbol is INamedTypeSymbol namedTypeSymbol)
+            {
+                return namedTypeSymbol;
+            }
+        }
+
+        return null;
     }
 
     internal async Task<ISymbol> GetDefinitionSymbol(Document document, int line, int column)
     {
         var sourceText = await document.GetTextAsync(CancellationToken.None);
-        var position = GetPositionFromLineAndOffset(sourceText, line -1, column);
+        var position = GetPositionFromLineAndOffset(sourceText, line - 1, column);
         var symanticModel = await document.GetSemanticModelAsync();
         var enclosingSymbol = symanticModel.GetEnclosingSymbol(position);
         return enclosingSymbol;

@@ -46,6 +46,7 @@
         <Compile Include="DecompileAssemtlyTypeTarget.cs" />
         <Compile Include="ExternalFindImplementationsBaseClassCaller.cs" />
         <Compile Include="ExternalFindImplementationsInterfaceCaller.cs" />
+        <Compile Include="ExternalFindUsagesAttributeUser.cs" />
         <Compile Include="ExternalFindUsagesEnumCaller.cs" />
         <Compile Include="ExternalFindUsagesEventCaller.cs" />
         <Compile Include="ExternalFindUsagesEventOfInterfaceUser1.cs" />

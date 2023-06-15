@@ -132,6 +132,7 @@
         <Compile Include="ExternalSource\FindUsages\ExternalFindUsagesMethodTests.cs" />
         <Compile Include="ExternalSource\FindUsages\ExternalFindUsagesPropertyTests.cs" />
         <Compile Include="ExternalSource\FindUsages\ExternalFindUsagesTestBase.cs" />
+        <Compile Include="ExternalSource\FindUsages\ExternalFindUsagesTypeAsAttributeTests.cs" />
         <Compile Include="ExternalSource\FindUsages\ExternalFindUsagesTypeAsFieldTests.cs" />
         <Compile Include="ExternalSource\FindUsages\ExternalFindUsagesTypeAsGenericTests.cs" />
         <Compile Include="ExternalSource\FindUsages\ExternalFindUsagesTypeAsMethodTests.cs" />

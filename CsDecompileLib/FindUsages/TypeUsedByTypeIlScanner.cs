@@ -86,6 +86,12 @@ public class TypeUsedByTypeIlScanner : IMetadataUsagesScanner<ITypeDefinition>
     {
         foreach (var attribute in attributes)
         {
+            CheckAttributeValue(attribute.AttributeType);
+            CheckAttributeValue(attribute);
+            if (visitor.Found)
+            {
+                return true;
+            }
             foreach (var fa in attribute.FixedArguments)
             {
                 CheckAttributeValue(fa.Value);
