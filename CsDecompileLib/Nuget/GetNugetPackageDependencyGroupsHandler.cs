@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -10,7 +11,9 @@ using NuGet.Versioning;
 
 namespace CsDecompileLib.Nuget;
 
-public class GetNugetPackageDependencyGroupsHandler : HandlerBase<GetNugetPackageDependencyGroupsRequest, GetNugetDependencyGroupsResponse>
+public class
+    GetNugetPackageDependencyGroupsHandler : HandlerBase<GetNugetPackageDependencyGroupsRequest,
+        GetNugetDependencyGroupsResponse>
 {
     public override async Task<ResponsePacket<GetNugetDependencyGroupsResponse>> Handle(
         GetNugetPackageDependencyGroupsRequest request)
@@ -18,41 +21,49 @@ public class GetNugetPackageDependencyGroupsHandler : HandlerBase<GetNugetPackag
         ILogger logger = NullLogger.Instance;
         CancellationToken cancellationToken = CancellationToken.None;
         SourceCacheContext cache = new SourceCacheContext();
-        SourceRepository repository = Repository.Factory.GetCoreV3("https://api.nuget.org/v3/index.json");
-        NuGetVersion packageVersion = new NuGetVersion(request.PackageVersion);
-        FindPackageByIdResource resource = await repository.GetResourceAsync<FindPackageByIdResource>(cancellationToken);
 
-        var response = new GetNugetDependencyGroupsResponse
+        foreach (var nugetSource in request.NugetSources)
         {
-            PackageId = request.PackageId,
-            PackageVersion = request.PackageVersion
-        };
+            SourceRepository repository = Repository.Factory.GetCoreV3(nugetSource);
+            NuGetVersion packageVersion = new NuGetVersion(request.PackageVersion);
+            FindPackageByIdResource resource =
+                await repository.GetResourceAsync<FindPackageByIdResource>(cancellationToken);
 
-        using (MemoryStream packageStream = new MemoryStream())
-        {
-            await resource.CopyNupkgToStreamAsync(
-                request.PackageId,
-                packageVersion,
-                packageStream,
-                cache,
-                logger,
-                cancellationToken);
-
-            using (PackageArchiveReader packageReader = new PackageArchiveReader(packageStream))
+            var response = new GetNugetDependencyGroupsResponse
             {
-                NuspecReader nuspecReader = await packageReader.GetNuspecReaderAsync(cancellationToken);
-                var packageDependencyGroups = nuspecReader.GetDependencyGroups().ToList();
-                foreach (var dependencyGroup in packageDependencyGroups)
+                NugetSources = request.NugetSources,
+                PackageId = request.PackageId,
+                PackageVersion = request.PackageVersion
+            };
+
+            using (MemoryStream packageStream = new MemoryStream())
+            {
+                await resource.CopyNupkgToStreamAsync(
+                    request.PackageId,
+                    packageVersion,
+                    packageStream,
+                    cache,
+                    logger,
+                    cancellationToken);
+
+                using (PackageArchiveReader packageReader = new PackageArchiveReader(packageStream))
                 {
-                    response.Groups.Add(dependencyGroup.TargetFramework.ToString());
+                    NuspecReader nuspecReader = await packageReader.GetNuspecReaderAsync(cancellationToken);
+                    var packageDependencyGroups = nuspecReader.GetDependencyGroups().ToList();
+                    foreach (var dependencyGroup in packageDependencyGroups)
+                    {
+                        response.Groups.Add(dependencyGroup.TargetFramework.ToString());
+                    }
                 }
             }
+
+            return new ResponsePacket<GetNugetDependencyGroupsResponse>
+            {
+                Body = response,
+                Success = true
+            };
         }
 
-        return new ResponsePacket<GetNugetDependencyGroupsResponse>
-        {
-            Body = response,
-            Success = true
-        };
+        throw new Exception("Package not found in sources");
     }
 }

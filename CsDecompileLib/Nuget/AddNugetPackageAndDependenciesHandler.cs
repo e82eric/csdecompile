@@ -15,7 +15,9 @@ using NuGet.Versioning;
 
 namespace CsDecompileLib.Nuget;
 
-public class AddNugetPackageAndDependenciesHandler : HandlerBase<AddNugetPackageAndDependenciesRequest, AddPackageAndDependenciesResponse>
+public class
+    AddNugetPackageAndDependenciesHandler : HandlerBase<AddNugetPackageAndDependenciesRequest,
+        AddPackageAndDependenciesResponse>
 {
     private readonly IDecompileWorkspace _decompileWorkspace;
 
@@ -24,12 +26,19 @@ public class AddNugetPackageAndDependenciesHandler : HandlerBase<AddNugetPackage
         _decompileWorkspace = decompileWorkspace;
     }
 
-    public override async Task<ResponsePacket<AddPackageAndDependenciesResponse>> Handle(AddNugetPackageAndDependenciesRequest request)
+    public override async Task<ResponsePacket<AddPackageAndDependenciesResponse>> Handle(
+        AddNugetPackageAndDependenciesRequest request)
     {
         ILogger logger = NullLogger.Instance;
         CancellationToken cancellationToken = CancellationToken.None;
-        var source = "https://api.nuget.org/v3/index.json";
-        SourceRepository repository = Repository.Factory.GetCoreV3(source);
+
+
+        var repositories = new List<SourceRepository>();
+        foreach (var nugetSource in request.NugetSources)
+        {
+            repositories.Add(Repository.Factory.GetCoreV3(nugetSource));
+        }
+
         var packages = new HashSet<SourcePackageDependencyInfo>(PackageIdentityComparer.Default);
 
         SourceCacheContext cache = new SourceCacheContext();
@@ -42,7 +51,7 @@ public class AddNugetPackageAndDependenciesHandler : HandlerBase<AddNugetPackage
         await GatherPackageDependencies(
             packageIdentity,
             packages,
-            new[] { repository },
+            repositories,
             nugetFramework,
             cache,
             logger,
@@ -50,38 +59,46 @@ public class AddNugetPackageAndDependenciesHandler : HandlerBase<AddNugetPackage
 
         foreach (var package in packages)
         {
-            var resource = await repository.GetResourceAsync<FindPackageByIdResource>(cancellationToken);
-            using MemoryStream packageStream = new MemoryStream();
-            await resource.CopyNupkgToStreamAsync(
-                package.Id,
-                package.Version,
-                packageStream,
-                cache,
-                logger,
-                cancellationToken);
-
-            packageStream.Seek(0, SeekOrigin.Begin);
-
-            var downloadResult = await GlobalPackagesFolderUtility.AddPackageAsync(
-                source,
-                package,
-                packageStream,
-                request.RootPackageDirectory,
-                parentId: Guid.Empty,
-                ClientPolicyContext.GetClientPolicy(settings, logger),
-                logger,
-                cancellationToken);
-
-            foreach (var group in await downloadResult.PackageReader.GetLibItemsAsync(cancellationToken))
+            foreach (var repository in repositories)
             {
-                if (DefaultCompatibilityProvider.Instance.IsCompatible(nugetFramework, group.TargetFramework))
+                var resource = await repository.GetResourceAsync<FindPackageByIdResource>(cancellationToken);
+                using MemoryStream packageStream = new MemoryStream();
+                if (resource != null)
                 {
-                    foreach (var item in group.Items)
+                    await resource.CopyNupkgToStreamAsync(
+                        package.Id,
+                        package.Version,
+                        packageStream,
+                        cache,
+                        logger,
+                        cancellationToken);
+
+                    packageStream.Seek(0, SeekOrigin.Begin);
+
+                    var downloadResult = await GlobalPackagesFolderUtility.AddPackageAsync(
+                        repository.PackageSource.Source,
+                        package,
+                        packageStream,
+                        request.RootPackageDirectory,
+                        parentId: Guid.Empty,
+                        ClientPolicyContext.GetClientPolicy(settings, logger),
+                        logger,
+                        cancellationToken);
+
+                    foreach (var group in await downloadResult.PackageReader.GetLibItemsAsync(cancellationToken))
                     {
-                        var fi = new FileInfo(
-                            $"{request.RootPackageDirectory}\\{package.Id}\\{package.Version}\\{item}");
-                        _decompileWorkspace.LoadDllsInDirectory(fi.Directory);
+                        if (DefaultCompatibilityProvider.Instance.IsCompatible(nugetFramework, group.TargetFramework))
+                        {
+                            foreach (var item in group.Items)
+                            {
+                                var fi = new FileInfo(
+                                    $"{request.RootPackageDirectory}\\{package.Id}\\{package.Version}\\{item}");
+                                _decompileWorkspace.LoadDllsInDirectory(fi.Directory);
+                            }
+                        }
                     }
+
+                    break;
                 }
             }
         }
@@ -111,18 +128,21 @@ public class AddNugetPackageAndDependenciesHandler : HandlerBase<AddNugetPackage
                 logger,
                 cancellationToken);
 
-            if (dependencies.Add(dependencyInfo))
+            if (dependencyInfo != null)
             {
-                foreach (var dependency in dependencyInfo.Dependencies)
+                if (dependencies.Add(dependencyInfo))
                 {
-                    await GatherPackageDependencies(
-                        new PackageIdentity(dependency.Id, dependency.VersionRange.MinVersion),
-                        dependencies,
-                        repositories,
-                        framework,
-                        cache,
-                        logger,
-                        cancellationToken);
+                    foreach (var dependency in dependencyInfo.Dependencies)
+                    {
+                        await GatherPackageDependencies(
+                            new PackageIdentity(dependency.Id, dependency.VersionRange.MinVersion),
+                            dependencies,
+                            repositories,
+                            framework,
+                            cache,
+                            logger,
+                            cancellationToken);
+                    }
                 }
             }
         }

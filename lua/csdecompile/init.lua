@@ -24,6 +24,7 @@ M._state = {
 	AssembliesLoaded = false,
 	NextSequence = 1001,
 	StartSent = false,
+  NugetSources = { 'https://api.nuget.org/v3/index.json' }
 }
 
 M.OpenLog = function()
@@ -36,6 +37,25 @@ M.ClearLog = function()
   local outfile = string.format("%s/%s.log", vim.api.nvim_call_function("stdpath", { "cache" }), M.log.plugin)
   local cmd = '!del ' .. M._state.LogFilePath
   vim.cmd(cmd)
+end
+
+M._tableContains = function(t, val)
+	for _, v in pairs(t) do
+		if v == val then return true end
+	end
+	return false
+end
+
+M.SetNugetSources = function(sources)
+  M._state.NugetSources = sources
+end
+
+M.AddNugetSource = function(source)
+  if M._tableContains(M._state.NugetSources, source) then
+    M.log.Debug('nuget source already added skipping :' .. source)
+  else
+    table.insert(M._state.NugetSources, source)
+  end
 end
 
 M._checkNotRunning = function()
@@ -290,7 +310,7 @@ M._getStartOfCurrentWord = function()
  return result
 end
 
-M._decompileRequest = function(url, callback, callbackData)
+M._createDecompileRequest = function(url, callback, callbackData)
 	local cursorPos = vim.api.nvim_win_get_cursor(0)
 	local line = cursorPos[1]
 	local column = cursorPos[2] + 1
@@ -318,6 +338,11 @@ M._decompileRequest = function(url, callback, callbackData)
 			Line = line,
 		},
 	}
+  return request
+end
+
+M._decompileRequest = function(url, callback, callbackData)
+  local request = M._createDecompileRequest(url, callback, callbackData)
 	M._sendStdIoRequest(request, callback, callbackData)
 end
 
@@ -451,10 +476,12 @@ M.StartSearchNuget = function(searchString)
   if M._checkNotRunning() then
     return
   end
+  
   local request = {
     Command = "/searchnuget",
     Arguments = {
-      SearchString = searchString
+      SearchString = searchString,
+      NugetSources = M._state.NugetSources
     }
   }
   M._sendStdIoRequest(request, M.HandleSearchNuget);
@@ -464,7 +491,10 @@ M.StartSearchNugetFromLocation = function()
   if M._checkNotRunning() then
     return
   end
-  M._decompileRequest("/searchnugetfromlocation", M.HandleSearchNugetFromLocation)
+
+  local request = M._createDecompileRequest("/searchnugetfromlocation")
+  request.Arguments.NugetSources = M._state.NugetSources
+  M._sendStdIoRequest(request, M.HandleSearchNugetFromLocation)
 end
 
 M.StartGetAllTypes = function(searchString)
@@ -485,6 +515,7 @@ M.HandleSearchNugetFromLocation = function(response)
     local request = {
       Command = "/getnugetpackageversions",
       Arguments = {
+        NugetSources = response.Body.NugetSources,
         PackageId = selection.PackageId,
         ParentAssemblyMajorVersion = response.Body.ParentAssemblyMajorVersion,
         ParentAssemblyMinorVersion = response.Body.ParentAssemblyMinorVersion,
@@ -501,6 +532,7 @@ M.HandleSearchNuget = function(response)
     local request = {
       Command = "/getnugetpackageversions",
       Arguments = {
+        NugetSources = response.Body.NugetSources,
         PackageId = selection.PackageId
       }
     }
@@ -527,6 +559,7 @@ M.HandleGetNugetPackageVersions = function(response)
     local request = {
       Command = "/getnugetpackagedependencygroups",
       Arguments = {
+        NugetSources = response.Body.NugetSources,
         PackageId = selection.PackageId,
         PackageVersion = selection.PackageVersion
       }
@@ -555,6 +588,7 @@ M.HandleGetNugetPackageVersionsFromLocation = function(response)
     local request = {
       Command = "/getnugetpackagedependencygroups",
       Arguments = {
+        NugetSources = response.Body.NugetSources,
         PackageId = selection.PackageId,
         PackageVersion = selection.PackageVersion
       }
@@ -574,6 +608,7 @@ M.HandleGetNugetPackageDependencyGroups = function(response, data)
     local request = {
       Command = "/addnugetpackageanddependencies",
       Arguments = {
+        NugetSources = response.Body.NugetSources,
         PackageId = data.PackageId,
         PackageVersion = data.PackageVersion,
         DependencyGroup = selection,
@@ -691,7 +726,11 @@ M.StartFindImplementations = function()
 end
 
 M.HandleFindImplementations = function(response)
-  if #response.Body.Implementations == 0 then
+  if response.Body == vim.NIL then
+    print 'No implementations found'
+  elseif response.Body == nil then
+    print 'No implementations found'
+  elseif #response.Body.Implementations == 0 then
     print 'No implementations found'
   elseif #response.Body.Implementations == 1 then
     M._openSourceFileOrDecompile(response.Body.Implementations[1])
@@ -1189,6 +1228,10 @@ M.Setup = function(config)
     logLevel = config.logLevel
   end
 
+  if config.NugetSources then
+    M._state.NugetSources = config.NugetSources
+  end
+
   M.log = require("plenary.log").new({
     plugin = "csdecompile",
     level = logLevel
@@ -1255,9 +1298,9 @@ M.Setup = function(config)
   vim.api.nvim_create_user_command(
       'SearchNugetAndDecompile',
       function(opts)
-        M.StartSearchNuget(opts.args)
+        M.StartSearchNuget(opts.fargs[1], opts.fargs[2])
       end,
-      { nargs = 1 }
+      { nargs = '*' }
   )
   vim.api.nvim_create_user_command(
       'RefreshDecompiledBuffer',
@@ -1269,9 +1312,16 @@ M.Setup = function(config)
   vim.api.nvim_create_user_command(
     'SearchNugetFromLocation',
     function(opts)
-      M.StartSearchNugetFromLocation()
+      M.StartSearchNugetFromLocation(opts.args)
     end,
-    {}
+    { nargs = '?' }
+  )
+  vim.api.nvim_create_user_command(
+    'AddNugetSource',
+    function(opts)
+      M.AddNugetSource(opts.args)
+    end,
+    { nargs = 1 }
   )
 end
 

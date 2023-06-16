@@ -13,7 +13,7 @@ public class SearchNugetHandler : HandlerBase<SearchNugetRequest, SearchNugetRes
     public override async Task<ResponsePacket<SearchNugetResponse>> Handle(SearchNugetRequest request)
     {
         var response = new SearchNugetResponse();
-        await _nugetSearcher.Search(request.SearchString, response);
+        await _nugetSearcher.Search(request.SearchString, request.NugetSources, response);
         
         return new ResponsePacket<SearchNugetResponse>
         {
