@@ -33,6 +33,16 @@ public class FakeType : ITypeDefinition
         throw new NotImplementedException();
     }
 
+    public bool HasAttribute(KnownAttribute attribute)
+    {
+        throw new NotImplementedException();
+    }
+
+    public IAttribute GetAttribute(KnownAttribute attribute)
+    {
+        throw new NotImplementedException();
+    }
+
     public EntityHandle MetadataToken => throw new NotImplementedException();
 
     public string Name => _resolveResult.Type.Name;
@@ -54,6 +64,11 @@ public class FakeType : ITypeDefinition
     }
 
     public ITypeDefinition GetDefinition()
+    {
+        throw new NotImplementedException();
+    }
+
+    public ITypeDefinitionOrUnknown GetDefinitionOrUnknown()
     {
         throw new NotImplementedException();
     }
@@ -148,6 +163,8 @@ public class FakeType : ITypeDefinition
     public IType EnumUnderlyingType => throw new NotImplementedException();
 
     public bool IsReadOnly => throw new NotImplementedException();
+
+    public string MetadataName => throw new NotImplementedException();
 
     public FullTypeName FullTypeName => throw new NotImplementedException();
 
