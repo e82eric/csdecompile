@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using NuGet.Common;
+using NuGet.Configuration;
 using NuGet.Protocol;
 using NuGet.Protocol.Core.Types;
 
@@ -10,7 +11,7 @@ namespace CsDecompileLib.Nuget;
 
 public class NugetSearcher
 {
-    public async Task Search(string searchString, string[] nugetSources, SearchNugetResponse response)
+    public async Task Search(string searchString, NugetSource[] nugetSources, SearchNugetResponse response)
     {
         ILogger logger = NullLogger.Instance;
         CancellationToken cancellationToken = CancellationToken.None;
@@ -22,8 +23,19 @@ public class NugetSearcher
 
         foreach (var nugetSource in nugetSources)
         {
-            SourceRepository repository = Repository.Factory.GetCoreV3(nugetSource);
-            PackageSearchResource resource = await repository.GetResourceAsync<PackageSearchResource>(cancellationToken);
+            SourceRepository repository = Repository.Factory.GetCoreV3(nugetSource.Source);
+            if (!string.IsNullOrEmpty(nugetSource.UserName))
+            {
+                repository.PackageSource.Credentials = new PackageSourceCredential(
+                    nugetSource.Source,
+                    nugetSource.UserName,
+                    nugetSource.Password,
+                    false,
+                    "Basic");
+            }
+
+            PackageSearchResource resource =
+                await repository.GetResourceAsync<PackageSearchResource>(cancellationToken);
             bool anyResults = true;
             while (anyResults)
             {

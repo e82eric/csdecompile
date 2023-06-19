@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using NuGet.Common;
+using NuGet.Configuration;
 using NuGet.Packaging;
 using NuGet.Protocol;
 using NuGet.Protocol.Core.Types;
@@ -24,7 +25,16 @@ public class
 
         foreach (var nugetSource in request.NugetSources)
         {
-            SourceRepository repository = Repository.Factory.GetCoreV3(nugetSource);
+            SourceRepository repository = Repository.Factory.GetCoreV3(nugetSource.Source);
+            if (!string.IsNullOrEmpty(nugetSource.UserName))
+            {
+                repository.PackageSource.Credentials = new PackageSourceCredential(
+                    nugetSource.Source,
+                    nugetSource.UserName,
+                    nugetSource.Password,
+                    false,
+                    "Basic");
+            }
             NuGetVersion packageVersion = new NuGetVersion(request.PackageVersion);
             FindPackageByIdResource resource =
                 await repository.GetResourceAsync<FindPackageByIdResource>(cancellationToken);

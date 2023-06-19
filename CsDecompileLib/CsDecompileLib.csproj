@@ -361,6 +361,7 @@
         <Compile Include="Nuget\GetNugetDependencyGroupsResponse.cs" />
         <Compile Include="Nuget\NugetDecompiledLocationRequest.cs" />
         <Compile Include="Nuget\NugetSearcher.cs" />
+        <Compile Include="Nuget\NugetSource.cs" />
         <Compile Include="Nuget\Package.cs" />
         <Compile Include="Nuget\SearchNugetForLocationHandler.cs" />
         <Compile Include="Nuget\SearchNugetForLocationResponse.cs" />

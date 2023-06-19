@@ -24,7 +24,9 @@ M._state = {
 	AssembliesLoaded = false,
 	NextSequence = 1001,
 	StartSent = false,
-  NugetSources = { 'https://api.nuget.org/v3/index.json' }
+  NugetSources = {{
+    Source = 'https://api.nuget.org/v3/index.json'
+  },}
 }
 
 M.OpenLog = function()

@@ -15,5 +15,5 @@ public class GetNugetPackageVersionsResponse
     public int? ParentAssemblyMinorVersion { get; set; }
     public int? ParentAssemblyBuildVersion { get; set; }
     
-    public string[] NugetSources { get; set; }
+    public NugetSource[] NugetSources { get; set; }
 }

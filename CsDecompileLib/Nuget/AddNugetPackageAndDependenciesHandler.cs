@@ -35,7 +35,17 @@ public class
         var repositories = new List<SourceRepository>();
         foreach (var nugetSource in request.NugetSources)
         {
-            repositories.Add(Repository.Factory.GetCoreV3(nugetSource));
+            var repository = Repository.Factory.GetCoreV3(nugetSource.Source);
+            if (!string.IsNullOrEmpty(nugetSource.UserName))
+            {
+                repository.PackageSource.Credentials = new PackageSourceCredential(
+                    nugetSource.Source,
+                    nugetSource.UserName,
+                    nugetSource.Password,
+                    false,
+                    "Basic");
+            }
+            repositories.Add(repository);
         }
 
         var packageDependencyInfos = new HashSet<SourcePackageDependencyInfo>(PackageIdentityComparer.Default);

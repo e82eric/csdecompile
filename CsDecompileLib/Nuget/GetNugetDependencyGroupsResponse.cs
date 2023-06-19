@@ -13,5 +13,5 @@ public class GetNugetDependencyGroupsResponse
     
     public string PackageId { get; set; }
     public string PackageVersion { get; set; }
-    public string[] NugetSources { get; set; }
+    public NugetSource[] NugetSources { get; set; }
 }

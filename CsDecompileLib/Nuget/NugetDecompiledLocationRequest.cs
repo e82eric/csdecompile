@@ -1,6 +1,8 @@
+using CsDecompileLib.Nuget;
+
 namespace CsDecompileLib;
 
 public class NugetDecompiledLocationRequest : DecompiledLocationRequest
 {
-    public string[] NugetSources { get; set; }
+    public NugetSource[] NugetSources { get; set; }
 }
