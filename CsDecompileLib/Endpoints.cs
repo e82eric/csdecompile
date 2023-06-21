@@ -17,6 +17,7 @@ namespace CsDecompileLib
         public const string SearchNugetFromLocation = "/searchnugetfromlocation";
         public const string GetNugetPackageVersions = "/getnugetpackageversions";
         public const string AddNugetPackageAndDependencies = "/addnugetpackageanddependencies";
+        public const string AddNugetPackage = "/addnugetpackage";
         public const string GetNugetPackageDependencyGroups = "/getnugetpackagedependencygroups";
     }
 }

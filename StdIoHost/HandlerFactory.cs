@@ -393,7 +393,8 @@ internal static class HandlerFactory
             { Endpoints.DecompileAssembly, decompileAssemblyHandler },
             { Endpoints.SearchNuget, new SearchNugetHandler(nugetSearcher) },
             { Endpoints.GetNugetPackageVersions, new GetNugetPackageVersionsHandler() },
-            { Endpoints.AddNugetPackageAndDependencies, new AddNugetPackageAndDependenciesHandler(_decompileWorkspace) },
+            { Endpoints.AddNugetPackageAndDependencies, new AddNugetPackageAndDependenciesHandler(new NugetPackageDownloader(_decompileWorkspace)) },
+            { Endpoints.AddNugetPackage, new AddNugetPackageHandler(new NugetPackageDownloader(_decompileWorkspace)) },
             { Endpoints.GetNugetPackageDependencyGroups, new GetNugetPackageDependencyGroupsHandler() },
             { Endpoints.SearchNugetFromLocation, new SearchNugetForLocationHandler(
                 nugetSearcher,

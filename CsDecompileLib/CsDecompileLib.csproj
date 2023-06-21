@@ -350,9 +350,10 @@
         <Compile Include="NavigationHandlerBase.cs" />
         <Compile Include="NoOpCommand.cs" />
         <Compile Include="NoSolutionDecompileWorkspace.cs" />
+        <Compile Include="Nuget\AddNugetPackageHandler.cs" />
         <Compile Include="Nuget\AddPackageAndDependenciesResponse.cs" />
         <Compile Include="Nuget\AddNugetPackageAndDependenciesHandler.cs" />
-        <Compile Include="Nuget\AddNugetPackageAndDependenciesRequest.cs" />
+        <Compile Include="Nuget\AddNugetPackageRequest.cs" />
         <Compile Include="Nuget\GetNugetPackageDependencyGroupsHandler.cs" />
         <Compile Include="Nuget\GetNugetPackageDependencyGroupsRequest.cs" />
         <Compile Include="Nuget\GetNugetPackageVersionsResponse.cs" />
@@ -360,6 +361,7 @@
         <Compile Include="Nuget\GetNugetPackageVersionsRequest.cs" />
         <Compile Include="Nuget\GetNugetDependencyGroupsResponse.cs" />
         <Compile Include="Nuget\NugetDecompiledLocationRequest.cs" />
+        <Compile Include="Nuget\NugetPackageDownloader.cs" />
         <Compile Include="Nuget\NugetSearcher.cs" />
         <Compile Include="Nuget\NugetSource.cs" />
         <Compile Include="Nuget\Package.cs" />

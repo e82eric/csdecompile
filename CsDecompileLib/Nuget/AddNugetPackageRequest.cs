@@ -1,6 +1,6 @@
 namespace CsDecompileLib.Nuget;
 
-public class AddNugetPackageAndDependenciesRequest
+public class AddNugetPackageRequest
 {
     public NugetSource[] NugetSources { get; set; }
     public string PackageId { get; set; }

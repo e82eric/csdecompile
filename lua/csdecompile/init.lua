@@ -474,11 +474,11 @@ M._openAssembliesTelescope = function(data, resultHandler)
   }):find()
 end
 
-M.StartSearchNuget = function(searchString)
+M.StartSearchNuget = function(searchString, downloadDependencies)
   if M._checkNotRunning() then
     return
   end
-  
+
   local request = {
     Command = "/searchnuget",
     Arguments = {
@@ -486,7 +486,7 @@ M.StartSearchNuget = function(searchString)
       NugetSources = M._state.NugetSources
     }
   }
-  M._sendStdIoRequest(request, M.HandleSearchNuget);
+  M._sendStdIoRequest(request, M.HandleSearchNuget, { DownloadDependencies = downloadDependencies });
 end
 
 M.StartSearchNugetFromLocation = function()
@@ -529,7 +529,7 @@ M.HandleSearchNugetFromLocation = function(response)
   'Search Nuget: ' .. response.Body.SearchString)
 end
 
-M.HandleSearchNuget = function(response)
+M.HandleSearchNuget = function(response, state)
   M._openTelescope(response.Body.Packages, M._createSearchNugetDisplayer, nil, function(selection)
     local request = {
       Command = "/getnugetpackageversions",
@@ -538,12 +538,12 @@ M.HandleSearchNuget = function(response)
         PackageId = selection.PackageId
       }
     }
-    M._sendStdIoRequest(request, M.HandleGetNugetPackageVersions);
+    M._sendStdIoRequest(request, M.HandleGetNugetPackageVersions, state);
   end,
   'Search Nuget: ' .. response.Body.SearchString)
 end
 
-M.HandleGetNugetPackageVersions = function(response)
+M.HandleGetNugetPackageVersions = function(response, state)
   table.sort(response.Body.Packages, function(a, b) 
     if a.MajorVersion == b.MajorVersion then
       if a.MinorVersion == b.MinorVersion then
@@ -566,7 +566,11 @@ M.HandleGetNugetPackageVersions = function(response)
         PackageVersion = selection.PackageVersion
       }
     }
-    M._sendStdIoRequest(request, M.HandleGetNugetPackageDependencyGroups, { PackageId = selection.PackageId, PackageVersion = selection.PackageVersion });
+    M._sendStdIoRequest(request, M.HandleGetNugetPackageDependencyGroups, {
+      PackageId = selection.PackageId,
+      PackageVersion = selection.PackageVersion,
+      DownloadDependencies = state.DownloadDependencies
+    });
   end,
   'Nuget Versions: ' .. response.Body.PackageId)
 end
@@ -595,7 +599,11 @@ M.HandleGetNugetPackageVersionsFromLocation = function(response)
         PackageVersion = selection.PackageVersion
       }
     }
-    M._sendStdIoRequest(request, M.HandleGetNugetPackageDependencyGroups, { PackageId = selection.PackageId, PackageVersion = selection.PackageVersion });
+    M._sendStdIoRequest(request, M.HandleGetNugetPackageDependencyGroups, {
+      PackageId = selection.PackageId,
+      PackageVersion = selection.PackageVersion,
+      DownloadDependencies = true
+    });
   end,
   'Nuget Versions: ' .. response.Body.PackageId,
   versionSearchString)
@@ -607,8 +615,15 @@ M.HandleGetNugetPackageDependencyGroups = function(response, data)
       opts._packageDirectory,
       string.format("%s\\%s\\packages\\", vim.api.nvim_call_function("stdpath", { "cache" }), 'csdecompile.nuget'))
 
+    local command
+    if data.DownloadDependencies then
+      command = "/addnugetpackageanddependencies"
+    else
+      command = "/addnugetpackage"
+    end
+
     local request = {
-      Command = "/addnugetpackageanddependencies",
+      Command = command,
       Arguments = {
         NugetSources = response.Body.NugetSources,
         PackageId = data.PackageId,
@@ -715,7 +730,7 @@ end
 
 M.HandleGetTypeMembers = function(response)
   M._openTelescope(response.Body.Implementations, M._createUsagesDisplayer, M._sourcePreviewer, function(selection)
-      M._openSourceFileOrDecompile(selection.value)
+      M._openSourceFileOrDecompile(selection)
   end,
   'Type Members')
 end
@@ -738,7 +753,7 @@ M.HandleFindImplementations = function(response)
     M._openSourceFileOrDecompile(response.Body.Implementations[1])
   else
     M._openTelescope(response.Body.Implementations, M._createUsagesDisplayer, M._sourcePreviewer, function(selection)
-      M._openSourceFileOrDecompile(selection.value)
+      M._openSourceFileOrDecompile(selection)
     end,
     'Find Implementations')
   end
@@ -1300,7 +1315,14 @@ M.Setup = function(config)
   vim.api.nvim_create_user_command(
       'SearchNugetAndDecompile',
       function(opts)
-        M.StartSearchNuget(opts.fargs[1], opts.fargs[2])
+        M.StartSearchNuget(opts.fargs[1], false)
+      end,
+      { nargs = '*' }
+  )
+  vim.api.nvim_create_user_command(
+      'SearchNugetAndDecompileWithDependencies',
+      function(opts)
+        M.StartSearchNuget(opts.fargs[1], true)
       end,
       { nargs = '*' }
   )
