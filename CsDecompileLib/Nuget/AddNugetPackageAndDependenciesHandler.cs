@@ -71,7 +71,6 @@ public class
             await _nugetPackageDownloader.Download(
                 request.RootPackageDirectory,
                 package,
-                nugetFramework,
                 repositories,
                 logger,
                 cache,

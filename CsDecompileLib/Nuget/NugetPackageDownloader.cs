@@ -25,7 +25,6 @@ public class NugetPackageDownloader
     public async Task Download(
         string rootPackageDirectory,
         PackageIdentity packageIdentity,
-        NuGetFramework nugetFramework,
         IReadOnlyList<SourceRepository> repositories,
         ILogger logger,
         SourceCacheContext cache,
@@ -47,7 +46,7 @@ public class NugetPackageDownloader
                         cancellationToken))
                 {
                     await DownloadPackageAndDependencies(rootPackageDirectory, packageStream, repository, packageIdentity, clientPolicyContext, logger,
-                        cancellationToken, nugetFramework);
+                        cancellationToken);
                     break;
                 }
 
@@ -60,7 +59,7 @@ public class NugetPackageDownloader
                         cancellationToken))
                 {
                     await DownloadPackageAndDependencies(rootPackageDirectory, packageStream, repository, packageIdentity, clientPolicyContext, logger,
-                        cancellationToken, nugetFramework);
+                        cancellationToken);
                     break;
                 }
             }
@@ -69,7 +68,7 @@ public class NugetPackageDownloader
     
     private async Task DownloadPackageAndDependencies(string rootPackageDirectory,
         MemoryStream packageStream, SourceRepository repository, PackageIdentity package, ClientPolicyContext clientPolicyContext,
-        ILogger logger, CancellationToken cancellationToken, NuGetFramework nugetFramework)
+        ILogger logger, CancellationToken cancellationToken)
     {
         packageStream.Seek(0, SeekOrigin.Begin);
 
@@ -83,18 +82,7 @@ public class NugetPackageDownloader
             logger,
             cancellationToken);
 
-        foreach (var group in await downloadResult.PackageReader.GetLibItemsAsync(cancellationToken))
-        {
-            if (DefaultCompatibilityProvider.Instance.IsCompatible(nugetFramework,
-                    group.TargetFramework))
-            {
-                foreach (var item in group.Items)
-                {
-                    var fi = new FileInfo(
-                        $"{rootPackageDirectory}\\{package.Id}\\{package.Version}\\{item}");
-                    _workspace.LoadDllsInDirectory(fi.Directory);
-                }
-            }
-        }
+        var directory = new FileInfo(((FileStream)downloadResult.PackageStream).Name).Directory;
+        _workspace.LoadDllsInDirectory(directory);
     }
 }

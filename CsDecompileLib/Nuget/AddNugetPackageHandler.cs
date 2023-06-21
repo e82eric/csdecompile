@@ -51,12 +51,9 @@ public class AddNugetPackageHandler : HandlerBase<AddNugetPackageRequest,
 
         var settings = Settings.LoadDefaultSettings(null);
 
-        var nugetFramework = NuGetFramework.Parse(request.DependencyGroup);
-
         await _nugetPackageDownloader.Download(
             request.RootPackageDirectory,
             packageIdentity,
-            nugetFramework,
             repositories,
             logger,
             cache,

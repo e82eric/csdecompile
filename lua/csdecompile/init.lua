@@ -474,6 +474,11 @@ M._openAssembliesTelescope = function(data, resultHandler)
   }):find()
 end
 
+M.ClearNugetDirectory = function()
+  local cmd = '!rd /s /q ' .. M._state.PackageDirectory
+  vim.cmd(cmd)
+end
+
 M.StartSearchNuget = function(searchString, downloadDependencies)
   if M._checkNotRunning() then
     return
@@ -543,8 +548,8 @@ M.HandleSearchNuget = function(response, state)
   'Search Nuget: ' .. response.Body.SearchString)
 end
 
-M.HandleGetNugetPackageVersions = function(response, state)
-  table.sort(response.Body.Packages, function(a, b) 
+M._sortPackagesByVersion = function(packages)
+  table.sort(packages, function(a, b) 
     if a.MajorVersion == b.MajorVersion then
       if a.MinorVersion == b.MinorVersion then
         if a.Build == b.Build then
@@ -556,38 +561,44 @@ M.HandleGetNugetPackageVersions = function(response, state)
     end
     return a.MajorVersion > b.MajorVersion
   end)
+end
+
+M.HandleGetNugetPackageVersions = function(response, state)
+  M._sortPackagesByVersion(response.Body.Packages)
 
   M._openTelescope(response.Body.Packages, M._createGetNugetVersionsDisplayer, nil, function(selection)
-    local request = {
-      Command = "/getnugetpackagedependencygroups",
-      Arguments = {
-        NugetSources = response.Body.NugetSources,
-        PackageId = selection.PackageId,
-        PackageVersion = selection.PackageVersion
+    if state.DownloadDependencies then
+      local request = {
+        Command = "/getnugetpackagedependencygroups",
+        Arguments = {
+          NugetSources = response.Body.NugetSources,
+          PackageId = selection.PackageId,
+          PackageVersion = selection.PackageVersion
+        }
       }
-    }
-    M._sendStdIoRequest(request, M.HandleGetNugetPackageDependencyGroups, {
-      PackageId = selection.PackageId,
-      PackageVersion = selection.PackageVersion,
-      DownloadDependencies = state.DownloadDependencies
-    });
+      M._sendStdIoRequest(request, M.HandleGetNugetPackageDependencyGroups, {
+        PackageId = selection.PackageId,
+        PackageVersion = selection.PackageVersion,
+        DownloadDependencies = state.DownloadDependencies
+      });
+    else
+      local request = {
+        Command = '/addnugetpackage',
+        Arguments = {
+          NugetSources = response.Body.NugetSources,
+          PackageId = selection.PackageId,
+          PackageVersion = selection.PackageVersion,
+          RootPackageDirectory = M._state.PackageDirectory
+        }
+      }
+      M._sendStdIoRequest(request, M.HandleAddNugetPackageAndDependencies);
+    end
   end,
   'Nuget Versions: ' .. response.Body.PackageId)
 end
 
 M.HandleGetNugetPackageVersionsFromLocation = function(response)
-  table.sort(response.Body.Packages, function(a, b) 
-    if a.MajorVersion == b.MajorVersion then
-      if a.MinorVersion == b.MinorVersion then
-        if a.Build == b.Build then
-          return a.Revision > b.Revision
-        end
-        return a.Patch > b.Patch
-      end
-      return a.MinorVersion > b.MinorVersion
-    end
-    return a.MajorVersion > b.MajorVersion
-  end)
+  M._sortPackagesByVersion(response.Body.Packages)
 
   local versionSearchString = response.Body.ParentAssemblyMajorVersion .. '.' .. response.Body.ParentAssemblyMinorVersion .. '.' .. response.Body.ParentAssemblyBuildVersion
   M._openTelescope(response.Body.Packages, M._createGetNugetVersionsDisplayer, nil, function(selection)
@@ -611,10 +622,6 @@ end
 
 M.HandleGetNugetPackageDependencyGroups = function(response, data)
   M._openTelescope(response.Body.Groups, M._createNugetDependencyGroupDisplayer, nil, function(selection)
-    local packageDirectory = vim.F.if_nil(
-      opts._packageDirectory,
-      string.format("%s\\%s\\packages\\", vim.api.nvim_call_function("stdpath", { "cache" }), 'csdecompile.nuget'))
-
     local command
     if data.DownloadDependencies then
       command = "/addnugetpackageanddependencies"
@@ -629,7 +636,7 @@ M.HandleGetNugetPackageDependencyGroups = function(response, data)
         PackageId = data.PackageId,
         PackageVersion = data.PackageVersion,
         DependencyGroup = selection,
-        RootPackageDirectory = packageDirectory
+        RootPackageDirectory = M._state.PackageDirectory
       }
     }
     M._sendStdIoRequest(request, M.HandleAddNugetPackageAndDependencies);
@@ -1249,6 +1256,10 @@ M.Setup = function(config)
     M._state.NugetSources = config.NugetSources
   end
 
+  M._state.PackageDirectory = vim.F.if_nil(
+    config.PackageDirectory,
+    string.format("%s\\%s\\packages\\", vim.api.nvim_call_function("stdpath", { "cache" }), 'csdecompile.nuget'))
+
   M.log = require("plenary.log").new({
     plugin = "csdecompile",
     level = logLevel
@@ -1309,6 +1320,13 @@ M.Setup = function(config)
       'DeleteDecompileLog',
       function(opts)
         M.ClearLog()
+      end,
+      {}
+  )
+  vim.api.nvim_create_user_command(
+      'ClearNugetDirectory',
+      function(opts)
+        M.ClearNugetDirectory()
       end,
       {}
   )
