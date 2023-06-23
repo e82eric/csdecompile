@@ -479,6 +479,25 @@ M.ClearNugetDirectory = function()
   vim.cmd(cmd)
 end
 
+M.StartFindMethodByName = function(namespaceName, typeName, methodName)
+  if M._checkNotRunning() then
+    return
+  end
+
+  local request = {
+    Command = "/getnamespaces",
+    Arguments = {
+      NamespaceName = namespaceName,
+      TypeName = typeName,
+      MethodName = methodName
+    }
+  }
+  M._sendStdIoRequest(request, M.HandleGetTypeMembers);
+end
+
+M.HandleGetNamespaces = function()
+end
+
 M.StartSearchNuget = function(searchString, downloadDependencies)
   if M._checkNotRunning() then
     return
@@ -1364,6 +1383,13 @@ M.Setup = function(config)
       M.AddNugetSource(opts.args)
     end,
     { nargs = 1 }
+  )
+  vim.api.nvim_create_user_command(
+    'FindMethodByName',
+    function(opts)
+      M.StartFindMethodByName(opts.fargs[1], opts.fargs[2], opts.fargs[3])
+    end,
+    { nargs = '*' }
   )
 end
 

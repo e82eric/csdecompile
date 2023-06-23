@@ -10,7 +10,7 @@ public class GetAssemblyTypesHandler : HandlerBase<GetAssemblyTypesRequest, Find
     {
         _typesRepository = typesRepository;
     }
-    
+
     public override Task<ResponsePacket<FindImplementationsResponse>> Handle(GetAssemblyTypesRequest request)
     {
         var types = _typesRepository.GetAssemblyType(request.AssemblyFilePath);
@@ -21,7 +21,7 @@ public class GetAssemblyTypesHandler : HandlerBase<GetAssemblyTypesRequest, Find
         }
 
         var result = ResponsePacket.Ok(body);
-        
+
         return Task.FromResult(result);
     }
 }

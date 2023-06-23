@@ -7,11 +7,11 @@ namespace CsDecompileLib.GetMembers;
 
 public class IlSpyTypeMembersFinder : IlSpyToSourceInfoBase
 {
-    private readonly TypeMembersFinder _typeMembersFinder;
+    private readonly ITypeMembersFinder _typeMembersFinder;
     private readonly DecompilerFactory _decompilerFactory;
 
     public IlSpyTypeMembersFinder(
-        TypeMembersFinder typeMembersFinder,
+        ITypeMembersFinder typeMembersFinder,
         DecompilerFactory decompilerFactory)
     {
         _typeMembersFinder = typeMembersFinder;

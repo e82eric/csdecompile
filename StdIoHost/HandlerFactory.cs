@@ -396,6 +396,13 @@ internal static class HandlerFactory
             { Endpoints.AddNugetPackageAndDependencies, new AddNugetPackageAndDependenciesHandler(new NugetPackageDownloader(_decompileWorkspace)) },
             { Endpoints.AddNugetPackage, new AddNugetPackageHandler(new NugetPackageDownloader(_decompileWorkspace)) },
             { Endpoints.GetNugetPackageDependencyGroups, new GetNugetPackageDependencyGroupsHandler() },
+            { Endpoints.FindMethodByName, new FindMethodByNameHandler(
+                new AllTypesRepositoryByName(
+                                _decompileWorkspace,
+                                new AssemblyResolverFactory(_peFileCache) ),
+                new IlSpySymbolFinder(_decompilerTypeSystemFactory),
+                new DecompilerFactory(_decompilerTypeSystemFactory)
+                ) },
             { Endpoints.SearchNugetFromLocation, new SearchNugetForLocationHandler(
                 nugetSearcher,
                 getSymbolInfoHandler) },

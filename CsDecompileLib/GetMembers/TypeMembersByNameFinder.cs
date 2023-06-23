@@ -1,14 +1,20 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
+using CsDecompileLib.IlSpy;
 using ICSharpCode.Decompiler.CSharp;
 using ICSharpCode.Decompiler.CSharp.Syntax;
 using ICSharpCode.Decompiler.TypeSystem;
-using CsDecompileLib.IlSpy;
 
 namespace CsDecompileLib.GetMembers;
 
-public class TypeMembersFinder : ITypeMembersFinder
+public class TypeMembersByNameFinder : ITypeMembersFinder
 {
+    private readonly string _memberName;
+
+    public TypeMembersByNameFinder(string memberName)
+    {
+        _memberName = memberName;
+    }
     public IEnumerable<AstNode> Find(
         SyntaxTree syntaxTree,
         ITypeDefinition typeToSearchEntityHandle)
@@ -29,16 +35,19 @@ public class TypeMembersFinder : ITypeMembersFinder
         {
             //This recurses through the entire class and finds any nodes that reference the members token
             var symbol = node.GetSymbol();
-            if (symbol is IMember)
+            if (symbol is IMember memberSymbol)
             {
-                var modifierNode = node.Children.FirstOrDefault(c => !(c is AttributeSection));
-                if (modifierNode != null)
+                if (memberSymbol.Name.Equals(_memberName))
                 {
-                    found.Add(modifierNode);
-                }
-                else
-                {
-                    found.Add(node);
+                    var modifierNode = node.Children.FirstOrDefault(c => !(c is AttributeSection));
+                    if (modifierNode != null)
+                    {
+                        found.Add(modifierNode);
+                    }
+                    else
+                    {
+                        found.Add(node);
+                    }
                 }
             }
         }
