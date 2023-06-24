@@ -383,7 +383,8 @@ internal static class HandlerFactory
                 _decompileWorkspace,
                 new AssemblyResolverFactory(_peFileCache) ),
             new IlSpySymbolFinder(_decompilerTypeSystemFactory),
-            new DecompilerFactory(_decompilerTypeSystemFactory)
+            new DecompilerFactory(_decompilerTypeSystemFactory),
+            _workspace
         );
         
         var handlers = new Dictionary<string, IHandler>

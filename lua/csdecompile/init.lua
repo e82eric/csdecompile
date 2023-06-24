@@ -495,10 +495,12 @@ M.StartFindMethodByName = function(namespaceName, typeName, methodName)
   M._sendStdIoRequest(request, M.HandleGetTypeMembers);
 end
 
-M.StartFindMethodByStackFrame = function(stackFrame)
+M.StartFindMethodByStackFrame = function()
   if M._checkNotRunning() then
     return
   end
+
+  stackFrame = vim.call('expand','<cWORD>')
 
   local request = {
     Command = "/findmethodbystackframe",
@@ -1408,9 +1410,9 @@ M.Setup = function(config)
   vim.api.nvim_create_user_command(
     'FindMethodByStackFrame',
     function(opts)
-      M.StartFindMethodByStackFrame(opts.args)
+      M.StartFindMethodByStackFrame()
     end,
-    { nargs = 1 }
+    {}
   )
 end
 

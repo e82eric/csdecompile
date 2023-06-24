@@ -16,7 +16,7 @@ public class FindMethodByStackFrameHandler : HandlerBase<FindMethodByStackFrameR
     public override async Task<ResponsePacket<FindImplementationsResponse>> Handle(
         FindMethodByStackFrameRequest request)
     {
-        Regex regex = new Regex(@"at (?<namespace>.*)\.(?<class>.*)\.(?<method>.*)\(.*");
+        Regex regex = new Regex(@"^(?<namespace>.*)\.(?<class>.*)\.(?<method>.*)\(.*");
         var regexResult = regex.Match(request.StackFrame);
         if (regexResult.Success)
         {
