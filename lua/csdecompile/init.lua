@@ -485,11 +485,25 @@ M.StartFindMethodByName = function(namespaceName, typeName, methodName)
   end
 
   local request = {
-    Command = "/getnamespaces",
+    Command = "/findmethodbyname",
     Arguments = {
       NamespaceName = namespaceName,
       TypeName = typeName,
       MethodName = methodName
+    }
+  }
+  M._sendStdIoRequest(request, M.HandleGetTypeMembers);
+end
+
+M.StartFindMethodByStackFrame = function(stackFrame)
+  if M._checkNotRunning() then
+    return
+  end
+
+  local request = {
+    Command = "/findmethodbystackframe",
+    Arguments = {
+      StackFrame = stackFrame
     }
   }
   M._sendStdIoRequest(request, M.HandleGetTypeMembers);
@@ -1390,6 +1404,13 @@ M.Setup = function(config)
       M.StartFindMethodByName(opts.fargs[1], opts.fargs[2], opts.fargs[3])
     end,
     { nargs = '*' }
+  )
+  vim.api.nvim_create_user_command(
+    'FindMethodByStackFrame',
+    function(opts)
+      M.StartFindMethodByStackFrame(opts.args)
+    end,
+    { nargs = 1 }
   )
 end
 

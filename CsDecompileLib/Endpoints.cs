@@ -20,5 +20,6 @@ namespace CsDecompileLib
         public const string AddNugetPackage = "/addnugetpackage";
         public const string GetNugetPackageDependencyGroups = "/getnugetpackagedependencygroups";
         public const string FindMethodByName = "/findmethodbyname";
+        public const string FindMethodByStackFrame = "/findmethodbystackframe";
     }
 }

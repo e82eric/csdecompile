@@ -288,6 +288,8 @@
         <Compile Include="GetMembers\DecompileAssemblyRequest.cs" />
         <Compile Include="GetMembers\DecompileAssemblyResponse.cs" />
         <Compile Include="GetMembers\FindMethodByNameRequest.cs" />
+        <Compile Include="GetMembers\FindMethodByStackFrameHandler.cs" />
+        <Compile Include="GetMembers\FindMethodByStackFrameRequest.cs" />
         <Compile Include="GetMembers\GetAssembliesCommand.cs" />
         <Compile Include="GetMembers\GetAssembliesCommandFactory.cs" />
         <Compile Include="GetMembers\GetAssembliesHandler.cs" />

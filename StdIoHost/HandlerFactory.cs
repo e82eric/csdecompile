@@ -377,6 +377,14 @@ internal static class HandlerFactory
         var getSymbolInfoHandler = CreateGetSymbolInfoHandler();
         var decompileAssemblyHandler = CreateDecompileAssemblyHandler();
         var nugetSearcher = new NugetSearcher();
+
+        var findMethodByNameHandler = new FindMethodByNameHandler(
+            new AllTypesRepositoryByName(
+                _decompileWorkspace,
+                new AssemblyResolverFactory(_peFileCache) ),
+            new IlSpySymbolFinder(_decompilerTypeSystemFactory),
+            new DecompilerFactory(_decompilerTypeSystemFactory)
+        );
         
         var handlers = new Dictionary<string, IHandler>
         {
@@ -396,13 +404,9 @@ internal static class HandlerFactory
             { Endpoints.AddNugetPackageAndDependencies, new AddNugetPackageAndDependenciesHandler(new NugetPackageDownloader(_decompileWorkspace)) },
             { Endpoints.AddNugetPackage, new AddNugetPackageHandler(new NugetPackageDownloader(_decompileWorkspace)) },
             { Endpoints.GetNugetPackageDependencyGroups, new GetNugetPackageDependencyGroupsHandler() },
-            { Endpoints.FindMethodByName, new FindMethodByNameHandler(
-                new AllTypesRepositoryByName(
-                                _decompileWorkspace,
-                                new AssemblyResolverFactory(_peFileCache) ),
-                new IlSpySymbolFinder(_decompilerTypeSystemFactory),
-                new DecompilerFactory(_decompilerTypeSystemFactory)
-                ) },
+            { Endpoints.FindMethodByName, findMethodByNameHandler },
+            { Endpoints.FindMethodByStackFrame, new FindMethodByStackFrameHandler(
+                findMethodByNameHandler) },
             { Endpoints.SearchNugetFromLocation, new SearchNugetForLocationHandler(
                 nugetSearcher,
                 getSymbolInfoHandler) },
