@@ -479,6 +479,21 @@ M.ClearNugetDirectory = function()
   vim.cmd(cmd)
 end
 
+M.StartFindMethodByFilePath = function()
+  local lineText = vim.api.nvim_get_current_line()
+  local path_start, path_end = lineText:find("in ")
+  if path_start and path_end then
+    local line_start, line_end = lineText:find(":line ", path_end)
+    if line_start and line_end then
+      local path = lineText:sub(path_start + 3, line_start - 1)
+      local line = lineText:sub(line_end + 1)
+      line = line:match("%d+")
+      vim.cmd('e ' .. path)
+      vim.cmd(line)
+    end
+  end
+end
+
 M.StartFindMethodByName = function(namespaceName, typeName, methodName)
   if M._checkNotRunning() then
     return
@@ -1411,6 +1426,13 @@ M.Setup = function(config)
     'FindMethodByStackFrame',
     function(opts)
       M.StartFindMethodByStackFrame()
+    end,
+    {}
+  )
+  vim.api.nvim_create_user_command(
+    'FindMethodByFilePath',
+    function(opts)
+      M.StartFindMethodByFilePath()
     end,
     {}
   )

@@ -16,15 +16,33 @@ public class FindMethodByStackFrameHandler : HandlerBase<FindMethodByStackFrameR
     public override async Task<ResponsePacket<FindImplementationsResponse>> Handle(
         FindMethodByStackFrameRequest request)
     {
-        Regex regex = new Regex(@"^(?<namespace>.*)\.(?<class>.*)\.(?<method>.*)\(.*");
-        var regexResult = regex.Match(request.StackFrame);
-        if (regexResult.Success)
+        Regex noGenericsRegex = new Regex(@"^(?<namespace>.*)\.(?<class>.*)\.(?<method>.*)\(.*");
+        Regex genericMethodRegex = new Regex(@"^(?<namespace>.*)\.(?!<)(?<class>.*)\.(?<method>.*)\[.*");
+        Regex genericClassRegex = new Regex(@"^(?<namespace>.*)\.(?<class>.*)\.<.*\.(?<method>.*)\(.*");
+
+        var regexs = new[]
+        {
+            genericMethodRegex,
+            genericClassRegex,
+            noGenericsRegex,
+        };
+
+        Match match = null;
+        foreach (var regex in regexs)
+        {
+            match = regex.Match(request.StackFrame);
+            if (match.Success)
+            {
+                break;
+            }
+        }
+        if (match != null)
         {
             var findMethodByNameRequest = new FindMethodByNameRequest
             {
-                NamespaceName = regexResult.Groups["namespace"].Value,
-                TypeName = regexResult.Groups["class"].Value,
-                MethodName = regexResult.Groups["method"].Value,
+                NamespaceName = match.Groups["namespace"].Value,
+                TypeName = match.Groups["class"].Value,
+                MethodName = match.Groups["method"].Value,
             };
             var handle = _findMethodByNameHandler.Handle(findMethodByNameRequest);
             var responsePacket = await handle;
