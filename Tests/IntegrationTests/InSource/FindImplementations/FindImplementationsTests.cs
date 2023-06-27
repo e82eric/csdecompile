@@ -21,8 +21,12 @@ public class FindImplementationsTests
             new []
             {
                 //I guess right now we are including the declaration in the response
-                "public class ExternalGotoDefinitionConstructorTarget",
-                "public class InSourceFindImplementationsBaseClassInheritor : InSourceFindImplementationsBaseClass"
+                ("public class InSourceFindImplementationsBaseClass",
+                    "InSourceFindImplementationsBaseClass",
+                    "InSourceFindImplementationsBaseClass"),
+                ("public class InSourceFindImplementationsBaseClassInheritor : InSourceFindImplementationsBaseClass",
+                    "InSourceFindImplementationsBaseClassInheritor",
+                    "InSourceFindImplementationsBaseClassInheritor")
             });
     }
     
@@ -30,7 +34,7 @@ public class FindImplementationsTests
         string filePath,
         int column,
         int line,
-        IEnumerable<string> expected)
+        IEnumerable<(string, string, string)> expected)
     {
         var request = new CommandPacket<DecompiledLocationRequest>
         {
@@ -51,7 +55,7 @@ public class FindImplementationsTests
     }
     private static void AssertInSource(
         ResponsePacket<FindImplementationsResponse> response,
-        IEnumerable<string> expected)
+        IEnumerable<(string line, string shortName, string fullName)> expected)
     {
         Assert.True(response.Success);
 
@@ -64,8 +68,11 @@ public class FindImplementationsTests
             var lines = File.ReadAllLines(location.FileName);
             var line = lines[location.Line - 1].Trim();
 
-            var fromExpected = expected.FirstOrDefault(e => e.Contains(line.Trim()));
-            Assert.NotNull(fromExpected);
+            var fromExpected = expected.Where(e => 
+                e.line.Contains(line.Trim()) &&
+                e.shortName == implementation.ContainingTypeShortName &&
+                e.fullName == implementation.ContainingTypeFullName);
+            Assert.AreEqual(1,fromExpected.Count());
         }
     }
 }

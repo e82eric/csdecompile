@@ -222,6 +222,7 @@ internal static class RoslynSymbolHelpers
         else
         {
             result.ContainingTypeFullName = GetFullTypeName(symbol);
+            result.ContainingTypeShortName = GetShortName(symbol);
         }
         return result;
     }
@@ -237,6 +238,21 @@ internal static class RoslynSymbolHelpers
         }
 
         return result;
+    }
+    
+    private static string GetShortName(ISymbol enclosingSymbol)
+    {
+        string shortName = null;
+        if (enclosingSymbol.ContainingType != null)
+        {
+            shortName = enclosingSymbol.ContainingType.Name;
+        }
+        else
+        {
+            shortName = enclosingSymbol.Name;
+        }
+
+        return shortName;
     }
 
     private static string GetMethodSignature(IMethodSymbol method)
