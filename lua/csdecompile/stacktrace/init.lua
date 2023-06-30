@@ -49,7 +49,7 @@ M._parse_stack_frames = function(sourceLines)
     c = 1
     noMatch = true
     while true do
-      local x,y = string.find(str, 'at [^ ]+%.[^ ]+%(-', b)
+      local x,y = string.find(str, '%s+at [^%s]+%(-', b)
       if x == nil then
         local subStr = string.sub(str, prevc)
         table.insert(result, subStr)
@@ -72,16 +72,21 @@ M._set_buffer = function(sourceLines)
   local decompileFileName = 'test.stacktrace'
   local newLines = M._parse_stack_frames(sourceLines)
 
-  vim.cmd('belowright split')
-  winid = 0
-  bufnr = vim.uri_to_bufnr("c:\\TEMP\\" .. decompileFileName)
+  local filePath = "c:\\TEMP\\" .. decompileFileName
+  local bufnr = vim.uri_to_bufnr(filePath)
+  local winid = vim.fn.bufwinid(bufnr)
+  if winid == -1 then
+    vim.cmd("belowright split | buffer " .. bufnr)
+    winid = 0
+  else
+    vim.fn.win_gotoid(winid)
+  end
   vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, newLines)
-  vim.api.nvim_win_set_buf(winid, bufnr)
   vim.cmd('syntax clear')
   vim.cmd('hi Statement cterm=bold ctermfg=Green')
-  vim.cmd([[syntax match stackFrameMatch /\vat \zs[^ ]+\..*\(.*\)\ze/]])
+  vim.cmd([[syntax match stackFrameMatch /\vat \zs[^ ].*\(.*\)\ze/]])
   vim.cmd('hi def link stackFrameMatch Special')
-  vim.cmd([[syntax match filePathMatch /\vin \zs.*:line\ze/]])
+  vim.cmd([[syntax match filePathMatch /\vin \zs.*:line \d+\ze/]])
   vim.cmd('hi def link filePathMatch Constant')
 end
 
