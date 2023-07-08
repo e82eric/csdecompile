@@ -141,7 +141,7 @@ public class DecompileAssemblyTestBase : ExternalTestBase
 
             var foundExpected = expected.FirstOrDefault(e =>
                 e.type == implementation.Type &&
-                e.value.Contains(sourceLine));
+                e.value.Equals(sourceLine));
             Assert.NotNull(foundExpected);
             Assert.AreEqual(foundExpected.type, implementation.Type);
             Assert.AreEqual(implementation.SourceText, sourceLine);

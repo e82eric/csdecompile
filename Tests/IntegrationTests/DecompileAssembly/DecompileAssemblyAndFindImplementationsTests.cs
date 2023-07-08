@@ -20,10 +20,10 @@ public class DecompileAssemblyAndFindImplementationsTests : DecompileAssemblyTes
             {
                 (LocationType.SourceCode,
                     "public class InSourceFindImplementationsBaseClassInheritor : InSourceFindImplementationsBaseClass",
-                    null),
+                    "InSourceFindImplementationsBaseClassInheritor"),
                 (LocationType.SourceCode,
                     "public class InSourceFindImplementationsBaseClass",
-                    null),
+                    "InSourceFindImplementationsBaseClass"),
                 (LocationType.Decompiled,
                     "public class InSourceFindImplementationsBaseClassInheritor : InSourceFindImplementationsBaseClass",
                     "InSourceFindImplementationsBaseClassInheritor")

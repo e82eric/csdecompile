@@ -698,7 +698,7 @@ M.HandleAddNugetPackageAndDependencies = function(response, data)
 end
 
 M.HandleGetAllTypes = function(response)
-  M._openTelescope(response.Body.Implementations, M._createFindImplementationsDisplayer, M._sourcePreviewer, function(selection)
+  M._openTelescope(response.Body.Implementations, M._createGetAllTypesDisplayer, M._sourcePreviewer, function(selection)
       M._openSourceFileOrDecompile(selection)
   end,
   'Search Types')
@@ -914,13 +914,14 @@ M._blankIfNil = function(val)
 	return ''
 end
 
-M._createFindImplementationsDisplayer = function(widths)
+M._createGetAllTypesDisplayer = function(widths)
 	local resultFunc = function(entry)
 		local make_display = nil
 		if entry.Type == 0 then
 			local displayer = entry_display.create {
 				separator = "  ",
 				items = {
+          { width = 2 },
 					{ width = widths.ContainingTypeFullName },
 					{ width = widths.NamespaceName },
 					{ width = widths.AssemblyName + widths.AssemblyVersion + 1 },
@@ -931,6 +932,7 @@ M._createFindImplementationsDisplayer = function(widths)
 
 			make_display = function(entry)
 				return displayer {
+          { "" },
 					{ M._blankIfNil(entry.value.ContainingTypeFullName), "TelescopeResultsClass" },
 					{ M._blankIfNil(entry.value.NamespaceName), "TelescopeResultsIdentifier" },
 					{ string.format("%s %s", entry.value.AssemblyName, entry.value.AssemblyVersion), "TelescopeResultsIdentifier" },
@@ -942,6 +944,7 @@ M._createFindImplementationsDisplayer = function(widths)
 			local displayer = entry_display.create {
 				separator = "  ",
 				items = {
+          { width = 2 },
 					{ width = widths.ContainingTypeFullName },
 					{ width = widths.NamespaceName },
 					{ remaining = true },
@@ -950,6 +953,7 @@ M._createFindImplementationsDisplayer = function(widths)
 
 			make_display = function(entry)
 				return displayer {
+          { "" },
 					{ M._blankIfNil(entry.value.ContainingTypeFullName), "TelescopeResultsClass" },
 					{ M._blankIfNil(entry.value.NamespaceName), "TelescopeResultsIdentifier" },
 					{ string.format("%s:%s:%s", entry.value.FileName, entry.value.Line, entry.value.Column), "TelescopeResultsIdentifier" }
@@ -964,34 +968,6 @@ M._createFindImplementationsDisplayer = function(widths)
 		}
 	end
 
-	return resultFunc
-end
-
-M._createSearchTypesDisplayer = function(widths)
-	local resultFunc = function(entry)
-		local displayer = entry_display.create {
-			separator = "  ",
-			items = {
-				{ width = widths.SourceText },
-				{ width = widths.AssemblyFilePath },
-				{ remaining = true },
-			},
-		}
-
-		local make_display = function(entry)
-			return displayer {
-				{ M._blankIfNil(entry.value.SourceText), "TelescopeResultsClass" },
-				{ M._blankIfNil(entry.value.AssemblyName), "TelescopeResultsClass" },
-				{ M._blankIfNil(entry.value.AssemblyFilePath), "TelescopeResultsIdentifier" }
-			}
-		end
-
-		return {
-			value = entry,
-			display = make_display,
-			ordinal = entry.SourceText
-		}
-	end
 	return resultFunc
 end
 
@@ -1077,6 +1053,7 @@ M._createUsagesDisplayer = function(widths)
 			local displayer = entry_display.create {
 				separator = "  ",
 				items = {
+          { width = 2 },
 					{ width = widths.ContainingTypeShortName },
 					{ remaining = true },
 				}
@@ -1085,6 +1062,7 @@ M._createUsagesDisplayer = function(widths)
 			ordinal = M._blankIfNil(entry.FileName) .. M._blankIfNil(entry.SourceText)
 			make_display = function(entry)
 				return displayer {
+          { "" },
 					{ string.format("%s", entry.value.ContainingTypeShortName), "TelescopeResultsClass" },
 					{ string.format("%s", entry.value.SourceText), "TelescopeResultsIdentifier" },
 				}
@@ -1093,6 +1071,7 @@ M._createUsagesDisplayer = function(widths)
 			local displayer = entry_display.create {
 				separator = "  ",
 				items = {
+          { width = 2 },
 					{ width = widths.ContainingTypeShortName },
 					{ remaining = true },
 					-- { remaining = true },
@@ -1102,6 +1081,7 @@ M._createUsagesDisplayer = function(widths)
 			ordinal = M._blankIfNil(entry.ContainingTypeFullName) .. M._blankIfNil(entry.SourceText)
 			make_display = function(entry)
 				return displayer {
+          { "" },
 					{ string.format("%s", entry.value.ContainingTypeShortName), "TelescopeResultsClass" },
 					{ M._blankIfNil(entry.value.SourceText), "TelescopeResultsIdentifier" },
 				}
