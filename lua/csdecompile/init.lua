@@ -13,6 +13,20 @@ local Job = require('plenary.job')
 
 local M = {}
 
+M._colors = {
+  Solution = {
+    None = nil,
+    Loading = { fg = "#fabd2f" },
+    Done = { fg = "#b8bb26" },
+  },
+  Operation = {
+    None = nil,
+    Running = { fg = "#fabd2f" },
+    Done = { fg = "#b8bb26" },
+    Failed = { fg = "#fb4934" }
+  }
+}
+
 M._state = {
 	SolutionLoadingState = nil,
 	Requests = {},
@@ -147,6 +161,28 @@ M._openSolutionTelescope = function(data)
 		end,
 		sorter = conf.generic_sorter(opts),
 	}):find()
+end
+
+M.GetOperationStatusColor = function()
+  if M._state.CurrentCommand == nil then
+    return M._colors.Operation.None
+  elseif M._state.CurrentCommand.Status == 'Running' then
+    return M._colors.Operation.Running
+  elseif M._state.CurrentCommand.Status == 'Done' then
+    return M._colors.Operation.Done
+  elseif M._state.CurrentCommand.Status == 'Failed' then
+    return M._colors.Operation.Failed
+  end
+end
+
+M.GetSolutionLoadingColor = function()
+  if M._state.SolutionLoadingState == nil then
+    return M._colors.Solution.None
+  elseif M._state.SolutionLoadingState == 'loading' then
+    return M._colors.Solution.Loading
+  elseif M._state.SolutionLoadingState == 'done' then
+    return M._colors.Solution.Done
+  end
 end
 
 M.GetCurrentOperationMessage = function()
@@ -1294,6 +1330,34 @@ M.Setup = function(config)
     plugin = "csdecompile",
     level = logLevel
   })
+
+  if config.noneSolutionColor then
+    M._colors.Solution.None = config.noneSolutionColor
+  end
+
+  if config.loadingSolutionColor then
+    M._colors.Solution.Loading = config.loadingSolutionColor
+  end
+
+  if config.doneLoadingSolutionColor then
+    M._colors.Solution.Done = config.doneLoadingSolutionColor
+  end
+
+  if config.operationNoneColor then
+    M._colors.Operation.None = config.operationNoneColor
+  end
+
+  if config.operationRunningColor then
+    M._colors.Operation.Running = config.operationRunningColor
+  end
+
+  if config.operationDoneColor then
+    M._colors.Operation.Done = config.operationDoneColor
+  end
+
+  if config.operationFailedColor then
+    M._colors.Operation.Failed = config.operationFailedColor
+  end
 
   M._state.LogFilePath = string.format("%s\\%s.log", vim.api.nvim_call_function("stdpath", { "cache" }), M.log.plugin)
 
