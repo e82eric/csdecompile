@@ -21,7 +21,15 @@ public sealed class BuildTask : FrostingTask<BuildContext>
         {
             Configuration = context.TestSolutionConfiguration,
         });
+        context.DotNetBuild("../AssembliesToTestAgainst/LibrariesWithNoDependenciesCore.sln", new DotNetBuildSettings
+        {
+            Configuration = context.TestSolutionConfiguration,
+        });
         context.DotNetBuild("../AssembliesToTestAgainst/LibrariesThatReferenceOtherLibraries.sln", new DotNetBuildSettings
+        {
+            Configuration = context.TestSolutionConfiguration
+        });
+        context.DotNetBuild("../AssembliesToTestAgainst/LibrariesThatReferenceOtherLibrariesCore.sln", new DotNetBuildSettings
         {
             Configuration = context.TestSolutionConfiguration
         });

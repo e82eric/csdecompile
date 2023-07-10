@@ -152,8 +152,12 @@
         <Compile Include="ExternalSource\GotoDefinition\ExternalGotoDefinitionDotNetCoreFrameworkClassThroughNugetPackageTests.cs" />
         <Compile Include="ExternalSource\GotoDefinition\ExternalGotoDefinitionEventTests.cs" />
         <Compile Include="ExternalSource\GotoDefinition\ExternalGotoDefinitionFieldTests.cs" />
+        <Compile Include="ExternalSource\GotoDefinition\ExternalGotoDefinitionFrameworkMethodWithOutParameterTests.cs" />
         <Compile Include="ExternalSource\GotoDefinition\ExternalGotoDefinitionMethodOfGenericTypeTests.cs" />
         <Compile Include="ExternalSource\GotoDefinition\ExternalGotoDefinitionMethodTests.cs" />
+        <Compile Include="ExternalSource\GotoDefinition\ExternalGotoDefinitionMethodWithGenericOutParameterTests.cs" />
+        <Compile Include="ExternalSource\GotoDefinition\ExternalGotoDefinitionMethodWithGenericRefParameterTests.cs" />
+        <Compile Include="ExternalSource\GotoDefinition\ExternalGotoDefinitionMethodWithOutParameterTests.cs" />
         <Compile Include="ExternalSource\GotoDefinition\ExternalGotoDefinitionPropertyTests.cs" />
         <Compile Include="ExternalSource\GotoDefinition\ExternalGotoDefinitionTestBase.cs" />
         <Compile Include="ExternalSource\GotoDefinition\ExternalGotoDefinitionVariableTests.cs" />

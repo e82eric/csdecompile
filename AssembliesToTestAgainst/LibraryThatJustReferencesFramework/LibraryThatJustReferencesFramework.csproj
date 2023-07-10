@@ -87,6 +87,9 @@
         <Compile Include="ExternalGotoDefinitionMethodOfGenericTypeUser.cs" />
         <Compile Include="ExternalGotoDefinitionMethodOfGenericTypeTarget.cs" />
         <Compile Include="ExternalGotoDefinitionMethodTarget.cs" />
+        <Compile Include="ExternalGotoDefinitionMethodWithGenericOutParameterTarget.cs" />
+        <Compile Include="ExternalGotoDefinitionMethodWithGenericRefParameterTarget.cs" />
+        <Compile Include="ExternalGotoDefinitionMethodWithOutParameterTarget.cs" />
         <Compile Include="ExternalGotoDefinitionPropertyTarget.cs" />
         <Compile Include="ExternalGotoDefinitionVariableTarget.cs" />
         <Compile Include="ExternalSourceGetSymbolInfoUser.cs" />

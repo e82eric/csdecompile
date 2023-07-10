@@ -77,7 +77,11 @@
         <Compile Include="ExternalGotoDefinitionDefaultConstructorCaller.cs" />
         <Compile Include="ExternalGotoDefinitionEventCaller.cs" />
         <Compile Include="ExternalGotoDefinitionFieldCaller.cs" />
+        <Compile Include="ExternalGotoDefinitionFrameworkMethodWithOutParameterUser.cs" />
         <Compile Include="ExternalGotoDefinitionMethodOfGenericTypeCaller.cs" />
+        <Compile Include="ExternalGotoDefinitionMethodWithGenericOutParameterUser.cs" />
+        <Compile Include="ExternalGotoDefinitionMethodWithGenericRefParameterUser.cs" />
+        <Compile Include="ExternalGotoDefinitionMethodWithOutParameterUser.cs" />
         <Compile Include="ExternalGotoDefinitionPropertyCaller.cs" />
         <Compile Include="ExternalGotoDefinitionVariableCaller.cs" />
         <Compile Include="ExternalSourceGetSymbolInfoCaller.cs" />

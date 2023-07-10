@@ -32,7 +32,7 @@ public static class RoslynToIlSpyEqualityExtensions
         {
             var roslynParameterType = roslynMethodSymbol.Parameters[i].Type;
             var ilSpyParameterTYpe = ilSpySymbol.Parameters[i].Type;
-            
+
             var sameType = AreSameType(roslynParameterType, ilSpyParameterTYpe);
             if (!sameType)
             {
@@ -119,14 +119,15 @@ public static class RoslynToIlSpyEqualityExtensions
 
     private static bool AreSameType(ITypeSymbol roslynSymbol, IType ilSpySymbol)
     {
-        ITypeDefinition typeDefinition = ilSpySymbol.GetDefinition();
-        if (typeDefinition is null)
+        bool ilSpyIsByRef = false;
+        IType ilSpyType = ilSpySymbol;
+        if (ilSpySymbol is ByReferenceType byReferenceType)
         {
-            if (ilSpySymbol is ByReferenceType byReferenceType)
-            {
-                typeDefinition = byReferenceType.ElementType.GetDefinition();
-            }
+            ilSpyIsByRef = true;
+            ilSpyType = byReferenceType.ElementType;
         }
+
+        ITypeDefinition typeDefinition = ilSpyType.GetDefinition();
 
         if (typeDefinition != null)
         {
@@ -136,9 +137,20 @@ public static class RoslynToIlSpyEqualityExtensions
 
         if(roslynSymbol.TypeKind == TypeKind.TypeParameter)
         {
-            if (roslynSymbol.Name == ilSpySymbol.FullName)
+            if (ilSpyIsByRef)
             {
-                return true;
+                //There has to be better way to do this
+                if (roslynSymbol.Name + "&" == ilSpySymbol.FullName)
+                {
+                    return true;
+                }
+            }
+            else
+            {
+                if (roslynSymbol.Name == ilSpySymbol.FullName)
+                {
+                    return true;
+                }
             }
         }
 
