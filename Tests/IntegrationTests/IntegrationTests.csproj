@@ -125,11 +125,13 @@
         <Compile Include="ExternalSource\FindImplementations\ExternalFindImplementationsBase2.cs" />
         <Compile Include="ExternalSource\FindImplementations\ExternalFindImplementationsBaseClassTests.cs" />
         <Compile Include="ExternalSource\FindImplementations\ExternalFindImplementationsInterfaceTests.cs" />
+        <Compile Include="ExternalSource\FindImplementations\ExternalFindImplementationsMethodWithGenericInParameterSourceUserTests.cs" />
         <Compile Include="ExternalSource\FindUsages\ExternalFindUsagesEnumTests.cs" />
         <Compile Include="ExternalSource\FindUsages\ExternalFindUsagesEventTests.cs" />
         <Compile Include="ExternalSource\FindUsages\ExternalFindUsagesFieldTests.cs" />
         <Compile Include="ExternalSource\FindUsages\ExternalFindUsagesFrameworkInterface.cs" />
         <Compile Include="ExternalSource\FindUsages\ExternalFindUsagesMethodTests.cs" />
+        <Compile Include="ExternalSource\FindUsages\ExternalFindUsagesMethodWithGenericInParameterTests.cs" />
         <Compile Include="ExternalSource\FindUsages\ExternalFindUsagesPropertyTests.cs" />
         <Compile Include="ExternalSource\FindUsages\ExternalFindUsagesTestBase.cs" />
         <Compile Include="ExternalSource\FindUsages\ExternalFindUsagesTypeAsAttributeTests.cs" />
@@ -155,6 +157,7 @@
         <Compile Include="ExternalSource\GotoDefinition\ExternalGotoDefinitionFrameworkMethodWithOutParameterTests.cs" />
         <Compile Include="ExternalSource\GotoDefinition\ExternalGotoDefinitionMethodOfGenericTypeTests.cs" />
         <Compile Include="ExternalSource\GotoDefinition\ExternalGotoDefinitionMethodTests.cs" />
+        <Compile Include="ExternalSource\GotoDefinition\ExternalGotoDefinitionMethodWithGenericInParameterTests.cs" />
         <Compile Include="ExternalSource\GotoDefinition\ExternalGotoDefinitionMethodWithGenericOutParameterTests.cs" />
         <Compile Include="ExternalSource\GotoDefinition\ExternalGotoDefinitionMethodWithGenericRefParameterTests.cs" />
         <Compile Include="ExternalSource\GotoDefinition\ExternalGotoDefinitionMethodWithOutParameterTests.cs" />

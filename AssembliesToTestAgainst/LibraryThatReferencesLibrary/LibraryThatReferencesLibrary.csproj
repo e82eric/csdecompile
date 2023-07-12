@@ -46,6 +46,8 @@
         <Compile Include="DecompileAssemtlyTypeTarget.cs" />
         <Compile Include="ExternalFindImplementationsBaseClassCaller.cs" />
         <Compile Include="ExternalFindImplementationsInterfaceCaller.cs" />
+        <Compile Include="ExternalFindImplementationsMethodWithGenericInParameterSourceImplementation.cs" />
+        <Compile Include="ExternalFindImplementationsMethodWithGenericInParameterSourceUser.cs" />
         <Compile Include="ExternalFindUsagesAttributeUser.cs" />
         <Compile Include="ExternalFindUsagesEnumCaller.cs" />
         <Compile Include="ExternalFindUsagesEventCaller.cs" />
@@ -57,6 +59,8 @@
         <Compile Include="ExternalFindUsagesMethodOfAbstractClassUser2.cs" />
         <Compile Include="ExternalFindUsagesMethodOfInterfaceUser1.cs" />
         <Compile Include="ExternalFindUsagesMethodOfInterfaceUser2.cs" />
+        <Compile Include="ExternalFindUsagesMethodWithGenericInParameterSourceImplementation.cs" />
+        <Compile Include="ExternalFindUsagesMethodWithGenericInParameterUser.cs" />
         <Compile Include="ExternalFindUsagesPropertyOfInterfaceUser1.cs" />
         <Compile Include="ExternalFindUsagesPropertyOfInterfaceUser2.cs" />
         <Compile Include="ExternalFindUsagesStringCaller.cs" />
@@ -79,6 +83,7 @@
         <Compile Include="ExternalGotoDefinitionFieldCaller.cs" />
         <Compile Include="ExternalGotoDefinitionFrameworkMethodWithOutParameterUser.cs" />
         <Compile Include="ExternalGotoDefinitionMethodOfGenericTypeCaller.cs" />
+        <Compile Include="ExternalGotoDefinitionMethodWithGenericInParameterUser.cs" />
         <Compile Include="ExternalGotoDefinitionMethodWithGenericOutParameterUser.cs" />
         <Compile Include="ExternalGotoDefinitionMethodWithGenericRefParameterUser.cs" />
         <Compile Include="ExternalGotoDefinitionMethodWithOutParameterUser.cs" />

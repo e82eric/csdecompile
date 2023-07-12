@@ -42,6 +42,8 @@
         <Compile Include="ExternalFindImplementationsBaseClassInheritor.cs" />
         <Compile Include="ExternalFindImplementationsInterface.cs" />
         <Compile Include="ExternalFindImplementationsInterfaceInheritor.cs" />
+        <Compile Include="ExternalFindImplementationsMethodWithGenericInParameterExternalImplementation.cs" />
+        <Compile Include="ExternalFindImplementationsMethodWithGenericInParameterTarget.cs" />
         <Compile Include="ExternalFindUsagesAttributeInternalUser.cs" />
         <Compile Include="ExternalFindUsagesAttributeTargetAttribute.cs" />
         <Compile Include="ExternalFindUsagesEnumTarget.cs" />
@@ -57,6 +59,9 @@
         <Compile Include="ExternalFindUsagesMethodOfInterfaceInterface.cs" />
         <Compile Include="ExternalFindUsagesMethodTarget.cs" />
         <Compile Include="ExternalFindUsagesMethodUser.cs" />
+        <Compile Include="ExternalFindUsagesMethodWithGenericInParameterExternalImplementation.cs" />
+        <Compile Include="ExternalFindUsagesMethodWithGenericInParameterExternalUser.cs" />
+        <Compile Include="ExternalFindUsagesMethodWithGenericInParameterTarget.cs" />
         <Compile Include="ExternalFindUsagesPropertyOfInterfaceImplementation.cs" />
         <Compile Include="ExternalFindUsagesPropertyOfInterfaceInterface.cs" />
         <Compile Include="ExternalFindUsagesPropertyTarget.cs" />
@@ -87,6 +92,7 @@
         <Compile Include="ExternalGotoDefinitionMethodOfGenericTypeUser.cs" />
         <Compile Include="ExternalGotoDefinitionMethodOfGenericTypeTarget.cs" />
         <Compile Include="ExternalGotoDefinitionMethodTarget.cs" />
+        <Compile Include="ExternalGotoDefinitionMethodWithGenericInParameterTarget.cs" />
         <Compile Include="ExternalGotoDefinitionMethodWithGenericOutParameterTarget.cs" />
         <Compile Include="ExternalGotoDefinitionMethodWithGenericRefParameterTarget.cs" />
         <Compile Include="ExternalGotoDefinitionMethodWithOutParameterTarget.cs" />
