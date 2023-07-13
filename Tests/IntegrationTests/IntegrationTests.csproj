@@ -168,11 +168,15 @@
         <Compile Include="CommandPacket.cs" />
         <Compile Include="InSourceGetSymbolInfoBase.cs" />
         <Compile Include="InSource\FindImplementations\InSourceFindImplementationsFileDoesntExistTests.cs" />
+        <Compile Include="InSource\FindImplementations\InSourceFindImplementationsMethodWithGenericOutParametersTests.cs" />
         <Compile Include="InSource\FindImplementations\InSourceFindImplementationsSymbolNotFoundAtLocationTests.cs" />
         <Compile Include="InSource\FindUsages\InSourceFindUsagesFileDoesntExistTests.cs" />
+        <Compile Include="InSource\FindUsages\InSourceFindUsagesMethodWithGenericOutParametersTests.cs" />
         <Compile Include="InSource\FindUsages\InSourceFindUsagesSymbolNotFoundAtLocationTests.cs" />
         <Compile Include="InSource\GetSymbolInfo\InSourceGetSymbolInfoTests.cs" />
         <Compile Include="InSource\GetTypeMembers\GetTypeMembersTests.cs" />
+        <Compile Include="InSource\GotoDefinition\InSourceGotoDefinitionMethodWithGenericOutParametersTests.cs" />
+        <Compile Include="InSource\GotoDefinition\InSourceGotoDefinitionMethodWithGenericParametersTests.cs" />
         <Compile Include="Models\DecompiledFindImplementationsResponse.cs" />
         <Compile Include="ResponseLocationConverter.cs" />
         <Compile Include="InSourceBase.cs" />

@@ -217,7 +217,7 @@ internal static class RoslynSymbolHelpers
         if (symbol is IMethodSymbol)
         {
             var methodName = symbol.ToDisplayParts().FirstOrDefault(p => p.Kind == SymbolDisplayPartKind.MethodName);
-            result.ContainingTypeFullName = $"{GetFullTypeName(symbol.ContainingType)}.{methodName}{GetMethodSignature((IMethodSymbol)symbol)}";
+            result.ContainingTypeFullName = symbol.ContainingType.MetadataName;
         }
         else
         {

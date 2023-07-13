@@ -92,6 +92,11 @@
         <Compile Include="ExternalSourceGetSymbolInfoCaller.cs" />
         <Compile Include="InSourceFindImplementationsBaseClass.cs" />
         <Compile Include="InSourceFindImplementationsBaseClassInheritor.cs" />
+        <Compile Include="InSourceFindImplementationsMethodWithGenericOutParametersImplementationWithGenerics.cs" />
+        <Compile Include="InSourceFindImplementationsMethodWithGenericOutParametersImplementationWithTypes.cs" />
+        <Compile Include="InSourceFindImplementationsMethodWithGenericOutParametersTarget.cs" />
+        <Compile Include="InSourceFindUsagesMethodWithGenericOutParametersTarget.cs" />
+        <Compile Include="InSourceFindUsagesMethodWithGenericOutParametersUser.cs" />
         <Compile Include="InSourceGetMembersTarget.cs" />
         <Compile Include="InSourceGetSymbolInfoCaller.cs" />
         <Compile Include="InSourceGetSymbolInfoTarget.cs" />
@@ -107,6 +112,10 @@
         <Compile Include="InSourceGotoDefinitionFieldTarget.cs" />
         <Compile Include="InSourceGotoDefinitionMethodCaller.cs" />
         <Compile Include="InSourceGotoDefinitionMethodTarget.cs" />
+        <Compile Include="InSourceGotoDefinitionMethodWithGenericOutParametersTarget.cs" />
+        <Compile Include="InSourceGotoDefinitionMethodWithGenericOutParametersUser.cs" />
+        <Compile Include="InSourceGotoDefinitionMethodWithGenericParameters.cs" />
+        <Compile Include="InSourceGotoDefinitionMethodWithGenericParametersUser.cs" />
         <Compile Include="InSourceGotoDefinitionPropertyCaller.cs" />
         <Compile Include="InSourceGotoDefinitionPropertyTarget.cs" />
         <Compile Include="InSourceGotoDefinitionSymbolNotFoundAtLocationTarget.cs" />

@@ -64,6 +64,7 @@ public class RoslynFindUsagesCommand : INavigationCommand<FindImplementationsRes
                         }
 
                         sourceFileInfo.ContainingTypeShortName = shortName;
+                        sourceFileInfo.ContainingTypeFullName = usage.Definition.ContainingType?.MetadataName;
                         body.Implementations.Add(sourceFileInfo);
                     }
                 }
