@@ -1,3 +1,6 @@
-public class InSourceFindImplementationsBaseClassInheritor : InSourceFindImplementationsBaseClass
+namespace LibraryThatReferencesLibrary
 {
+    public class InSourceFindImplementationsBaseClassInheritor : InSourceFindImplementationsBaseClass
+    {
+    }
 }

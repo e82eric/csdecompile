@@ -16,7 +16,8 @@ public class InSourceGotoDefinitionMethodTests : InSourceBase
             filePath: FilePath,
             column:54,
             line:9,
-            expected:"public void BasicMethod()");
+            expected:"public void BasicMethod()",
+            null);
     }
     
     [Test]
@@ -26,7 +27,8 @@ public class InSourceGotoDefinitionMethodTests : InSourceBase
             filePath: FilePath,
             column:54,
             line:10,
-            expected:"public void BasicMethod(string param1)");
+            expected:"public void BasicMethod(string param1)",
+            null);
     }
     
     [Test]
@@ -36,6 +38,7 @@ public class InSourceGotoDefinitionMethodTests : InSourceBase
             filePath: FilePath,
             column:54,
             line:11,
-            expected:"public void BasicMethod(string param1, string param2)");
+            expected:"public void BasicMethod(string param1, string param2)",
+            null);
     }
 }

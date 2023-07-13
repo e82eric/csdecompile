@@ -18,7 +18,8 @@ public class InSourceGotoDefinitionEventTests : InSourceBase
             filePath: TargetFilePath,
             column: 9,
             line: 9,
-            expected: "public event EventHandler<EventArgs> BasicEvent;");
+            expected: "public event EventHandler<EventArgs> BasicEvent;",
+            null);
     }
     
     [Test]
@@ -28,7 +29,8 @@ public class InSourceGotoDefinitionEventTests : InSourceBase
             filePath: CallerFilePath,
             column: 13,
             line: 8,
-            expected: "public event EventHandler<EventArgs> BasicEvent;");
+            expected: "public event EventHandler<EventArgs> BasicEvent;",
+            null);
     }
     
     [Test]
@@ -38,6 +40,7 @@ public class InSourceGotoDefinitionEventTests : InSourceBase
             filePath: CallerFilePath,
             column: 13,
             line: 9,
-            expected: "public event EventHandler<EventArgs> BasicEvent;");
+            expected: "public event EventHandler<EventArgs> BasicEvent;",
+            null);
     }
 }

@@ -14,6 +14,7 @@ public class ExternalGotoDefinitionBaseClassTests : ExternalGotoDefinitionTestBa
             filePath: FilePath,
             column: 58,
             line: 5,
-            "public class ExternalGotoDefinitionBaseClassTarget");
+            "public class ExternalGotoDefinitionBaseClassTarget",
+            "LibraryThatJustReferencesFramework.ExternalGotoDefinitionBaseClassTarget");
     }
 }

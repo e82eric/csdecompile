@@ -23,10 +23,10 @@ public class FindImplementationsTests
                 //I guess right now we are including the declaration in the response
                 ("public class InSourceFindImplementationsBaseClass",
                     "InSourceFindImplementationsBaseClass",
-                    "InSourceFindImplementationsBaseClass"),
+                    "LibraryThatReferencesLibrary.InSourceFindImplementationsBaseClass"),
                 ("public class InSourceFindImplementationsBaseClassInheritor : InSourceFindImplementationsBaseClass",
                     "InSourceFindImplementationsBaseClassInheritor",
-                    "InSourceFindImplementationsBaseClassInheritor")
+                    "LibraryThatReferencesLibrary.InSourceFindImplementationsBaseClassInheritor")
             });
     }
     

@@ -17,7 +17,8 @@ public class ExternalGotoDefinitionFieldTests : ExternalGotoDefinitionTestBase
             line:9,
             lineToFind:"_basicField = \"0\"",
             tokenToRequest:"(?<token>_basicField) =",
-            expected:"private string _basicField;");
+            expected:"private string _basicField;",
+            containingTypeFullName:"LibraryThatJustReferencesFramework.ExternalGotoDefinitionFieldTarget");
     }
     [Test]
     public void GetValue()
@@ -30,7 +31,8 @@ public class ExternalGotoDefinitionFieldTests : ExternalGotoDefinitionTestBase
             line:9,
             lineToFind:"string basicField = _basicField",
             tokenToRequest:" (?<token>_basicField)",
-            expected:"private string _basicField;");
+            expected:"private string _basicField;",
+            containingTypeFullName:"LibraryThatJustReferencesFramework.ExternalGotoDefinitionFieldTarget");
     }
 }
 
@@ -49,6 +51,7 @@ public class ExternalGotoDefinitionAttributeInternalUserUserTests : ExternalGoto
             line: 9,
             lineToFind: "\\[ExternalGotoDefinition\\]",
             tokenToRequest: "\\[(?<token>ExternalGotoDefinition)\\]",
-            expected: "public class ExternalGotoDefinitionAttribute : Attribute");
+            expected: "public class ExternalGotoDefinitionAttribute : Attribute",
+            containingTypeFullName:"LibraryThatJustReferencesFramework.ExternalGotoDefinitionAttribute");
     }
 }

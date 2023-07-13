@@ -15,7 +15,8 @@ public class ExternalGotoDefinitionMethodTests : ExternalGotoDefinitionTestBase
             filePath: FilePath,
             column: 54,
             line: 10,
-            expected: "public void ExternalBasicMethod()");
+            expected: "public void ExternalBasicMethod()",
+            "LibraryThatJustReferencesFramework.ExternalGotoDefinitionMethodTarget");
     }
     
     [Test]
@@ -25,7 +26,8 @@ public class ExternalGotoDefinitionMethodTests : ExternalGotoDefinitionTestBase
             filePath: FilePath,
             column: 54,
             line: 11,
-            expected: "public void ExternalBasicMethod(string param1)");
+            expected: "public void ExternalBasicMethod(string param1)",
+            "LibraryThatJustReferencesFramework.ExternalGotoDefinitionMethodTarget");
     }
     
     [Test]
@@ -35,6 +37,7 @@ public class ExternalGotoDefinitionMethodTests : ExternalGotoDefinitionTestBase
             filePath: FilePath,
             column: 54,
             line: 12,
-            expected: "public void ExternalBasicMethod(string param1, string param2)");
+            expected: "public void ExternalBasicMethod(string param1, string param2)",
+            "LibraryThatJustReferencesFramework.ExternalGotoDefinitionMethodTarget");
     }
 }

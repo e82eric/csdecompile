@@ -15,7 +15,8 @@ public class ExternalGotoDefinitionConstructorTests : ExternalGotoDefinitionTest
             filePath: FilePath,
             column: 17,
             line: 9,
-            expected: "public ExternalGotoDefinitionConstructorTarget()");
+            expected: "public ExternalGotoDefinitionConstructorTarget()",
+            "LibraryThatJustReferencesFramework.ExternalGotoDefinitionConstructorTarget");
     }
     
     [Test]
@@ -25,7 +26,8 @@ public class ExternalGotoDefinitionConstructorTests : ExternalGotoDefinitionTest
             filePath: FilePath,
             column: 17,
             line: 10,
-            expected: "public ExternalGotoDefinitionConstructorTarget(string param1)");
+            expected: "public ExternalGotoDefinitionConstructorTarget(string param1)",
+            "LibraryThatJustReferencesFramework.ExternalGotoDefinitionConstructorTarget");
     }
     
     [Test]
@@ -35,6 +37,7 @@ public class ExternalGotoDefinitionConstructorTests : ExternalGotoDefinitionTest
             filePath: FilePath,
             column: 17,
             line: 11,
-            expected: "public ExternalGotoDefinitionConstructorTarget(string param1, string param2)");
+            expected: "public ExternalGotoDefinitionConstructorTarget(string param1, string param2)",
+            "LibraryThatJustReferencesFramework.ExternalGotoDefinitionConstructorTarget");
     }
 }

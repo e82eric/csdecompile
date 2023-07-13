@@ -14,6 +14,7 @@ public class ExternalGotoDefinitionDefaultConstructorTests : ExternalGotoDefinit
             filePath: FilePath,
             column: 17,
             line: 9,
-            expected: "public class ExternalGotoDefinitionDefaultConstructorTarget");
+            expected: "public class ExternalGotoDefinitionDefaultConstructorTarget",
+            "LibraryThatJustReferencesFramework.ExternalGotoDefinitionDefaultConstructorTarget");
     }
 }

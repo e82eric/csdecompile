@@ -14,6 +14,7 @@ public class ExternalGotoDefinitionConstructorAttributeTests : ExternalGotoDefin
             filePath: FilePath,
             column: 6,
             line: 5,
-            "public ExternalGotoDefinitionConstructorAttribute(string param1)");
+            "public ExternalGotoDefinitionConstructorAttribute(string param1)",
+            "LibraryThatJustReferencesFramework.ExternalGotoDefinitionConstructorAttribute");
     }
 }

@@ -13,17 +13,29 @@ public class ExternalGotoDefinitionTestBase : ExternalTestBase
     public ExternalGotoDefinitionTestBase(StdIoClient stdIoClient) : base(stdIoClient)
     {
     }
-    protected void SendRequestAndAssertLine(string filePath, int column, int line, string expected)
+    protected void SendRequestAndAssertLine(
+        string filePath,
+        int column,
+        int line,
+        string expected,
+        string containingTypeFullName)
     {
         SendRequestAndAssertLine(
             Endpoints.DecompileGotoDefinition,
             filePath,
             column,
             line,
-            expected);
+            expected,
+            containingTypeFullName);
     }
 
-    private void SendRequestAndAssertLine(string command, string filePath, int column, int line, string expected)
+    private void SendRequestAndAssertLine(
+        string command,
+        string filePath,
+        int column,
+        int line,
+        string expected,
+        string containingTypeFullName)
     {
         var decompiledLocationRequest = new DecompiledLocationRequest
         {
@@ -41,7 +53,8 @@ public class ExternalGotoDefinitionTestBase : ExternalTestBase
         
         RequestAndCompare(
             request,
-            expected);
+            expected,
+            containingTypeFullName);
     }
     
     protected void SendRequestFindLocationInDecompiledClassRequestAgainAndAssertLine(
@@ -50,7 +63,8 @@ public class ExternalGotoDefinitionTestBase : ExternalTestBase
         int line,
         string lineToFind,
         string tokenToRequest,
-        string expected)
+        string expected,
+        string containingTypeFullName)
     {
         var requestArguments = GotoDefinitionAndCreateRequestForToken(
             filePath,
@@ -65,7 +79,7 @@ public class ExternalGotoDefinitionTestBase : ExternalTestBase
             Arguments = requestArguments,
         };
 
-        RequestAndCompare(request, expected);
+        RequestAndCompare(request, expected, containingTypeFullName);
     }
     
     protected void SendRequestFindLocationInDecompiledClassRequestAgainAndAssertLine(
@@ -76,7 +90,8 @@ public class ExternalGotoDefinitionTestBase : ExternalTestBase
         string tokenToRequest,
         string lineToFind2,
         string line2TokenRegex,
-        string expected)
+        string expected,
+        string containingTypeFullName)
     {
         var requestArguments = GotoDefinitionAndCreateRequestForToken(
             filePath,
@@ -93,7 +108,7 @@ public class ExternalGotoDefinitionTestBase : ExternalTestBase
             Arguments = requestArguments,
         };
 
-        RequestAndCompare(request, expected);
+        RequestAndCompare(request, expected, containingTypeFullName);
     }
     protected void SendRequestFindLocationInDecompiledClassRequestAgainAndAssertLine(
         string filePath,
@@ -105,7 +120,8 @@ public class ExternalGotoDefinitionTestBase : ExternalTestBase
         string line2TokenRegex,
         string lineToFind3,
         string line3TokenRegex,
-        string expected)
+        string expected,
+        string containingTypeFullName)
     {
         var requestArguments = GotoDefinitionAndCreateRequestForToken(
             filePath,
@@ -124,10 +140,13 @@ public class ExternalGotoDefinitionTestBase : ExternalTestBase
             Arguments = requestArguments,
         };
 
-        RequestAndCompare(request, expected);
+        RequestAndCompare(request, expected, containingTypeFullName);
     }
     
-    private void RequestAndCompare(CommandPacket<DecompiledLocationRequest> request, string expected)
+    private void RequestAndCompare(
+        CommandPacket<DecompiledLocationRequest> request,
+        string expected,
+        string containingTypeFullName)
     {
         var response = IoClient
             .ExecuteCommand<DecompiledLocationRequest, GotoDefinitionResponse>(request);
@@ -139,5 +158,6 @@ public class ExternalGotoDefinitionTestBase : ExternalTestBase
         var lines = GetLines(response.Body.SourceText);
         var sourceLine = lines[decompileInfo.Line - 1].Trim();
         Assert.AreEqual(expected, sourceLine);
+        Assert.AreEqual(containingTypeFullName, decompileInfo.ContainingTypeFullName);
     }
 }

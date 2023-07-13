@@ -15,7 +15,8 @@ public class InSourceGotoDefinitionPropertyTests : InSourceBase
             filePath: FilePath,
             column: 52,
             line: 5,
-            expected: "public string BasicProperty { get; set; }");
+            expected: "public string BasicProperty { get; set; }",
+            null);
     }
     
     [Test]
@@ -25,6 +26,7 @@ public class InSourceGotoDefinitionPropertyTests : InSourceBase
             filePath: FilePath,
             column: 60,
             line: 6,
-            expected: "public string BasicProperty { get; set; }");
+            expected: "public string BasicProperty { get; set; }",
+            null);
     }
 }

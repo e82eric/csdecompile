@@ -18,6 +18,7 @@ public class ExternalGotoDefinitionVariableTests : ExternalGotoDefinitionTestBas
             line:9,
             lineToFind:"int num2 = num \\+ 1",
             tokenToRequest:" (?<token>num) +",
-            expected:"int num = 0;");
+            expected:"int num = 0;",
+            containingTypeFullName:"LibraryThatJustReferencesFramework.ExternalGotoDefinitionVariableTarget");
     }
 }

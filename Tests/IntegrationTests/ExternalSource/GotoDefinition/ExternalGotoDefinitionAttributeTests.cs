@@ -14,7 +14,8 @@ public class ExternalGotoDefinitionAttributeTests : ExternalGotoDefinitionTestBa
             filePath: FilePath,
             column: 6,
             line: 5,
-            "public class ExternalGotoDefinitionAttribute : Attribute");
+            "public class ExternalGotoDefinitionAttribute : Attribute",
+            "LibraryThatJustReferencesFramework.ExternalGotoDefinitionAttribute");
     }
     [Test]
     public void GotoExternalAttributeOnMethod()
@@ -23,7 +24,8 @@ public class ExternalGotoDefinitionAttributeTests : ExternalGotoDefinitionTestBa
             filePath: FilePath,
             column: 10,
             line: 8,
-            "public class ExternalGotoDefinitionAttribute : Attribute");
+            "public class ExternalGotoDefinitionAttribute : Attribute",
+            "LibraryThatJustReferencesFramework.ExternalGotoDefinitionAttribute");
     }
     
     [Test]
@@ -33,6 +35,7 @@ public class ExternalGotoDefinitionAttributeTests : ExternalGotoDefinitionTestBa
             filePath: FilePath,
             column: 10,
             line: 13,
-            "public class ExternalGotoDefinitionAttribute : Attribute");
+            "public class ExternalGotoDefinitionAttribute : Attribute",
+            "LibraryThatJustReferencesFramework.ExternalGotoDefinitionAttribute");
     }
 }

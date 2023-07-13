@@ -22,6 +22,11 @@ internal static class RoslynSymbolHelpers
             throw new ArgumentNullException(nameof(symbol));
         }
 
+        if (symbol is INamedTypeSymbol namedTypeSymbol)
+        {
+            return GetTypeDisplayString(namedTypeSymbol);
+        }
+
         var symbols = new Stack<ISymbol>();
 
         while (symbol != null)
@@ -214,14 +219,19 @@ internal static class RoslynSymbolHelpers
             return null;
         }
         var result = location.GetSourceLineInfo(workspace);
-        if (symbol is IMethodSymbol)
+        if (symbol is INamedTypeSymbol)
+        {
+            result.ContainingTypeFullName = symbol.GetMetadataName();
+            result.ContainingTypeShortName = GetShortName(symbol);
+        }
+        else if (symbol is IMethodSymbol)
         {
             var methodName = symbol.ToDisplayParts().FirstOrDefault(p => p.Kind == SymbolDisplayPartKind.MethodName);
-            result.ContainingTypeFullName = symbol.ContainingType.MetadataName;
+            result.ContainingTypeFullName = symbol.ContainingType?.GetMetadataName();
         }
         else
         {
-            result.ContainingTypeFullName = GetFullTypeName(symbol);
+            result.ContainingTypeFullName = symbol.ContainingType?.GetMetadataName();
             result.ContainingTypeShortName = GetShortName(symbol);
         }
         return result;

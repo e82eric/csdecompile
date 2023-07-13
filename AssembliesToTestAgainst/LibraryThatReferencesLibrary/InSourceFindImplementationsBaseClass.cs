@@ -1,3 +1,6 @@
-public class InSourceFindImplementationsBaseClass
+namespace LibraryThatReferencesLibrary
 {
+    public class InSourceFindImplementationsBaseClass
+    {
+    }
 }

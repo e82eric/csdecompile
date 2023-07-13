@@ -14,7 +14,8 @@ namespace IntegrationTests
                 filePath:FilePath,
                 column:58,
                 line: 3,
-                "public class InSourceGotoDefinitionBaseClassTarget");
+                "public class InSourceGotoDefinitionBaseClassTarget",
+                null);
         }
     }
 }

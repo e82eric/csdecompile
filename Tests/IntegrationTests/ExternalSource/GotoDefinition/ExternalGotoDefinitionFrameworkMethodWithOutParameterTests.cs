@@ -15,6 +15,7 @@ public class ExternalGotoDefinitionFrameworkMethodWithOutParameterTests : Extern
             filePath: FilePath,
             column: 46,
             line: 9,
-            expected: "public bool TryGetValue(TKey key, out TValue value)");
+            expected: "public bool TryGetValue(TKey key, out TValue value)",
+            "System.Collections.Generic.Dictionary`2");
     }
 }

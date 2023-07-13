@@ -6,12 +6,29 @@ namespace IntegrationTests;
 
 public class InSourceBase : TestBase
 {
-    protected void RequestAndAssertCorrectLine(string filePath, int column, int line, string expected)
+    protected void RequestAndAssertCorrectLine(
+        string filePath,
+        int column,
+        int line,
+        string expected,
+        string containingTypeFullName)
     {
-        RequestAndAssertCorrectLine(Endpoints.DecompileGotoDefinition, filePath, column, line, expected);
+        RequestAndAssertCorrectLine(
+            Endpoints.DecompileGotoDefinition,
+            filePath,
+            column,
+            line,
+            expected,
+            containingTypeFullName);
     }
     
-    protected void RequestAndAssertCorrectLine(string command, string filePath, int column, int line, string expected)
+    protected void RequestAndAssertCorrectLine(
+        string command,
+        string filePath,
+        int column,
+        int line,
+        string expected,
+        string containingTypeFullName)
     {
         var response = ExecuteRequest<GotoDefinitionResponse>(command, filePath, column, line);
 

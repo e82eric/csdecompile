@@ -23,13 +23,13 @@ public class InSourceFindUsagesMethodWithGenericOutParametersTests
                 //I guess right now we are including the declaration in the response
                 ("a.TryRun(default, out _);",
                     "InSourceFindUsagesMethodWithGenericOutParametersUser",
-                    "InSourceFindUsagesMethodWithGenericOutParametersUser"),
+                    "LibraryThatReferencesLibrary.InSourceFindUsagesMethodWithGenericOutParametersUser"),
                 ("b.TryRun(default, out _);",
                     "InSourceFindUsagesMethodWithGenericOutParametersUser",
-                    "InSourceFindUsagesMethodWithGenericOutParametersUser"),
+                    "LibraryThatReferencesLibrary.InSourceFindUsagesMethodWithGenericOutParametersUser"),
                 ("public bool TryRun(T1 t1, out T2 t2)",
                     "InSourceFindUsagesMethodWithGenericOutParametersTarget",
-                    "InSourceFindUsagesMethodWithGenericOutParametersTarget`2"),
+                    "LibraryThatReferencesLibrary.InSourceFindUsagesMethodWithGenericOutParametersTarget`2"),
             });
     }
 

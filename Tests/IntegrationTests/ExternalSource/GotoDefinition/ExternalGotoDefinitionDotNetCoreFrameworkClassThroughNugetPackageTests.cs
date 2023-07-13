@@ -23,6 +23,7 @@ public class ExternalGotoDefinitionDotNetCoreFrameworkClassThroughNugetPackageTe
             " (?<token>Attribute)$",
             lineToFind3: "\\[Serializable\\]",
             line3TokenRegex: "\\[(?<token>Serializable)\\]",
-            "public sealed class SerializableAttribute : Attribute");
+            "public sealed class SerializableAttribute : Attribute",
+            containingTypeFullName:"System.SerializableAttribute");
     }
 }

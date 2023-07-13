@@ -15,6 +15,7 @@ public class InSourceGotoDefinitionVariableTests : InSourceBase
             filePath: FilePath,
             column: 17,
             line: 6,
-            expected: "var a = 1;");
+            expected: "var a = 1;",
+            null);
     }
 }

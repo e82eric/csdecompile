@@ -15,7 +15,8 @@ public class ExternalGotoDefinitionEventTests : ExternalGotoDefinitionTestBase
             filePath: FilePath,
             column: 17,
             line: 11,
-            expected: "public event EventHandler BasicEvent;");
+            expected: "public event EventHandler BasicEvent;",
+            "LibraryThatJustReferencesFramework.ExternalGotoDefinitionEventTarget");
     }
     
     [Test]
@@ -25,7 +26,8 @@ public class ExternalGotoDefinitionEventTests : ExternalGotoDefinitionTestBase
             filePath: FilePath,
             column: 17,
             line: 12,
-            expected: "public event EventHandler BasicEvent;");
+            expected: "public event EventHandler BasicEvent;",
+            "LibraryThatJustReferencesFramework.ExternalGotoDefinitionEventTarget");
     }
 
     [Test]
@@ -37,6 +39,7 @@ public class ExternalGotoDefinitionEventTests : ExternalGotoDefinitionTestBase
             line:10,
             lineToFind:"BasicEvent\\(this, EventArgs.Empty\\);",
             tokenToRequest:"(?<token>BasicEvent)\\(",
-            expected:"public event EventHandler BasicEvent;");
+            expected:"public event EventHandler BasicEvent;",
+            containingTypeFullName:"LibraryThatJustReferencesFramework.ExternalGotoDefinitionEventTarget");
     }
 }

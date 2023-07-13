@@ -21,6 +21,7 @@ public class ExternalGotoDefinitionDotNetCoreFrameworkClassTests : ExternalGotoD
             "\\[(?<token>DataContract)\\]",
             "public sealed class DataContractAttribute : Attribute",
             ": (?<token>Attribute)$",
-            "public abstract class Attribute");
+            "public abstract class Attribute",
+            containingTypeFullName:"System.Attribute");
     }
 }

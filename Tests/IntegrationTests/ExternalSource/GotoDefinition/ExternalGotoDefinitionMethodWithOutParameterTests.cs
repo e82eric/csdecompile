@@ -15,6 +15,7 @@ public class ExternalGotoDefinitionMethodWithOutParameterTests : ExternalGotoDef
             filePath: FilePath,
             column: 70,
             line: 9,
-            expected: "public bool TryRun(string val, out string result)");
+            expected: "public bool TryRun(string val, out string result)",
+            "LibraryThatJustReferencesFramework.ExternalGotoDefinitionMethodWithOutParameterTarget");
     }
 }

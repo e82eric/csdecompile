@@ -15,6 +15,7 @@ public class ExternalGotoDefinitionMethodWithGenericRefParameterTests : External
             filePath: FilePath,
             column: 93,
             line: 10,
-            expected: "public bool TryRun(T val, ref T2 result)");
+            expected: "public bool TryRun(T val, ref T2 result)",
+            "LibraryThatJustReferencesFramework.ExternalGotoDefinitionMethodWithGenericRefParameterTarget`2");
     }
 }

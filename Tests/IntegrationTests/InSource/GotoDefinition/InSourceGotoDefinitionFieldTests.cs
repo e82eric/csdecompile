@@ -15,7 +15,8 @@ public class InSourceGotoDefinitionFieldTests : InSourceBase
             filePath: FilePath,
             column: 9,
             line: 7,
-            expected: "private string _basicField;");
+            expected: "private string _basicField;",
+            null);
     }
     
     [Test]
@@ -25,6 +26,7 @@ public class InSourceGotoDefinitionFieldTests : InSourceBase
             filePath: FilePath,
             column: 17,
             line: 12,
-            expected: "private string _basicField;");
+            expected: "private string _basicField;",
+            null);
     }
 }

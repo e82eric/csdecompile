@@ -17,6 +17,7 @@ public class ExternalGotoDefinitionMethodOfGenericTypeTests : ExternalGotoDefini
             line: 9,
             "externalGotoDefinitionMethodOfGenericTypeTarget.ExternalBasicMethod\\(string.Empty\\);",
             "\\.(?<token>ExternalBasicMethod)\\(",
-            expected: "public void ExternalBasicMethod(T param1)");
+            expected: "public void ExternalBasicMethod(T param1)",
+            containingTypeFullName:"LibraryThatJustReferencesFramework.ExternalGotoDefinitionMethodOfGenericTypeTarget`1");
     }
 }

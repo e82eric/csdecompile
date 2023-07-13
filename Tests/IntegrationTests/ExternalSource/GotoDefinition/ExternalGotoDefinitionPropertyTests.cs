@@ -15,7 +15,8 @@ public class ExternalGotoDefinitionPropertyTests : ExternalGotoDefinitionTestBas
             filePath: FilePath,
             column: 56,
             line: 9,
-            expected: "public string ExternalBasicProperty { get; set; }");
+            expected: "public string ExternalBasicProperty { get; set; }",
+            "LibraryThatJustReferencesFramework.ExternalGotoDefinitionPropertyTarget");
     }
     
     [Test]
@@ -25,6 +26,7 @@ public class ExternalGotoDefinitionPropertyTests : ExternalGotoDefinitionTestBas
             filePath: FilePath,
             column: 64,
             line: 10,
-            expected: "public string ExternalBasicProperty { get; set; }");
+            expected: "public string ExternalBasicProperty { get; set; }",
+            "LibraryThatJustReferencesFramework.ExternalGotoDefinitionPropertyTarget");
     }
 }

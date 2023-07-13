@@ -64,7 +64,7 @@ public class RoslynFindUsagesCommand : INavigationCommand<FindImplementationsRes
                         }
 
                         sourceFileInfo.ContainingTypeShortName = shortName;
-                        sourceFileInfo.ContainingTypeFullName = usage.Definition.ContainingType?.MetadataName;
+                        sourceFileInfo.ContainingTypeFullName = usage.Definition.ContainingType?.GetMetadataName();
                         body.Implementations.Add(sourceFileInfo);
                     }
                 }
@@ -84,7 +84,7 @@ public class RoslynFindUsagesCommand : INavigationCommand<FindImplementationsRes
         if (enclosingSymbol.ContainingType != null)
         {
             toFill.ContainingTypeShortName = enclosingSymbol.ContainingType.Name;
-            toFill.ContainingTypeFullName = enclosingSymbol.ContainingType.MetadataName;
+            toFill.ContainingTypeFullName = enclosingSymbol.ContainingType?.GetMetadataName();
         }
         else
         {
@@ -92,12 +92,12 @@ public class RoslynFindUsagesCommand : INavigationCommand<FindImplementationsRes
             if (fallbackParentClassSymbol != null)
             {
                 toFill.ContainingTypeShortName = fallbackParentClassSymbol.Name;
-                toFill.ContainingTypeFullName = fallbackParentClassSymbol.MetadataName;
+                toFill.ContainingTypeFullName = fallbackParentClassSymbol.GetMetadataName();
             }
             else
             {
                 toFill.ContainingTypeShortName = enclosingSymbol.Name;
-                toFill.ContainingTypeFullName = enclosingSymbol.MetadataName;
+                toFill.ContainingTypeFullName = enclosingSymbol.GetMetadataName();
             }
         }
     }

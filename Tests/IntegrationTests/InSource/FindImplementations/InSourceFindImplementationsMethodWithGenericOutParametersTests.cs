@@ -23,10 +23,10 @@ public class InSourceFindImplementationsMethodWithGenericOutParametersTests
                 //I guess right now we are including the declaration in the response
                 ("public bool TryRun(T1 t1, out T2 t2)",
                     "InSourceFindImplementationsMethodWithGenericOutParametersImplementationWithGenerics",
-                    "InSourceFindImplementationsMethodWithGenericOutParametersImplementationWithGenerics`2"),
+                    "LibraryThatReferencesLibrary.InSourceFindImplementationsMethodWithGenericOutParametersImplementationWithGenerics`2"),
                 ("public bool TryRun(string t1, out object t2)",
                     "InSourceFindImplementationsMethodWithGenericOutParametersImplementationWithTypes",
-                    "InSourceFindImplementationsMethodWithGenericOutParametersImplementationWithTypes"),
+                    "LibraryThatReferencesLibrary.InSourceFindImplementationsMethodWithGenericOutParametersImplementationWithTypes"),
             });
     }
 
