@@ -32,7 +32,7 @@ public class InSourceBase : TestBase
     {
         var response = ExecuteRequest<GotoDefinitionResponse>(command, filePath, column, line);
 
-        AssertInSource(response, expected);
+        AssertInSource(response, expected, containingTypeFullName);
     }
 
     protected static ResponsePacket<T> ExecuteRequest<T>(string command, string filePath, int column, int line)
@@ -55,17 +55,21 @@ public class InSourceBase : TestBase
         return response;
     }
 
-    private static void AssertInSource(ResponsePacket<GotoDefinitionResponse> response, string expected)
+    private static void AssertInSource(
+        ResponsePacket<GotoDefinitionResponse> response,
+        string expected,
+        string containingTypeFullName)
     {
         Assert.AreEqual(response.Body.Location.Type, LocationType.SourceCode);
-        AssertInSourceLocation(response.Body.Location, expected);
+        AssertInSourceLocation(response.Body.Location, expected, containingTypeFullName);
     }
     
-    private static void AssertInSourceLocation(ResponseLocation location, string expected)
+    private static void AssertInSourceLocation(ResponseLocation location, string expected, string containingTypeFullName)
     {
         var lines = InSourceGetLines(location);
         var line = lines[location.Line - 1].Trim();
 
         Assert.AreEqual(expected, line);
+        Assert.AreEqual(containingTypeFullName, location.ContainingTypeFullName);
     }
 }

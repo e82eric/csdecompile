@@ -15,6 +15,6 @@ public class InSourceGotoDefinitionDefaultConstructorTests : InSourceBase
             column:17,
             line:7,
             expected:"public class InSourceGotoDefinitionDefaultConstructorTarget",
-            null);
+            "LibraryThatReferencesLibrary.InSourceGotoDefinitionDefaultConstructorTarget");
     }
 }

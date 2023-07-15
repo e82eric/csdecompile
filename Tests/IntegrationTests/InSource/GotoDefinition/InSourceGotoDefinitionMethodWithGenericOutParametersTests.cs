@@ -16,7 +16,7 @@ public class InSourceGotoDefinitionMethodWithGenericOutParametersTests : InSourc
             column:15,
             line:8,
             expected:"public bool TryRun(T1 t1, out T2 t2)",
-            null);
+            "LibraryThatReferencesLibrary.InSourceGotoDefinitionMethodWithGenericOutParametersTarget`2");
     }
 
     [Test]
@@ -27,6 +27,6 @@ public class InSourceGotoDefinitionMethodWithGenericOutParametersTests : InSourc
             column:94,
             line:9,
             expected:"public bool TryRun(T1 t1, out T2 t2)",
-            null);
+            "LibraryThatReferencesLibrary.InSourceGotoDefinitionMethodWithGenericOutParametersTarget`2");
     }
 }

@@ -19,7 +19,8 @@ public class InSourceGotoDefinitionEventTests : InSourceBase
             column: 9,
             line: 9,
             expected: "public event EventHandler<EventArgs> BasicEvent;",
-            null);
+            //TODO why does this not have a namespace
+            "InSourceGotoDefinitionEventTarget");
     }
     
     [Test]
@@ -30,7 +31,8 @@ public class InSourceGotoDefinitionEventTests : InSourceBase
             column: 13,
             line: 8,
             expected: "public event EventHandler<EventArgs> BasicEvent;",
-            null);
+            //TODO why does this not have a namespace
+            "InSourceGotoDefinitionEventTarget");
     }
     
     [Test]
@@ -41,6 +43,7 @@ public class InSourceGotoDefinitionEventTests : InSourceBase
             column: 13,
             line: 9,
             expected: "public event EventHandler<EventArgs> BasicEvent;",
-            null);
+            //TODO why does this not have a namespace
+            "InSourceGotoDefinitionEventTarget");
     }
 }

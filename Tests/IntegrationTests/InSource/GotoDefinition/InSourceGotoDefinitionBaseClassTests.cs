@@ -5,7 +5,8 @@ namespace IntegrationTests
     [TestFixture]
     public class InSourceGotoDefinitionBaseClassTests : InSourceBase
     {
-        private static string FilePath = TestHarness.GetLibraryThatReferencesLibraryFilePath("InSourceGotoDefinitionBaseClassCaller.cs");
+        private static string FilePath = TestHarness.GetLibraryThatReferencesLibraryFilePath(
+            "InSourceGotoDefinitionBaseClassCaller.cs");
         
         [Test]
         public void GotoInSourceClassDefinition()
@@ -15,7 +16,7 @@ namespace IntegrationTests
                 column:58,
                 line: 3,
                 "public class InSourceGotoDefinitionBaseClassTarget",
-                null);
+                "LibraryThatReferencesLibrary.InSourceGotoDefinitionBaseClassTarget");
         }
     }
 }

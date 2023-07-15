@@ -120,6 +120,8 @@
         <Compile Include="InSourceGotoDefinitionPropertyTarget.cs" />
         <Compile Include="InSourceGotoDefinitionSymbolNotFoundAtLocationTarget.cs" />
         <Compile Include="InSourceGotoDefinitionVariableTarget.cs" />
+        <Compile Include="InSourceNestedClassGotoDefinitionTarget.cs" />
+        <Compile Include="InSourceNestedClassGotoDefinitionUser.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

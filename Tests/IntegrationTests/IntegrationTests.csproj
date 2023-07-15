@@ -177,6 +177,7 @@
         <Compile Include="InSource\GetTypeMembers\GetTypeMembersTests.cs" />
         <Compile Include="InSource\GotoDefinition\InSourceGotoDefinitionMethodWithGenericOutParametersTests.cs" />
         <Compile Include="InSource\GotoDefinition\InSourceGotoDefinitionMethodWithGenericParametersTests.cs" />
+        <Compile Include="InSource\GotoDefinition\InSourceNestedClassGotoDefinitionTests.cs" />
         <Compile Include="Models\DecompiledFindImplementationsResponse.cs" />
         <Compile Include="ResponseLocationConverter.cs" />
         <Compile Include="InSourceBase.cs" />

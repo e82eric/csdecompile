@@ -16,7 +16,7 @@ public class InSourceGotoDefinitionConstructorTests : InSourceBase
             column:17,
             line:9,
             expected:"public InSourceGotoDefinitionConstructorTarget()",
-            null);
+            "LibraryThatReferencesLibrary.InSourceGotoDefinitionConstructorTarget");
     }
     
     [Test]
@@ -27,7 +27,7 @@ public class InSourceGotoDefinitionConstructorTests : InSourceBase
             column:17,
             line:10,
             expected:"public InSourceGotoDefinitionConstructorTarget(string param1)",
-            null);
+            "LibraryThatReferencesLibrary.InSourceGotoDefinitionConstructorTarget");
     }
     
     [Test]
@@ -38,6 +38,6 @@ public class InSourceGotoDefinitionConstructorTests : InSourceBase
             column:17,
             line:11,
             expected:"public InSourceGotoDefinitionConstructorTarget(string param1, string param2)",
-            null);
+            "LibraryThatReferencesLibrary.InSourceGotoDefinitionConstructorTarget");
     }
 }

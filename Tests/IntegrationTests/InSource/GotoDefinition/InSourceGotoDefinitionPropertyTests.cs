@@ -16,7 +16,8 @@ public class InSourceGotoDefinitionPropertyTests : InSourceBase
             column: 52,
             line: 5,
             expected: "public string BasicProperty { get; set; }",
-            null);
+            //TODO why does this not have a namespace
+            "InSourceGotoDefinitionPropertyTarget");
     }
     
     [Test]
@@ -27,6 +28,7 @@ public class InSourceGotoDefinitionPropertyTests : InSourceBase
             column: 60,
             line: 6,
             expected: "public string BasicProperty { get; set; }",
-            null);
+            //TODO why does this not have a namespace
+            "InSourceGotoDefinitionPropertyTarget");
     }
 }

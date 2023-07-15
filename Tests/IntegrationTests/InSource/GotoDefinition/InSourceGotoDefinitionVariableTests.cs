@@ -16,6 +16,7 @@ public class InSourceGotoDefinitionVariableTests : InSourceBase
             column: 17,
             line: 6,
             expected: "var a = 1;",
-            null);
+            //TODO why does this not have a namespace
+            "InSourceGotoDefinitionVariableTarget");
     }
 }

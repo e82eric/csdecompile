@@ -16,6 +16,6 @@ public class InSourceGotoDefinitionMethodWithGenericParametersTests : InSourceBa
             column:91,
             line:7,
             expected:"public void TryRun(T1 t1, T2 t2)",
-            null);
+            "LibraryThatReferencesLibrary.InSourceGotoDefinitionMethodWithGenericParametersTarget`2");
     }
 }

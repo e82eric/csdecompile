@@ -17,7 +17,7 @@ public class InSourceGotoDefinitionMethodTests : InSourceBase
             column:54,
             line:9,
             expected:"public void BasicMethod()",
-            null);
+            "LibraryThatReferencesLibrary.InSourceGotoDefinitionMethodTarget");
     }
     
     [Test]
@@ -28,7 +28,7 @@ public class InSourceGotoDefinitionMethodTests : InSourceBase
             column:54,
             line:10,
             expected:"public void BasicMethod(string param1)",
-            null);
+            "LibraryThatReferencesLibrary.InSourceGotoDefinitionMethodTarget");
     }
     
     [Test]
@@ -39,6 +39,6 @@ public class InSourceGotoDefinitionMethodTests : InSourceBase
             column:54,
             line:11,
             expected:"public void BasicMethod(string param1, string param2)",
-            null);
+            "LibraryThatReferencesLibrary.InSourceGotoDefinitionMethodTarget");
     }
 }
