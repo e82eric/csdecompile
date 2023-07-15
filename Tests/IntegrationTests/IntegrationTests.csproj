@@ -132,6 +132,7 @@
         <Compile Include="ExternalSource\FindUsages\ExternalFindUsagesFrameworkInterface.cs" />
         <Compile Include="ExternalSource\FindUsages\ExternalFindUsagesMethodTests.cs" />
         <Compile Include="ExternalSource\FindUsages\ExternalFindUsagesMethodWithGenericInParameterTests.cs" />
+        <Compile Include="ExternalSource\FindUsages\ExternalFindUsagesMethodWithParamsTests.cs" />
         <Compile Include="ExternalSource\FindUsages\ExternalFindUsagesPropertyTests.cs" />
         <Compile Include="ExternalSource\FindUsages\ExternalFindUsagesTestBase.cs" />
         <Compile Include="ExternalSource\FindUsages\ExternalFindUsagesTypeAsAttributeTests.cs" />
@@ -161,6 +162,7 @@
         <Compile Include="ExternalSource\GotoDefinition\ExternalGotoDefinitionMethodWithGenericOutParameterTests.cs" />
         <Compile Include="ExternalSource\GotoDefinition\ExternalGotoDefinitionMethodWithGenericRefParameterTests.cs" />
         <Compile Include="ExternalSource\GotoDefinition\ExternalGotoDefinitionMethodWithOutParameterTests.cs" />
+        <Compile Include="ExternalSource\GotoDefinition\ExternalGotoDefinitionMethodWithParamsTests.cs" />
         <Compile Include="ExternalSource\GotoDefinition\ExternalGotoDefinitionPropertyTests.cs" />
         <Compile Include="ExternalSource\GotoDefinition\ExternalGotoDefinitionTestBase.cs" />
         <Compile Include="ExternalSource\GotoDefinition\ExternalGotoDefinitionVariableTests.cs" />
@@ -170,9 +172,11 @@
         <Compile Include="InSource\FindImplementations\InSourceFindImplementationsFileDoesntExistTests.cs" />
         <Compile Include="InSource\FindImplementations\InSourceFindImplementationsMethodWithGenericOutParametersTests.cs" />
         <Compile Include="InSource\FindImplementations\InSourceFindImplementationsSymbolNotFoundAtLocationTests.cs" />
+        <Compile Include="InSource\FindUsages\InSourceFindUsagesBase.cs" />
         <Compile Include="InSource\FindUsages\InSourceFindUsagesFileDoesntExistTests.cs" />
         <Compile Include="InSource\FindUsages\InSourceFindUsagesMethodWithGenericOutParametersTests.cs" />
         <Compile Include="InSource\FindUsages\InSourceFindUsagesSymbolNotFoundAtLocationTests.cs" />
+        <Compile Include="InSource\FindUsages\InSourceNestedClassFindUsagesTests.cs" />
         <Compile Include="InSource\GetSymbolInfo\InSourceGetSymbolInfoTests.cs" />
         <Compile Include="InSource\GetTypeMembers\GetTypeMembersTests.cs" />
         <Compile Include="InSource\GotoDefinition\InSourceGotoDefinitionMethodWithGenericOutParametersTests.cs" />
