@@ -10,7 +10,7 @@ namespace CsDecompileLib.IlSpy;
 
 public class PeFileCache
 {
-    private readonly  ConcurrentDictionary<string, string> _byFileName = new();
+    private readonly ConcurrentDictionary<string, string> _byFileName = new();
     private readonly ConcurrentDictionary<string, PEFile> _peFileCache = new();
 
     public PEFile[] GetAssemblies()

@@ -411,6 +411,11 @@ internal static class HandlerFactory
             { Endpoints.SearchNugetFromLocation, new SearchNugetForLocationHandler(
                 nugetSearcher,
                 getSymbolInfoHandler) },
+            { Endpoints.SearchMembers, new SearchMembersHandler(
+                new MemberSearcher(_decompileWorkspace),
+                new IlSpySymbolFinder(_decompilerTypeSystemFactory),
+                new DecompilerFactory(_decompilerTypeSystemFactory),
+                _workspace ) },
         };
 
         var router = new Router(handlers);

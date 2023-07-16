@@ -814,6 +814,28 @@ M.StartGetDecompiledSource = function(
 	M._sendStdIoRequest(request, M.HandleDecompiledSource, callbackData)
 end
 
+M.StartSearchMembers = function(assemblySearchString, memberSearchString)
+  if M._checkNotRunning() then
+    return
+  end
+
+  local request = {
+    Command = "/searchmembers",
+    Arguments = {
+      AssemblySearchString = assemblySearchString,
+      MemberSearchString = memberSearchString
+    }
+  }
+	M._sendStdIoRequest(request, M.HandleSearchMembers)
+end
+
+M.HandleSearchMembers = function(response)
+  M._openTelescope(response.Body.Implementations, M._createUsagesDisplayer, M._sourcePreviewer, function(selection)
+      M._openSourceFileOrDecompile(selection)
+  end,
+  'Members')
+end
+
 M.StartGetTypeMembers = function()
   if M._checkNotRunning() then
     return
@@ -1479,6 +1501,13 @@ M.Setup = function(config)
       M.StartFindMethodByFilePath()
     end,
     {}
+  )
+  vim.api.nvim_create_user_command(
+      'SearchMembers',
+      function(opts)
+        M.StartSearchMembers(opts.fargs[1], opts.fargs[2])
+      end,
+      { nargs = '*' }
   )
 end
 

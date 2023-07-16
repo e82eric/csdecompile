@@ -303,8 +303,11 @@
         <Compile Include="GetMembers\IlSpyTypeMembersCommand.cs" />
         <Compile Include="GetMembers\IlSpyTypeMembersFinder.cs" />
         <Compile Include="GetMembers\ITypeMembersFinder.cs" />
+        <Compile Include="GetMembers\MemberSearcher.cs" />
+        <Compile Include="GetMembers\MemberSearchRequest.cs" />
         <Compile Include="GetMembers\RoslynGetTypeMembersCommand.cs" />
         <Compile Include="GetMembers\RoslynGetTypeMembersCommandFactory.cs" />
+        <Compile Include="GetMembers\SearchMembersHandler.cs" />
         <Compile Include="GetMembers\TypeMembersByNameFinder.cs" />
         <Compile Include="GetMembers\TypeMembersFinder.cs" />
         <Compile Include="GetSource\DecompiledSourceHandler.cs" />
