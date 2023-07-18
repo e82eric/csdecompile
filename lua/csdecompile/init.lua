@@ -338,11 +338,12 @@ M._getStartOfCurrentWord = function()
  while(currentCol > 0)
  do
    local curChar = string.sub(curLine, currentCol + 1 , currentCol + 1)
-   if string.match(curChar, "%W") then
+   if string.match(curChar, "[%w_@]") then
+     currentCol = currentCol - 1
      result = currentCol + 2
+   else
      break
    end
-   currentCol = currentCol - 1
  end
 
  return result
