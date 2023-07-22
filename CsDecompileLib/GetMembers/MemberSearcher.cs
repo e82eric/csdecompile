@@ -15,7 +15,7 @@ public class MemberSearcher
         _workspace = workspace;
     }
 
-    public IEnumerable<(string assemblyFilePath, string containingTypeFullName, string memberName)> SearchForMembers(string assemblySearchString, string memberSearchString)
+    public IEnumerable<(string assemblyFilePath, string containingTypeFullName, string memberName)> SearchForMembers(IEnumerable<string> assemblySearchStrings, string memberSearchString)
     {
         var peFiles = _workspace.GetAssemblies();
         var result = new List<(string, string, string)>();
@@ -23,7 +23,7 @@ public class MemberSearcher
         {
             SearchAssembly(
                 peFile,
-                assemblySearchString,
+                assemblySearchStrings,
                 memberSearchString,
                 result);
         }
@@ -33,13 +33,18 @@ public class MemberSearcher
 
     private void SearchAssembly(
         PEFile peFile,
-        string assemblySearchString,
+        IEnumerable<string> assemblySearchStrings,
         string memberSearchString,
         IList<(string, string, string)> found)
     {
-        if (peFile.FullName.Contains(assemblySearchString))
+
+        foreach (var assemblySearchString in assemblySearchStrings)
         {
-            AddMembers(peFile, memberSearchString, found);
+            if (peFile.FullName.Contains(assemblySearchString))
+            {
+                AddMembers(peFile, memberSearchString, found);
+                break;
+            }
         }
     }
 

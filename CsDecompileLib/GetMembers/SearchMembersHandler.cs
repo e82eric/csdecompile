@@ -38,9 +38,18 @@ public class SearchMembersHandler : HandlerBase<MemberSearchRequest, FindImpleme
             if (compilation != null)
             {
                 var projectRoslynSymbols = compilation
-                    .GetSymbolsWithName(s => s.Contains(request.MemberSearchString), SymbolFilter.Member)
-                    .Where(s => s.ContainingAssembly.Name.Contains(request.AssemblySearchString));
-                roslynSymbols.AddRange(projectRoslynSymbols);
+                    .GetSymbolsWithName(s => s.Contains(request.MemberSearchString), SymbolFilter.Member);
+
+                foreach (var projectRoslynSymbol in projectRoslynSymbols)
+                {
+                    foreach (var assemblySearchString in request.AssemblySearchStrings)
+                    {
+                        if (projectRoslynSymbol.ContainingAssembly.Name.Contains(assemblySearchString))
+                        {
+                            roslynSymbols.Add(projectRoslynSymbol);
+                        }
+                    }
+                }
             }
         }
 
@@ -52,7 +61,7 @@ public class SearchMembersHandler : HandlerBase<MemberSearchRequest, FindImpleme
         }
 
         var memberInfos = _memberSearcher.SearchForMembers(
-            request.AssemblySearchString,
+            request.AssemblySearchStrings,
             request.MemberSearchString);
 
         foreach (var memberInfo in memberInfos)

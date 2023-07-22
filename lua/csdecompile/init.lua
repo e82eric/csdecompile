@@ -429,11 +429,16 @@ M.StartGetAssembliesForSearchMembers = function(memberSearchString)
 end
 
 M.HandleGetAssembliesForSearchMembers = function(response, state)
-	M._openAssembliesTelescope(response.Body.Assemblies, M.StartSearchMembersFromTelescope, state)
+	M._openAssembliesTelescopeMultiSelect(response.Body.Assemblies, M.StartSearchMembersFromTelescope, state)
 end
 
-M.StartSearchMembersFromTelescope = function(filePath, assemblyName, state)
-  M.StartSearchMembers(assemblyName, state.MemberSearchString)
+M.StartSearchMembersFromTelescope = function(selections, state)
+  local assemblyNames = {}
+  for i,v in ipairs(selections) do
+    table.insert(assemblyNames, v.value.FullName)
+  end
+
+  M.StartSearchMembers(assemblyNames, state.MemberSearchString)
 end
 
 M.StartGetAssembliesForDecompile = function()
@@ -479,6 +484,47 @@ M.StartDecompileAssembly = function(filePath, assemblyName)
 end
 
 M._openAssembliesTelescope = function(data, resultHandler, state)
+  local base = _openAssembliesTelescopeBase(data, state)
+  base.attach_mappings = function(prompt_bufnr, map)
+    actions.select_default:replace(function()
+      local selection = action_state.get_selected_entry()
+
+      action_utils.map_selections(prompt_bufnr, function(entry, index)
+        print(vim.inspect(entry))
+      end)
+
+      actions.close(prompt_bufnr)
+      resultHandler(selection.value.FilePath, selection.value.FullName, state)
+    end)
+    return true
+  end
+  base:find()
+end
+
+M._openAssembliesTelescopeMultiSelect = function(data, resultHandler, state)
+  local base = M._openAssembliesTelescopeBase(data, state)
+  base.attach_mappings = function(prompt_bufnr, map)
+    actions.select_default:replace(function()
+      local selection = action_state.get_selected_entry()
+
+      local multiSelections = {}
+      action_utils.map_selections(prompt_bufnr, function(entry, index)
+        table.insert(multiSelections, entry)
+      end)
+
+      actions.close(prompt_bufnr)
+      if next(multiSelections) == nil then
+        resultHandler({selection}, state)
+      else
+        resultHandler(multiSelections, state)
+      end
+    end)
+    return true
+  end
+  base:find()
+end
+
+M._openAssembliesTelescopeBase = function(data, state)
 	local widths = {
 		FullName = 0,
 		TargetFrameworkId = 0,
@@ -495,7 +541,7 @@ M._openAssembliesTelescope = function(data, resultHandler, state)
 	end
 
 	opts = opts or {}
-  pickers.new(opts, {
+  local result = pickers.new(opts, {
     layout_strategy='vertical',
     prompt_title = "Assemblies",
     finder = finders.new_table {
@@ -522,15 +568,27 @@ M._openAssembliesTelescope = function(data, resultHandler, state)
       end
     },
     attach_mappings = function(prompt_bufnr, map)
-      actions.select_default:replace(function()
-        local selection = action_state.get_selected_entry()
-        actions.close(prompt_bufnr)
-        resultHandler(selection.value.FilePath, selection.value.FullName, state)
-      end)
+      actions.select_default:replace(onSelection)
+      -- actions.select_default:replace(function()
+      --   local selection = action_state.get_selected_entry()
+
+      --   local multiSelections = {}
+      --   action_utils.map_selections(prompt_bufnr, function(entry, index)
+      --     table.insert(multiSelections, entry)
+      --   end)
+
+      --   actions.close(prompt_bufnr)
+      --   if next(multiSelections) == nil then
+      --     resultHandler({selection}, state)
+      --   else
+      --     resultHandler(multiSelections, state)
+      --   end
+      -- end)
       return true
     end,
     sorter = conf.generic_sorter(opts),
-  }):find()
+  })
+  return result;
 end
 
 M.ClearNugetDirectory = function()
@@ -837,7 +895,7 @@ M.StartGetDecompiledSource = function(
 	M._sendStdIoRequest(request, M.HandleDecompiledSource, callbackData)
 end
 
-M.StartSearchMembers = function(assemblySearchString, memberSearchString)
+M.StartSearchMembers = function(assemblySearchStrings, memberSearchString)
   if M._checkNotRunning() then
     return
   end
@@ -845,7 +903,7 @@ M.StartSearchMembers = function(assemblySearchString, memberSearchString)
   local request = {
     Command = "/searchmembers",
     Arguments = {
-      AssemblySearchString = assemblySearchString,
+      AssemblySearchStrings = assemblySearchStrings,
       MemberSearchString = memberSearchString
     }
   }
@@ -1528,7 +1586,7 @@ M.Setup = function(config)
   vim.api.nvim_create_user_command(
       'SearchMembers',
       function(opts)
-        M.StartSearchMembers(opts.fargs[1], opts.fargs[2])
+        M.StartSearchMembers({ opts.fargs[1] }, opts.fargs[2])
       end,
       { nargs = '*' }
   )
