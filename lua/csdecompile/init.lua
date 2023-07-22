@@ -5,6 +5,7 @@ local conf = require("telescope.config").values
 local telescope = require("telescope")
 local actions = require "telescope.actions"
 local action_state = require "telescope.actions.state"
+local action_utils = require "telescope.actions.utils"
 local previewers = require "telescope.previewers"
 local entry_display = require("telescope.pickers.entry_display")
 local make_entry = require "telescope.make_entry"
@@ -414,6 +415,27 @@ M.StartGetAssemblies = function()
 	M._sendStdIoRequest(request, M.HandleGetAssemblies);
 end
 
+M.StartGetAssembliesForSearchMembers = function(memberSearchString)
+  if M._checkNotRunning() then
+    return
+  end
+	local request = {
+		Command = "/getassemblies",
+		Arguments = {
+			Load = true,
+		}
+	}
+	M._sendStdIoRequest(request, M.HandleGetAssembliesForSearchMembers, { MemberSearchString = memberSearchString });
+end
+
+M.HandleGetAssembliesForSearchMembers = function(response, state)
+	M._openAssembliesTelescope(response.Body.Assemblies, M.StartSearchMembersFromTelescope, state)
+end
+
+M.StartSearchMembersFromTelescope = function(filePath, assemblyName, state)
+  M.StartSearchMembers(assemblyName, state.MemberSearchString)
+end
+
 M.StartGetAssembliesForDecompile = function()
   if M._checkNotRunning() then
     return
@@ -456,7 +478,7 @@ M.StartDecompileAssembly = function(filePath, assemblyName)
 	M._sendStdIoRequest(request, M.HandleDecompileGotoDefinitionResponse)
 end
 
-M._openAssembliesTelescope = function(data, resultHandler)
+M._openAssembliesTelescope = function(data, resultHandler, state)
 	local widths = {
 		FullName = 0,
 		TargetFrameworkId = 0,
@@ -503,7 +525,7 @@ M._openAssembliesTelescope = function(data, resultHandler)
       actions.select_default:replace(function()
         local selection = action_state.get_selected_entry()
         actions.close(prompt_bufnr)
-        resultHandler(selection.value.FilePath, selection.value.FullName)
+        resultHandler(selection.value.FilePath, selection.value.FullName, state)
       end)
       return true
     end,
@@ -1509,6 +1531,13 @@ M.Setup = function(config)
         M.StartSearchMembers(opts.fargs[1], opts.fargs[2])
       end,
       { nargs = '*' }
+  )
+  vim.api.nvim_create_user_command(
+      'SearchMembersTelescope',
+      function(opts)
+        M.StartGetAssembliesForSearchMembers(opts.args)
+      end,
+      { nargs = 1 }
   )
 end
 
