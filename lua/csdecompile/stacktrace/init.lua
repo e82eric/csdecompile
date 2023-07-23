@@ -81,6 +81,8 @@ M._set_buffer = function(sourceLines)
   else
     vim.fn.win_gotoid(winid)
   end
+  vim.api.nvim_buf_set_option(bufnr, 'buftype', 'nofile')
+  vim.api.nvim_buf_set_option(bufnr, 'bufhidden', 'hide')
   vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, newLines)
   vim.cmd('syntax clear')
   vim.cmd('hi Statement cterm=bold ctermfg=Green')
