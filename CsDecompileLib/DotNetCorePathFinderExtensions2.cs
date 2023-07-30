@@ -81,7 +81,7 @@ namespace ICSharpCode.Decompiler.Metadata
 						if (pathMatch.Success)
 						{
 							var type = pathMatch.Groups["type"].Value;
-							if (type.Contains(".NETFramework"))
+							if (!type.Contains(".NETFramework"))
 							{
 								break;
 							}
