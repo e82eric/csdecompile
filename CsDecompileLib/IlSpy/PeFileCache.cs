@@ -65,7 +65,7 @@ public class PeFileCache
         {
             if(TryLoadAssembly(fileStream, PEStreamOptions.PrefetchEntireImage, fileName, out peFile))
             {
-                var targetFrameworkId = peFile.DetectTargetFrameworkId();
+                var targetFrameworkId = peFile.DetectTargetFrameworkId2();
                 uniqueness = peFile.FullName + '|' + targetFrameworkId;
                 _byFileName.TryAdd(fileName, uniqueness);
                 _peFileCache.TryAdd(uniqueness, peFile);

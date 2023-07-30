@@ -399,6 +399,7 @@
         <Compile Include="GetSymbolInfo\RoslynSymbolInfoCommand.cs" />
         <Compile Include="SymbolInfo.cs" />
         <Compile Include="SymbolNotFoundAtLocationCommand.cs" />
+        <Compile Include="DotNetCorePathFinderExtensions2.cs" />
     </ItemGroup>
     <ItemGroup>
       <None Include="App.config" />

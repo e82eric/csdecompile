@@ -16,14 +16,14 @@ namespace CsDecompileLib.IlSpy
         
         public IAssemblyResolver GetAssemblyResolver(PEFile peFile)
         {
-            var targetFrameworkId = peFile.DetectTargetFrameworkId();
+            var targetFrameworkId = peFile.DetectTargetFrameworkId2();
             var universalResolver = GetUniversalResolver(targetFrameworkId, peFile);
             return new MyAssemblyResolver(_peFileCache, targetFrameworkId, universalResolver);
         }
         
         private UniversalAssemblyResolver GetUniversalResolver(string targetFrameworkId, PEFile peFile)
         {
-            var runtimePack = peFile.DetectRuntimePack();  
+            var runtimePack = peFile.DetectRuntimePack();
 
             var readerOptions = MetadataReaderOptions.ApplyWindowsRuntimeProjections;
 

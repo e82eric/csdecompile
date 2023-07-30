@@ -11,7 +11,7 @@ public class IlSpySymbolInfoCommandBase
     {
         result.ParentAssemblyFullName = symbol.ParentModule.FullAssemblyName;
         result.ParentAssemblyName = symbol.ParentModule.Name;
-        result.TargetFramework = symbol.ParentModule.PEFile?.DetectTargetFrameworkId();
+        result.TargetFramework = symbol.ParentModule.PEFile?.DetectTargetFrameworkId2();
         result.FilePath = symbol.ParentModule.PEFile?.FileName;
         // AddIlSpyEntityCommonHeaderProperties(result, symbol);
         // AddIlSpyEntityCommonHeaderProperties(result, (ISymbol)symbol);

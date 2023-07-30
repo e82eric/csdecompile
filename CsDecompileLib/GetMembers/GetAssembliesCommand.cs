@@ -19,7 +19,7 @@ public class GetAssembliesCommand
         var fullNames = new List<Assembly>();
         foreach (var assembly in assemblies)
         {
-            var frameworkId = assembly.DetectTargetFrameworkId();
+            var frameworkId = assembly.DetectTargetFrameworkId2();
             var assemblyPoco = new Assembly()
             {
                 FilePath = assembly.FileName,
