@@ -163,6 +163,7 @@
         <Compile Include="ExternalSource\GotoDefinition\ExternalGotoDefinitionMethodWithGenericRefParameterTests.cs" />
         <Compile Include="ExternalSource\GotoDefinition\ExternalGotoDefinitionMethodWithOutParameterTests.cs" />
         <Compile Include="ExternalSource\GotoDefinition\ExternalGotoDefinitionMethodWithParamsTests.cs" />
+        <Compile Include="ExternalSource\GotoDefinition\ExternalGotoDefinitionOfMethodParameterTests.cs" />
         <Compile Include="ExternalSource\GotoDefinition\ExternalGotoDefinitionPropertyTests.cs" />
         <Compile Include="ExternalSource\GotoDefinition\ExternalGotoDefinitionTestBase.cs" />
         <Compile Include="ExternalSource\GotoDefinition\ExternalGotoDefinitionVariableTests.cs" />

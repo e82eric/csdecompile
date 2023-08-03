@@ -7,7 +7,7 @@ public class ExternalGotoDefinitionVariableTests : ExternalGotoDefinitionTestBas
 {
     private static string FilePath =
         TestHarness.GetLibraryThatReferencesLibraryFilePath("ExternalGotoDefinitionVariableCaller.cs");
-    
+
     [Test]
     public void SetValue()
     {
