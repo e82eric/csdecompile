@@ -1,5 +1,7 @@
 ﻿using CsDecompileLib.FindImplementations;
+using CsDecompileLib.GotoDefinition;
 using CsDecompileLib.IlSpy;
+using ICSharpCode.Decompiler.CSharp.Syntax;
 using ICSharpCode.Decompiler.TypeSystem;
 
 namespace CsDecompileLib
@@ -30,6 +32,20 @@ namespace CsDecompileLib
             }
             else
             {
+                if(node.Parent.Role.ToString() == "Import" || node.Parent.Role.ToString() == "Target")
+                {
+                    var namespaceString = node.Parent.ToString();
+                    var currentNode = node.Parent;
+                    while (currentNode.Parent != null)
+                    {
+                        if (currentNode is UsingDeclaration usingNode)
+                        {
+                            return _commandFactory.GetForNamespace(namespaceString);
+                        }
+
+                        currentNode = currentNode.Parent;
+                    }
+                }
                 var symbolAtLocation = _symbolFinder.FindSymbolFromNode(node);
                 switch (symbolAtLocation)
                 {

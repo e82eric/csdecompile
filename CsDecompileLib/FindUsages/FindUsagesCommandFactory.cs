@@ -28,6 +28,11 @@ public class FindUsagesCommandFactory : ExternalAssembliesFindUsagesCommandFacto
         _csDecompileWorkspace = csDecompileWorkspace;
     }
 
+    public INavigationCommand<FindImplementationsResponse> GetForNamespace(string namespaceString)
+    {
+        throw new System.NotImplementedException();
+    }
+
     public INavigationCommand<FindImplementationsResponse> GetForInSource(ISymbol roslynSymbol)
     {
         var result = new RoslynFindUsagesCommand(roslynSymbol, _csDecompileWorkspace);

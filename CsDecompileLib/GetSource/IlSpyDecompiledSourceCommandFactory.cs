@@ -18,7 +18,7 @@ namespace CsDecompileLib.GetSource
         public ResponsePacket<DecompiledSourceResponse> Find(DecompiledSourceRequest request)
         {
             var symbol = _ilSpySymbolFinder.FindTypeDefinition(
-                request.AssemblyFilePath,
+                request.ParentAssemblyFilePath,
                 request.ContainingTypeFullName);
             var decompiler = _decompilerFactory.Get(symbol.ParentModule.PEFile.FileName);
             
@@ -28,6 +28,7 @@ namespace CsDecompileLib.GetSource
             {
                 Location = new DecompileInfo
                 {
+                    ParentAssemblyFilePath = request.ParentAssemblyFilePath,
                     AssemblyFilePath = request.AssemblyFilePath,
                     AssemblyName = null,
                     Column = request.Column,

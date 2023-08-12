@@ -39,11 +39,18 @@ public class Decompiler
         return (syntaxTree, source);
     }
 
-    public (SyntaxTree, string) Run(string rootTypeFullName)
+    public SyntaxTree Run(string rootTypeFullName)
     {
         var rootType = _decompilerTypeSystem.FindType(new FullTypeName(rootTypeFullName)) as ITypeDefinition;
-        var result = Run(rootType);
-        return result;
+        var rootTypeDefinitionHandle = rootType.MetadataToken;
+
+        var stringWriter = new StringWriter();
+        var tokenWriter = TokenWriter.CreateWriterThatSetsLocationsInAST(stringWriter, "  ");
+
+        var syntaxTree = _decompiler.DecompileTypes(new[] { (TypeDefinitionHandle)rootTypeDefinitionHandle });
+        syntaxTree.AcceptVisitor(new CSharpOutputVisitor(tokenWriter, _decompilerSettings.CSharpFormattingOptions));
+
+        return syntaxTree;
     }
 
     public (SyntaxTree, string) DecompileWholeModule()

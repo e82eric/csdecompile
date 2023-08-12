@@ -1,6 +1,7 @@
-﻿using NUnit.Framework;
+﻿using System.Collections.Generic;
+using System.Linq;
+using NUnit.Framework;
 using CsDecompileLib;
-using CsDecompileLib.GotoDefinition;
 
 namespace IntegrationTests;
 
@@ -13,6 +14,43 @@ public class ExternalGotoDefinitionTestBase : ExternalTestBase
     public ExternalGotoDefinitionTestBase(StdIoClient stdIoClient) : base(stdIoClient)
     {
     }
+
+    protected void SendRequestAndAssertLocations(
+        string filePath,
+        int column,
+        int line,
+        IEnumerable<(LocationType type, string value, string shortTypeName)> expected)
+    {
+        var decompiledLocationRequest = new DecompiledLocationRequest
+        {
+            FileName = filePath,
+            Column = column,
+            Type = LocationType.SourceCode,
+            Line = line
+        };
+
+        var request = new CommandPacket<DecompiledLocationRequest>
+        {
+            Command = Endpoints.DecompileGotoDefinition,
+            Arguments = decompiledLocationRequest,
+        };
+
+        var response =
+            IoClient.ExecuteCommand<DecompiledLocationRequest, FindImplementationsResponse>(request);
+
+        Assert.AreEqual(expected.Count(), response.Body.Implementations.Count());
+
+        foreach (var expectedLocation in expected)
+        {
+            var found = response.Body.Implementations.Where(
+                e => e.Type == expectedLocation.type &&
+                     e.ContainingTypeShortName == expectedLocation.shortTypeName &&
+                     e.SourceText == expectedLocation.value);
+
+            Assert.NotNull(found);
+        }
+    }
+
     protected void SendRequestAndAssertLine(
         string filePath,
         int column,
@@ -148,16 +186,12 @@ public class ExternalGotoDefinitionTestBase : ExternalTestBase
         string expected,
         string containingTypeFullName)
     {
-        var response = IoClient
-            .ExecuteCommand<DecompiledLocationRequest, GotoDefinitionResponse>(request);
+        var sourceResponse = GotoDefinitionHelper.Run(IoClient, request);
 
-        Assert.True(response.Success);
-        Assert.AreEqual(response.Body.Location.Type, LocationType.Decompiled);
-        var decompileInfo = (DecompileInfo)response.Body.Location;
+        var lines = GetLines(sourceResponse.Body.SourceText);
 
-        var lines = GetLines(response.Body.SourceText);
-        var sourceLine = lines[decompileInfo.Line - 1].Trim();
+        var sourceLine = lines[sourceResponse.Body.Location.Line - 1].Trim();
         Assert.AreEqual(expected, sourceLine);
-        Assert.AreEqual(containingTypeFullName, decompileInfo.ContainingTypeFullName);
+        Assert.AreEqual(containingTypeFullName, sourceResponse.Body.Location.ContainingTypeFullName);
     }
 }

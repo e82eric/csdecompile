@@ -98,6 +98,7 @@
         <Compile Include="ExternalGotoDefinitionMethodWithGenericRefParameterTarget.cs" />
         <Compile Include="ExternalGotoDefinitionMethodWithOutParameterTarget.cs" />
         <Compile Include="ExternalGotoDefinitionMethodWithParamsTarget.cs" />
+        <Compile Include="ExternalGotoDefinitionNamespaceTarget.cs" />
         <Compile Include="ExternalGotoDefinitionOfLambdaParameterTarget.cs" />
         <Compile Include="ExternalGotoDefinitionOfLocalFunctionParameterTarget.cs" />
         <Compile Include="ExternalGotoDefinitionOfMethodParameterTarget.cs" />

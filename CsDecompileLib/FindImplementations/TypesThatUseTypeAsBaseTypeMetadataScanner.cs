@@ -23,13 +23,13 @@ public class TypesThatUseTypeAsBaseTypeMetadataScanner : IMetadataUsagesScanner<
         foreach (var type in types)
         {
             var parentType = SymbolHelper.FindContainingType(type);
-            if (!alreadyAddedParents.Contains(parentType.FullName))
+            if (!alreadyAddedParents.Contains(parentType.ReflectionName))
             {
                 var usedByType = ScanType(analyzedSymbol, type);
                 if (usedByType)
                 {
                     result.Add(parentType);
-                    alreadyAddedParents.Add(parentType.FullName);
+                    alreadyAddedParents.Add(parentType.ReflectionName);
                 }
             }
         }

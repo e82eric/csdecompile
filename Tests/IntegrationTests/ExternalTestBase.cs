@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Text.RegularExpressions;
-using NUnit.Framework;
 using CsDecompileLib;
-using CsDecompileLib.GotoDefinition;
 
 namespace IntegrationTests;
 
@@ -112,14 +110,10 @@ public class ExternalTestBase : TestBase
             Command = command,
             Arguments = requestArguments
         };
-        var targetClasResponse = IoClient
-            .ExecuteCommand<DecompiledLocationRequest, GotoDefinitionResponse>(request);
 
-        Assert.True(targetClasResponse.Success);
-        Assert.AreEqual(targetClasResponse.Body.Location.Type, LocationType.Decompiled);
-        var decompileInfo = (DecompileInfo)targetClasResponse.Body.Location;
+        var sourceResponse = GotoDefinitionHelper.Run(IoClient, request);
 
-        var targetLines = GetLines(targetClasResponse.Body.SourceText);
+        var targetLines = GetLines(sourceResponse.Body.SourceText);
         
         var lineText = targetLines.FirstOrDefault(line =>
         {
@@ -135,9 +129,9 @@ public class ExternalTestBase : TestBase
         var decompiledLocationRequest = new DecompiledLocationRequest
         {
             FileName = null,
-            AssemblyFilePath = decompileInfo.AssemblyFilePath,
-            ParentAssemblyFilePath = decompileInfo.ParentAssemblyFilePath,
-            ContainingTypeFullName = decompileInfo.ContainingTypeFullName,
+            AssemblyFilePath = ((DecompileInfo)sourceResponse.Body.Location).AssemblyFilePath,
+            ParentAssemblyFilePath = ((DecompileInfo)sourceResponse.Body.Location).ParentAssemblyFilePath,
+            ContainingTypeFullName = ((DecompileInfo)sourceResponse.Body.Location).ContainingTypeFullName,
             Column = newColumn,
             Type = LocationType.Decompiled,
             Line = newLine

@@ -56,7 +56,7 @@ public class SearchMembersHandler : HandlerBase<MemberSearchRequest, FindImpleme
         foreach (var roslynSymbol in roslynSymbols)
         {
             var sourceFileInfo = roslynSymbol.GetSourceLineInfo(_csDecompileWorkspace);
-            sourceFileInfo.ContainingTypeShortName = GetShortName(roslynSymbol);
+            sourceFileInfo.ContainingTypeShortName = RoslynSymbolHelpers.GetShortName(roslynSymbol);
             body.Implementations.Add(sourceFileInfo);
         }
 
@@ -84,19 +84,5 @@ public class SearchMembersHandler : HandlerBase<MemberSearchRequest, FindImpleme
         var result = ResponsePacket.Ok(body);
 
         return result;
-    }
-    private string GetShortName(ISymbol enclosingSymbol)
-    {
-        string shortName = null;
-        if (enclosingSymbol.ContainingType != null)
-        {
-            shortName = enclosingSymbol.ContainingType.Name;
-        }
-        else
-        {
-            shortName = enclosingSymbol.Name;
-        }
-
-        return shortName;
     }
 }

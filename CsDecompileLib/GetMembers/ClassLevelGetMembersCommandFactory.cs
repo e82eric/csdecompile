@@ -26,7 +26,7 @@ public class ClassLevelGetMembersCommandFactory : INavigationCommandFactory<INav
             request.ContainingTypeFullName);
         
         var decompiler = _decompilerFactory.Get(containingTypeDefinition.ParentModule.PEFile.FileName);
-        var (syntaxTree, _) = decompiler.Run(request.ContainingTypeFullName);
+        var syntaxTree = decompiler.Run(request.ContainingTypeFullName);
         var node = _symbolFinder.GetNodeAt(syntaxTree, request.Line, request.Column);
         ITypeDefinition typeDefinition;
         if (node == null)

@@ -33,13 +33,13 @@ public class IlSpyUsagesFinderBase<T>: IlSpyToSourceInfoBase
         Parallel.ForEach(typesThatUseType, new ParallelOptions {MaxDegreeOfParallelism = 25} , typeToDecompile =>
         {
             var decompiledTypeDefinition = DecompileTypeDefinition(typeToDecompile);
-            decompiledTypeDefinitions.TryAdd(typeToDecompile.FullName, decompiledTypeDefinition);
+            decompiledTypeDefinitions.TryAdd(typeToDecompile.ReflectionName, decompiledTypeDefinition);
         });
 
         foreach (var typeToSearch in typesThatUseType)
         {
             if (decompiledTypeDefinitions.TryGetValue(
-                    typeToSearch.FullName,
+                    typeToSearch.ReflectionName,
                     out (SyntaxTree syntaxTree, string sourceText) decompiledParentType))
             {
                 var usages = _usageFinder.Find(

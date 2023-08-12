@@ -34,6 +34,7 @@ public class IlSpyToSourceInfoBase
         target.ContainingTypeShortName = containingType.Name;
         target.AssemblyFilePath = containingType.Compilation.MainModule.PEFile.FileName;
         target.NamespaceName = containingType.Namespace;
+        target.ParentAssemblyFilePath = containingType.ParentModule.PEFile.FileName;
     }
 
     protected void MapToSourceInfos(

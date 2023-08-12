@@ -134,7 +134,7 @@ internal static class HandlerFactory
         return result;
     }
 
-    public static NavigationHandlerBase<DecompiledLocationRequest, GotoDefinitionResponse> CreateGoToDefinitionHandler()
+    public static NavigationHandlerBase<DecompiledLocationRequest, FindImplementationsResponse> CreateGoToDefinitionHandler()
     {
         var decompilerFactory = new DecompilerFactory(_decompilerTypeSystemFactory);
         var ilSpySymbolFinder = new IlSpySymbolFinder(_decompilerTypeSystemFactory);
@@ -149,30 +149,36 @@ internal static class HandlerFactory
         var fieldInTypeFinder = new FieldNodeInTypeAstFinder();
         var ilSpyFieldFinder = new IlSpyDefinitionFinderBase<IField>(fieldInTypeFinder, typeInTypeFinder, decompilerFactory);
         var gotoDefinitionCommandFactory = new GotoDefinitionCommandFactory(
-            ilSpyTypeFinder, ilSpyMemberFinder, ilSpyPropertyFinder, ilSpyEventFinder, ilSpyFieldFinder);
-        var roslynSymbolInfoFinder = new RoslynLocationCommandFactory<INavigationCommand<GotoDefinitionResponse>>(
+            ilSpyTypeFinder,
+            ilSpyMemberFinder,
+            ilSpyPropertyFinder,
+            ilSpyEventFinder,
+            ilSpyFieldFinder,
+            GetAllTypesRepository2(),
+            new RoslynAllTypesRepository(_workspace));
+        var roslynSymbolInfoFinder = new RoslynLocationCommandFactory<INavigationCommand<FindImplementationsResponse>>(
             _workspace,
             ilSpySymbolFinder,
             gotoDefinitionCommandFactory);
         var memberInTypeFinder = new MemberNodeInTypeAstFinder();
-        var assemblyLevelVariableCommandProvider = new AssemblyLevelVariableCommandProvider<INavigationCommand<GotoDefinitionResponse>>(
+        var assemblyLevelVariableCommandProvider = new AssemblyLevelVariableCommandProvider<INavigationCommand<FindImplementationsResponse>>(
             decompilerFactory,
             memberInTypeFinder,
             ilSpySymbolFinder,
             gotoDefinitionCommandFactory);
-        var classLevelVariableCommandProvider = new ClassLevelVariableCommandProvider<INavigationCommand<GotoDefinitionResponse>>(
+        var classLevelVariableCommandProvider = new ClassLevelVariableCommandProvider<INavigationCommand<FindImplementationsResponse>>(
             ilSpySymbolFinder,
             gotoDefinitionCommandFactory,
             decompilerFactory);
-        var classLevelCommandFactory = new IlSpyCommandFactory<INavigationCommand<GotoDefinitionResponse>>(
+        var classLevelCommandFactory = new IlSpyCommandFactory<INavigationCommand<FindImplementationsResponse>>(
             classLevelVariableCommandProvider,
             gotoDefinitionCommandFactory,
             ilSpySymbolFinder);
-        var assemblyLevelCommandFactory = new IlSpyCommandFactory<INavigationCommand<GotoDefinitionResponse>>(
+        var assemblyLevelCommandFactory = new IlSpyCommandFactory<INavigationCommand<FindImplementationsResponse>>(
             assemblyLevelVariableCommandProvider,
             gotoDefinitionCommandFactory,
             ilSpySymbolFinder);
-        var result = new NavigationHandlerBase<DecompiledLocationRequest, GotoDefinitionResponse>(
+        var result = new NavigationHandlerBase<DecompiledLocationRequest, FindImplementationsResponse>(
             roslynSymbolInfoFinder,
             classLevelCommandFactory,
             assemblyLevelCommandFactory);
@@ -322,15 +328,21 @@ internal static class HandlerFactory
 
     public static GetTypesHandler CreateGetTypesHandlers()
     {
-        var allTypesRepository = GetAllTypesRepository();
+        var allTypesRepository = GetAllTypesRepository2();
         var result = new GetTypesHandler(allTypesRepository);
         return result;
     }
 
     private static AllTypesRepository GetAllTypesRepository()
     {
+        var allTypesRepository = new AllTypesRepository(_decompileWorkspace);
+        return allTypesRepository;
+    }
+
+    private static IlSpyTypesInReferencesSearcher GetAllTypesRepository2()
+    {
         var assemblyResolverFactory = new AssemblyResolverFactory(_peFileCache);
-        var allTypesRepository = new AllTypesRepository(_decompileWorkspace, assemblyResolverFactory);
+        var allTypesRepository = new IlSpyTypesInReferencesSearcher(_decompileWorkspace, assemblyResolverFactory);
         return allTypesRepository;
     }
 

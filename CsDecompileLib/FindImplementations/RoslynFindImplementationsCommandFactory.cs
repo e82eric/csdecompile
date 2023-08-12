@@ -19,6 +19,11 @@ public class RoslynFindImplementationsCommandFactory : IlSpyFindImplementationsC
         _csDecompileWorkspace = csDecompileWorkspace;
     }
 
+    public INavigationCommand<FindImplementationsResponse> GetForNamespace(string namespaceString)
+    {
+        throw new System.NotImplementedException();
+    }
+
     public INavigationCommand<FindImplementationsResponse> GetForEnumField(IField field, string projectAssemblyFilePath)
     {
         throw new System.NotImplementedException();

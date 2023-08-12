@@ -250,7 +250,7 @@ internal static class RoslynSymbolHelpers
         return result;
     }
     
-    private static string GetShortName(ISymbol enclosingSymbol)
+    public static string GetShortName(ISymbol enclosingSymbol)
     {
         string shortName = null;
         if (enclosingSymbol.ContainingType != null)

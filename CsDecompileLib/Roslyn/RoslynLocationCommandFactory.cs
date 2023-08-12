@@ -48,6 +48,11 @@ namespace CsDecompileLib.Roslyn
                 return symbolNotFoundAtLocationCommand;
             }
 
+            if (roslynSymbol.Kind == SymbolKind.Namespace)
+            {
+                return _gotoDefinitionCommandFactory.GetForNamespace(roslynSymbol.ToString());
+            }
+
             TCommandType result = default;
 
             if (roslynSymbol.Locations.First().IsInSource)
@@ -116,7 +121,7 @@ namespace CsDecompileLib.Roslyn
 
             return symbol switch
             {
-                INamespaceSymbol => null,
+                INamespaceSymbol => symbol,
                 // Always prefer the partial implementation over the definition
                 IMethodSymbol { IsPartialDefinition: true, PartialImplementationPart: var impl } => impl,
                 // Don't return property getters/settings/initers

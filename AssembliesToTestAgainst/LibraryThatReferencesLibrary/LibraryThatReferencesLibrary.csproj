@@ -89,6 +89,7 @@
         <Compile Include="ExternalGotoDefinitionMethodWithGenericRefParameterUser.cs" />
         <Compile Include="ExternalGotoDefinitionMethodWithOutParameterUser.cs" />
         <Compile Include="ExternalGotoDefinitionMethodWithParamsUser.cs" />
+        <Compile Include="ExternalGotoDefinitionNamespaceUser.cs" />
         <Compile Include="ExternalGotoDefinitionOfLambdaParameterUser.cs" />
         <Compile Include="ExternalGotoDefinitionOfLocalFunctionParameterUser.cs" />
         <Compile Include="ExternalGotoDefinitionOfMethodParameterUser.cs" />
@@ -121,6 +122,8 @@
         <Compile Include="InSourceGotoDefinitionMethodWithGenericOutParametersUser.cs" />
         <Compile Include="InSourceGotoDefinitionMethodWithGenericParameters.cs" />
         <Compile Include="InSourceGotoDefinitionMethodWithGenericParametersUser.cs" />
+        <Compile Include="InSourceGotoDefinitionNamespaceTarget.cs" />
+        <Compile Include="InSourceGotoDefinitionNamespaceUser.cs" />
         <Compile Include="InSourceGotoDefinitionPropertyCaller.cs" />
         <Compile Include="InSourceGotoDefinitionPropertyTarget.cs" />
         <Compile Include="InSourceGotoDefinitionSymbolNotFoundAtLocationTarget.cs" />

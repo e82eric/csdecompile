@@ -53,6 +53,7 @@ public class AddExternalDirectoryTestBase : ExternalTestBase
             Command = Endpoints.DecompiledSource,
             Arguments = new DecompiledSourceRequest
             {
+                ParentAssemblyFilePath = foundTypeInfo.ParentAssemblyFilePath,
                 AssemblyFilePath = foundTypeInfo.AssemblyFilePath,
                 Column = foundTypeInfo.Column,
                 Line = foundTypeInfo.Line,
@@ -123,6 +124,7 @@ public class AddExternalDirectoryTestBase : ExternalTestBase
             Command = Endpoints.DecompiledSource,
             Arguments = new DecompiledSourceRequest
             {
+                ParentAssemblyFilePath = decompileInfo.ParentAssemblyFilePath,
                 AssemblyFilePath = decompileInfo.AssemblyFilePath,
                 ContainingTypeFullName = decompileInfo.ContainingTypeFullName,
                 Column = decompileInfo.Column,

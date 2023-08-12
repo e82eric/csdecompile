@@ -102,6 +102,7 @@ public class AllTypesRepositoryByName
                         {
                             var decompileInfo = new DecompileInfo
                             {
+                                ParentAssemblyFilePath = peFile.FileName,
                                 AssemblyFilePath = peFile.FileName,
                                 AssemblyName = peFile.FullName,
                                 Column = 1,

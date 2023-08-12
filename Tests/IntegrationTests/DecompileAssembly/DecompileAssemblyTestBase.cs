@@ -158,6 +158,7 @@ public class DecompileAssemblyTestBase : ExternalTestBase
             Command = Endpoints.DecompiledSource,
             Arguments = new DecompiledSourceRequest
             {
+                ParentAssemblyFilePath = decompileInfo.ParentAssemblyFilePath,
                 AssemblyFilePath = decompileInfo.AssemblyFilePath,
                 ContainingTypeFullName = decompileInfo.ContainingTypeFullName,
                 Column = decompileInfo.Column,
@@ -174,17 +175,9 @@ public class DecompileAssemblyTestBase : ExternalTestBase
     
     private void RequestAndCompareGotoDefinition(CommandPacket<DecompiledLocationRequest> request, string expected)
     {
-        var response = TestHarness.IoClient
-            .ExecuteCommand<DecompiledLocationRequest, GotoDefinitionResponse>(request);
-
-        Assert.True(response.Success);
-
-        Assert.True(response.Success);
-        Assert.AreEqual(response.Body.Location.Type, LocationType.Decompiled);
-        var decompileInfo = (DecompileInfo)response.Body.Location;
-
-        var lines = GetLines(response.Body.SourceText);
-        var sourceLine = lines[decompileInfo.Line - 1].Trim();
+        var sourceResponse = GotoDefinitionHelper.Run(IoClient, request);
+        var lines = GetLines(sourceResponse.Body.SourceText);
+        var sourceLine = lines[sourceResponse.Body.Location.Line - 1].Trim();
         Assert.AreEqual(expected, sourceLine);
     }
     

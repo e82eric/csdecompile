@@ -281,6 +281,7 @@
         <Compile Include="FindUsages\TypeUsedInTypeFinder.cs" />
         <Compile Include="FindUsages\VariableInMethodBodyFinder.cs" />
         <Compile Include="GetMembers\AllTypesRepository.cs" />
+        <Compile Include="GetMembers\IlSpyTypesInReferencesSearcher.cs" />
         <Compile Include="GetMembers\AllTypesRepositoryByName.cs" />
         <Compile Include="GetMembers\Assembly.cs" />
         <Compile Include="GetMembers\AssemblyLevelGetMembersCommandFactory.cs" />
@@ -305,6 +306,8 @@
         <Compile Include="GetMembers\ITypeMembersFinder.cs" />
         <Compile Include="GetMembers\MemberSearcher.cs" />
         <Compile Include="GetMembers\MemberSearchRequest.cs" />
+        <Compile Include="GetMembers\PEMetadataHelper.cs" />
+        <Compile Include="GetMembers\RoslynAllTypesRepository.cs" />
         <Compile Include="GetMembers\RoslynGetTypeMembersCommand.cs" />
         <Compile Include="GetMembers\RoslynGetTypeMembersCommandFactory.cs" />
         <Compile Include="GetMembers\SearchMembersHandler.cs" />
@@ -318,6 +321,7 @@
         <Compile Include="GetSymbolInfo\SymbolInfoExtensions.cs" />
         <Compile Include="GetSymbolInfo\UnresolvedMemberSymbolInfoCommand.cs" />
         <Compile Include="GetSymbolInfo\UnresolvedTypeSymbolInfoCommand.cs" />
+        <Compile Include="GotoDefinition\EverywhereGoToNamespaceDefinitionCommand.cs" />
         <Compile Include="GotoDefinition\GotoDefinitionResponse.cs" />
         <Compile Include="GotoDefinition\GotoDefinitionCommandFactory.cs" />
         <Compile Include="GotoDefinition\GoToDefinitionCommand.cs" />

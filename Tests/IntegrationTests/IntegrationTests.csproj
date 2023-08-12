@@ -163,12 +163,14 @@
         <Compile Include="ExternalSource\GotoDefinition\ExternalGotoDefinitionMethodWithGenericRefParameterTests.cs" />
         <Compile Include="ExternalSource\GotoDefinition\ExternalGotoDefinitionMethodWithOutParameterTests.cs" />
         <Compile Include="ExternalSource\GotoDefinition\ExternalGotoDefinitionMethodWithParamsTests.cs" />
+        <Compile Include="ExternalSource\GotoDefinition\ExternalGotoDefinitionNamespaceTests.cs" />
         <Compile Include="ExternalSource\GotoDefinition\ExternalGotoDefinitionOfLambdaParameterTests.cs" />
         <Compile Include="ExternalSource\GotoDefinition\ExternalGotoDefinitionOfLocalFunctionParameterTests.cs" />
         <Compile Include="ExternalSource\GotoDefinition\ExternalGotoDefinitionOfMethodParameterTests.cs" />
         <Compile Include="ExternalSource\GotoDefinition\ExternalGotoDefinitionPropertyTests.cs" />
         <Compile Include="ExternalSource\GotoDefinition\ExternalGotoDefinitionTestBase.cs" />
         <Compile Include="ExternalSource\GotoDefinition\ExternalGotoDefinitionVariableTests.cs" />
+        <Compile Include="ExternalSource\GotoDefinition\GotoDefinitionHelper.cs" />
         <Compile Include="ExternalTestBase.cs" />
         <Compile Include="CommandPacket.cs" />
         <Compile Include="InSourceGetSymbolInfoBase.cs" />
@@ -184,6 +186,7 @@
         <Compile Include="InSource\GetTypeMembers\GetTypeMembersTests.cs" />
         <Compile Include="InSource\GotoDefinition\InSourceGotoDefinitionMethodWithGenericOutParametersTests.cs" />
         <Compile Include="InSource\GotoDefinition\InSourceGotoDefinitionMethodWithGenericParametersTests.cs" />
+        <Compile Include="InSource\GotoDefinition\InSourceGotoDefinitionNamespaceTests.cs" />
         <Compile Include="InSource\GotoDefinition\InSourceNestedClassGotoDefinitionTests.cs" />
         <Compile Include="Models\DecompiledFindImplementationsResponse.cs" />
         <Compile Include="ResponseLocationConverter.cs" />

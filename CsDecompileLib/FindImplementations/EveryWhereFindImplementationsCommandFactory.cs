@@ -92,6 +92,11 @@ public class EveryWhereFindImplementationsCommandFactory<TResponseType>
         return ilSpyCommand;
     }
 
+    public INavigationCommand<TResponseType> GetForNamespace(string namespaceString)
+    {
+        throw new NotImplementedException();
+    }
+
     public INavigationCommand<TResponseType> GetForEnumField(IField field, string projectAssemblyFilePath)
     {
         throw new NotImplementedException();

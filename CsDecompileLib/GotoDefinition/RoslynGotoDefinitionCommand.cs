@@ -5,7 +5,7 @@ using Microsoft.CodeAnalysis;
 
 namespace CsDecompileLib.GotoDefinition;
 
-public class RoslynGotoDefinitionCommand : INavigationCommand<GotoDefinitionResponse>
+public class RoslynGotoDefinitionCommand : INavigationCommand<FindImplementationsResponse>
 {
     private readonly ISymbol _symbol;
 
@@ -13,8 +13,8 @@ public class RoslynGotoDefinitionCommand : INavigationCommand<GotoDefinitionResp
     {
         _symbol = symbol;
     }
-        
-    public Task<ResponsePacket<GotoDefinitionResponse>> Execute()
+
+    public Task<ResponsePacket<FindImplementationsResponse>> Execute()
     {
         var lineSpan = _symbol.Locations.First().GetMappedLineSpan();
 
@@ -30,26 +30,30 @@ public class RoslynGotoDefinitionCommand : INavigationCommand<GotoDefinitionResp
             {
                 current = current.ContainingType;
             }
+
             containingTypeFullName = current?.GetMetadataName();
         }
 
-        var result = new GotoDefinitionResponse
+        var result = new FindImplementationsResponse
         {
-            Location = new SourceFileInfo
+            Implementations =
             {
-                FileName = lineSpan.Path,
-                Column = lineSpan.StartLinePosition.Character + 1,
-                Line = lineSpan.StartLinePosition.Line + 1,
-                ContainingTypeFullName = containingTypeFullName
-            },
+                new SourceFileInfo
+                {
+                    FileName = lineSpan.Path,
+                    Column = lineSpan.StartLinePosition.Character + 1,
+                    Line = lineSpan.StartLinePosition.Line + 1,
+                    ContainingTypeFullName = containingTypeFullName
+                }
+            }
         };
 
-        var response = new ResponsePacket<GotoDefinitionResponse>()
+        var response = new ResponsePacket<FindImplementationsResponse>()
         {
             Body = result,
             Success = true
         };
-        
+
         return Task.FromResult(response);
     }
 }

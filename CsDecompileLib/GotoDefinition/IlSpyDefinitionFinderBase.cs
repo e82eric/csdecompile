@@ -21,7 +21,7 @@ public class IlSpyDefinitionFinderBase<T> : IlSpyToSourceInfoBase where T : IEnt
         _decompilerFactory = decompilerFactory;
     }
         
-    public (DecompileInfo, string) Find(T eventSymbol)
+    public DecompileInfo Find(T eventSymbol)
     {
         var rootType = SymbolHelper.FindContainingType(eventSymbol);
 
@@ -42,7 +42,7 @@ public class IlSpyDefinitionFinderBase<T> : IlSpyToSourceInfoBase where T : IEnt
 
         var metadataSource = MapToSourceInfo(lines, foundUse, rootType);
         
-        return (metadataSource, decompiled.sourceText);
+        return metadataSource;
     }
         
     private (SyntaxTree syntaxTree, string sourceText) DecompileTypeDefinition(ITypeDefinition typeDefinition)

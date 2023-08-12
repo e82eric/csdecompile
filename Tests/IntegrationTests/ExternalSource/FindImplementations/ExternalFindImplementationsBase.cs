@@ -155,6 +155,7 @@ public class ExternalFindImplementationsBase : ExternalTestBase
             Command = Endpoints.DecompiledSource,
             Arguments = new DecompiledSourceRequest
             {
+                ParentAssemblyFilePath = decompileInfo.ParentAssemblyFilePath,
                 AssemblyFilePath = decompileInfo.AssemblyFilePath,
                 ContainingTypeFullName = decompileInfo.ContainingTypeFullName,
                 Column = decompileInfo.Column,

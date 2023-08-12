@@ -4,16 +4,17 @@ namespace CsDecompileLib.GetMembers;
 
 public class GetTypesHandler : HandlerBase<GetTypesRequest, FindImplementationsResponse>
 {
-    private readonly AllTypesRepository _typesRepository;
+    private readonly IlSpyTypesInReferencesSearcher _typesRepository;
 
-    public GetTypesHandler(AllTypesRepository typesRepository)
+    public GetTypesHandler(IlSpyTypesInReferencesSearcher typesRepository)
     {
         _typesRepository = typesRepository;
     }
     
-    public override Task<ResponsePacket<FindImplementationsResponse>> Handle(GetTypesRequest request)
+    public override async Task<ResponsePacket<FindImplementationsResponse>> Handle(GetTypesRequest request)
     {
-        var types = _typesRepository.GetAllTypes(request.SearchString);
+        var types = await _typesRepository.GetAllTypes( info => info.ContainingTypeShortName.Contains(request.SearchString));
+
         var body = new FindImplementationsResponse();
         foreach (var type in types)
         {
@@ -21,6 +22,6 @@ public class GetTypesHandler : HandlerBase<GetTypesRequest, FindImplementationsR
         }
 
         var result = ResponsePacket.Ok(body);
-        return Task.FromResult(result);
+        return result;
     }
 }

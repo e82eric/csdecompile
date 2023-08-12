@@ -315,6 +315,10 @@ M.StartNoSolution = function ()
 end
 
 M._sendStdIoRequest = function(request, callback, callbackData)
+  if M._state.Requests[M._state.NextSequence + 1] then
+    M._state.Requests[M._state.NextSequence + 1] = nil
+  end
+
 	local nextSequence = M._state.NextSequence + 1
 
 	local command = { Callback = callback, StartTime = os.time(), Data = callbackData, Name = request.Command, Status = 'Running' }
@@ -484,7 +488,7 @@ M.StartDecompileAssembly = function(filePath, assemblyName)
 end
 
 M._openAssembliesTelescope = function(data, resultHandler, state)
-  local base = _openAssembliesTelescopeBase(data, state)
+  local base = M._openAssembliesTelescopeBase(data)
   base.attach_mappings = function(prompt_bufnr, map)
     actions.select_default:replace(function()
       local selection = action_state.get_selected_entry()
@@ -502,7 +506,7 @@ M._openAssembliesTelescope = function(data, resultHandler, state)
 end
 
 M._openAssembliesTelescopeMultiSelect = function(data, resultHandler, state)
-  local base = M._openAssembliesTelescopeBase(data, state)
+  local base = M._openAssembliesTelescopeBase(data)
   base.attach_mappings = function(prompt_bufnr, map)
     actions.select_default:replace(function()
       local selection = action_state.get_selected_entry()
@@ -524,7 +528,7 @@ M._openAssembliesTelescopeMultiSelect = function(data, resultHandler, state)
   base:find()
 end
 
-M._openAssembliesTelescopeBase = function(data, state)
+M._openAssembliesTelescopeBase = function(data)
 	local widths = {
 		FullName = 0,
 		TargetFrameworkId = 0,
@@ -825,7 +829,7 @@ M.StartDecompileGotoDefinition = function()
   if M._checkNotRunning() then
     return
   end
-	M._decompileRequest('/gotodefinition', M.HandleDecompileGotoDefinitionResponse)
+	M._decompileRequest('/gotodefinition', M.HandleFindImplementations)
 end
 
 M.StartFindUsages = function()
@@ -875,6 +879,7 @@ M.StartRefreshBuffer = function()
 end
 
 M.StartGetDecompiledSource = function(
+  parentAssemblyFilePath,
 	assemblyFilePath,
 	containingTypeFullName,
 	line,
@@ -884,6 +889,7 @@ M.StartGetDecompiledSource = function(
 	local request = {
 		Command = "/decompiledsource",
 		Arguments = {
+      ParentAssemblyFilePath = parentAssemblyFilePath,
 			AssemblyFilePath = assemblyFilePath,
 			ContainingTypeFullName = containingTypeFullName,
 			Line = line,
@@ -962,6 +968,7 @@ M._openSourceFileOrDecompile = function(value)
 		vim.api.nvim_win_set_cursor(0, { value.Line, value.Column })
 	else
 		M.StartGetDecompiledSource(
+      value.ParentAssemblyFilePath,
 			value.AssemblyFilePath,
 			value.ContainingTypeFullName,
 			value.Line,
@@ -983,12 +990,14 @@ end
 
 M.HandleDecompileGotoDefinitionResponse = function(response)
 	local body = response.Body
-	local location = body.Location
-	local fileName = location.FileName
+  local location = body.Location
 
-	if location.Type == 1 then
+  if location.Type == 1 then
+    local location = body.Location
+    local fileName = location.FileName
 		M._openSourceFile(location)
 	else
+    local fileName = location.FileName
 		if response.Request_seq == M._state.CurrentSeq then
 			M._setBufferTextFromDecompiledSource(location, body.SourceText, 0, 0)
 		end
@@ -1344,6 +1353,7 @@ M._sourcePreviewer = previewers.new_buffer_previewer {
       local winid = self.state.winid
 
       M.StartGetDecompiledSource(
+      entry.value.ParentAssemblyFilePath,
       entry.value.AssemblyFilePath,
       entry.value.ContainingTypeFullName,
       entry.value.Line,

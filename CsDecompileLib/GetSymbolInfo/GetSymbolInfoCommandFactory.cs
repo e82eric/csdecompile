@@ -59,6 +59,11 @@ public class GetSymbolInfoCommandFactory : ICommandFactory<INavigationCommand<Sy
         return result;
     }
 
+    public INavigationCommand<SymbolInfo> GetForNamespace(string namespaceString)
+    {
+        throw new System.NotImplementedException();
+    }
+
     public INavigationCommand<SymbolInfo> GetForEnumField(IField field, string projectAssemblyFilePath)
     {
         throw new System.NotImplementedException();
