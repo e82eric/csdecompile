@@ -57,7 +57,7 @@ public class IlSpyTypeDefinitionSymbolInfoCommand : IlSpySymbolInfoCommandBase, 
 
         if (_symbol.DeclaringType != null)
         {
-            result.Properties.Add("ParentType", _symbol.DeclaringType);
+            result.Properties.Add("ParentType", _symbol.DeclaringType.ReflectionName);
         }
 
         AddIlSpyEntityCommonHeaderProperties(result, _symbol);
