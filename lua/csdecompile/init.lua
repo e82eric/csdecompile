@@ -820,7 +820,14 @@ end
 
 M.HandleGetAllTypes = function(response)
   M._openTelescope(response.Body.Implementations, M._createGetAllTypesDisplayer, M._sourcePreviewer, function(selection)
-      M._openSourceFileOrDecompile(selection)
+    local current_buffer = vim.fn.bufnr()
+    local variable_exists = vim.b.isSymoblWindow ~= nil
+
+    if variable_exists then
+      local winid = vim.api.nvim_get_current_win()
+      vim.api.nvim_win_close(winid, true)
+    end
+    M._openSourceFileOrDecompile(selection)
   end,
   'Search Types')
 end
@@ -829,7 +836,16 @@ M.StartDecompileGotoDefinition = function()
   if M._checkNotRunning() then
     return
   end
-	M._decompileRequest('/gotodefinition', M.HandleFindImplementations)
+
+  local current_buffer = vim.fn.bufnr()
+  local variable_exists = vim.b.isSymoblWindow ~= nil
+
+  if variable_exists then
+    local curword = vim.fn.expand('<cword>')
+    M.StartGetAllTypes(curword)
+  else
+    M._decompileRequest('/gotodefinition', M.HandleFindImplementations)
+  end
 end
 
 M.StartFindUsages = function()
@@ -932,7 +948,7 @@ end
 
 M.HandleGetTypeMembers = function(response)
   M._openTelescope(response.Body.Implementations, M._createUsagesDisplayer, M._sourcePreviewer, function(selection)
-      M._openSourceFileOrDecompile(selection)
+    M._openSourceFileOrDecompile(selection)
   end,
   'Type Members')
 end
@@ -1249,6 +1265,10 @@ end
 M._navigationFloatingWin = function(data)
   local buf = vim.api.nvim_create_buf(false, true)
 	vim.api.nvim_buf_set_option(buf, "bufhidden", "delete")
+	vim.api.nvim_buf_set_option(buf, "filetype", "cs")
+
+  local buffer = vim.fn.bufnr()
+  vim.api.nvim_buf_set_var(buf, "isSymoblWindow", "true")
 
 	vim.api.nvim_buf_set_keymap(
 		buf,
