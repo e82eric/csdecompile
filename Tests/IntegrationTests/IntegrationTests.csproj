@@ -183,6 +183,8 @@
         <Compile Include="InSource\FindUsages\InSourceFindUsagesSymbolNotFoundAtLocationTests.cs" />
         <Compile Include="InSource\FindUsages\InSourceNestedClassFindUsagesTests.cs" />
         <Compile Include="InSource\GetSymbolInfo\InSourceGetSymbolInfoTests.cs" />
+        <Compile Include="InSource\GetTypeMembers\GetInterfaceMembersTests.cs" />
+        <Compile Include="InSource\GetTypeMembers\GetMembersTestBase.cs" />
         <Compile Include="InSource\GetTypeMembers\GetTypeMembersTests.cs" />
         <Compile Include="InSource\GotoDefinition\InSourceGotoDefinitionMethodWithGenericOutParametersTests.cs" />
         <Compile Include="InSource\GotoDefinition\InSourceGotoDefinitionMethodWithGenericParametersTests.cs" />

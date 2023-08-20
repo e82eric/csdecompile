@@ -106,6 +106,7 @@
         <Compile Include="InSourceGetMembersTarget.cs" />
         <Compile Include="InSourceGetSymbolInfoCaller.cs" />
         <Compile Include="InSourceGetSymbolInfoTarget.cs" />
+        <Compile Include="InSourceGetInterfaceMembersTarget.cs" />
         <Compile Include="InSourceGotoDefinitionConstructorCaller.cs" />
         <Compile Include="InSourceGotoDefinitionConstructorTarget.cs" />
         <Compile Include="ExternalGotoDefinitionMethodCaller.cs" />
