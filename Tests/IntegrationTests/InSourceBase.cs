@@ -12,7 +12,7 @@ public class InSourceBase : TestBase
         string filePath,
         int column,
         int line,
-        IEnumerable<(LocationType type, string value, string shortTypeName)> expected)
+        IEnumerable<ExpectedImplementation> expected)
     {
         var request = new CommandPacket<DecompiledLocationRequest>
         {
@@ -28,31 +28,23 @@ public class InSourceBase : TestBase
         var response = TestHarness.IoClient
             .ExecuteCommand<DecompiledLocationRequest, FindImplementationsResponse>(request);
         Assert.True(response.Success);
-        Assert.AreEqual(expected.Count(), response.Body.Implementations.Count());
+        Assert.AreEqual(expected.Count(), response.Body.Implementations.Count);
 
-        foreach (var expectedLocation in expected)
-        {
-            var foundLocation = response.Body.Implementations.Where(
-                i => i.Type == expectedLocation.type &&
-                     i.ContainingTypeShortName == expectedLocation.shortTypeName &&
-                     i.SourceText == expectedLocation.value);
-            Assert.NotNull(foundLocation);
-        }
+        ImplementationAsserts.AssertSame(response, expected);
     }
+
     protected void RequestAndAssertCorrectLine(
         string filePath,
         int column,
         int line,
-        string expected,
-        string containingTypeFullName)
+        ExpectedImplementation expected)
     {
         RequestAndAssertCorrectLine(
             Endpoints.DecompileGotoDefinition,
             filePath,
             column,
             line,
-            expected,
-            containingTypeFullName);
+            expected);
     }
     
     protected void RequestAndAssertCorrectLine(
@@ -60,12 +52,11 @@ public class InSourceBase : TestBase
         string filePath,
         int column,
         int line,
-        string expected,
-        string containingTypeFullName)
+        ExpectedImplementation expected)
     {
         var response = ExecuteRequest<FindImplementationsResponse>(command, filePath, column, line);
 
-        AssertInSource(response, expected, containingTypeFullName);
+        AssertInSource(response, expected);
     }
 
     protected static ResponsePacket<T> ExecuteRequest<T>(string command, string filePath, int column, int line)
@@ -90,22 +81,17 @@ public class InSourceBase : TestBase
 
     private static void AssertInSource(
         ResponsePacket<FindImplementationsResponse> response,
-        string expected,
-        string containingTypeFullName)
+        ExpectedImplementation expected)
     {
         var implementations = response.Body.Implementations;
         Assert.AreEqual(1, implementations.Count);
         var location = implementations.First();
         Assert.AreEqual(location.Type, LocationType.SourceCode);
-        AssertInSourceLocation(location, expected, containingTypeFullName);
-    }
-    
-    private static void AssertInSourceLocation(ResponseLocation location, string expected, string containingTypeFullName)
-    {
-        var lines = InSourceGetLines(location);
-        var line = lines[location.Line - 1].Trim();
 
-        Assert.AreEqual(expected, line);
-        Assert.AreEqual(containingTypeFullName, location.ContainingTypeFullName);
+        ImplementationAsserts.AssertSame(response, new []{ expected});
+
+        var lines = InSourceGetLines(response.Body.Implementations.First());
+        var line = lines[location.Line - 1].Trim();
+        Assert.AreEqual(expected.Line, line);
     }
 }

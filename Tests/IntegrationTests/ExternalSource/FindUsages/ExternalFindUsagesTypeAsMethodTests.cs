@@ -17,15 +17,18 @@ public class ExternalFindUsagesTypeAsMethodTests : ExternalFindUsagesTestBase
             line: 10,
             expected: new []
             {
-                (LocationType.SourceCode,
+                new ExpectedImplementation(LocationType.SourceCode,
                     "new ExternalFindUsagesMethodTarget().ExternalBasicMethod();",
-                    "ExternalFindUsagesMethodCaller"),
-                (LocationType.Decompiled,
+                    "ExternalFindUsagesMethodCaller",
+                    "LibraryThatReferencesLibrary.ExternalFindUsagesMethodCaller"),
+                new ExpectedImplementation(LocationType.Decompiled,
                     "new ExternalFindUsagesMethodTarget().ExternalBasicMethod();",
-                    "ExternalFindUsagesMethodUser"),
-                (LocationType.Decompiled,
+                    "ExternalFindUsagesMethodUser",
+                    "LibraryThatJustReferencesFramework.ExternalFindUsagesMethodUser"),
+                new ExpectedImplementation(LocationType.Decompiled,
                     "Run1(new ExternalFindUsagesMethodTarget().ExternalBasicMethod);",
-                    "ExternalFindUsagesMethodUser"),
+                    "ExternalFindUsagesMethodUser",
+                    "LibraryThatJustReferencesFramework.ExternalFindUsagesMethodUser"),
             });
     }
     [Test]
@@ -38,15 +41,18 @@ public class ExternalFindUsagesTypeAsMethodTests : ExternalFindUsagesTestBase
             line: 11,
             expected: new []
             {
-                (LocationType.SourceCode,
+                new ExpectedImplementation(LocationType.SourceCode,
                     "new ExternalFindUsagesMethodTarget().ExternalBasicMethod(string.Empty);",
-                    "ExternalFindUsagesMethodCaller"),
-                (LocationType.Decompiled,
+                    "ExternalFindUsagesMethodCaller",
+                    "LibraryThatReferencesLibrary.ExternalFindUsagesMethodCaller"),
+                new ExpectedImplementation(LocationType.Decompiled,
                     "new ExternalFindUsagesMethodTarget().ExternalBasicMethod(string.Empty);",
-                    "ExternalFindUsagesMethodUser"),
-                (LocationType.Decompiled,
+                    "ExternalFindUsagesMethodUser",
+                    "LibraryThatJustReferencesFramework.ExternalFindUsagesMethodUser"),
+                new ExpectedImplementation(LocationType.Decompiled,
                     "Run2(new ExternalFindUsagesMethodTarget().ExternalBasicMethod);",
-                    "ExternalFindUsagesMethodUser"),
+                    "ExternalFindUsagesMethodUser",
+                    "LibraryThatJustReferencesFramework.ExternalFindUsagesMethodUser"),
             });
     }
     [Test]
@@ -59,15 +65,18 @@ public class ExternalFindUsagesTypeAsMethodTests : ExternalFindUsagesTestBase
             line: 12,
             expected: new []
             {
-                (LocationType.SourceCode,
+                new ExpectedImplementation(LocationType.SourceCode,
                     "new ExternalFindUsagesMethodTarget().ExternalBasicMethod(String.Empty, String.Empty);",
-                    "ExternalFindUsagesMethodCaller"),
-                (LocationType.Decompiled,
+                    "ExternalFindUsagesMethodCaller",
+                    "LibraryThatReferencesLibrary.ExternalFindUsagesMethodCaller"),
+                new ExpectedImplementation(LocationType.Decompiled,
                     "new ExternalFindUsagesMethodTarget().ExternalBasicMethod(string.Empty, string.Empty);",
-                    "ExternalFindUsagesMethodUser"),
-                (LocationType.Decompiled,
+                    "ExternalFindUsagesMethodUser",
+                    "LibraryThatJustReferencesFramework.ExternalFindUsagesMethodUser"),
+                new ExpectedImplementation(LocationType.Decompiled,
                     "Run3(new ExternalFindUsagesMethodTarget().ExternalBasicMethod);",
-                    "ExternalFindUsagesMethodUser"),
+                    "ExternalFindUsagesMethodUser",
+                    "LibraryThatJustReferencesFramework.ExternalFindUsagesMethodUser"),
             });
     }
 }

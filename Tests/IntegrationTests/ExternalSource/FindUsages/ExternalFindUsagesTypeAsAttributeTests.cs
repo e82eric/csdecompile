@@ -17,12 +17,14 @@ public class ExternalFindUsagesTypeAsAttributeTests : ExternalFindUsagesTestBase
             line: 5,
             expected: new []
             {
-                (LocationType.SourceCode,
+                new ExpectedImplementation(LocationType.SourceCode,
                     "[ExternalFindUsagesAttributeTarget]",
-                    "ExternalFindUsagesAttributeUser"),
-                (LocationType.Decompiled,
+                    "ExternalFindUsagesAttributeUser",
+                    "LibraryThatReferencesLibrary.ExternalFindUsagesAttributeUser"),
+                new ExpectedImplementation(LocationType.Decompiled,
                     "[ExternalFindUsagesAttributeTarget]",
-                    "ExternalFindUsagesAttributeInternalUser"),
+                    "ExternalFindUsagesAttributeInternalUser",
+                    "LibraryThatJustReferencesFramework.ExternalFindUsagesAttributeInternalUser"),
             });
     }
 }

@@ -1,9 +1,10 @@
+using CsDecompileLib;
 using NUnit.Framework;
 
 namespace IntegrationTests;
 
 [TestFixture]
-public class InSourceFindUsagesMethodWithGenericOutParametersTests : InSourceFindUsagesBase
+public class InSourceFindUsagesMethodWithGenericOutParametersTests : FindImplementationsTestsBase
 {
     private static string FilePath = TestHarness.GetLibraryThatReferencesLibraryFilePath(
         "InSourceFindUsagesMethodWithGenericOutParametersTarget.cs");
@@ -11,19 +12,26 @@ public class InSourceFindUsagesMethodWithGenericOutParametersTests : InSourceFin
     public void Test1()
     {
         RequestAndAssertCorrectLine(
+            command: Endpoints.DecompileFindUsages,
             filePath:FilePath,
             column:21,
             line:5,
             new []
             {
                 //I guess right now we are including the declaration in the response
-                ("a.TryRun(default, out _);",
+                new ExpectedImplementation(
+                    LocationType.SourceCode,
+                    "a.TryRun(default, out _);",
                     "InSourceFindUsagesMethodWithGenericOutParametersUser",
                     "LibraryThatReferencesLibrary.InSourceFindUsagesMethodWithGenericOutParametersUser"),
-                ("b.TryRun(default, out _);",
+                new ExpectedImplementation(
+                    LocationType.SourceCode,
+                    "b.TryRun(default, out _);",
                     "InSourceFindUsagesMethodWithGenericOutParametersUser",
                     "LibraryThatReferencesLibrary.InSourceFindUsagesMethodWithGenericOutParametersUser"),
-                ("public bool TryRun(T1 t1, out T2 t2)",
+                new ExpectedImplementation(
+                    LocationType.SourceCode,
+                    "public bool TryRun(T1 t1, out T2 t2)",
                     "InSourceFindUsagesMethodWithGenericOutParametersTarget",
                     "LibraryThatReferencesLibrary.InSourceFindUsagesMethodWithGenericOutParametersTarget`2"),
             });

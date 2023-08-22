@@ -1,5 +1,3 @@
-using System;
-using System.Linq;
 using CsDecompileLib;
 using NUnit.Framework;
 
@@ -23,15 +21,18 @@ public class GetTypeMembersTests : ExternalFindImplementationsBase
             column: 17,
             expected: new[]
             {
-                (LocationType.Decompiled,
+                new ExpectedImplementation(LocationType.Decompiled,
                     "public ExternalGetTypeMembersTarget(string param1)",
-                    "ExternalGetTypeMembersTarget"),
-                (LocationType.Decompiled,
+                    "ExternalGetTypeMembersTarget",
+                    "LibraryThatJustReferencesFramework.ExternalGetTypeMembersTarget"),
+                new ExpectedImplementation(LocationType.Decompiled,
                     "public void Method1()",
-                    "ExternalGetTypeMembersTarget"),
-                (LocationType.Decompiled,
+                    "ExternalGetTypeMembersTarget",
+                    "LibraryThatJustReferencesFramework.ExternalGetTypeMembersTarget"),
+                new ExpectedImplementation(LocationType.Decompiled,
                     "public string Prop1 { get; set; }",
-                    "ExternalGetTypeMembersTarget")
+                    "ExternalGetTypeMembersTarget",
+                    "LibraryThatJustReferencesFramework.ExternalGetTypeMembersTarget")
             });
     }
     [Test]
@@ -46,15 +47,18 @@ public class GetTypeMembersTests : ExternalFindImplementationsBase
             column: 17,
             expected: new[]
             {
-                (LocationType.Decompiled,
+                new ExpectedImplementation(LocationType.Decompiled,
                     "public ExternalGetTypeMembersTarget(string param1)",
-                    "ExternalGetTypeMembersTarget"),
-                (LocationType.Decompiled,
+                    "ExternalGetTypeMembersTarget",
+                    "LibraryThatJustReferencesFramework.ExternalGetTypeMembersTarget"),
+                new ExpectedImplementation(LocationType.Decompiled,
                     "public void Method1()",
-                    "ExternalGetTypeMembersTarget"),
-                (LocationType.Decompiled,
+                    "ExternalGetTypeMembersTarget",
+                    "LibraryThatJustReferencesFramework.ExternalGetTypeMembersTarget"),
+                new ExpectedImplementation(LocationType.Decompiled,
                     "public string Prop1 { get; set; }",
-                    "ExternalGetTypeMembersTarget")
+                    "ExternalGetTypeMembersTarget",
+                    "LibraryThatJustReferencesFramework.ExternalGetTypeMembersTarget")
             });
     }
     [Test]
@@ -69,15 +73,18 @@ public class GetTypeMembersTests : ExternalFindImplementationsBase
             column: 17,
             expected: new[]
             {
-                (LocationType.Decompiled,
+                new ExpectedImplementation(LocationType.Decompiled,
                     "public ExternalGetTypeMembersTarget(string param1)",
-                    "ExternalGetTypeMembersTarget"),
-                (LocationType.Decompiled,
+                    "ExternalGetTypeMembersTarget",
+                    "LibraryThatJustReferencesFramework.ExternalGetTypeMembersTarget"),
+                new ExpectedImplementation(LocationType.Decompiled,
                     "public void Method1()",
-                    "ExternalGetTypeMembersTarget"),
-                (LocationType.Decompiled,
+                    "ExternalGetTypeMembersTarget",
+                    "LibraryThatJustReferencesFramework.ExternalGetTypeMembersTarget"),
+                new ExpectedImplementation(LocationType.Decompiled,
                     "public string Prop1 { get; set; }",
-                    "ExternalGetTypeMembersTarget")
+                    "ExternalGetTypeMembersTarget",
+                    "LibraryThatJustReferencesFramework.ExternalGetTypeMembersTarget")
             });
     }
     [Test]
@@ -92,15 +99,18 @@ public class GetTypeMembersTests : ExternalFindImplementationsBase
             column: 17,
             expected: new[]
             {
-                (LocationType.Decompiled,
+                new ExpectedImplementation(LocationType.Decompiled,
                     "public ExternalGetTypeMembersTarget(string param1)",
-                    "ExternalGetTypeMembersTarget"),
-                (LocationType.Decompiled,
+                    "ExternalGetTypeMembersTarget",
+                    "LibraryThatJustReferencesFramework.ExternalGetTypeMembersTarget"),
+                new ExpectedImplementation(LocationType.Decompiled,
                     "public void Method1()",
-                    "ExternalGetTypeMembersTarget"),
-                (LocationType.Decompiled,
+                    "ExternalGetTypeMembersTarget",
+                    "LibraryThatJustReferencesFramework.ExternalGetTypeMembersTarget"),
+                new ExpectedImplementation(LocationType.Decompiled,
                     "public string Prop1 { get; set; }",
-                    "ExternalGetTypeMembersTarget")
+                    "ExternalGetTypeMembersTarget",
+                    "LibraryThatJustReferencesFramework.ExternalGetTypeMembersTarget")
             });
     }
 }

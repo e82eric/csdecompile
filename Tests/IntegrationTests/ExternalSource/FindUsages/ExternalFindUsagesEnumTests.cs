@@ -17,33 +17,42 @@ public class ExternalFindUsagesEnumTests : ExternalFindUsagesTestBase
             line: 9,
             expected: new []
             {
-                (LocationType.SourceCode,
+                new ExpectedImplementation(LocationType.SourceCode,
                     "var t = ExternalFindUsagesEnumTarget.Type1;",
-                    "ExternalFindUsagesEnumCaller"),
-                (LocationType.SourceCode,
+                    "ExternalFindUsagesEnumCaller",
+                    "LibraryThatReferencesLibrary.ExternalFindUsagesEnumCaller"),
+                new ExpectedImplementation(LocationType.SourceCode,
                     "var t2 = ExternalFindUsagesEnumTarget.Type2;",
-                    "ExternalFindUsagesEnumCaller"),
-                (LocationType.SourceCode,
+                    "ExternalFindUsagesEnumCaller",
+                    "LibraryThatReferencesLibrary.ExternalFindUsagesEnumCaller"),
+                new ExpectedImplementation(LocationType.SourceCode,
                     "var t3 = ExternalFindUsagesEnumTarget.Type3;",
-                    "ExternalFindUsagesEnumCaller"),
-                (LocationType.Decompiled,
+                    "ExternalFindUsagesEnumCaller",
+                    "LibraryThatReferencesLibrary.ExternalFindUsagesEnumCaller"),
+                new ExpectedImplementation(LocationType.Decompiled,
                     "ExternalFindUsagesEnumTarget externalFindUsagesEnumTarget = ExternalFindUsagesEnumTarget.Type1;",
-                    "ExternalFindUsagesEnumUser"),
-                (LocationType.Decompiled,
+                    "ExternalFindUsagesEnumUser",
+                    "LibraryThatJustReferencesFramework.ExternalFindUsagesEnumUser"),
+                new ExpectedImplementation(LocationType.Decompiled,
                     "ExternalFindUsagesEnumTarget externalFindUsagesEnumTarget = ExternalFindUsagesEnumTarget.Type1;",
-                    "ExternalFindUsagesEnumUser"),
-                (LocationType.Decompiled,
+                    "ExternalFindUsagesEnumUser",
+                    "LibraryThatJustReferencesFramework.ExternalFindUsagesEnumUser"),
+                new ExpectedImplementation(LocationType.Decompiled,
                     "ExternalFindUsagesEnumTarget externalFindUsagesEnumTarget2 = ExternalFindUsagesEnumTarget.Type2;",
-                    "ExternalFindUsagesEnumUser"),
-                (LocationType.Decompiled,
+                    "ExternalFindUsagesEnumUser",
+                    "LibraryThatJustReferencesFramework.ExternalFindUsagesEnumUser"),
+                new ExpectedImplementation(LocationType.Decompiled,
                     "ExternalFindUsagesEnumTarget externalFindUsagesEnumTarget2 = ExternalFindUsagesEnumTarget.Type2;",
-                    "ExternalFindUsagesEnumUser"),
-                (LocationType.Decompiled,
+                    "ExternalFindUsagesEnumUser",
+                    "LibraryThatJustReferencesFramework.ExternalFindUsagesEnumUser"),
+                new ExpectedImplementation(LocationType.Decompiled,
                     "ExternalFindUsagesEnumTarget externalFindUsagesEnumTarget3 = ExternalFindUsagesEnumTarget.Type3;",
-                    "ExternalFindUsagesEnumUser"),
-                (LocationType.Decompiled,
+                    "ExternalFindUsagesEnumUser",
+                    "LibraryThatJustReferencesFramework.ExternalFindUsagesEnumUser"),
+                new ExpectedImplementation(LocationType.Decompiled,
                     "ExternalFindUsagesEnumTarget externalFindUsagesEnumTarget3 = ExternalFindUsagesEnumTarget.Type3;",
-                    "ExternalFindUsagesEnumUser"),
+                    "ExternalFindUsagesEnumUser",
+                    "LibraryThatJustReferencesFramework.ExternalFindUsagesEnumUser"),
             });
     }
     
@@ -56,12 +65,14 @@ public class ExternalFindUsagesEnumTests : ExternalFindUsagesTestBase
             line: 10,
             expected: new []
             {
-                (LocationType.SourceCode,
+                new ExpectedImplementation(LocationType.SourceCode,
                     "var t2 = ExternalFindUsagesEnumTarget.Type2;",
-                    "ExternalFindUsagesEnumCaller"),
-                (LocationType.Decompiled,
+                    "ExternalFindUsagesEnumCaller",
+                    "LibraryThatReferencesLibrary.ExternalFindUsagesEnumCaller"),
+                new ExpectedImplementation(LocationType.Decompiled,
                     "ExternalFindUsagesEnumTarget externalFindUsagesEnumTarget2 = ExternalFindUsagesEnumTarget.Type2;",
-                    "ExternalFindUsagesEnumUser"),
+                    "ExternalFindUsagesEnumUser",
+                    "LibraryThatJustReferencesFramework.ExternalFindUsagesEnumUser"),
             });
     }
     
@@ -74,19 +85,21 @@ public class ExternalFindUsagesEnumTests : ExternalFindUsagesTestBase
             line: 11,
             expected: new []
             {
-                (LocationType.SourceCode,
+                new ExpectedImplementation(LocationType.SourceCode,
                     "var t3 = ExternalFindUsagesEnumTarget.Type3;",
-                    "ExternalFindUsagesEnumCaller"),
-                (LocationType.Decompiled,
+                    "ExternalFindUsagesEnumCaller",
+                    "LibraryThatReferencesLibrary.ExternalFindUsagesEnumCaller"),
+                new ExpectedImplementation(LocationType.Decompiled,
                     "ExternalFindUsagesEnumTarget externalFindUsagesEnumTarget3 = ExternalFindUsagesEnumTarget.Type3;",
-                    "ExternalFindUsagesEnumUser"),
+                    "ExternalFindUsagesEnumUser",
+                    "LibraryThatJustReferencesFramework.ExternalFindUsagesEnumUser"),
             });
     }
     
     [Test]
     public void SearchAsMemberFromWithExternalSource()
     {
-        this.SendRequestAndAssertLine(
+        SendRequestAndAssertLine(
             filePath: FilePath,
             lineToFind: "ExternalFindUsagesEnumTarget externalFindUsagesEnumTarget3 = ExternalFindUsagesEnumTarget.Type3;",
             tokenToFind: "(?<token>Type3);$",
@@ -94,12 +107,14 @@ public class ExternalFindUsagesEnumTests : ExternalFindUsagesTestBase
             line: 12,
             expected: new []
             {
-                (LocationType.SourceCode,
+                new ExpectedImplementation(LocationType.SourceCode,
                     "var t3 = ExternalFindUsagesEnumTarget.Type3;",
-                    "ExternalFindUsagesEnumCaller"),
-                (LocationType.Decompiled,
+                    "ExternalFindUsagesEnumCaller",
+                    "LibraryThatReferencesLibrary.ExternalFindUsagesEnumCaller"),
+                new ExpectedImplementation(LocationType.Decompiled,
                     "ExternalFindUsagesEnumTarget externalFindUsagesEnumTarget3 = ExternalFindUsagesEnumTarget.Type3;",
-                    "ExternalFindUsagesEnumUser"),
+                    "ExternalFindUsagesEnumUser",
+                    "LibraryThatJustReferencesFramework.ExternalFindUsagesEnumUser"),
             });
     }
 }

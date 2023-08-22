@@ -1,3 +1,4 @@
+using CsDecompileLib;
 using NUnit.Framework;
 
 namespace IntegrationTests;
@@ -18,9 +19,12 @@ public class InSourceGotoDefinitionEventTests : InSourceBase
             filePath: TargetFilePath,
             column: 9,
             line: 9,
-            expected: "public event EventHandler<EventArgs> BasicEvent;",
-            //TODO why does this not have a namespace
-            "InSourceGotoDefinitionEventTarget");
+            expected: new ExpectedImplementation(
+                LocationType.SourceCode,
+                "public event EventHandler<EventArgs> BasicEvent;",
+                //TODO why does this not have a namespace
+                null,
+                "InSourceGotoDefinitionEventTarget"));
     }
     
     [Test]
@@ -30,9 +34,12 @@ public class InSourceGotoDefinitionEventTests : InSourceBase
             filePath: CallerFilePath,
             column: 13,
             line: 8,
-            expected: "public event EventHandler<EventArgs> BasicEvent;",
-            //TODO why does this not have a namespace
-            "InSourceGotoDefinitionEventTarget");
+            expected: new ExpectedImplementation(
+                LocationType.SourceCode,
+                "public event EventHandler<EventArgs> BasicEvent;",
+                null,
+                //TODO why does this not have a namespace
+                "InSourceGotoDefinitionEventTarget"));
     }
     
     [Test]
@@ -42,8 +49,11 @@ public class InSourceGotoDefinitionEventTests : InSourceBase
             filePath: CallerFilePath,
             column: 13,
             line: 9,
-            expected: "public event EventHandler<EventArgs> BasicEvent;",
-            //TODO why does this not have a namespace
-            "InSourceGotoDefinitionEventTarget");
+            expected: new ExpectedImplementation(
+                LocationType.SourceCode,
+                "public event EventHandler<EventArgs> BasicEvent;",
+                null,
+                //TODO why does this not have a namespace
+                "InSourceGotoDefinitionEventTarget"));
     }
 }

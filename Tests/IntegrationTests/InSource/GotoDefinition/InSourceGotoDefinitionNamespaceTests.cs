@@ -18,9 +18,13 @@ public class InSourceGotoDefinitionNamespaceTests : InSourceBase
             line: 1,
             expected: new[]
             {
-                (LocationType.SourceCode, "public class InSourceClass1 {}", "InSourceClass1"),
-                (LocationType.SourceCode, "public class InSourceClass2 {}", "InSourceClass2"),
-                (LocationType.SourceCode, "public class InSourceClass3 {}", "InSourceClass3")
+                new ExpectedImplementation(
+                    LocationType.Decompiled,
+                    "public class InSourceClass1 {}",
+                    "InSourceClass1",
+                    null),
+                new ExpectedImplementation(LocationType.Decompiled, "public class InSourceClass2 {}", "InSourceClass2", null),
+                new ExpectedImplementation(LocationType.Decompiled, "public class InSourceClass3 {}", "InSourceClass3", null)
             });
     }
 
@@ -33,9 +37,9 @@ public class InSourceGotoDefinitionNamespaceTests : InSourceBase
             line: 2,
             expected: new[]
             {
-                (LocationType.SourceCode, "public class InSourceClass1 {}", "InSourceClass1"),
-                (LocationType.SourceCode, "public class InSourceClass2 {}", "InSourceClass2"),
-                (LocationType.SourceCode, "public class InSourceClass3 {}", "InSourceClass3")
+                new ExpectedImplementation(LocationType.SourceCode, "public class InSourceClass1 {}", "InSourceClass1", null),
+                new ExpectedImplementation(LocationType.SourceCode, "public class InSourceClass2 {}", "InSourceClass2", null),
+                new ExpectedImplementation(LocationType.SourceCode, "public class InSourceClass3 {}", "InSourceClass3", null)
             });
     }
 
@@ -48,9 +52,9 @@ public class InSourceGotoDefinitionNamespaceTests : InSourceBase
             line: 2,
             expected: new[]
             {
-                (LocationType.SourceCode, "public class SubInSourceClass1 {}", "SubInSourceClass1"),
-                (LocationType.SourceCode, "public class SubInSourceClass2 {}", "SubInSourceClass2"),
-                (LocationType.SourceCode, "public class SubInSourceClass3 {}", "SubInSourceClass3")
+                new ExpectedImplementation(LocationType.SourceCode, "public class SubInSourceClass1 {}", "SubInSourceClass1", null),
+                new ExpectedImplementation(LocationType.SourceCode, "public class SubInSourceClass2 {}", "SubInSourceClass2", null),
+                new ExpectedImplementation(LocationType.SourceCode, "public class SubInSourceClass3 {}", "SubInSourceClass3", null)
             });
     }
 }

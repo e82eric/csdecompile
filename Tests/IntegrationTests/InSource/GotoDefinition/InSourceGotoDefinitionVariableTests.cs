@@ -1,3 +1,4 @@
+using CsDecompileLib;
 using NUnit.Framework;
 
 namespace IntegrationTests;
@@ -15,8 +16,11 @@ public class InSourceGotoDefinitionVariableTests : InSourceBase
             filePath: FilePath,
             column: 17,
             line: 6,
-            expected: "var a = 1;",
-            //TODO why does this not have a namespace
-            "InSourceGotoDefinitionVariableTarget");
+            expected: new ExpectedImplementation(
+                LocationType.SourceCode,
+                "var a = 1;",
+                null,
+                //TODO why does this not have a namespace
+                "InSourceGotoDefinitionVariableTarget"));
     }
 }

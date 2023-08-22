@@ -98,8 +98,8 @@ public class ExternalTestBase : TestBase
 
         return result;
     }
-    
-    protected DecompiledLocationRequest GotoDefinitionAndCreateRequestForToken(
+
+    private DecompiledLocationRequest GotoDefinitionAndCreateRequestForToken(
         string command,
         DecompiledLocationRequest requestArguments,
         string lineToFind,
@@ -138,8 +138,8 @@ public class ExternalTestBase : TestBase
         };
         return decompiledLocationRequest;
     }
-    
-    public static string[] GetLines(string sourceText)
+
+    protected static string[] GetLines(string sourceText)
     {
         string[] stringSeparators = { "\r\n" };
         var lines = sourceText.Split(stringSeparators, StringSplitOptions.None);

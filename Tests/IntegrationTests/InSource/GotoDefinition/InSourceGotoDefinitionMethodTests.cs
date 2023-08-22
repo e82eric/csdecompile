@@ -16,8 +16,11 @@ public class InSourceGotoDefinitionMethodTests : InSourceBase
             filePath: FilePath,
             column:54,
             line:9,
-            expected:"public void BasicMethod()",
-            "LibraryThatReferencesLibrary.InSourceGotoDefinitionMethodTarget");
+            expected: new ExpectedImplementation(
+                LocationType.SourceCode,
+                "public void BasicMethod()",
+                null,
+                "LibraryThatReferencesLibrary.InSourceGotoDefinitionMethodTarget"));
     }
     
     [Test]
@@ -27,8 +30,11 @@ public class InSourceGotoDefinitionMethodTests : InSourceBase
             filePath: FilePath,
             column:54,
             line:10,
-            expected:"public void BasicMethod(string param1)",
-            "LibraryThatReferencesLibrary.InSourceGotoDefinitionMethodTarget");
+            expected: new ExpectedImplementation(
+                LocationType.SourceCode,
+                "public void BasicMethod(string param1)",
+                null,
+                "LibraryThatReferencesLibrary.InSourceGotoDefinitionMethodTarget"));
     }
     
     [Test]
@@ -38,7 +44,10 @@ public class InSourceGotoDefinitionMethodTests : InSourceBase
             filePath: FilePath,
             column:54,
             line:11,
-            expected:"public void BasicMethod(string param1, string param2)",
-            "LibraryThatReferencesLibrary.InSourceGotoDefinitionMethodTarget");
+            expected:new ExpectedImplementation(
+                LocationType.SourceCode,
+                "public void BasicMethod(string param1, string param2)",
+                null,
+                "LibraryThatReferencesLibrary.InSourceGotoDefinitionMethodTarget"));
     }
 }

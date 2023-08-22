@@ -33,27 +33,6 @@ public class ExternalGetSymbolInfoTestBase : ExternalTestBase
         RequestAndCompare(request, expected);
     }
 
-    protected void SendRequestAndAssertLine(string filePath, int column, int line, Dictionary<string, object> expected)
-    {
-        var decompiledLocationRequest = new DecompiledLocationRequest
-        {
-            FileName = filePath,
-            Column = column,
-            Type = LocationType.SourceCode,
-            Line = line
-        };
-        
-        var request = new CommandPacket<DecompiledLocationRequest>
-        {
-            Command = Endpoints.SymbolInfo,
-            Arguments = decompiledLocationRequest,
-        };
-        
-        RequestAndCompare(
-            request,
-            expected);
-    }
-    
     protected void SendRequestAndAssertLine(
         string filePath,
         int column,
@@ -95,8 +74,8 @@ public class ExternalGetSymbolInfoTestBase : ExternalTestBase
             Assert.AreEqual(expected, actual);
         }
     }
-    
-    protected void RequestAndCompare(
+
+    private void RequestAndCompare(
         CommandPacket<DecompiledLocationRequest> request,
         Dictionary<string,object> expectedProperties,
         Dictionary<string, string> parameters)

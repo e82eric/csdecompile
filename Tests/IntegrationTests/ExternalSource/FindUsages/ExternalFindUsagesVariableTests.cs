@@ -20,18 +20,22 @@ public class ExternalFindUsagesVariableTests : ExternalFindUsagesTestBase
             
             expected: new []
             {
-                (LocationType.Decompiled,
+                new ExpectedImplementation(LocationType.Decompiled,
                     "int num = 1;",
-                    "ExternalFindUsagesVariableTarget"),
-                (LocationType.Decompiled,
+                    "ExternalFindUsagesVariableTarget",
+                    "LibraryThatJustReferencesFramework.ExternalFindUsagesVariableTarget"),
+                new ExpectedImplementation(LocationType.Decompiled,
                     "int num2 = num + 1;",
-                    "ExternalFindUsagesVariableTarget"),
-                (LocationType.Decompiled,
+                    "ExternalFindUsagesVariableTarget",
+                    "LibraryThatJustReferencesFramework.ExternalFindUsagesVariableTarget"),
+                new ExpectedImplementation(LocationType.Decompiled,
                     "int num3 = num + num;",
-                    "ExternalFindUsagesVariableTarget"),
-                (LocationType.Decompiled,
+                    "ExternalFindUsagesVariableTarget",
+                    "LibraryThatJustReferencesFramework.ExternalFindUsagesVariableTarget"),
+                new ExpectedImplementation(LocationType.Decompiled,
                     "int num3 = num + num;",
-                    "ExternalFindUsagesVariableTarget"),
+                    "ExternalFindUsagesVariableTarget",
+                    "LibraryThatJustReferencesFramework.ExternalFindUsagesVariableTarget"),
             });
     }
 }

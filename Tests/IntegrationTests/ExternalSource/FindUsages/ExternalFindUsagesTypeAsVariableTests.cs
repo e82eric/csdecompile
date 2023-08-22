@@ -17,18 +17,22 @@ public class ExternalFindUsagesTypeAsVariableTests : ExternalFindUsagesTestBase
             line: 9,
             expected: new []
             {
-                (LocationType.SourceCode,
+                new ExpectedImplementation(LocationType.SourceCode,
                     "ExternalFindUsagesTypeAsVariableTarget a = null;",
-                    "ExternalFindUsagesTypeAsVariableCaller"),
-                (LocationType.Decompiled,
+                    "ExternalFindUsagesTypeAsVariableCaller",
+                    "LibraryThatReferencesLibrary.ExternalFindUsagesTypeAsVariableCaller"),
+                new ExpectedImplementation(LocationType.Decompiled,
                     "ExternalFindUsagesTypeAsVariableTarget externalFindUsagesTypeAsVariableTarget = null;",
-                    "ExternalFindUsagesTypeAsVariableCaller"),
-                (LocationType.Decompiled,
+                    "ExternalFindUsagesTypeAsVariableCaller",
+                    "LibraryThatJustReferencesFramework.ExternalFindUsagesTypeAsVariableCaller"),
+                new ExpectedImplementation(LocationType.Decompiled,
                     "ExternalFindUsagesTypeAsVariableTarget externalFindUsagesTypeAsVariableTarget2 = null;",
-                    "ExternalFindUsagesTypeAsVariableCaller"),
-                (LocationType.Decompiled,
+                    "ExternalFindUsagesTypeAsVariableCaller",
+                    "LibraryThatJustReferencesFramework.ExternalFindUsagesTypeAsVariableCaller"),
+                new ExpectedImplementation(LocationType.Decompiled,
                     "ExternalFindUsagesTypeAsVariableTarget externalFindUsagesTypeAsVariableTarget3 = null;",
-                    "ExternalFindUsagesTypeAsVariableCaller"),
+                    "ExternalFindUsagesTypeAsVariableCaller",
+                    "LibraryThatJustReferencesFramework.ExternalFindUsagesTypeAsVariableCaller"),
             });
     }
 }

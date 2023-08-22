@@ -1,3 +1,4 @@
+using CsDecompileLib;
 using NUnit.Framework;
 
 namespace IntegrationTests;
@@ -15,9 +16,12 @@ public class InSourceGotoDefinitionFieldTests : InSourceBase
             filePath: FilePath,
             column: 9,
             line: 7,
-            expected: "private string _basicField;",
-            //TODO why does this not have a namespace
-            "InSourceGotoDefinitionFieldTarget");
+            expected: new ExpectedImplementation(
+                LocationType.SourceCode,
+                "private string _basicField;",
+                null,
+                //TODO why does this not have a namespace
+                "InSourceGotoDefinitionFieldTarget"));
     }
     
     [Test]
@@ -27,8 +31,11 @@ public class InSourceGotoDefinitionFieldTests : InSourceBase
             filePath: FilePath,
             column: 17,
             line: 12,
-            expected: "private string _basicField;",
-            //TODO why does this not have a namespace
-            "InSourceGotoDefinitionFieldTarget");
+            expected: new ExpectedImplementation(
+                LocationType.SourceCode,
+                "private string _basicField;",
+                null,
+                //TODO why does this not have a namespace
+                "InSourceGotoDefinitionFieldTarget"));
     }
 }

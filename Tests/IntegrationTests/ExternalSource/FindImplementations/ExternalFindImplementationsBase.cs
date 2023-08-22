@@ -1,20 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using NUnit.Framework;
 using CsDecompileLib;
-using CsDecompileLib.GetSource;
 
 namespace IntegrationTests;
 
 public class ExternalFindImplementationsBase : ExternalTestBase
 {
     protected void SendRequestAndAssertLine(
+        string filePath,
+        int column,
+        int line,
+        IEnumerable<ExpectedImplementation> expected)
+    {
+        SendRequestAndAssertLine(
+            Endpoints.DecompileFindImplementations,
+            filePath,
+            column,
+            line,
+            expected);
+    }
+    protected void SendRequestAndAssertLine(
         string command,
         string filePath,
         int column,
         int line,
-        IEnumerable<(LocationType type, string value, string shortTypeName)> expected)
+        IEnumerable<ExpectedImplementation> expected)
     {
         var requestArguments = new DecompiledLocationRequest
         {
@@ -36,7 +46,7 @@ public class ExternalFindImplementationsBase : ExternalTestBase
         string tokenToFind,
         int column,
         int line,
-        IEnumerable<(LocationType type, string value, string shortTypeName)> expected)
+        IEnumerable<ExpectedImplementation> expected)
     {
         DecompiledLocationRequest definitionRequestArguments = GotoDefinitionAndCreateRequestForToken(
             filePath,
@@ -70,63 +80,27 @@ public class ExternalFindImplementationsBase : ExternalTestBase
         
         SendRequestAndAssertNumberOfImplementations(command, numberOfImplementations, definitionRequestArguments);
     }
-    
-    protected void SendRequestAndAssertLine(
-        string command,
-        string filePath,
-        int column,
-        int line,
-        string lineToFind,
-        string tokenRegex,
-        IEnumerable<(LocationType type, string value, string shortTypeName)> expected)
-    {
-        DecompiledLocationRequest definitionRequestArguments = GotoDefinitionAndCreateRequestForToken(
-            filePath,
-            column,
-            line,
-            lineToFind,
-            tokenRegex);
-        
-        SendRequestAndAssertLine(command, expected, definitionRequestArguments);
-    }
-    
+
     private static void SendRequestAndAssertLine(
         string command,
-        IEnumerable<(LocationType type, string value, string shortTypeName)> expected,
+        IEnumerable<ExpectedImplementation> expected,
         DecompiledLocationRequest requestArguments)
     {
-        var implementations = SendRequestAndAssertNumberOfImplementations(
-            command,
-            expected.Count(),
-            requestArguments);
-
-        foreach (var implementation in implementations)
+        var request = new CommandPacket<DecompiledLocationRequest>
         {
-            string[] lines = null;
-            switch (implementation.Type)
-            {
-                case LocationType.Decompiled:
-                    lines = ExternalGetLines(implementation);
-                    break;
-                case LocationType.SourceCode:
-                    lines = InSourceGetLines(implementation);
-                    break;
-            }
+            Command = command,
+            Arguments = requestArguments
+        };
 
-            var sourceLine = lines[implementation.Line - 1].Trim();
+        var response = TestHarness.IoClient
+            .ExecuteCommand<DecompiledLocationRequest, FindImplementationsResponse>(request);
 
-            var foundExpected = expected.FirstOrDefault(e =>
-                e.shortTypeName == implementation.ContainingTypeShortName &&
-                e.type == implementation.Type &&
-                e.value.Contains(sourceLine));
-            Assert.NotNull(foundExpected);
-            Assert.AreEqual(foundExpected.type, implementation.Type);
-            Assert.AreEqual(implementation.SourceText, sourceLine);
-            Assert.AreEqual(foundExpected.shortTypeName, implementation.ContainingTypeShortName);
-        }
+        Assert.True(response.Success);
+
+        ImplementationAsserts.AssertSame(response, expected);
     }
     
-    private static IList<ResponseLocation> SendRequestAndAssertNumberOfImplementations(
+    private static void SendRequestAndAssertNumberOfImplementations(
         string command,
         int expected,
         DecompiledLocationRequest requestArguments)
@@ -142,31 +116,5 @@ public class ExternalFindImplementationsBase : ExternalTestBase
 
         Assert.True(response.Success);
         Assert.AreEqual(expected, response.Body.Implementations.Count);
-        
-        return response.Body.Implementations;
-    }
-
-    private static string[] ExternalGetLines(ResponseLocation implementation)
-    {
-        var decompileInfo = (DecompileInfo)implementation;
-
-        var sourceRequest = new CommandPacket<DecompiledSourceRequest>
-        {
-            Command = Endpoints.DecompiledSource,
-            Arguments = new DecompiledSourceRequest
-            {
-                ParentAssemblyFilePath = decompileInfo.ParentAssemblyFilePath,
-                AssemblyFilePath = decompileInfo.AssemblyFilePath,
-                ContainingTypeFullName = decompileInfo.ContainingTypeFullName,
-                Column = decompileInfo.Column,
-                Line = decompileInfo.Line
-            }
-        };
-
-        var sourceResponse = TestHarness.IoClient
-            .ExecuteCommand<DecompiledSourceRequest, DecompiledSourceResponse>(sourceRequest);
-
-        var lines = GetLines(sourceResponse.Body.SourceText);
-        return lines;
     }
 }

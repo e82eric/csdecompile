@@ -3,7 +3,7 @@ using NUnit.Framework;
 namespace IntegrationTests;
 
 [TestFixture]
-public class ExternalFindUsagesFrameworkInterface : ExternalFindUsagesTestBase
+public class ExternalFindUsagesFrameworkInterfaceTests : ExternalFindUsagesTestBase
 {
     private static string FilePath = TestHarness.GetLibraryThatReferencesLibraryFilePath(
         "ExternalFindUsagesStringCaller.cs");

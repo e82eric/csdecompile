@@ -7,11 +7,11 @@ namespace IntegrationTests;
 
 public class ExternalGotoDefinitionTestBase : ExternalTestBase
 {
-    public ExternalGotoDefinitionTestBase() : base()
+    protected ExternalGotoDefinitionTestBase()
     {
     }
 
-    public ExternalGotoDefinitionTestBase(StdIoClient stdIoClient) : base(stdIoClient)
+    protected ExternalGotoDefinitionTestBase(StdIoClient stdIoClient) : base(stdIoClient)
     {
     }
 

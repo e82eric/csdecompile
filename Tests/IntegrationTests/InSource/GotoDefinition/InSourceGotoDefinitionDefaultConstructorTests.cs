@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using CsDecompileLib;
+using NUnit.Framework;
 
 namespace IntegrationTests;
 
@@ -14,7 +15,10 @@ public class InSourceGotoDefinitionDefaultConstructorTests : InSourceBase
             filePath: FilePath,
             column:17,
             line:7,
-            expected:"public class InSourceGotoDefinitionDefaultConstructorTarget",
-            "LibraryThatReferencesLibrary.InSourceGotoDefinitionDefaultConstructorTarget");
+            expected:new ExpectedImplementation(
+                LocationType.SourceCode,
+                "public class InSourceGotoDefinitionDefaultConstructorTarget",
+                null,
+                "LibraryThatReferencesLibrary.InSourceGotoDefinitionDefaultConstructorTarget"));
     }
 }

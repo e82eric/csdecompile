@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using CsDecompileLib;
+using NUnit.Framework;
 
 namespace IntegrationTests;
 
@@ -15,9 +16,12 @@ public class InSourceGotoDefinitionPropertyTests : InSourceBase
             filePath: FilePath,
             column: 52,
             line: 5,
-            expected: "public string BasicProperty { get; set; }",
-            //TODO why does this not have a namespace
-            "InSourceGotoDefinitionPropertyTarget");
+            expected: new ExpectedImplementation(
+                LocationType.SourceCode,
+                "public string BasicProperty { get; set; }",
+                null,
+                //TODO why does this not have a namespace
+                "InSourceGotoDefinitionPropertyTarget"));
     }
     
     [Test]
@@ -27,8 +31,11 @@ public class InSourceGotoDefinitionPropertyTests : InSourceBase
             filePath: FilePath,
             column: 60,
             line: 6,
-            expected: "public string BasicProperty { get; set; }",
-            //TODO why does this not have a namespace
-            "InSourceGotoDefinitionPropertyTarget");
+            expected: new ExpectedImplementation(
+                LocationType.SourceCode,
+                "public string BasicProperty { get; set; }",
+                null,
+                //TODO why does this not have a namespace
+                "InSourceGotoDefinitionPropertyTarget"));
     }
 }

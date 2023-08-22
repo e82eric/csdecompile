@@ -4,7 +4,7 @@ using CsDecompileLib;
 namespace IntegrationTests;
 
 [TestFixture]
-public class ExternalFindImplementationsInterfaceTests : ExternalFindImplementationsBase2
+public class ExternalFindImplementationsInterfaceTests : ExternalFindImplementationsBase
 {
     private static string FilePath = TestHarness.GetLibraryThatReferencesLibraryFilePath(
         "ExternalFindImplementationsInterfaceCaller.cs");
@@ -17,9 +17,10 @@ public class ExternalFindImplementationsInterfaceTests : ExternalFindImplementat
             line: 10,
             expected: new []
             {
-                (LocationType.Decompiled,
+                new ExpectedImplementation(LocationType.Decompiled,
                     "public class ExternalFindImplementationsInterfaceInheritor : ExternalFindImplementationsInterface",
-                    "ExternalFindImplementationsInterfaceInheritor")
+                    "ExternalFindImplementationsInterfaceInheritor",
+                    "LibraryThatJustReferencesFramework.ExternalFindImplementationsInterfaceInheritor")
             });
     }
     
@@ -32,9 +33,10 @@ public class ExternalFindImplementationsInterfaceTests : ExternalFindImplementat
             line: 11,
             expected: new []
             {
-                (LocationType.Decompiled,
+                new ExpectedImplementation(LocationType.Decompiled,
                     "public void BasicMethod()",
-                    "ExternalFindImplementationsInterfaceInheritor")
+                    "ExternalFindImplementationsInterfaceInheritor",
+                    "LibraryThatJustReferencesFramework.ExternalFindImplementationsInterfaceInheritor")
             });
     }
     
@@ -47,9 +49,10 @@ public class ExternalFindImplementationsInterfaceTests : ExternalFindImplementat
             line: 12,
             expected: new []
             {
-                (LocationType.Decompiled,
+                new ExpectedImplementation(LocationType.Decompiled,
                     "public string BasicProperty { get; set; }",
-                    "ExternalFindImplementationsInterfaceInheritor")
+                    "ExternalFindImplementationsInterfaceInheritor",
+                    "LibraryThatJustReferencesFramework.ExternalFindImplementationsInterfaceInheritor")
             });
     }
     
@@ -62,9 +65,10 @@ public class ExternalFindImplementationsInterfaceTests : ExternalFindImplementat
             line: 12,
             expected: new []
             {
-                (LocationType.Decompiled,
+                new ExpectedImplementation(LocationType.Decompiled,
                     "public string BasicProperty { get; set; }",
-                    "ExternalFindImplementationsInterfaceInheritor")
+                    "ExternalFindImplementationsInterfaceInheritor",
+                    "LibraryThatJustReferencesFramework.ExternalFindImplementationsInterfaceInheritor")
             });
     }
     
@@ -77,9 +81,10 @@ public class ExternalFindImplementationsInterfaceTests : ExternalFindImplementat
             line: 14,
             expected: new []
             {
-                (LocationType.Decompiled,
+                new ExpectedImplementation(LocationType.Decompiled,
                     "public event EventHandler BasicEvent;",
-                    "ExternalFindImplementationsInterfaceInheritor")
+                    "ExternalFindImplementationsInterfaceInheritor",
+                    "LibraryThatJustReferencesFramework.ExternalFindImplementationsInterfaceInheritor")
             });
     }
     
@@ -92,9 +97,10 @@ public class ExternalFindImplementationsInterfaceTests : ExternalFindImplementat
             line: 15,
             expected: new []
             {
-                (LocationType.Decompiled,
+                new ExpectedImplementation(LocationType.Decompiled,
                     "public event EventHandler BasicEvent;",
-                    "ExternalFindImplementationsInterfaceInheritor")
+                    "ExternalFindImplementationsInterfaceInheritor",
+                    "LibraryThatJustReferencesFramework.ExternalFindImplementationsInterfaceInheritor")
             });
     }
 }

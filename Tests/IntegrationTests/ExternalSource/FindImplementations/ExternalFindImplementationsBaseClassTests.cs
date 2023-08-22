@@ -4,7 +4,7 @@ using CsDecompileLib;
 namespace IntegrationTests;
 
 [TestFixture]
-public class ExternalFindImplementationsBaseClassTests : ExternalFindImplementationsBase2
+public class ExternalFindImplementationsBaseClassTests : ExternalFindImplementationsBase
 {
     private static string FilePath = TestHarness.GetLibraryThatReferencesLibraryFilePath(
         "ExternalFindImplementationsBaseClassCaller.cs");
@@ -17,9 +17,10 @@ public class ExternalFindImplementationsBaseClassTests : ExternalFindImplementat
             line: 9,
             expected: new []
             {
-                (LocationType.Decompiled,
+                new ExpectedImplementation(LocationType.Decompiled,
                     "public class ExternalFindImplementationsBaseClassInheritor : ExternalFindImplementationsBaseClass",
-                    "ExternalFindImplementationsBaseClassInheritor")
+                    "ExternalFindImplementationsBaseClassInheritor",
+                    "LibraryThatJustReferencesFramework.ExternalFindImplementationsBaseClassInheritor")
             });
     }
 }

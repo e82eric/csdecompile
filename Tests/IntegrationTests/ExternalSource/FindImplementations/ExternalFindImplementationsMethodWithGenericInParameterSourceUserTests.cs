@@ -4,7 +4,7 @@ using NUnit.Framework;
 namespace IntegrationTests;
 
 [TestFixture]
-public class ExternalFindImplementationsMethodWithGenericInParameterTests : ExternalFindImplementationsBase2
+public class ExternalFindImplementationsMethodWithGenericInParameterTests : ExternalFindImplementationsBase
 {
     private static string FilePath = TestHarness.GetLibraryThatReferencesLibraryFilePath(
         "ExternalFindImplementationsMethodWithGenericInParameterSourceUser.cs");
@@ -18,12 +18,14 @@ public class ExternalFindImplementationsMethodWithGenericInParameterTests : Exte
             line: 7,
             expected: new []
             {
-                (LocationType.SourceCode,
+                new ExpectedImplementation(LocationType.SourceCode,
                     "public class ExternalFindImplementationsMethodWithGenericInParameterSourceImplementation<T, T2> :",
-                    "ExternalFindImplementationsMethodWithGenericInParameterSourceImplementation"),
-                (LocationType.Decompiled,
+                    "ExternalFindImplementationsMethodWithGenericInParameterSourceImplementation",
+                    "LibraryThatReferencesLibrary.ExternalFindImplementationsMethodWithGenericInParameterSourceImplementation`2"),
+                new ExpectedImplementation(LocationType.Decompiled,
                     "public class ExternalFindImplementationsMethodWithGenericInParameterExternalImplementation<T, T2> : ExternalFindImplementationsMethodWithGenericInParameterTarget<T, T2>",
-                    "ExternalFindImplementationsMethodWithGenericInParameterExternalImplementation")
+                    "ExternalFindImplementationsMethodWithGenericInParameterExternalImplementation",
+                    "LibraryThatJustReferencesFramework.ExternalFindImplementationsMethodWithGenericInParameterExternalImplementation`2")
             });
     }
 
@@ -36,12 +38,14 @@ public class ExternalFindImplementationsMethodWithGenericInParameterTests : Exte
             line: 14,
             expected: new []
             {
-                (LocationType.SourceCode,
+                new ExpectedImplementation(LocationType.SourceCode,
                     "public bool TryRun(T val, in T2 result)",
-                    "ExternalFindImplementationsMethodWithGenericInParameterSourceImplementation"),
-                (LocationType.Decompiled,
+                    "ExternalFindImplementationsMethodWithGenericInParameterSourceImplementation",
+                    "LibraryThatReferencesLibrary.ExternalFindImplementationsMethodWithGenericInParameterSourceImplementation`2"),
+                new ExpectedImplementation(LocationType.Decompiled,
                     "public bool TryRun(T val, in T2 result)",
-                    "ExternalFindImplementationsMethodWithGenericInParameterExternalImplementation")
+                    "ExternalFindImplementationsMethodWithGenericInParameterExternalImplementation",
+                    "LibraryThatJustReferencesFramework.ExternalFindImplementationsMethodWithGenericInParameterExternalImplementation`2")
             });
     }
 }

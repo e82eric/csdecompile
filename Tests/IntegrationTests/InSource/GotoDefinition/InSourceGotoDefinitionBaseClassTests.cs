@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using CsDecompileLib;
+using NUnit.Framework;
 
 namespace IntegrationTests
 {
@@ -15,8 +16,11 @@ namespace IntegrationTests
                 filePath:FilePath,
                 column:58,
                 line: 3,
-                "public class InSourceGotoDefinitionBaseClassTarget",
-                "LibraryThatReferencesLibrary.InSourceGotoDefinitionBaseClassTarget");
+                new ExpectedImplementation(
+                    LocationType.SourceCode,
+                    "public class InSourceGotoDefinitionBaseClassTarget",
+                    null,
+                    "LibraryThatReferencesLibrary.InSourceGotoDefinitionBaseClassTarget"));
         }
     }
 }

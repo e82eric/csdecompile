@@ -17,15 +17,18 @@ public class ExternalFindUsagesMethodWithParamsTests : ExternalFindUsagesTestBas
             line: 9,
             expected: new []
             {
-                (LocationType.SourceCode,
+                new ExpectedImplementation(LocationType.SourceCode,
                     "new ExternalFindUsagesMethodWithParamsTarget().Run(\"Test\");",
-                    "ExternalFindUsagesMethodWithParamsUser"),
-                (LocationType.SourceCode,
+                    "ExternalFindUsagesMethodWithParamsUser",
+                    "LibraryThatReferencesLibrary.ExternalFindUsagesMethodWithParamsUser"),
+                new ExpectedImplementation(LocationType.SourceCode,
                     "new ExternalFindUsagesMethodWithParamsTarget().Run(\"Test\", \"More\");",
-                    "ExternalFindUsagesMethodWithParamsUser"),
-                (LocationType.SourceCode,
+                    "ExternalFindUsagesMethodWithParamsUser",
+                    "LibraryThatReferencesLibrary.ExternalFindUsagesMethodWithParamsUser"),
+                new ExpectedImplementation(LocationType.SourceCode,
                     "new ExternalFindUsagesMethodWithParamsTarget().Run(\"Test\", \"More\", \"Params\");",
-                    "ExternalFindUsagesMethodWithParamsUser"),
+                    "ExternalFindUsagesMethodWithParamsUser",
+                    "LibraryThatReferencesLibrary.ExternalFindUsagesMethodWithParamsUser"),
             });
     }
 }

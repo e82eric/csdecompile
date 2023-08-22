@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using CsDecompileLib;
+using NUnit.Framework;
 
 namespace IntegrationTests;
 
@@ -12,11 +13,14 @@ public class InSourceGotoDefinitionConstructorTests : InSourceBase
     public void NoParameters()
     {
         RequestAndAssertCorrectLine(
-            filePath:FilePath,
-            column:17,
-            line:9,
-            expected:"public InSourceGotoDefinitionConstructorTarget()",
-            "LibraryThatReferencesLibrary.InSourceGotoDefinitionConstructorTarget");
+            filePath: FilePath,
+            column: 17,
+            line: 9,
+            expected: new ExpectedImplementation(
+                LocationType.SourceCode,
+                "public InSourceGotoDefinitionConstructorTarget()",
+                null,
+                "LibraryThatReferencesLibrary.InSourceGotoDefinitionConstructorTarget"));
     }
     
     [Test]
@@ -26,8 +30,11 @@ public class InSourceGotoDefinitionConstructorTests : InSourceBase
             filePath:FilePath,
             column:17,
             line:10,
-            expected:"public InSourceGotoDefinitionConstructorTarget(string param1)",
-            "LibraryThatReferencesLibrary.InSourceGotoDefinitionConstructorTarget");
+            expected:new ExpectedImplementation(
+                LocationType.SourceCode,
+                "public InSourceGotoDefinitionConstructorTarget(string param1)",
+                null,
+                "LibraryThatReferencesLibrary.InSourceGotoDefinitionConstructorTarget"));
     }
     
     [Test]
@@ -37,7 +44,10 @@ public class InSourceGotoDefinitionConstructorTests : InSourceBase
             filePath:FilePath,
             column:17,
             line:11,
-            expected:"public InSourceGotoDefinitionConstructorTarget(string param1, string param2)",
-            "LibraryThatReferencesLibrary.InSourceGotoDefinitionConstructorTarget");
+            expected:new ExpectedImplementation(
+                LocationType.SourceCode,
+                "public InSourceGotoDefinitionConstructorTarget(string param1, string param2)",
+                null,
+                "LibraryThatReferencesLibrary.InSourceGotoDefinitionConstructorTarget"));
     }
 }

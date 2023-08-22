@@ -1,9 +1,10 @@
+using CsDecompileLib;
 using NUnit.Framework;
 
 namespace IntegrationTests;
 
 [TestFixture]
-public class InSourceNestedClassFindUsagesTests : InSourceFindUsagesBase
+public class InSourceNestedClassFindUsagesTests : FindImplementationsTestsBase
 {
     private static string FilePath = TestHarness.GetLibraryThatReferencesLibraryFilePath(
         "InSourceNestedClassFindUsagesUser.cs");
@@ -12,19 +13,26 @@ public class InSourceNestedClassFindUsagesTests : InSourceFindUsagesBase
     public void Test1()
     {
         RequestAndAssertCorrectLine(
+            command: Endpoints.DecompileFindUsages,
             filePath: FilePath,
             column: 49,
             line: 7,
             new[]
             {
                 //I guess right now we are including the declaration in the response
-                ("public class InnerClass",
+                new ExpectedImplementation(
+                    LocationType.SourceCode,
+                    "public class InnerClass",
                     "InSourceNestedClassFindUsagesTarget",
                     "LibraryThatReferencesLibrary.InSourceNestedClassFindUsagesTarget"),
-                ("InSourceNestedClassFindUsagesTarget.InnerClass a;",
+                new ExpectedImplementation(
+                    LocationType.SourceCode,
+                    "InSourceNestedClassFindUsagesTarget.InnerClass a;",
                     "InSourceNestedClassFindUsagesUser",
                     "LibraryThatReferencesLibrary.InSourceNestedClassFindUsagesUser"),
-                ("InnerClass b;",
+                new ExpectedImplementation(
+                    LocationType.SourceCode,
+                    "InnerClass b;",
                     "InSourceNestedClassFindUsagesTarget",
                     "LibraryThatReferencesLibrary.InSourceNestedClassFindUsagesTarget"),
             });

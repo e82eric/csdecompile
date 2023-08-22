@@ -1,3 +1,4 @@
+using CsDecompileLib;
 using NUnit.Framework;
 
 namespace IntegrationTests;
@@ -15,8 +16,11 @@ public class InSourceNestedClassGotoDefinitionTests : InSourceBase
             filePath:FilePath,
             column:53,
             line: 7,
-            "public class InnerClass",
-            "LibraryThatReferencesLibrary.InSourceNestedClassGotoDefinitionTarget");
+            new ExpectedImplementation(
+                LocationType.SourceCode,
+                "public class InnerClass",
+                null,
+                "LibraryThatReferencesLibrary.InSourceNestedClassGotoDefinitionTarget"));
     }
 
     [Test]
@@ -26,7 +30,10 @@ public class InSourceNestedClassGotoDefinitionTests : InSourceBase
             filePath:FilePath,
             column:13,
             line: 7,
-            "public class InSourceNestedClassGotoDefinitionTarget",
-            "LibraryThatReferencesLibrary.InSourceNestedClassGotoDefinitionTarget");
+            new ExpectedImplementation(
+                LocationType.SourceCode,
+                "public class InSourceNestedClassGotoDefinitionTarget",
+                null,
+                "LibraryThatReferencesLibrary.InSourceNestedClassGotoDefinitionTarget"));
     }
 }

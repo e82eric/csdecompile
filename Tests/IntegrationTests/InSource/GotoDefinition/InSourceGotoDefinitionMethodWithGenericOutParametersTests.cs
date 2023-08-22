@@ -1,3 +1,4 @@
+using CsDecompileLib;
 using NUnit.Framework;
 
 namespace IntegrationTests;
@@ -15,8 +16,11 @@ public class InSourceGotoDefinitionMethodWithGenericOutParametersTests : InSourc
             filePath: FilePath,
             column:15,
             line:8,
-            expected:"public bool TryRun(T1 t1, out T2 t2)",
-            "LibraryThatReferencesLibrary.InSourceGotoDefinitionMethodWithGenericOutParametersTarget`2");
+            expected:new ExpectedImplementation(
+               LocationType.SourceCode,
+                "public bool TryRun(T1 t1, out T2 t2)",
+               null,
+               "LibraryThatReferencesLibrary.InSourceGotoDefinitionMethodWithGenericOutParametersTarget`2"));
     }
 
     [Test]
@@ -26,7 +30,10 @@ public class InSourceGotoDefinitionMethodWithGenericOutParametersTests : InSourc
             filePath: FilePath,
             column:94,
             line:9,
-            expected:"public bool TryRun(T1 t1, out T2 t2)",
-            "LibraryThatReferencesLibrary.InSourceGotoDefinitionMethodWithGenericOutParametersTarget`2");
+            expected:new ExpectedImplementation(
+                LocationType.SourceCode,
+                "public bool TryRun(T1 t1, out T2 t2)",
+                null,
+                "LibraryThatReferencesLibrary.InSourceGotoDefinitionMethodWithGenericOutParametersTarget`2"));
     }
 }
