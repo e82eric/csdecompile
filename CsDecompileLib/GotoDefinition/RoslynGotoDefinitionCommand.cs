@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
+using CsDecompileLib.IlSpy;
 using CsDecompileLib.Roslyn;
 using Microsoft.CodeAnalysis;
 
@@ -8,15 +9,17 @@ namespace CsDecompileLib.GotoDefinition;
 public class RoslynGotoDefinitionCommand : INavigationCommand<FindImplementationsResponse>
 {
     private readonly ISymbol _symbol;
+    private readonly ICsDecompileWorkspace _workspace;
 
-    public RoslynGotoDefinitionCommand(ISymbol symbol)
+    public RoslynGotoDefinitionCommand(ISymbol symbol, ICsDecompileWorkspace workspace)
     {
         _symbol = symbol;
+        _workspace = workspace;
     }
 
     public Task<ResponsePacket<FindImplementationsResponse>> Execute()
     {
-        var lineSpan = _symbol.Locations.First().GetMappedLineSpan();
+        var location = _symbol.Locations.First();
 
         string containingTypeFullName = null;
         if (_symbol is not INamedTypeSymbol)
@@ -34,17 +37,14 @@ public class RoslynGotoDefinitionCommand : INavigationCommand<FindImplementation
             containingTypeFullName = current?.GetMetadataName();
         }
 
+        var sourceLineInfo = location.GetSourceLineInfo(_workspace);
+        sourceLineInfo.ContainingTypeFullName = containingTypeFullName;
+
         var result = new FindImplementationsResponse
         {
             Implementations =
             {
-                new SourceFileInfo
-                {
-                    FileName = lineSpan.Path,
-                    Column = lineSpan.StartLinePosition.Character + 1,
-                    Line = lineSpan.StartLinePosition.Line + 1,
-                    ContainingTypeFullName = containingTypeFullName
-                }
+                sourceLineInfo,
             }
         };
 

@@ -15,11 +15,11 @@ public class ExternalGotoDefinitionTestBase : ExternalTestBase
     {
     }
 
-    protected void SendRequestAndAssertLocations(
+    protected void SendRequestAndAssertImplementations(
         string filePath,
         int column,
         int line,
-        IEnumerable<(LocationType type, string value, string shortTypeName)> expected)
+        IEnumerable<ExpectedImplementation> expected)
     {
         var decompiledLocationRequest = new DecompiledLocationRequest
         {
@@ -38,17 +38,7 @@ public class ExternalGotoDefinitionTestBase : ExternalTestBase
         var response =
             IoClient.ExecuteCommand<DecompiledLocationRequest, FindImplementationsResponse>(request);
 
-        Assert.AreEqual(expected.Count(), response.Body.Implementations.Count());
-
-        foreach (var expectedLocation in expected)
-        {
-            var found = response.Body.Implementations.Where(
-                e => e.Type == expectedLocation.type &&
-                     e.ContainingTypeShortName == expectedLocation.shortTypeName &&
-                     e.SourceText == expectedLocation.value);
-
-            Assert.NotNull(found);
-        }
+        ImplementationAsserts.AssertSame2(response, expected);
     }
 
     protected void SendRequestAndAssertLine(

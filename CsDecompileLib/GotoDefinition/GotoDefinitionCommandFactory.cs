@@ -1,5 +1,6 @@
 ﻿using CsDecompileLib.FindUsages;
 using CsDecompileLib.GetMembers;
+using CsDecompileLib.IlSpy;
 using CsDecompileLib.IlSpy.Ast;
 using ICSharpCode.Decompiler.CSharp.Syntax;
 using ICSharpCode.Decompiler.IL;
@@ -16,6 +17,7 @@ namespace CsDecompileLib.GotoDefinition
         private readonly IlSpyDefinitionFinderBase<IField> _fieldFinder;
         private readonly IlSpyTypesInReferencesSearcher _ilSpyTypesRepository;
         private readonly RoslynAllTypesRepository _roslynAllTypesRepository;
+        private readonly ICsDecompileWorkspace _workspace;
 
         public GotoDefinitionCommandFactory(
             IlSpyDefinitionFinderBase<ITypeDefinition> typeFinder,
@@ -24,11 +26,13 @@ namespace CsDecompileLib.GotoDefinition
             IlSpyDefinitionFinderBase<IEvent> eventFinder,
             IlSpyDefinitionFinderBase<IField> fieldFinder,
             IlSpyTypesInReferencesSearcher ilSpyTypesRepository,
-            RoslynAllTypesRepository roslynAllTypesRepository)
+            RoslynAllTypesRepository roslynAllTypesRepository,
+            ICsDecompileWorkspace workspace)
         {
             _fieldFinder = fieldFinder;
             _ilSpyTypesRepository = ilSpyTypesRepository;
             _roslynAllTypesRepository = roslynAllTypesRepository;
+            _workspace = workspace;
             _propertyFinder = propertyFinder;
             _eventFinder = eventFinder;
             _memberFinder = memberFinder;
@@ -48,7 +52,7 @@ namespace CsDecompileLib.GotoDefinition
         }
         public INavigationCommand<FindImplementationsResponse> GetForInSource(Microsoft.CodeAnalysis.ISymbol roslynSymbol)
         {
-            return new RoslynGotoDefinitionCommand(roslynSymbol);
+            return new RoslynGotoDefinitionCommand(roslynSymbol, _workspace);
         }
 
         public INavigationCommand<FindImplementationsResponse> GetForEvent(IEvent eventSymbol, string projectAssemblyFilePath)

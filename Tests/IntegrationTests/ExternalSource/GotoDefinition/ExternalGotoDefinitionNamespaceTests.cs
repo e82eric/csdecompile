@@ -12,44 +12,80 @@ public class ExternalGotoDefinitionNamespaceTests : ExternalGotoDefinitionTestBa
     [Test]
     public void Test1()
     {
-        SendRequestAndAssertLocations(
+        SendRequestAndAssertImplementations(
             filePath: FilePath,
             column: 7,
             line: 1,
             new[]
             {
-                (LocationType.Decompiled, "ExternalGotoDefinitionNamespaceTarget.Class1", "Class1"),
-                (LocationType.Decompiled, "ExternalGotoDefinitionNamespaceTarget.Class2", "Class2"),
-                (LocationType.Decompiled, "ExternalGotoDefinitionNamespaceTarget.Class3", "Class3"),
+                new ExpectedImplementation(
+                    LocationType.Decompiled,
+                    "ExternalGotoDefinitionNamespaceTarget.Class1",
+                    "Class1",
+                    "ExternalGotoDefinitionNamespaceTarget.Class1"),
+                new ExpectedImplementation(
+                    LocationType.Decompiled,
+                    "ExternalGotoDefinitionNamespaceTarget.Class2",
+                    "Class2",
+                    "ExternalGotoDefinitionNamespaceTarget.Class2"),
+                new ExpectedImplementation(
+                    LocationType.Decompiled,
+                    "ExternalGotoDefinitionNamespaceTarget.Class3",
+                    "Class3",
+                    "ExternalGotoDefinitionNamespaceTarget.Class3"),
             });
     }
 
     [Test]
     public void Test2()
     {
-        SendRequestAndAssertLocations(
+        SendRequestAndAssertImplementations(
             filePath: FilePath,
             column: 7,
             line: 2,
             new[]
             {
-                (LocationType.Decompiled, "ExternalGotoDefinitionNamespaceTarget.Class1", "Class1"),
-                (LocationType.Decompiled, "ExternalGotoDefinitionNamespaceTarget.Class2", "Class2"),
-                (LocationType.Decompiled, "ExternalGotoDefinitionNamespaceTarget.Class3", "Class3"),
+                new ExpectedImplementation(
+                    LocationType.Decompiled,
+                    "ExternalGotoDefinitionNamespaceTarget.Class1",
+                    "Class1",
+                    "ExternalGotoDefinitionNamespaceTarget.Class1"),
+                new ExpectedImplementation(
+                    LocationType.Decompiled,
+                    "ExternalGotoDefinitionNamespaceTarget.Class2",
+                    "Class2",
+                    "ExternalGotoDefinitionNamespaceTarget.Class2"),
+                new ExpectedImplementation(
+                    LocationType.Decompiled,
+                    "ExternalGotoDefinitionNamespaceTarget.Class3",
+                    "Class3",
+                    "ExternalGotoDefinitionNamespaceTarget.Class3"),
             });
     }
     [Test]
     public void Test3()
     {
-        SendRequestAndAssertLocations(
+        SendRequestAndAssertImplementations(
             filePath: FilePath,
             column: 45,
             line: 2,
             new[]
             {
-                (LocationType.Decompiled, "ExternalGotoDefinitionNamespaceTarget.SubNamespace.SubClass1", "SubClass1"),
-                (LocationType.Decompiled, "ExternalGotoDefinitionNamespaceTarget.SubNamespace.SubClass2", "SubClass2"),
-                (LocationType.Decompiled, "ExternalGotoDefinitionNamespaceTarget.SubNamespace.SubClass3", "SubClass3"),
+                new ExpectedImplementation(
+                    LocationType.Decompiled,
+                    "ExternalGotoDefinitionNamespaceTarget.SubNamespace.SubClass1",
+                    "SubClass1",
+                    "ExternalGotoDefinitionNamespaceTarget.SubNamespace.SubClass1"),
+                new ExpectedImplementation(
+                    LocationType.Decompiled,
+                    "ExternalGotoDefinitionNamespaceTarget.SubNamespace.SubClass2",
+                    "SubClass2",
+                    "ExternalGotoDefinitionNamespaceTarget.SubNamespace.SubClass2"),
+                new ExpectedImplementation(
+                    LocationType.Decompiled,
+                    "ExternalGotoDefinitionNamespaceTarget.SubNamespace.SubClass3",
+                    "SubClass3",
+                    "ExternalGotoDefinitionNamespaceTarget.SubNamespace.SubClass3")
             });
     }
 }

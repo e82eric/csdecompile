@@ -155,7 +155,8 @@ internal static class HandlerFactory
             ilSpyEventFinder,
             ilSpyFieldFinder,
             GetAllTypesRepository2(),
-            new RoslynAllTypesRepository(_workspace));
+            new RoslynAllTypesRepository(_workspace),
+            _workspace);
         var roslynSymbolInfoFinder = new RoslynLocationCommandFactory<INavigationCommand<FindImplementationsResponse>>(
             _workspace,
             ilSpySymbolFinder,

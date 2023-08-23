@@ -25,7 +25,7 @@ public class ExternalFindUsagesMethodWithGenericInParameterTests : ExternalFindU
                     "ExternalFindUsagesMethodWithGenericInParameterUser",
                     "LibraryThatReferencesLibrary.ExternalFindUsagesMethodWithGenericInParameterUser`2"),
                 new ExpectedImplementation(LocationType.SourceCode,
-                    "public bool TryRun(T val, in T2 result);",
+                    "public bool TryRun(T val, in T2 result)",
                     "ExternalFindUsagesMethodWithGenericInParameterSourceImplementation",
                     "LibraryThatReferencesLibrary.ExternalFindUsagesMethodWithGenericInParameterSourceImplementation`2"),
                 new ExpectedImplementation(LocationType.Decompiled,
