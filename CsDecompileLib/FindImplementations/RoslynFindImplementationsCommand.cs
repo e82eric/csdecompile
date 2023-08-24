@@ -7,7 +7,7 @@ using CsDecompileLib.Roslyn;
 
 namespace CsDecompileLib.FindImplementations;
 
-public class RoslynFindImplementationsCommand : INavigationCommand<FindImplementationsResponse>
+public class RoslynFindImplementationsCommand : INavigationCommand<LocationsResponse>
 {
     private readonly ISymbol _symbol;
     private readonly ICsDecompileWorkspace _workspace;
@@ -20,9 +20,9 @@ public class RoslynFindImplementationsCommand : INavigationCommand<FindImplement
         _workspace = workspace;
     }
         
-    public async Task<ResponsePacket<FindImplementationsResponse>> Execute()
+    public async Task<ResponsePacket<LocationsResponse>> Execute()
     {
-        var body = new FindImplementationsResponse();
+        var body = new LocationsResponse();
 
         if (_symbol.IsSealed)
         {
@@ -44,7 +44,7 @@ public class RoslynFindImplementationsCommand : INavigationCommand<FindImplement
                 {
                     var sourceInfo = implementation.GetSourceLineInfo(_workspace);
                     sourceInfo.ContainingTypeShortName = GetShortName(implementation);
-                    body.Implementations.Add(sourceInfo);
+                    body.Locations.Add(sourceInfo);
 
                     if (implementation.IsOverridable())
                     {
@@ -53,7 +53,7 @@ public class RoslynFindImplementationsCommand : INavigationCommand<FindImplement
                         {
                             var sourceLineInfo = @override.GetSourceLineInfo(_workspace);
                             sourceLineInfo.ContainingTypeShortName = GetShortName(implementation);
-                            body.Implementations.Add(sourceLineInfo);
+                            body.Locations.Add(sourceLineInfo);
                         }
                     }
                 }
@@ -69,7 +69,7 @@ public class RoslynFindImplementationsCommand : INavigationCommand<FindImplement
                 if (derivedType.Locations.First().IsInSource)
                 {
                     var sourceLineInfo = derivedType.GetSourceLineInfo(_workspace);
-                    body.Implementations.Add(sourceLineInfo);
+                    body.Locations.Add(sourceLineInfo);
                 }
             }
         }
@@ -81,7 +81,7 @@ public class RoslynFindImplementationsCommand : INavigationCommand<FindImplement
                 if (@override.Locations.First().IsInSource)
                 {
                     var sourceLineInfo = @override.GetSourceLineInfo(_workspace);
-                    body.Implementations.Add(sourceLineInfo);
+                    body.Locations.Add(sourceLineInfo);
                 }
             }
         }
@@ -93,12 +93,12 @@ public class RoslynFindImplementationsCommand : INavigationCommand<FindImplement
             if (_symbol is IMethodSymbol method && method.PartialImplementationPart != null)
             {
                 var sourceLineInfo = method.PartialImplementationPart.GetSourceLineInfo(_workspace);
-                body.Implementations.Add(sourceLineInfo);
+                body.Locations.Add(sourceLineInfo);
             }
             else
             {
                 var sourceLineInfo = _symbol.GetSourceLineInfo(_workspace);
-                body.Implementations.Add(sourceLineInfo);
+                body.Locations.Add(sourceLineInfo);
             }
         }
 

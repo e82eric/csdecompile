@@ -4,7 +4,7 @@ using ICSharpCode.Decompiler.IL;
 
 namespace CsDecompileLib.FindUsages;
 
-public class ExternalAssembliesFindUsagesCommandFactory : IDecompilerCommandFactory<INavigationCommand<FindImplementationsResponse>>
+public class ExternalAssembliesFindUsagesCommandFactory : IDecompilerCommandFactory<INavigationCommand<LocationsResponse>>
 {
     private readonly IlSpyUsagesFinderBase<ITypeDefinition> _usagesFinder;
     private readonly IlSpyUsagesFinderBase<IMember> _methodUsagesFinder;
@@ -32,55 +32,55 @@ public class ExternalAssembliesFindUsagesCommandFactory : IDecompilerCommandFact
         _variableUsagesFinder = variableUsagesFinder;
     }
 
-    public INavigationCommand<FindImplementationsResponse> GetForType(ITypeDefinition typeDefinition, string projectAssemblyFilePath)
+    public INavigationCommand<LocationsResponse> GetForType(ITypeDefinition typeDefinition, string projectAssemblyFilePath)
     {
-        var result = new IlSpyUsagesCommand<ITypeDefinition, FindImplementationsResponse>(
+        var result = new IlSpyUsagesCommand<ITypeDefinition, LocationsResponse>(
             typeDefinition,
             _usagesFinder);
         return result;
     }
 
-    public INavigationCommand<FindImplementationsResponse> GetForMethod(IMethod method, string projectAssemblyFilePath)
+    public INavigationCommand<LocationsResponse> GetForMethod(IMethod method, string projectAssemblyFilePath)
     {
-        var result = new IlSpyUsagesCommand<IMember, FindImplementationsResponse>(
+        var result = new IlSpyUsagesCommand<IMember, LocationsResponse>(
             method,
             _methodUsagesFinder);
         return result;
     }
 
-    public INavigationCommand<FindImplementationsResponse> GetForProperty(IProperty property, string projectAssemblyFilePath)
+    public INavigationCommand<LocationsResponse> GetForProperty(IProperty property, string projectAssemblyFilePath)
     {
-        var result = new IlSpyUsagesCommand<IMember, FindImplementationsResponse>(
+        var result = new IlSpyUsagesCommand<IMember, LocationsResponse>(
             property,
             _propertyUsagesFinder);
         return result;
     }
     
-    public INavigationCommand<FindImplementationsResponse> GetForField(IField field, string projectAssemblyFilePath)
+    public INavigationCommand<LocationsResponse> GetForField(IField field, string projectAssemblyFilePath)
     {
-        var result = new IlSpyUsagesCommand<IMember, FindImplementationsResponse>(
+        var result = new IlSpyUsagesCommand<IMember, LocationsResponse>(
             field,
             _fieldUsagesFinder);
         return result;
     }
     
-    public INavigationCommand<FindImplementationsResponse> GetForEnumField(IField field, string projectAssemblyFilePath)
+    public INavigationCommand<LocationsResponse> GetForEnumField(IField field, string projectAssemblyFilePath)
     {
-        var result = new IlSpyUsagesCommand<IMember, FindImplementationsResponse>(
+        var result = new IlSpyUsagesCommand<IMember, LocationsResponse>(
             field,
             _enumFieldUsagesFinder);
         return result;
     }
 
-    public INavigationCommand<FindImplementationsResponse> GetForEvent(IEvent eventSymbol, string projectAssemblyFilePath)
+    public INavigationCommand<LocationsResponse> GetForEvent(IEvent eventSymbol, string projectAssemblyFilePath)
     {
-        var result = new IlSpyUsagesCommand<IMember, FindImplementationsResponse>(
+        var result = new IlSpyUsagesCommand<IMember, LocationsResponse>(
             eventSymbol,
             _eventUsagesFinder);
         return result;
     }
     
-    public INavigationCommand<FindImplementationsResponse> GetForVariable(ILVariable variable, ITypeDefinition typeDefinition, AstNode methodNode,
+    public INavigationCommand<LocationsResponse> GetForVariable(ILVariable variable, ITypeDefinition typeDefinition, AstNode methodNode,
         string sourceText, string assemblyFilePath)
     {
         var result = new FindVariableUsagesCommand(

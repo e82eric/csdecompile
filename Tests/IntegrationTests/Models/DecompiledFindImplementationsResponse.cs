@@ -7,7 +7,7 @@ public class DecompiledFindImplementationsResponse
 {
     public DecompiledFindImplementationsResponse()
     {
-        Implementations = new List<DecompileInfo>();
+        Locations = new List<DecompileInfo>();
     }
-    public IList<DecompileInfo> Implementations { get; }
+    public IList<DecompileInfo> Locations { get; }
 }

@@ -3,7 +3,7 @@ using ICSharpCode.Decompiler.TypeSystem;
 
 namespace CsDecompileLib.GetMembers;
 
-public class ClassLevelGetMembersCommandFactory : INavigationCommandFactory<INavigationCommand<FindImplementationsResponse>>
+public class ClassLevelGetMembersCommandFactory : INavigationCommandFactory<INavigationCommand<LocationsResponse>>
 {
     private readonly IlSpySymbolFinder _symbolFinder;
     private readonly IlSpyTypeMembersFinder _typeMembersFinder;
@@ -19,7 +19,7 @@ public class ClassLevelGetMembersCommandFactory : INavigationCommandFactory<INav
         _decompilerFactory = decompilerFactory;
     }
         
-    public INavigationCommand<FindImplementationsResponse>Find(DecompiledLocationRequest request)
+    public INavigationCommand<LocationsResponse>Find(DecompiledLocationRequest request)
     {
         var containingTypeDefinition = _symbolFinder.FindTypeDefinition(
             request.AssemblyFilePath,

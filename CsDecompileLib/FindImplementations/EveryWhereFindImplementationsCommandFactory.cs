@@ -11,7 +11,7 @@ using TypeKind = ICSharpCode.Decompiler.TypeSystem.TypeKind;
 namespace CsDecompileLib.FindImplementations;
 
 public class EveryWhereFindImplementationsCommandFactory<TResponseType>
-    : ICommandFactory<INavigationCommand<TResponseType>> where TResponseType : FindImplementationsResponse, new()
+    : ICommandFactory<INavigationCommand<TResponseType>> where TResponseType : LocationsResponse, new()
 {
     private readonly ICommandFactory<INavigationCommand<TResponseType>> _commandCommandFactory;
     private readonly IDecompileWorkspace _decompileWorkspace;

@@ -6,7 +6,7 @@ using ICSharpCode.Decompiler.TypeSystem;
 
 namespace CsDecompileLib.GotoDefinition;
 
-class GotoVariableDefinitionCommand : INavigationCommand<FindImplementationsResponse>
+class GotoVariableDefinitionCommand : INavigationCommand<LocationsResponse>
 {
     private readonly IlSpyVariableDefinitionFinder _finder;
     private readonly ITypeDefinition _containingTypeDefinition;
@@ -31,7 +31,7 @@ class GotoVariableDefinitionCommand : INavigationCommand<FindImplementationsResp
         _assemblyFileInfo = assemblyFileInfo;
     }
 
-    public Task<ResponsePacket<FindImplementationsResponse>> Execute()
+    public Task<ResponsePacket<LocationsResponse>> Execute()
     {
         var definition = _finder.Run(
             _containingTypeDefinition,
@@ -41,12 +41,12 @@ class GotoVariableDefinitionCommand : INavigationCommand<FindImplementationsResp
             
         definition.AssemblyFilePath = _assemblyFileInfo;
                 
-        var result = new FindImplementationsResponse
+        var result = new LocationsResponse
         {
-            Implementations = { definition },
+            Locations = { definition },
         };
 
-        var response = new ResponsePacket<FindImplementationsResponse>
+        var response = new ResponsePacket<LocationsResponse>
         {
             Body = result,
             Success = true

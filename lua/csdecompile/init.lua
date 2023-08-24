@@ -819,7 +819,7 @@ M.HandleAddNugetPackageAndDependencies = function(response, data)
 end
 
 M.HandleGetAllTypes = function(response)
-  M._openTelescope(response.Body.Implementations, M._createGetAllTypesDisplayer, M._sourcePreviewer, function(selection)
+  M._openTelescope(response.Body.Locations, M._createGetAllTypesDisplayer, M._sourcePreviewer, function(selection)
     local current_buffer = vim.fn.bufnr()
     local variable_exists = vim.b.isSymoblWindow ~= nil
 
@@ -856,7 +856,7 @@ M.StartFindUsages = function()
 end
 
 M.HandleUsages = function(response)
-  M._openTelescope(response.Body.Implementations, M._createUsagesDisplayer, M._sourcePreviewer, function(selection)
+  M._openTelescope(response.Body.Locations, M._createUsagesDisplayer, M._sourcePreviewer, function(selection)
       M._openSourceFileOrDecompile(selection)
   end,
   'Find Usages')
@@ -933,7 +933,7 @@ M.StartSearchMembers = function(assemblySearchStrings, memberSearchString)
 end
 
 M.HandleSearchMembers = function(response)
-  M._openTelescope(response.Body.Implementations, M._createUsagesDisplayer, M._sourcePreviewer, function(selection)
+  M._openTelescope(response.Body.Locations, M._createUsagesDisplayer, M._sourcePreviewer, function(selection)
       M._openSourceFileOrDecompile(selection)
   end,
   'Members')
@@ -947,7 +947,7 @@ M.StartGetTypeMembers = function()
 end
 
 M.HandleGetTypeMembers = function(response)
-  M._openTelescope(response.Body.Implementations, M._createUsagesDisplayer, M._sourcePreviewer, function(selection)
+  M._openTelescope(response.Body.Locations, M._createUsagesDisplayer, M._sourcePreviewer, function(selection)
     M._openSourceFileOrDecompile(selection)
   end,
   'Type Members')
@@ -965,12 +965,12 @@ M.HandleFindImplementations = function(response)
     print 'No implementations found'
   elseif response.Body == nil then
     print 'No implementations found'
-  elseif #response.Body.Implementations == 0 then
+  elseif #response.Body.Locations == 0 then
     print 'No implementations found'
-  elseif #response.Body.Implementations == 1 then
-    M._openSourceFileOrDecompile(response.Body.Implementations[1])
+  elseif #response.Body.Locations == 1 then
+    M._openSourceFileOrDecompile(response.Body.Locations[1])
   else
-    M._openTelescope(response.Body.Implementations, M._createUsagesDisplayer, M._sourcePreviewer, function(selection)
+    M._openTelescope(response.Body.Locations, M._createUsagesDisplayer, M._sourcePreviewer, function(selection)
       M._openSourceFileOrDecompile(selection)
     end,
     'Find Implementations')

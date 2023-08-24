@@ -2,7 +2,7 @@
 
 namespace CsDecompileLib.GetMembers;
 
-public class AssemblyLevelGetMembersCommandFactory : INavigationCommandFactory<INavigationCommand<FindImplementationsResponse>>
+public class AssemblyLevelGetMembersCommandFactory : INavigationCommandFactory<INavigationCommand<LocationsResponse>>
 {
     private readonly IlSpySymbolFinder _symbolFinder;
     private readonly IlSpyTypeMembersFinder _typeMembersFinder;
@@ -18,7 +18,7 @@ public class AssemblyLevelGetMembersCommandFactory : INavigationCommandFactory<I
         _decompilerFactory = decompilerFactory;
     }
         
-    public INavigationCommand<FindImplementationsResponse>Find(DecompiledLocationRequest request)
+    public INavigationCommand<LocationsResponse>Find(DecompiledLocationRequest request)
     {
         var decompiler = _decompilerFactory.Get(request.AssemblyFilePath);
         var (syntaxTree, _) = decompiler.DecompileWholeModule();

@@ -3,7 +3,7 @@ using ICSharpCode.Decompiler.TypeSystem;
 
 namespace CsDecompileLib.FindImplementations;
 
-public class IlSpyFindImplementationsCommandFactory : IDecompilerCommandFactory<INavigationCommand<FindImplementationsResponse>>
+public class IlSpyFindImplementationsCommandFactory : IDecompilerCommandFactory<INavigationCommand<LocationsResponse>>
 {
     private readonly IlSpyUsagesFinderBase<ITypeDefinition> _typeFinder;
     private readonly IlSpyUsagesFinderBase<IMember> _memberImplementationFinder;
@@ -16,38 +16,38 @@ public class IlSpyFindImplementationsCommandFactory : IDecompilerCommandFactory<
         _memberImplementationFinder = memberImplementationFinder;
     }
 
-    public INavigationCommand<FindImplementationsResponse> GetForType(ITypeDefinition typeDefinition, string projectAssemblyFilePath)
+    public INavigationCommand<LocationsResponse> GetForType(ITypeDefinition typeDefinition, string projectAssemblyFilePath)
     {
         if (typeDefinition.IsSealed)
         {
-            return new NoOpCommand<FindImplementationsResponse>();
+            return new NoOpCommand<LocationsResponse>();
         }
         
-        var result = new IlSpyUsagesCommand<ITypeDefinition, FindImplementationsResponse>(
+        var result = new IlSpyUsagesCommand<ITypeDefinition, LocationsResponse>(
             typeDefinition,
             _typeFinder);
         return result;
     }
 
-    public INavigationCommand<FindImplementationsResponse> GetForMethod(IMethod method, string projectAssemblyFilePath)
+    public INavigationCommand<LocationsResponse> GetForMethod(IMethod method, string projectAssemblyFilePath)
     {
-        var result = new IlSpyUsagesCommand<IMember, FindImplementationsResponse>(
+        var result = new IlSpyUsagesCommand<IMember, LocationsResponse>(
             method,
             _memberImplementationFinder);
         return result;
     }
 
-    public INavigationCommand<FindImplementationsResponse> GetForProperty(IProperty property, string projectAssemblyFilePath)
+    public INavigationCommand<LocationsResponse> GetForProperty(IProperty property, string projectAssemblyFilePath)
     {
-        var result = new IlSpyUsagesCommand<IMember, FindImplementationsResponse>(
+        var result = new IlSpyUsagesCommand<IMember, LocationsResponse>(
             property,
             _memberImplementationFinder);
         return result;
     }
         
-    public INavigationCommand<FindImplementationsResponse> GetForEvent(IEvent eventSymbol, string projectAssemblyFilePath)
+    public INavigationCommand<LocationsResponse> GetForEvent(IEvent eventSymbol, string projectAssemblyFilePath)
     {
-        var result = new IlSpyUsagesCommand<IMember, FindImplementationsResponse>(
+        var result = new IlSpyUsagesCommand<IMember, LocationsResponse>(
             eventSymbol,
             _memberImplementationFinder);
         return result;

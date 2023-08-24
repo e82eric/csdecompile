@@ -24,7 +24,7 @@ public class InSourceFindImplementationsFileDoesntExistTests : InSourceBase
         };
 
         var response = TestHarness.IoClient
-            .ExecuteCommand<DecompiledLocationRequest, FindImplementationsResponse>(request);
+            .ExecuteCommand<DecompiledLocationRequest, LocationsResponse>(request);
 
         Assert.False(response.Success);
         Assert.AreEqual($"FILE_NOT_FOUND {FilePath}", response.Message);

@@ -9,7 +9,7 @@ using ISymbol = Microsoft.CodeAnalysis.ISymbol;
 
 namespace CsDecompileLib.GetMembers;
 
-public class FindMethodByNameHandler : HandlerBase<FindMethodByNameRequest, FindImplementationsResponse>
+public class FindMethodByNameHandler : HandlerBase<FindMethodByNameRequest, LocationsResponse>
 {
     private readonly AllTypesRepositoryByName _typesRepository;
     private readonly IlSpySymbolFinder _symbolFinder;
@@ -28,9 +28,9 @@ public class FindMethodByNameHandler : HandlerBase<FindMethodByNameRequest, Find
         _typesRepository = typesRepository;
     }
 
-    public override async Task<ResponsePacket<FindImplementationsResponse>> Handle(FindMethodByNameRequest request)
+    public override async Task<ResponsePacket<LocationsResponse>> Handle(FindMethodByNameRequest request)
     {
-        var body = new FindImplementationsResponse();
+        var body = new LocationsResponse();
         var roslynSymbols = new List<ISymbol>();
         foreach (var project in _csDecompileWorkspace.CurrentSolution.Projects)
         {
@@ -50,7 +50,7 @@ public class FindMethodByNameHandler : HandlerBase<FindMethodByNameRequest, Find
         {
             var sourceFileInfo = roslynSymbol.GetSourceLineInfo(_csDecompileWorkspace);
             sourceFileInfo.ContainingTypeShortName = GetShortName(roslynSymbol);
-            body.Implementations.Add(sourceFileInfo);
+            body.Locations.Add(sourceFileInfo);
         }
         
         var namespaces = _typesRepository.GetAllTypes(
@@ -70,9 +70,9 @@ public class FindMethodByNameHandler : HandlerBase<FindMethodByNameRequest, Find
 
             var currentResult = await command.Execute();
 
-            foreach (var bodyImplementation in currentResult.Body.Implementations)
+            foreach (var bodyImplementation in currentResult.Body.Locations)
             {
-                body.Implementations.Add(bodyImplementation);
+                body.Locations.Add(bodyImplementation);
             }
         }
 

@@ -36,7 +36,7 @@ public class ExternalGotoDefinitionTestBase : ExternalTestBase
         };
 
         var response =
-            IoClient.ExecuteCommand<DecompiledLocationRequest, FindImplementationsResponse>(request);
+            IoClient.ExecuteCommand<DecompiledLocationRequest, LocationsResponse>(request);
 
         ImplementationAsserts.AssertSame2(response, expected);
     }

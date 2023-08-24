@@ -2,7 +2,7 @@
 
 namespace CsDecompileLib.GetMembers;
 
-public class GetTypesHandler : HandlerBase<GetTypesRequest, FindImplementationsResponse>
+public class GetTypesHandler : HandlerBase<GetTypesRequest, LocationsResponse>
 {
     private readonly IlSpyTypesInReferencesSearcher _typesRepository;
 
@@ -11,14 +11,14 @@ public class GetTypesHandler : HandlerBase<GetTypesRequest, FindImplementationsR
         _typesRepository = typesRepository;
     }
     
-    public override async Task<ResponsePacket<FindImplementationsResponse>> Handle(GetTypesRequest request)
+    public override async Task<ResponsePacket<LocationsResponse>> Handle(GetTypesRequest request)
     {
         var types = await _typesRepository.GetAllTypes( info => info.ContainingTypeShortName.Contains(request.SearchString));
 
-        var body = new FindImplementationsResponse();
+        var body = new LocationsResponse();
         foreach (var type in types)
         {
-            body.Implementations.Add(type);
+            body.Locations.Add(type);
         }
 
         var result = ResponsePacket.Ok(body);

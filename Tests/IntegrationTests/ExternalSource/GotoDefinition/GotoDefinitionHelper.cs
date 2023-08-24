@@ -10,12 +10,12 @@ public static class GotoDefinitionHelper
     public static ResponsePacket<DecompiledSourceResponse> Run(StdIoClient IoClient, CommandPacket<DecompiledLocationRequest> request)
     {
         var response = IoClient
-            .ExecuteCommand<DecompiledLocationRequest, FindImplementationsResponse>(request);
+            .ExecuteCommand<DecompiledLocationRequest, LocationsResponse>(request);
 
         Assert.True(response.Success);
-        Assert.AreEqual(1, response.Body.Implementations.Count);
+        Assert.AreEqual(1, response.Body.Locations.Count);
 
-        var locationToGetSourceFor = response.Body.Implementations.First();
+        var locationToGetSourceFor = response.Body.Locations.First();
         Assert.AreEqual(locationToGetSourceFor.Type, LocationType.Decompiled);
         var decompiledLocationToGetSourceFor = (DecompileInfo)locationToGetSourceFor;
 

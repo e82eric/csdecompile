@@ -62,8 +62,8 @@
         <Compile Include="..\..\CsDecompileLib\ExternalAssemblies\AddExternalAssemblyDirectoryResponse.cs">
           <Link>LinkedModels\AddExternalAssemblyDirectoryResponse.cs</Link>
         </Compile>
-        <Compile Include="..\..\CsDecompileLib\FindImplementationsResponse.cs">
-          <Link>LinkedModels\FindImplementationsResponse.cs</Link>
+        <Compile Include="..\..\CsDecompileLib\LocationsResponse.cs">
+          <Link>LinkedModels\LocationsResponse.cs</Link>
         </Compile>
         <Compile Include="..\..\CsDecompileLib\GetMembers\Assembly.cs">
           <Link>LinkedModels\Assembly.cs</Link>

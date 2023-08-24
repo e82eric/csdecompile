@@ -11,12 +11,12 @@ namespace IntegrationTests;
 public static class ImplementationAsserts
 {
     public static void AssertSame(
-        ResponsePacket<FindImplementationsResponse> response,
+        ResponsePacket<LocationsResponse> response,
         IEnumerable<ExpectedImplementation> expected)
     {
         Assert.True(response.Success);
 
-        foreach (var implementation in response.Body.Implementations)
+        foreach (var implementation in response.Body.Locations)
         {
             var foundExpected = AssertExpectedInImplementations(expected, implementation);
 
@@ -47,12 +47,12 @@ public static class ImplementationAsserts
     }
 
     public static void AssertSame2(
-        ResponsePacket<FindImplementationsResponse> response,
+        ResponsePacket<LocationsResponse> response,
         IEnumerable<ExpectedImplementation> expected)
     {
         Assert.True(response.Success);
 
-        foreach (var implementation in response.Body.Implementations)
+        foreach (var implementation in response.Body.Locations)
         {
             AssertExpectedInImplementations(expected, implementation);
         }

@@ -15,7 +15,7 @@ namespace CsDecompileLib;
 
 public class EverywhereSymbolInfoFinder<TCommandResponseType>
     : INavigationCommandFactoryAsync<INavigationCommand<TCommandResponseType>, DecompiledLocationRequest>
-    where TCommandResponseType :FindImplementationsResponse, new()
+    where TCommandResponseType :LocationsResponse, new()
 {
     private readonly ICsDecompileWorkspace _workspace;
     private readonly IlSpySymbolFinder _ilSpySymbolFinder;

@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace CsDecompileLib.GetMembers;
 
-public class FindMethodByStackFrameHandler : HandlerBase<FindMethodByStackFrameRequest, FindImplementationsResponse>
+public class FindMethodByStackFrameHandler : HandlerBase<FindMethodByStackFrameRequest, LocationsResponse>
 {
     private readonly FindMethodByNameHandler _findMethodByNameHandler;
 
@@ -13,7 +13,7 @@ public class FindMethodByStackFrameHandler : HandlerBase<FindMethodByStackFrameR
         _findMethodByNameHandler = findMethodByNameHandler;
     }
 
-    public override async Task<ResponsePacket<FindImplementationsResponse>> Handle(
+    public override async Task<ResponsePacket<LocationsResponse>> Handle(
         FindMethodByStackFrameRequest request)
     {
         Regex noGenericsRegex = new Regex(@"^(?<namespace>.*)\.(?<class>.*)\.(?<method>.*)\(.*");
@@ -51,9 +51,9 @@ public class FindMethodByStackFrameHandler : HandlerBase<FindMethodByStackFrameR
             return result;
         }
 
-        return new ResponsePacket<FindImplementationsResponse>
+        return new ResponsePacket<LocationsResponse>
         {
-            Body = new FindImplementationsResponse()
+            Body = new LocationsResponse()
         };
     }
 }

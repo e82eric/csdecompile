@@ -4,7 +4,7 @@ using ISymbol = Microsoft.CodeAnalysis.ISymbol;
 
 namespace CsDecompileLib.FindUsages;
 
-public class FindUsagesCommandFactory : ExternalAssembliesFindUsagesCommandFactory, ICommandFactory<INavigationCommand<FindImplementationsResponse>>
+public class FindUsagesCommandFactory : ExternalAssembliesFindUsagesCommandFactory, ICommandFactory<INavigationCommand<LocationsResponse>>
 {
     private readonly ICsDecompileWorkspace _csDecompileWorkspace;
 
@@ -28,26 +28,26 @@ public class FindUsagesCommandFactory : ExternalAssembliesFindUsagesCommandFacto
         _csDecompileWorkspace = csDecompileWorkspace;
     }
 
-    public INavigationCommand<FindImplementationsResponse> GetForNamespace(string namespaceString)
+    public INavigationCommand<LocationsResponse> GetForNamespace(string namespaceString)
     {
         throw new System.NotImplementedException();
     }
 
-    public INavigationCommand<FindImplementationsResponse> GetForInSource(ISymbol roslynSymbol)
+    public INavigationCommand<LocationsResponse> GetForInSource(ISymbol roslynSymbol)
     {
         var result = new RoslynFindUsagesCommand(roslynSymbol, _csDecompileWorkspace);
         return result;
     }
 
-    public INavigationCommand<FindImplementationsResponse> GetForFileNotFound(string filePath)
+    public INavigationCommand<LocationsResponse> GetForFileNotFound(string filePath)
     {
-        var result = new FileNotFoundCommand<FindImplementationsResponse>(filePath);
+        var result = new FileNotFoundCommand<LocationsResponse>(filePath);
         return result;
     }
 
-    public INavigationCommand<FindImplementationsResponse> SymbolNotFoundAtLocation(string filePath, int line, int column)
+    public INavigationCommand<LocationsResponse> SymbolNotFoundAtLocation(string filePath, int line, int column)
     {
-        var result = new SymbolNotFoundAtLocationCommand<FindImplementationsResponse>(filePath, line, column);
+        var result = new SymbolNotFoundAtLocationCommand<LocationsResponse>(filePath, line, column);
         return result;
     }
 }

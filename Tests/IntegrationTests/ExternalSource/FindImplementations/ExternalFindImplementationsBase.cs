@@ -93,7 +93,7 @@ public class ExternalFindImplementationsBase : ExternalTestBase
         };
 
         var response = TestHarness.IoClient
-            .ExecuteCommand<DecompiledLocationRequest, FindImplementationsResponse>(request);
+            .ExecuteCommand<DecompiledLocationRequest, LocationsResponse>(request);
 
         Assert.True(response.Success);
 
@@ -112,9 +112,9 @@ public class ExternalFindImplementationsBase : ExternalTestBase
         };
 
         var response = TestHarness.IoClient
-            .ExecuteCommand<DecompiledLocationRequest, FindImplementationsResponse>(request);
+            .ExecuteCommand<DecompiledLocationRequest, LocationsResponse>(request);
 
         Assert.True(response.Success);
-        Assert.AreEqual(expected, response.Body.Implementations.Count);
+        Assert.AreEqual(expected, response.Body.Locations.Count);
     }
 }

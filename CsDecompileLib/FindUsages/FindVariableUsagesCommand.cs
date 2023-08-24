@@ -5,7 +5,7 @@ using ICSharpCode.Decompiler.IL;
 
 namespace CsDecompileLib.FindUsages;
 
-internal class FindVariableUsagesCommand : INavigationCommand<FindImplementationsResponse>
+internal class FindVariableUsagesCommand : INavigationCommand<LocationsResponse>
 {
     private readonly IlSpyVariableUsagesFinder _usagesFinder;
     private readonly string _sourceText;
@@ -27,7 +27,7 @@ internal class FindVariableUsagesCommand : INavigationCommand<FindImplementation
         _methodBodyNode = methodBody;
     }
         
-    public Task<ResponsePacket<FindImplementationsResponse>> Execute()
+    public Task<ResponsePacket<LocationsResponse>> Execute()
     {
         var metadataSources = _usagesFinder.Run(
             _containingTypeDefinition,
@@ -35,11 +35,11 @@ internal class FindVariableUsagesCommand : INavigationCommand<FindImplementation
             _variable,
             _sourceText);
 
-        var body = new FindImplementationsResponse();
+        var body = new LocationsResponse();
             
         foreach (var metadataSource in metadataSources)
         {
-            body.Implementations.Add(metadataSource);
+            body.Locations.Add(metadataSource);
         }
 
         var result = ResponsePacket.Ok(body);

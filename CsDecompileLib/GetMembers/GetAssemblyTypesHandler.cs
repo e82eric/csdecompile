@@ -2,7 +2,7 @@ using System.Threading.Tasks;
 
 namespace CsDecompileLib.GetMembers;
 
-public class GetAssemblyTypesHandler : HandlerBase<GetAssemblyTypesRequest, FindImplementationsResponse>
+public class GetAssemblyTypesHandler : HandlerBase<GetAssemblyTypesRequest, LocationsResponse>
 {
     private readonly AllTypesRepository _typesRepository;
 
@@ -11,13 +11,13 @@ public class GetAssemblyTypesHandler : HandlerBase<GetAssemblyTypesRequest, Find
         _typesRepository = typesRepository;
     }
 
-    public override Task<ResponsePacket<FindImplementationsResponse>> Handle(GetAssemblyTypesRequest request)
+    public override Task<ResponsePacket<LocationsResponse>> Handle(GetAssemblyTypesRequest request)
     {
         var types = _typesRepository.GetAssemblyType(request.AssemblyFilePath);
-        var body = new FindImplementationsResponse();
+        var body = new LocationsResponse();
         foreach (var type in types)
         {
-            body.Implementations.Add(type);
+            body.Locations.Add(type);
         }
 
         var result = ResponsePacket.Ok(body);

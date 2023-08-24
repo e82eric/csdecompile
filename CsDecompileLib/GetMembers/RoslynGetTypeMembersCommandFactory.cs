@@ -10,7 +10,7 @@ using Microsoft.CodeAnalysis.Text;
 namespace CsDecompileLib.GetMembers;
 
 public class RoslynGetTypeMembersCommandFactory
-    : INavigationCommandFactoryAsync<INavigationCommand<FindImplementationsResponse>, DecompiledLocationRequest>
+    : INavigationCommandFactoryAsync<INavigationCommand<LocationsResponse>, DecompiledLocationRequest>
 {
     private readonly ICsDecompileWorkspace _workspace;
 
@@ -34,7 +34,7 @@ public class RoslynGetTypeMembersCommandFactory
         return null;
     }
     
-    public async Task<INavigationCommand<FindImplementationsResponse>> Get(DecompiledLocationRequest request)
+    public async Task<INavigationCommand<LocationsResponse>> Get(DecompiledLocationRequest request)
     {
         var document = _workspace.GetDocument(request.FileName);
         var semanticInfo = await document.GetSemanticModelAsync();

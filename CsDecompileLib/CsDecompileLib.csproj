@@ -246,7 +246,7 @@
         <Compile Include="ExternalAssemblies\AddExternalAssemblyDirectoryRequest.cs" />
         <Compile Include="ExternalAssemblies\AddExternalAssemblyDirectoryResponse.cs" />
         <Compile Include="FileNotFoundCommand.cs" />
-        <Compile Include="FindImplementationsResponse.cs" />
+        <Compile Include="LocationsResponse.cs" />
         <Compile Include="FindImplementations\AssemblyLevelVariableCommandProvider.cs" />
         <Compile Include="FindImplementations\ClassLevelVariableCommandProvider.cs" />
         <Compile Include="FindImplementations\EveryWhereFindImplementationsCommandFactory.cs" />

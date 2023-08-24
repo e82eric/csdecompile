@@ -5,7 +5,7 @@ using ICSharpCode.Decompiler.TypeSystem;
 
 namespace CsDecompileLib.FindUsages;
 
-internal class IlSpyUsagesCommand<T, TResponse> : INavigationCommand<TResponse> where TResponse : FindImplementationsResponse, new()
+internal class IlSpyUsagesCommand<T, TResponse> : INavigationCommand<TResponse> where TResponse : LocationsResponse, new()
 {
     private readonly T _symbol;
     private readonly IlSpyUsagesFinderBase<T> _usagesFinder;
@@ -27,7 +27,7 @@ internal class IlSpyUsagesCommand<T, TResponse> : INavigationCommand<TResponse> 
 
         foreach (var metadataSource in metadataSources)
         {
-            body.Implementations.Add(metadataSource);
+            body.Locations.Add(metadataSource);
         }
 
         if (_symbol is IMethod member)
@@ -82,7 +82,7 @@ internal class IlSpyUsagesCommand<T, TResponse> : INavigationCommand<TResponse> 
 
             foreach (var metadataSource in interfaceMetadataSources)
             {
-                body.Implementations.Add(metadataSource);
+                body.Locations.Add(metadataSource);
             }
         }
         

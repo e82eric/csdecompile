@@ -7,7 +7,7 @@ using ICSharpCode.Decompiler.TypeSystem;
 namespace CsDecompileLib.FindImplementations;
 
 public class RoslynFindImplementationsCommandFactory : IlSpyFindImplementationsCommandFactory,
-    ICommandFactory<INavigationCommand<FindImplementationsResponse>>
+    ICommandFactory<INavigationCommand<LocationsResponse>>
 {
     private readonly ICsDecompileWorkspace _csDecompileWorkspace;
 
@@ -19,40 +19,40 @@ public class RoslynFindImplementationsCommandFactory : IlSpyFindImplementationsC
         _csDecompileWorkspace = csDecompileWorkspace;
     }
 
-    public INavigationCommand<FindImplementationsResponse> GetForNamespace(string namespaceString)
+    public INavigationCommand<LocationsResponse> GetForNamespace(string namespaceString)
     {
         throw new System.NotImplementedException();
     }
 
-    public INavigationCommand<FindImplementationsResponse> GetForEnumField(IField field, string projectAssemblyFilePath)
+    public INavigationCommand<LocationsResponse> GetForEnumField(IField field, string projectAssemblyFilePath)
     {
         throw new System.NotImplementedException();
     }
 
-    public INavigationCommand<FindImplementationsResponse> GetForField(IField field, string projectAssemblyFilePath)
+    public INavigationCommand<LocationsResponse> GetForField(IField field, string projectAssemblyFilePath)
     {
         throw new System.NotImplementedException();
     }
 
-    public INavigationCommand<FindImplementationsResponse> GetForInSource(Microsoft.CodeAnalysis.ISymbol roslynSymbol)
+    public INavigationCommand<LocationsResponse> GetForInSource(Microsoft.CodeAnalysis.ISymbol roslynSymbol)
     {
         var result = new RoslynFindImplementationsCommand(roslynSymbol, _csDecompileWorkspace);
         return result;
     }
 
-    public INavigationCommand<FindImplementationsResponse> GetForFileNotFound(string filePath)
+    public INavigationCommand<LocationsResponse> GetForFileNotFound(string filePath)
     {
-        var result = new FileNotFoundCommand<FindImplementationsResponse>(filePath);
+        var result = new FileNotFoundCommand<LocationsResponse>(filePath);
         return result;
     }
 
-    public INavigationCommand<FindImplementationsResponse> SymbolNotFoundAtLocation(string filePath, int line, int column)
+    public INavigationCommand<LocationsResponse> SymbolNotFoundAtLocation(string filePath, int line, int column)
     {
-        var result = new SymbolNotFoundAtLocationCommand<FindImplementationsResponse>(filePath, line, column);
+        var result = new SymbolNotFoundAtLocationCommand<LocationsResponse>(filePath, line, column);
         return result;
     }
 
-    public INavigationCommand<FindImplementationsResponse> GetForVariable(ILVariable variable, ITypeDefinition typeDefinition, AstNode syntaxTree,
+    public INavigationCommand<LocationsResponse> GetForVariable(ILVariable variable, ITypeDefinition typeDefinition, AstNode syntaxTree,
         string sourceText, string assemblyFilePath)
     {
         throw new System.NotImplementedException();

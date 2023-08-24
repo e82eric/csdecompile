@@ -3,7 +3,7 @@ using CsDecompileLib.GetMembers;
 
 namespace CsDecompileLib.GotoDefinition;
 
-public class EverywhereGoToNamespaceDefinitionCommand : INavigationCommand<FindImplementationsResponse>
+public class EverywhereGoToNamespaceDefinitionCommand : INavigationCommand<LocationsResponse>
 {
     private readonly IlSpyTypesInReferencesSearcher _ilSpyTypesRepository;
     private readonly RoslynAllTypesRepository _roslynAllTypesRepository;
@@ -16,19 +16,19 @@ public class EverywhereGoToNamespaceDefinitionCommand : INavigationCommand<FindI
         _roslynAllTypesRepository = roslynAllTypesRepository;
     }
 
-    public async Task<ResponsePacket<FindImplementationsResponse>> Execute()
+    public async Task<ResponsePacket<LocationsResponse>> Execute()
     {
         var locations = await _ilSpyTypesRepository.GetAllTypes( info => info.NamespaceName == _namespaceString);
-        var result = new FindImplementationsResponse();
+        var result = new LocationsResponse();
         foreach (var location in locations)
         {
-            result.Implementations.Add(location);
+            result.Locations.Add(location);
         }
 
         var roslynLocations = await _roslynAllTypesRepository.GetAllTypes(_namespaceString);
         foreach (var location in roslynLocations)
         {
-            result.Implementations.Add(location);
+            result.Locations.Add(location);
         }
 
         return ResponsePacket.Ok(result);

@@ -25,7 +25,7 @@ public class FindImplementationsTestsBase
         };
 
         var response = TestHarness.IoClient
-            .ExecuteCommand<DecompiledLocationRequest, FindImplementationsResponse>(request);
+            .ExecuteCommand<DecompiledLocationRequest, LocationsResponse>(request);
 
         ImplementationAsserts.AssertSame(response, expected);
     }

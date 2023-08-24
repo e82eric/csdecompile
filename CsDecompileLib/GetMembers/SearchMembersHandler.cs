@@ -9,7 +9,7 @@ using ISymbol = Microsoft.CodeAnalysis.ISymbol;
 
 namespace CsDecompileLib.GetMembers;
 
-public class SearchMembersHandler : HandlerBase<MemberSearchRequest, FindImplementationsResponse>
+public class SearchMembersHandler : HandlerBase<MemberSearchRequest, LocationsResponse>
 {
     private readonly MemberSearcher _memberSearcher;
     private readonly IlSpySymbolFinder _symbolFinder;
@@ -28,9 +28,9 @@ public class SearchMembersHandler : HandlerBase<MemberSearchRequest, FindImpleme
         _csDecompileWorkspace = csDecompileWorkspace;
     }
 
-    public override async Task<ResponsePacket<FindImplementationsResponse>> Handle(MemberSearchRequest request)
+    public override async Task<ResponsePacket<LocationsResponse>> Handle(MemberSearchRequest request)
     {
-        var body = new FindImplementationsResponse();
+        var body = new LocationsResponse();
         var roslynSymbols = new List<ISymbol>();
         foreach (var project in _csDecompileWorkspace.CurrentSolution.Projects)
         {
@@ -57,7 +57,7 @@ public class SearchMembersHandler : HandlerBase<MemberSearchRequest, FindImpleme
         {
             var sourceFileInfo = roslynSymbol.GetSourceLineInfo(_csDecompileWorkspace);
             sourceFileInfo.ContainingTypeShortName = RoslynSymbolHelpers.GetShortName(roslynSymbol);
-            body.Implementations.Add(sourceFileInfo);
+            body.Locations.Add(sourceFileInfo);
         }
 
         var memberInfos = _memberSearcher.SearchForMembers(
@@ -75,9 +75,9 @@ public class SearchMembersHandler : HandlerBase<MemberSearchRequest, FindImpleme
 
             var currentResult = await command.Execute();
 
-            foreach (var bodyImplementation in currentResult.Body.Implementations)
+            foreach (var bodyImplementation in currentResult.Body.Locations)
             {
-                body.Implementations.Add(bodyImplementation);
+                body.Locations.Add(bodyImplementation);
             }
         }
 

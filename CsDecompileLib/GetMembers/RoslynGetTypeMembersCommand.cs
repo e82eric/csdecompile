@@ -5,7 +5,7 @@ using CsDecompileLib.Roslyn;
 
 namespace CsDecompileLib.GetMembers;
 
-public class RoslynGetTypeMembersCommand : INavigationCommand<FindImplementationsResponse>
+public class RoslynGetTypeMembersCommand : INavigationCommand<LocationsResponse>
 {
     private readonly INamedTypeSymbol _symbol;
     private readonly ICsDecompileWorkspace _workspace;
@@ -17,11 +17,11 @@ public class RoslynGetTypeMembersCommand : INavigationCommand<FindImplementation
         _symbol = symbol;
         _workspace = workspace;
     }
-    public Task<ResponsePacket<FindImplementationsResponse>> Execute()
+    public Task<ResponsePacket<LocationsResponse>> Execute()
     {
         var members = _symbol.GetMembers();
 
-        var body = new FindImplementationsResponse();
+        var body = new LocationsResponse();
         foreach (var member in members)
         {
             if (!member.IsImplicitlyDeclared
@@ -31,7 +31,7 @@ public class RoslynGetTypeMembersCommand : INavigationCommand<FindImplementation
                 {
                     var sourceFileInfo = location.GetSourceLineInfo(_workspace);
                     sourceFileInfo.ContainingTypeShortName = _symbol.Name;
-                    body.Implementations.Add(sourceFileInfo);
+                    body.Locations.Add(sourceFileInfo);
                 }
             }
         }

@@ -3,7 +3,7 @@ using ICSharpCode.Decompiler.TypeSystem;
 
 namespace CsDecompileLib.GotoDefinition;
 
-public class GoToDefinitionCommand<T> : INavigationCommand<FindImplementationsResponse> where T : IEntity
+public class GoToDefinitionCommand<T> : INavigationCommand<LocationsResponse> where T : IEntity
 {
     private readonly T _typeDefinition;
     private readonly IlSpyDefinitionFinderBase<T> _ilSpyTypeFinder;
@@ -19,7 +19,7 @@ public class GoToDefinitionCommand<T> : INavigationCommand<FindImplementationsRe
         _assemblyFilePath = assemblyFilePath;
     }
         
-    public Task<ResponsePacket<FindImplementationsResponse>> Execute()
+    public Task<ResponsePacket<LocationsResponse>> Execute()
     {
         var ilSpyMetadataSource = _ilSpyTypeFinder.Find(
             _typeDefinition);
@@ -27,12 +27,12 @@ public class GoToDefinitionCommand<T> : INavigationCommand<FindImplementationsRe
         ilSpyMetadataSource.AssemblyFilePath = _assemblyFilePath;
         ilSpyMetadataSource.ParentAssemblyFilePath = _typeDefinition.ParentModule.PEFile.FileName;
             
-        var result = new FindImplementationsResponse
+        var result = new LocationsResponse
         {
-            Implementations = {  ilSpyMetadataSource },
+            Locations = {  ilSpyMetadataSource },
         };
 
-        var response = new ResponsePacket<FindImplementationsResponse>
+        var response = new ResponsePacket<LocationsResponse>
         {
             Body = result,
             Success = true

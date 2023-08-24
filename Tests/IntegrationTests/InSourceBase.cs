@@ -25,9 +25,9 @@ public class InSourceBase : TestBase
             }
         };
         var response = TestHarness.IoClient
-            .ExecuteCommand<DecompiledLocationRequest, FindImplementationsResponse>(request);
+            .ExecuteCommand<DecompiledLocationRequest, LocationsResponse>(request);
         Assert.True(response.Success);
-        Assert.AreEqual(expected.Count(), response.Body.Implementations.Count);
+        Assert.AreEqual(expected.Count(), response.Body.Locations.Count);
 
         ImplementationAsserts.AssertSame(response, expected);
     }
@@ -50,9 +50,9 @@ public class InSourceBase : TestBase
             }
         };
         var response = TestHarness.IoClient
-            .ExecuteCommand<DecompiledLocationRequest, FindImplementationsResponse>(request);
+            .ExecuteCommand<DecompiledLocationRequest, LocationsResponse>(request);
         Assert.True(response.Success);
-        Assert.AreEqual(expected.Count(), response.Body.Implementations.Count);
+        Assert.AreEqual(expected.Count(), response.Body.Locations.Count);
 
         ImplementationAsserts.AssertSame2(response, expected);
     }
@@ -78,7 +78,7 @@ public class InSourceBase : TestBase
         int line,
         ExpectedImplementation expected)
     {
-        var response = ExecuteRequest<FindImplementationsResponse>(command, filePath, column, line);
+        var response = ExecuteRequest<LocationsResponse>(command, filePath, column, line);
 
         AssertInSource(response, expected);
     }
@@ -104,17 +104,17 @@ public class InSourceBase : TestBase
     }
 
     private static void AssertInSource(
-        ResponsePacket<FindImplementationsResponse> response,
+        ResponsePacket<LocationsResponse> response,
         ExpectedImplementation expected)
     {
-        var implementations = response.Body.Implementations;
+        var implementations = response.Body.Locations;
         Assert.AreEqual(1, implementations.Count);
         var location = implementations.First();
         Assert.AreEqual(location.Type, LocationType.SourceCode);
 
         ImplementationAsserts.AssertSame(response, new []{ expected});
 
-        var lines = InSourceGetLines(response.Body.Implementations.First());
+        var lines = InSourceGetLines(response.Body.Locations.First());
         var line = lines[location.Line - 1].Trim();
         Assert.AreEqual(expected.Line, line);
     }

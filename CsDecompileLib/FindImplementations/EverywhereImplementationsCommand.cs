@@ -2,7 +2,7 @@
 
 namespace CsDecompileLib.FindImplementations;
 
-public class EverywhereImplementationsCommand<TResponseType> : INavigationCommand<TResponseType> where TResponseType : FindImplementationsResponse, new()
+public class EverywhereImplementationsCommand<TResponseType> : INavigationCommand<TResponseType> where TResponseType : LocationsResponse, new()
 {
     private readonly INavigationCommand<TResponseType> _rosylynFindImplementationsCommand;
     private readonly INavigationCommand<TResponseType> _ilSpyCommand;
@@ -26,14 +26,14 @@ public class EverywhereImplementationsCommand<TResponseType> : INavigationComman
 
         var body = new TResponseType();
 
-        foreach (var rosylynImplementation in rosylynImplementations.Body.Implementations)
+        foreach (var rosylynImplementation in rosylynImplementations.Body.Locations)
         {
-            body.Implementations.Add(rosylynImplementation);
+            body.Locations.Add(rosylynImplementation);
         }
         
-        foreach (var ilSpyImplementation in ilSpyImplementations.Body.Implementations)
+        foreach (var ilSpyImplementation in ilSpyImplementations.Body.Locations)
         {
-            body.Implementations.Add(ilSpyImplementation);
+            body.Locations.Add(ilSpyImplementation);
         }
 
         var result = ResponsePacket.Ok(body);

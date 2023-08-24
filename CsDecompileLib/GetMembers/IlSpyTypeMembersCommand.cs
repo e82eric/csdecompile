@@ -3,7 +3,7 @@ using ICSharpCode.Decompiler.TypeSystem;
 
 namespace CsDecompileLib.GetMembers;
 
-internal class IlSpyTypeMembersCommand: INavigationCommand<FindImplementationsResponse>
+internal class IlSpyTypeMembersCommand: INavigationCommand<LocationsResponse>
 {
     private readonly ITypeDefinition _symbol;
     private readonly IlSpyTypeMembersFinder _usagesFinder;
@@ -16,16 +16,16 @@ internal class IlSpyTypeMembersCommand: INavigationCommand<FindImplementationsRe
         _usagesFinder = usagesFinder;
     }
         
-    public Task<ResponsePacket<FindImplementationsResponse>> Execute()
+    public Task<ResponsePacket<LocationsResponse>> Execute()
     {
         var metadataSources = _usagesFinder.Run(
             _symbol);
 
-        var body = new FindImplementationsResponse();
+        var body = new LocationsResponse();
             
         foreach (var metadataSource in metadataSources)
         {
-            body.Implementations.Add(metadataSource);
+            body.Locations.Add(metadataSource);
         }
 
         var result = ResponsePacket.Ok(body);

@@ -118,13 +118,13 @@ public class DecompileAssemblyTestBase : ExternalTestBase
         IEnumerable<(LocationType type, string value, string shortTypeName)> expected)
     {
         var response = TestHarness.IoClient
-            .ExecuteCommand<DecompiledLocationRequest, FindImplementationsResponse>(request);
+            .ExecuteCommand<DecompiledLocationRequest, LocationsResponse>(request);
 
         Assert.True(response.Success);
 
-        Assert.AreEqual(expected.Count(), response.Body.Implementations.Count());
+        Assert.AreEqual(expected.Count(), response.Body.Locations.Count());
 
-        foreach (var implementation in response.Body.Implementations)
+        foreach (var implementation in response.Body.Locations)
         {
             string[] lines = null;
             switch (implementation.Type)

@@ -6,7 +6,7 @@ using Microsoft.CodeAnalysis;
 
 namespace CsDecompileLib.GotoDefinition;
 
-public class RoslynGotoDefinitionCommand : INavigationCommand<FindImplementationsResponse>
+public class RoslynGotoDefinitionCommand : INavigationCommand<LocationsResponse>
 {
     private readonly ISymbol _symbol;
     private readonly ICsDecompileWorkspace _workspace;
@@ -17,7 +17,7 @@ public class RoslynGotoDefinitionCommand : INavigationCommand<FindImplementation
         _workspace = workspace;
     }
 
-    public Task<ResponsePacket<FindImplementationsResponse>> Execute()
+    public Task<ResponsePacket<LocationsResponse>> Execute()
     {
         var location = _symbol.Locations.First();
 
@@ -40,15 +40,15 @@ public class RoslynGotoDefinitionCommand : INavigationCommand<FindImplementation
         var sourceLineInfo = location.GetSourceLineInfo(_workspace);
         sourceLineInfo.ContainingTypeFullName = containingTypeFullName;
 
-        var result = new FindImplementationsResponse
+        var result = new LocationsResponse
         {
-            Implementations =
+            Locations =
             {
                 sourceLineInfo,
             }
         };
 
-        var response = new ResponsePacket<FindImplementationsResponse>()
+        var response = new ResponsePacket<LocationsResponse>()
         {
             Body = result,
             Success = true

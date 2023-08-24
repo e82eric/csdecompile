@@ -45,9 +45,9 @@ public class AddExternalDirectoryTestBase : ExternalTestBase
             .ExecuteCommand<GetTypesRequest, DecompiledFindImplementationsResponse>(searchRequest);
         
         Assert.True(targetClasResponse.Success);
-        Assert.AreEqual(1, searchResponse.Body.Implementations.Count);
+        Assert.AreEqual(1, searchResponse.Body.Locations.Count);
 
-        var foundTypeInfo = searchResponse.Body.Implementations.First();
+        var foundTypeInfo = searchResponse.Body.Locations.First();
         var decompileTypeRequest = new CommandPacket<DecompiledSourceRequest>
         {
             Command = Endpoints.DecompiledSource,
@@ -86,10 +86,10 @@ public class AddExternalDirectoryTestBase : ExternalTestBase
         };
         
         var usagesResponse = TestHarness.IoNoSolutionClient
-            .ExecuteCommand<DecompiledLocationRequest, FindImplementationsResponse>(usagesRequest);
+            .ExecuteCommand<DecompiledLocationRequest, LocationsResponse>(usagesRequest);
         
-        Assert.AreEqual(expected.Count(), usagesResponse.Body.Implementations.Count);
-        foreach (var implementation in usagesResponse.Body.Implementations)
+        Assert.AreEqual(expected.Count(), usagesResponse.Body.Locations.Count);
+        foreach (var implementation in usagesResponse.Body.Locations)
         {
             string[] lines = null;
             switch (implementation.Type)

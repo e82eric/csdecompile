@@ -2,7 +2,7 @@ using System.Threading.Tasks;
 
 namespace CsDecompileLib;
 
-public class NoOpCommand<T> : INavigationCommand<T> where T: FindImplementationsResponse, new()
+public class NoOpCommand<T> : INavigationCommand<T> where T: LocationsResponse, new()
 {
     public Task<ResponsePacket<T>> Execute()
     {

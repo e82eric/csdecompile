@@ -11,7 +11,7 @@ using ISymbol = Microsoft.CodeAnalysis.ISymbol;
 
 namespace CsDecompileLib.FindUsages;
 
-public class RoslynFindUsagesCommand : INavigationCommand<FindImplementationsResponse>
+public class RoslynFindUsagesCommand : INavigationCommand<LocationsResponse>
 {
     private readonly ISymbol _symbol;
     private readonly ICsDecompileWorkspace _workspace;
@@ -24,20 +24,20 @@ public class RoslynFindUsagesCommand : INavigationCommand<FindImplementationsRes
         _workspace = workspace;
     }
 
-    public async Task<ResponsePacket<FindImplementationsResponse>> Execute()
+    public async Task<ResponsePacket<LocationsResponse>> Execute()
     {
         var definition = await SymbolFinder.FindSourceDefinitionAsync(_symbol, _workspace.CurrentSolution);
         IEnumerable<ReferencedSymbol> usages =
             await SymbolFinder.FindReferencesAsync(definition ?? _symbol, _workspace.CurrentSolution);
 
-        var body = new FindImplementationsResponse();
+        var body = new LocationsResponse();
         foreach (var usage in usages)
         {
             foreach (var location in usage.Locations)
             {
                 var sourceFileInfo = location.Location.GetSourceLineInfo(_workspace);
                 await FillContainingTypeNames(location, sourceFileInfo);
-                body.Implementations.Add(sourceFileInfo);
+                body.Locations.Add(sourceFileInfo);
             }
 
             //IsImplicitlyDeclared gets rid of auto generated stuff
@@ -65,7 +65,7 @@ public class RoslynFindUsagesCommand : INavigationCommand<FindImplementationsRes
 
                         sourceFileInfo.ContainingTypeShortName = shortName;
                         sourceFileInfo.ContainingTypeFullName = usage.Definition.ContainingType?.GetMetadataName();
-                        body.Implementations.Add(sourceFileInfo);
+                        body.Locations.Add(sourceFileInfo);
                     }
                 }
             }
