@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using CsDecompileLib.IlSpy;
 using CsDecompileLib.Roslyn;
@@ -25,16 +26,23 @@ public class RoslynAllTypesRepository
             var compilation = await project.GetCompilationAsync();
             if (compilation != null)
             {
-                var projectRoslynSymbols = compilation
-                    .GetSymbolsWithName(s => s.Contains(searchString), SymbolFilter.Type);
+                var namespaces = FindNamespaces(compilation.GlobalNamespace, searchString);
 
-                foreach (var projectRoslynSymbol in projectRoslynSymbols)
+                foreach (var namespaceSymbol in namespaces)
                 {
-                    if (projectRoslynSymbol.ContainingNamespace.MetadataName == searchString)
+                    var members = namespaceSymbol.GetMembers();
+                    foreach (var namespaceMember in members)
                     {
-                        roslynSymbols.Add(projectRoslynSymbol);
+                        if (namespaceMember is INamedTypeSymbol)
+                        {
+                            if (namespaceMember.Locations.First().IsInSource)
+                            {
+                                roslynSymbols.Add(namespaceMember);
+                            }
+                        }
                     }
                 }
+
             }
         }
 
@@ -46,5 +54,25 @@ public class RoslynAllTypesRepository
         }
 
         return result;
+    }
+
+    static IEnumerable<INamespaceSymbol> FindNamespaces(INamespaceSymbol root, string targetName)
+    {
+        var namespaces = new List<INamespaceSymbol>();
+
+        foreach (var member in root.GetMembers())
+        {
+            if (member is INamespaceSymbol ns)
+            {
+                if (ns.ToDisplayString() == targetName)
+                {
+                    namespaces.Add(ns);
+                }
+
+                namespaces.AddRange(FindNamespaces(ns, targetName)); // Recursively search nested namespaces
+            }
+        }
+
+        return namespaces;
     }
 }

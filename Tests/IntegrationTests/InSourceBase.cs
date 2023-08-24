@@ -2,7 +2,6 @@
 using System.Linq;
 using NUnit.Framework;
 using CsDecompileLib;
-using CsDecompileLib.GotoDefinition;
 
 namespace IntegrationTests;
 
@@ -31,6 +30,31 @@ public class InSourceBase : TestBase
         Assert.AreEqual(expected.Count(), response.Body.Implementations.Count);
 
         ImplementationAsserts.AssertSame(response, expected);
+    }
+
+    protected void RequestAndAssertCorrectImplementations(
+        string filePath,
+        int column,
+        int line,
+        IEnumerable<ExpectedImplementation> expected)
+    {
+        var request = new CommandPacket<DecompiledLocationRequest>
+        {
+            Command = Endpoints.DecompileGotoDefinition,
+            Arguments = new DecompiledLocationRequest
+            {
+                FileName = filePath,
+                Column = column,
+                Type = LocationType.SourceCode,
+                Line = line
+            }
+        };
+        var response = TestHarness.IoClient
+            .ExecuteCommand<DecompiledLocationRequest, FindImplementationsResponse>(request);
+        Assert.True(response.Success);
+        Assert.AreEqual(expected.Count(), response.Body.Implementations.Count);
+
+        ImplementationAsserts.AssertSame2(response, expected);
     }
 
     protected void RequestAndAssertCorrectLine(

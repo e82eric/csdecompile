@@ -79,7 +79,7 @@ public static class ImplementationAsserts
                 $"\tShortName: {implementation.ContainingTypeShortName} \r\n" +
                 $"\tFullName: {implementation.ContainingTypeFullName} \r\n" +
                 $"\tType: {implementation.Type} \r\n" +
-                $"\tLine: {implementation.Line} \r\n" +
+                $"\tLine: {implementation.SourceText} \r\n" +
                 $"\tShortName matches: {numberOfShortNameMatches} \r\n" +
                 $"\tFullName matches: {numberOfFullNameMatches} \r\n" +
                 $"\tType matches: {numberOfTypeMatches} \r\n" +
