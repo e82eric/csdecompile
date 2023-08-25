@@ -48,10 +48,10 @@ public class AddExternalDirectoryTestBase : ExternalTestBase
         Assert.AreEqual(1, searchResponse.Body.Locations.Count);
 
         var foundTypeInfo = searchResponse.Body.Locations.First();
-        var decompileTypeRequest = new CommandPacket<DecompiledSourceRequest>
+        var decompileTypeRequest = new CommandPacket<DecompileInfo>
         {
             Command = Endpoints.DecompiledSource,
-            Arguments = new DecompiledSourceRequest
+            Arguments = new DecompileInfo
             {
                 ParentAssemblyFilePath = foundTypeInfo.ParentAssemblyFilePath,
                 AssemblyFilePath = foundTypeInfo.AssemblyFilePath,
@@ -62,7 +62,7 @@ public class AddExternalDirectoryTestBase : ExternalTestBase
         };
         
         var searchTypeSourceResponse = TestHarness.IoNoSolutionClient
-            .ExecuteCommand<DecompiledSourceRequest, DecompiledSourceResponse>(decompileTypeRequest);
+            .ExecuteCommand<DecompileInfo, DecompiledSourceResponse>(decompileTypeRequest);
         
         Assert.True(searchTypeSourceResponse.Success);
 
@@ -119,10 +119,10 @@ public class AddExternalDirectoryTestBase : ExternalTestBase
     {
         var decompileInfo = (DecompileInfo)implementation;
 
-        var sourceRequest = new CommandPacket<DecompiledSourceRequest>
+        var sourceRequest = new CommandPacket<DecompileInfo>
         {
             Command = Endpoints.DecompiledSource,
-            Arguments = new DecompiledSourceRequest
+            Arguments = new DecompileInfo
             {
                 ParentAssemblyFilePath = decompileInfo.ParentAssemblyFilePath,
                 AssemblyFilePath = decompileInfo.AssemblyFilePath,
@@ -133,7 +133,7 @@ public class AddExternalDirectoryTestBase : ExternalTestBase
         };
 
         var sourceResponse = TestHarness.IoClient
-            .ExecuteCommand<DecompiledSourceRequest, DecompiledSourceResponse>(sourceRequest);
+            .ExecuteCommand<DecompileInfo, DecompiledSourceResponse>(sourceRequest);
 
         var lines = GetLines(sourceResponse.Body.SourceText);
         return lines;

@@ -25,7 +25,7 @@ public class InSourceGotoDefinitionFileDoesntExistTests : InSourceBase
         };
 
         var response = TestHarness.IoClient
-            .ExecuteCommand<DecompiledLocationRequest, GotoDefinitionResponse>(request);
+            .ExecuteCommand<DecompiledLocationRequest, DecompileAssemlbyResponse>(request);
 
         Assert.False(response.Success);
         Assert.AreEqual($"FILE_NOT_FOUND {FilePath}", response.Message);

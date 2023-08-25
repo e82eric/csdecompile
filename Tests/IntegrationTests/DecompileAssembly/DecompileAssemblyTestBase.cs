@@ -94,7 +94,7 @@ public class DecompileAssemblyTestBase : ExternalTestBase
         };
 
         var targetClasResponse = TestHarness.IoClient
-            .ExecuteCommand<DecompileAssemblyRequest, GotoDefinitionResponse>(request);
+            .ExecuteCommand<DecompileAssemblyRequest, DecompileAssemlbyResponse>(request);
 
         Assert.True(targetClasResponse.Success);
         var targetLines = GetLines(targetClasResponse.Body.SourceText);
@@ -153,10 +153,10 @@ public class DecompileAssemblyTestBase : ExternalTestBase
     {
         var decompileInfo = (DecompileInfo)implementation;
 
-        var sourceRequest = new CommandPacket<DecompiledSourceRequest>
+        var sourceRequest = new CommandPacket<DecompileInfo>
         {
             Command = Endpoints.DecompiledSource,
-            Arguments = new DecompiledSourceRequest
+            Arguments = new DecompileInfo
             {
                 ParentAssemblyFilePath = decompileInfo.ParentAssemblyFilePath,
                 AssemblyFilePath = decompileInfo.AssemblyFilePath,
@@ -167,7 +167,7 @@ public class DecompileAssemblyTestBase : ExternalTestBase
         };
 
         var sourceResponse = TestHarness.IoClient
-            .ExecuteCommand<DecompiledSourceRequest, DecompiledSourceResponse>(sourceRequest);
+            .ExecuteCommand<DecompileInfo, DecompiledSourceResponse>(sourceRequest);
 
         var lines = GetLines(sourceResponse.Body.SourceText);
         return lines;

@@ -96,10 +96,10 @@ public static class ImplementationAsserts
     {
         var decompileInfo = (DecompileInfo)implementation;
 
-        var sourceRequest = new CommandPacket<DecompiledSourceRequest>
+        var sourceRequest = new CommandPacket<DecompileInfo>
         {
             Command = Endpoints.DecompiledSource,
-            Arguments = new DecompiledSourceRequest
+            Arguments = new DecompileInfo
             {
                 ParentAssemblyFilePath = decompileInfo.ParentAssemblyFilePath,
                 AssemblyFilePath = decompileInfo.AssemblyFilePath,
@@ -110,7 +110,7 @@ public static class ImplementationAsserts
         };
 
         var sourceResponse = TestHarness.IoClient
-            .ExecuteCommand<DecompiledSourceRequest, DecompiledSourceResponse>(sourceRequest);
+            .ExecuteCommand<DecompileInfo, DecompiledSourceResponse>(sourceRequest);
 
         var lines = GetLines(sourceResponse.Body.SourceText);
         return lines;

@@ -71,23 +71,17 @@
         <Compile Include="..\..\CsDecompileLib\GetMembers\DecompileAssemblyRequest.cs">
           <Link>LinkedModels\DecompileAssemblyRequest.cs</Link>
         </Compile>
-        <Compile Include="..\..\CsDecompileLib\GetMembers\DecompileAssemblyResponse.cs">
-          <Link>LinkedModels\DecompileAssemblyResponse.cs</Link>
-        </Compile>
         <Compile Include="..\..\CsDecompileLib\GetMembers\GetAssembliesResponse.cs">
           <Link>LinkedModels\GetAssembliesResponse.cs</Link>
         </Compile>
         <Compile Include="..\..\CsDecompileLib\GetMembers\GetTypesRequest.cs">
           <Link>LinkedModels\GetTypesRequest.cs</Link>
         </Compile>
-        <Compile Include="..\..\CsDecompileLib\GetSource\DecompiledSourceRequest.cs">
-          <Link>LinkedModels\DecompiledSourceRequest.cs</Link>
-        </Compile>
         <Compile Include="..\..\CsDecompileLib\GetSource\DecompiledSourceResponse.cs">
           <Link>LinkedModels\DecompiledSourceResponse.cs</Link>
         </Compile>
-        <Compile Include="..\..\CsDecompileLib\GotoDefinition\GotoDefinitionResponse.cs">
-          <Link>LinkedModels\GotoDefinitionResponse.cs</Link>
+        <Compile Include="..\..\CsDecompileLib\GotoDefinition\DecompileAssemblyResponse.cs">
+          <Link>LinkedModels\DecompileAssemblyResponse.cs</Link>
         </Compile>
         <Compile Include="..\..\CsDecompileLib\LocationRequest.cs">
           <Link>LinkedModels\LocationRequest.cs</Link>

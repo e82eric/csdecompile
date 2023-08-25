@@ -32,7 +32,6 @@ public class ExternalFindImplementationsBase : ExternalTestBase
             Column = column,
             Type = LocationType.SourceCode,
             Line = line,
-            AssemblyName = null,
             AssemblyFilePath = null
         };
 

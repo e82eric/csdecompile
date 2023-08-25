@@ -19,10 +19,10 @@ public static class GotoDefinitionHelper
         Assert.AreEqual(locationToGetSourceFor.Type, LocationType.Decompiled);
         var decompiledLocationToGetSourceFor = (DecompileInfo)locationToGetSourceFor;
 
-        var sourceInfoRequest = new CommandPacket<DecompiledSourceRequest>
+        var sourceInfoRequest = new CommandPacket<DecompileInfo>
         {
             Command = Endpoints.DecompiledSource,
-            Arguments = new DecompiledSourceRequest
+            Arguments = new DecompileInfo
             {
                 ParentAssemblyFilePath = decompiledLocationToGetSourceFor.ParentAssemblyFilePath,
                 AssemblyFilePath = decompiledLocationToGetSourceFor.AssemblyFilePath,
@@ -33,7 +33,7 @@ public static class GotoDefinitionHelper
         };
 
         var sourceResponse =
-            IoClient.ExecuteCommand<DecompiledSourceRequest, DecompiledSourceResponse>(sourceInfoRequest);
+            IoClient.ExecuteCommand<DecompileInfo, DecompiledSourceResponse>(sourceInfoRequest);
 
         return sourceResponse;
     }

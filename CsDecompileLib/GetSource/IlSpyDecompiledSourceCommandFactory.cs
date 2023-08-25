@@ -15,7 +15,7 @@ namespace CsDecompileLib.GetSource
             _ilSpySymbolFinder = ilSpySymbolFinder;
         }
         
-        public ResponsePacket<DecompiledSourceResponse> Find(DecompiledSourceRequest request)
+        public ResponsePacket<DecompiledSourceResponse> Find(DecompileInfo request)
         {
             var symbol = _ilSpySymbolFinder.FindTypeDefinition(
                 request.ParentAssemblyFilePath,
@@ -26,17 +26,7 @@ namespace CsDecompileLib.GetSource
 
             var body = new DecompiledSourceResponse
             {
-                Location = new DecompileInfo
-                {
-                    ParentAssemblyFilePath = request.ParentAssemblyFilePath,
-                    AssemblyFilePath = request.AssemblyFilePath,
-                    AssemblyName = null,
-                    Column = request.Column,
-                    Line = request.Line,
-                    ContainingTypeFullName = request.ContainingTypeFullName,
-                    ContainingTypeShortName = null,
-                    SourceText = null
-                },
+                Location = request,
                 SourceText = source
             };
 
