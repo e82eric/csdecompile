@@ -1,15 +1,19 @@
-public class InSourceGetMembersTarget
+namespace LibraryThatReferencesLibrary
 {
-    public InSourceGetMembersTarget()
+    public class InSourceGetMembersTarget
     {
-    }
-    public string BasicProperty { get; set; }
+        public InSourceGetMembersTarget()
+        {
+        }
 
-    public void BasicMethod()
-    {
-    }
+        public string BasicProperty { get; set; }
 
-    public void BasicMethod(string param1)
-    {
+        public void BasicMethod()
+        {
+        }
+
+        public void BasicMethod(string param1)
+        {
+        }
     }
 }

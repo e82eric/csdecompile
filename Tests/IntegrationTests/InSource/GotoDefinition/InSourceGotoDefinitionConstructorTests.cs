@@ -19,7 +19,7 @@ public class InSourceGotoDefinitionConstructorTests : InSourceBase
             expected: new ExpectedImplementation(
                 LocationType.SourceCode,
                 "public InSourceGotoDefinitionConstructorTarget()",
-                null,
+                "InSourceGotoDefinitionConstructorTarget",
                 "LibraryThatReferencesLibrary.InSourceGotoDefinitionConstructorTarget"));
     }
     
@@ -33,7 +33,7 @@ public class InSourceGotoDefinitionConstructorTests : InSourceBase
             expected:new ExpectedImplementation(
                 LocationType.SourceCode,
                 "public InSourceGotoDefinitionConstructorTarget(string param1)",
-                null,
+                "InSourceGotoDefinitionConstructorTarget",
                 "LibraryThatReferencesLibrary.InSourceGotoDefinitionConstructorTarget"));
     }
     
@@ -47,7 +47,7 @@ public class InSourceGotoDefinitionConstructorTests : InSourceBase
             expected:new ExpectedImplementation(
                 LocationType.SourceCode,
                 "public InSourceGotoDefinitionConstructorTarget(string param1, string param2)",
-                null,
+                "InSourceGotoDefinitionConstructorTarget",
                 "LibraryThatReferencesLibrary.InSourceGotoDefinitionConstructorTarget"));
     }
 }

@@ -31,6 +31,7 @@ public class RoslynGetTypeMembersCommand : INavigationCommand<LocationsResponse>
                 {
                     var sourceFileInfo = location.GetSourceLineInfo(_workspace);
                     sourceFileInfo.ContainingTypeShortName = _symbol.Name;
+                    sourceFileInfo.ContainingTypeFullName = _symbol.GetMetadataName();
                     body.Locations.Add(sourceFileInfo);
                 }
             }

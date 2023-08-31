@@ -19,7 +19,7 @@ public class InSourceGotoDefinitionFieldTests : InSourceBase
             expected: new ExpectedImplementation(
                 LocationType.SourceCode,
                 "private string _basicField;",
-                null,
+                "InSourceGotoDefinitionFieldTarget",
                 //TODO why does this not have a namespace
                 "InSourceGotoDefinitionFieldTarget"));
     }
@@ -34,7 +34,7 @@ public class InSourceGotoDefinitionFieldTests : InSourceBase
             expected: new ExpectedImplementation(
                 LocationType.SourceCode,
                 "private string _basicField;",
-                null,
+                "InSourceGotoDefinitionFieldTarget",
                 //TODO why does this not have a namespace
                 "InSourceGotoDefinitionFieldTarget"));
     }

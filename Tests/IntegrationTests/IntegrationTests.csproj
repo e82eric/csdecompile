@@ -115,6 +115,7 @@
         <Compile Include="DecompileAssembly\DecompileAssemblyGetSymbolInfo.cs" />
         <Compile Include="DecompileAssembly\DecompileAssemblyTestBase.cs" />
         <Compile Include="DecompilerClient.cs" />
+        <Compile Include="ExpectedImplementation.cs" />
         <Compile Include="ExternalSource\FindImplementations\ExternalFindImplementationsBase.cs" />
         <Compile Include="ExternalSource\FindImplementations\ExternalFindImplementationsBaseClassTests.cs" />
         <Compile Include="ExternalSource\FindImplementations\ExternalFindImplementationsInterfaceTests.cs" />
@@ -166,10 +167,9 @@
         <Compile Include="ExternalSource\GotoDefinition\GotoDefinitionHelper.cs" />
         <Compile Include="ExternalTestBase.cs" />
         <Compile Include="CommandPacket.cs" />
+        <Compile Include="ImplementationAsserts.cs" />
         <Compile Include="InSourceGetSymbolInfoBase.cs" />
-        <Compile Include="InSource\FindImplementations\ExpectedImplementation.cs" />
         <Compile Include="InSource\FindImplementations\FindImplementationsTestsBase.cs" />
-        <Compile Include="InSource\FindImplementations\ImplementationAsserts.cs" />
         <Compile Include="InSource\FindImplementations\InSourceFindImplementationsFileDoesntExistTests.cs" />
         <Compile Include="InSource\FindImplementations\InSourceFindImplementationsMethodWithGenericOutParametersTests.cs" />
         <Compile Include="InSource\FindImplementations\InSourceFindImplementationsSymbolNotFoundAtLocationTests.cs" />

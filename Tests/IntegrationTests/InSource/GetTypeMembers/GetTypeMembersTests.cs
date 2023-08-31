@@ -15,8 +15,8 @@ public class GetTypeMembersTests : FindImplementationsTestsBase
         RequestAndAssertCorrectLine(
             Endpoints.GetTypeMembers,
             filePath:FilePath,
-            column:1,
-            line:2,
+            column:5,
+            line:3,
             new []
             {
                 //I guess right now we are including the declaration in the response
@@ -24,22 +24,22 @@ public class GetTypeMembersTests : FindImplementationsTestsBase
                     LocationType.SourceCode,
                     "public InSourceGetMembersTarget()",
                     "InSourceGetMembersTarget",
-                    null),
+                    "LibraryThatReferencesLibrary.InSourceGetMembersTarget"),
                 new ExpectedImplementation(
                     LocationType.SourceCode,
                     "public string BasicProperty { get; set; }",
                     "InSourceGetMembersTarget",
-                    null),
+                    "LibraryThatReferencesLibrary.InSourceGetMembersTarget"),
                 new ExpectedImplementation(
                     LocationType.SourceCode,
                     "public void BasicMethod()",
                     "InSourceGetMembersTarget",
-                    null),
+                    "LibraryThatReferencesLibrary.InSourceGetMembersTarget"),
                 new ExpectedImplementation(
                     LocationType.SourceCode,
                     "public void BasicMethod(string param1)",
                     "InSourceGetMembersTarget",
-                    null),
+                    "LibraryThatReferencesLibrary.InSourceGetMembersTarget"),
             });
     }
 
@@ -58,22 +58,22 @@ public class GetTypeMembersTests : FindImplementationsTestsBase
                     LocationType.SourceCode,
                     "public InSourceGetMembersTarget()",
                     "InSourceGetMembersTarget",
-                    null),
+                    "LibraryThatReferencesLibrary.InSourceGetMembersTarget"),
                 new ExpectedImplementation(
                     LocationType.SourceCode,
                     "public string BasicProperty { get; set; }",
                     "InSourceGetMembersTarget",
-                    null),
+                    "LibraryThatReferencesLibrary.InSourceGetMembersTarget"),
                 new ExpectedImplementation(
                     LocationType.SourceCode,
                     "public void BasicMethod()",
                     "InSourceGetMembersTarget",
-                    null),
+                    "LibraryThatReferencesLibrary.InSourceGetMembersTarget"),
                 new ExpectedImplementation(
                     LocationType.SourceCode,
                     "public void BasicMethod(string param1)",
                     "InSourceGetMembersTarget",
-                    null),
+                    "LibraryThatReferencesLibrary.InSourceGetMembersTarget"),
             });
     }
 }

@@ -19,7 +19,7 @@ public class InSourceGotoDefinitionMethodWithGenericParametersTests : InSourceBa
             expected: new ExpectedImplementation(
                 LocationType.SourceCode,
                 "public void TryRun(T1 t1, T2 t2)",
-                null,
+                "InSourceGotoDefinitionMethodWithGenericParametersTarget",
                 "LibraryThatReferencesLibrary.InSourceGotoDefinitionMethodWithGenericParametersTarget`2"));
     }
 }

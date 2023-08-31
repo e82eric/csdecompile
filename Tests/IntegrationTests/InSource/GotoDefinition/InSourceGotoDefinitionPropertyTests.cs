@@ -19,7 +19,7 @@ public class InSourceGotoDefinitionPropertyTests : InSourceBase
             expected: new ExpectedImplementation(
                 LocationType.SourceCode,
                 "public string BasicProperty { get; set; }",
-                null,
+                "InSourceGotoDefinitionPropertyTarget",
                 //TODO why does this not have a namespace
                 "InSourceGotoDefinitionPropertyTarget"));
     }
@@ -34,7 +34,7 @@ public class InSourceGotoDefinitionPropertyTests : InSourceBase
             expected: new ExpectedImplementation(
                 LocationType.SourceCode,
                 "public string BasicProperty { get; set; }",
-                null,
+                "InSourceGotoDefinitionPropertyTarget",
                 //TODO why does this not have a namespace
                 "InSourceGotoDefinitionPropertyTarget"));
     }

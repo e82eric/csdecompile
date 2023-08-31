@@ -19,7 +19,7 @@ public class InSourceGotoDefinitionMethodWithGenericOutParametersTests : InSourc
             expected:new ExpectedImplementation(
                LocationType.SourceCode,
                 "public bool TryRun(T1 t1, out T2 t2)",
-               null,
+               "InSourceGotoDefinitionMethodWithGenericOutParametersTarget",
                "LibraryThatReferencesLibrary.InSourceGotoDefinitionMethodWithGenericOutParametersTarget`2"));
     }
 
@@ -33,7 +33,7 @@ public class InSourceGotoDefinitionMethodWithGenericOutParametersTests : InSourc
             expected:new ExpectedImplementation(
                 LocationType.SourceCode,
                 "public bool TryRun(T1 t1, out T2 t2)",
-                null,
+                "InSourceGotoDefinitionMethodWithGenericOutParametersTarget",
                 "LibraryThatReferencesLibrary.InSourceGotoDefinitionMethodWithGenericOutParametersTarget`2"));
     }
 }

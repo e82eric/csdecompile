@@ -18,7 +18,7 @@ public class InSourceGotoDefinitionDefaultConstructorTests : InSourceBase
             expected:new ExpectedImplementation(
                 LocationType.SourceCode,
                 "public class InSourceGotoDefinitionDefaultConstructorTarget",
-                null,
+                "InSourceGotoDefinitionDefaultConstructorTarget",
                 "LibraryThatReferencesLibrary.InSourceGotoDefinitionDefaultConstructorTarget"));
     }
 }

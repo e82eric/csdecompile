@@ -60,7 +60,7 @@ public class FindMethodByNameHandler : HandlerBase<FindMethodByNameRequest, Loca
         foreach (var namespaceDefinition in namespaces)
         {
             var containingTypeDefinition = _symbolFinder.FindTypeDefinition(
-                namespaceDefinition.AssemblyFilePath,
+                namespaceDefinition.ParentAssemblyFilePath,
                 namespaceDefinition.ContainingTypeFullName);
 
             ITypeDefinition typeDefinition = containingTypeDefinition;

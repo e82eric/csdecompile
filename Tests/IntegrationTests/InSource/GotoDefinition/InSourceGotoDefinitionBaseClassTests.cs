@@ -19,7 +19,7 @@ namespace IntegrationTests
                 new ExpectedImplementation(
                     LocationType.SourceCode,
                     "public class InSourceGotoDefinitionBaseClassTarget",
-                    null,
+                    "InSourceGotoDefinitionBaseClassTarget",
                     "LibraryThatReferencesLibrary.InSourceGotoDefinitionBaseClassTarget"));
         }
     }

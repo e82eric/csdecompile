@@ -19,7 +19,7 @@ public class InSourceGotoDefinitionMethodTests : InSourceBase
             expected: new ExpectedImplementation(
                 LocationType.SourceCode,
                 "public void BasicMethod()",
-                null,
+                "InSourceGotoDefinitionMethodTarget",
                 "LibraryThatReferencesLibrary.InSourceGotoDefinitionMethodTarget"));
     }
     
@@ -33,7 +33,7 @@ public class InSourceGotoDefinitionMethodTests : InSourceBase
             expected: new ExpectedImplementation(
                 LocationType.SourceCode,
                 "public void BasicMethod(string param1)",
-                null,
+                "InSourceGotoDefinitionMethodTarget",
                 "LibraryThatReferencesLibrary.InSourceGotoDefinitionMethodTarget"));
     }
     
@@ -47,7 +47,7 @@ public class InSourceGotoDefinitionMethodTests : InSourceBase
             expected:new ExpectedImplementation(
                 LocationType.SourceCode,
                 "public void BasicMethod(string param1, string param2)",
-                null,
+                "InSourceGotoDefinitionMethodTarget",
                 "LibraryThatReferencesLibrary.InSourceGotoDefinitionMethodTarget"));
     }
 }

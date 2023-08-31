@@ -23,7 +23,7 @@ public class InSourceGotoDefinitionEventTests : InSourceBase
                 LocationType.SourceCode,
                 "public event EventHandler<EventArgs> BasicEvent;",
                 //TODO why does this not have a namespace
-                null,
+                "InSourceGotoDefinitionEventTarget",
                 "InSourceGotoDefinitionEventTarget"));
     }
     
@@ -37,7 +37,7 @@ public class InSourceGotoDefinitionEventTests : InSourceBase
             expected: new ExpectedImplementation(
                 LocationType.SourceCode,
                 "public event EventHandler<EventArgs> BasicEvent;",
-                null,
+                "InSourceGotoDefinitionEventTarget",
                 //TODO why does this not have a namespace
                 "InSourceGotoDefinitionEventTarget"));
     }
@@ -52,7 +52,7 @@ public class InSourceGotoDefinitionEventTests : InSourceBase
             expected: new ExpectedImplementation(
                 LocationType.SourceCode,
                 "public event EventHandler<EventArgs> BasicEvent;",
-                null,
+                "InSourceGotoDefinitionEventTarget",
                 //TODO why does this not have a namespace
                 "InSourceGotoDefinitionEventTarget"));
     }

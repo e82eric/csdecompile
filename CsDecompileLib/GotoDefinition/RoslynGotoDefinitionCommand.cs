@@ -21,10 +21,10 @@ public class RoslynGotoDefinitionCommand : INavigationCommand<LocationsResponse>
     {
         var location = _symbol.Locations.First();
 
-        string containingTypeFullName = null;
+        INamedTypeSymbol containingType;
         if (_symbol is not INamedTypeSymbol)
         {
-            containingTypeFullName = _symbol.ContainingType.GetMetadataName();
+            containingType = _symbol.ContainingType;
         }
         else
         {
@@ -34,11 +34,12 @@ public class RoslynGotoDefinitionCommand : INavigationCommand<LocationsResponse>
                 current = current.ContainingType;
             }
 
-            containingTypeFullName = current?.GetMetadataName();
+            containingType = current;
         }
 
         var sourceLineInfo = location.GetSourceLineInfo(_workspace);
-        sourceLineInfo.ContainingTypeFullName = containingTypeFullName;
+        sourceLineInfo.ContainingTypeShortName = containingType.Name;
+        sourceLineInfo.ContainingTypeFullName = containingType.GetMetadataName();
 
         var result = new LocationsResponse
         {

@@ -1618,7 +1618,7 @@ M.Setup = function(config)
       function(opts)
         M.StartSearchMembers({ opts.fargs[1] }, opts.fargs[2])
       end,
-      { nargs = '*' }
+      { nargs = '+' }
   )
   vim.api.nvim_create_user_command(
       'SearchMembersTelescope',

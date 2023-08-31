@@ -19,7 +19,7 @@ public class InSourceGotoDefinitionVariableTests : InSourceBase
             expected: new ExpectedImplementation(
                 LocationType.SourceCode,
                 "var a = 1;",
-                null,
+                "InSourceGotoDefinitionVariableTarget",
                 //TODO why does this not have a namespace
                 "InSourceGotoDefinitionVariableTarget"));
     }

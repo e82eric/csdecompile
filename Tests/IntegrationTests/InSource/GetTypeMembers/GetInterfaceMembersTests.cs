@@ -22,17 +22,17 @@ public class GetInterfaceMembersTests : FindImplementationsTestsBase
                     LocationType.SourceCode,
                     "void Method1();",
                     "InSourceGetInterfaceMembersTarget",
-                    null),
+                    "LibraryThatReferencesLibrary.InSourceGetInterfaceMembersTarget"),
                 new ExpectedImplementation(
                     LocationType.SourceCode,
                     "string Prop1 { get; set; }",
                     "InSourceGetInterfaceMembersTarget",
-                    null),
+                    "LibraryThatReferencesLibrary.InSourceGetInterfaceMembersTarget"),
                 new ExpectedImplementation(
                     LocationType.SourceCode,
                     "IEnumerable<string> Prop2 { get; set; }",
                     "InSourceGetInterfaceMembersTarget",
-                    null),
+                    "LibraryThatReferencesLibrary.InSourceGetInterfaceMembersTarget"),
             });
     }
 
@@ -50,17 +50,17 @@ public class GetInterfaceMembersTests : FindImplementationsTestsBase
                     LocationType.SourceCode,
                     "void Method1();",
                     "InSourceGetInterfaceMembersTarget",
-                    null),
+                    "LibraryThatReferencesLibrary.InSourceGetInterfaceMembersTarget"),
                 new ExpectedImplementation(
                     LocationType.SourceCode,
                     "string Prop1 { get; set; }",
                     "InSourceGetInterfaceMembersTarget",
-                    null),
+                    "LibraryThatReferencesLibrary.InSourceGetInterfaceMembersTarget"),
                 new ExpectedImplementation(
                     LocationType.SourceCode,
                     "IEnumerable<string> Prop2 { get; set; }",
                     "InSourceGetInterfaceMembersTarget",
-                    null),
+                    "LibraryThatReferencesLibrary.InSourceGetInterfaceMembersTarget"),
             });
     }
 }

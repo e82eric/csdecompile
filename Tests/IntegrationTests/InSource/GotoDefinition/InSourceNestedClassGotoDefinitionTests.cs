@@ -19,7 +19,7 @@ public class InSourceNestedClassGotoDefinitionTests : InSourceBase
             new ExpectedImplementation(
                 LocationType.SourceCode,
                 "public class InnerClass",
-                null,
+                "InSourceNestedClassGotoDefinitionTarget",
                 "LibraryThatReferencesLibrary.InSourceNestedClassGotoDefinitionTarget"));
     }
 
@@ -33,7 +33,7 @@ public class InSourceNestedClassGotoDefinitionTests : InSourceBase
             new ExpectedImplementation(
                 LocationType.SourceCode,
                 "public class InSourceNestedClassGotoDefinitionTarget",
-                null,
+                "InSourceNestedClassGotoDefinitionTarget",
                 "LibraryThatReferencesLibrary.InSourceNestedClassGotoDefinitionTarget"));
     }
 }
