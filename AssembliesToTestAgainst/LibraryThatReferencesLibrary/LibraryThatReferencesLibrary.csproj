@@ -90,9 +90,11 @@
         <Compile Include="ExternalGotoDefinitionMethodWithOutParameterUser.cs" />
         <Compile Include="ExternalGotoDefinitionMethodWithParamsUser.cs" />
         <Compile Include="ExternalGotoDefinitionNamespaceUser.cs" />
+        <Compile Include="ExternalGotoDefinitionOfGenericPropertyUser.cs" />
         <Compile Include="ExternalGotoDefinitionOfLambdaParameterUser.cs" />
         <Compile Include="ExternalGotoDefinitionOfLocalFunctionParameterUser.cs" />
         <Compile Include="ExternalGotoDefinitionOfMethodParameterUser.cs" />
+        <Compile Include="ExternalGotoDefinitionOfMethodWithGenericParameterAndGenericTypeParameterUser.cs" />
         <Compile Include="ExternalGotoDefinitionPropertyCaller.cs" />
         <Compile Include="ExternalGotoDefinitionVariableCaller.cs" />
         <Compile Include="ExternalSourceGetSymbolInfoCaller.cs" />

@@ -158,9 +158,11 @@
         <Compile Include="ExternalSource\GotoDefinition\ExternalGotoDefinitionMethodWithOutParameterTests.cs" />
         <Compile Include="ExternalSource\GotoDefinition\ExternalGotoDefinitionMethodWithParamsTests.cs" />
         <Compile Include="ExternalSource\GotoDefinition\ExternalGotoDefinitionNamespaceTests.cs" />
+        <Compile Include="ExternalSource\GotoDefinition\ExternalGotoDefinitionOfGenericPropertyTests.cs" />
         <Compile Include="ExternalSource\GotoDefinition\ExternalGotoDefinitionOfLambdaParameterTests.cs" />
         <Compile Include="ExternalSource\GotoDefinition\ExternalGotoDefinitionOfLocalFunctionParameterTests.cs" />
         <Compile Include="ExternalSource\GotoDefinition\ExternalGotoDefinitionOfMethodParameterTests.cs" />
+        <Compile Include="ExternalSource\GotoDefinition\ExternalGotoDefinitionOfMethodWithGenericParameterAndGenericTypeParameterTests.cs" />
         <Compile Include="ExternalSource\GotoDefinition\ExternalGotoDefinitionPropertyTests.cs" />
         <Compile Include="ExternalSource\GotoDefinition\ExternalGotoDefinitionTestBase.cs" />
         <Compile Include="ExternalSource\GotoDefinition\ExternalGotoDefinitionVariableTests.cs" />

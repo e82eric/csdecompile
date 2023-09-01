@@ -71,11 +71,10 @@ public class EverywhereSymbolInfoFinder<TCommandResponseType>
                 break;
             case SymbolKind.Property:
                 var property = (IPropertySymbol)roslynSymbol;
-                var propertyName = $"{property.ContainingType.GetSymbolName()}.{property.Name}";
                 var ilspyProperty = _ilSpySymbolFinder.FindProperty(
                     assemblyFilePath,
                     property.ContainingType.GetSymbolName(),
-                    propertyName);
+                    property.Name);
                 ilSpyCommand = _commandFactory.GetForProperty(ilspyProperty, projectOutputFilePath);
                 break;
             case SymbolKind.Event:

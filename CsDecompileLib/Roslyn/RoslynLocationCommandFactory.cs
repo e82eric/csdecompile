@@ -76,7 +76,7 @@ namespace CsDecompileLib.Roslyn
                     var ilspyProperty = _ilSpySymbolFinder.FindProperty(
                         assemblyFilePath,
                         property.ContainingType.GetSymbolName(),
-                        propertyName);
+                        property.Name);
                     result = _gotoDefinitionCommandFactory.GetForProperty(ilspyProperty, projectOutputFilePath);
                     break;
                 case SymbolKind.Event:

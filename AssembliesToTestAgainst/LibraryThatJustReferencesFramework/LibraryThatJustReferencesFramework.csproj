@@ -99,9 +99,11 @@
         <Compile Include="ExternalGotoDefinitionMethodWithOutParameterTarget.cs" />
         <Compile Include="ExternalGotoDefinitionMethodWithParamsTarget.cs" />
         <Compile Include="ExternalGotoDefinitionNamespaceTarget.cs" />
+        <Compile Include="ExternalGotoDefinitionOfGenericPropertyTarget.cs" />
         <Compile Include="ExternalGotoDefinitionOfLambdaParameterTarget.cs" />
         <Compile Include="ExternalGotoDefinitionOfLocalFunctionParameterTarget.cs" />
         <Compile Include="ExternalGotoDefinitionOfMethodParameterTarget.cs" />
+        <Compile Include="ExternalGotoDefinitionOfMethodWithGenericParameterAndGenericTypeParameter.cs" />
         <Compile Include="ExternalGotoDefinitionPropertyTarget.cs" />
         <Compile Include="ExternalGotoDefinitionVariableTarget.cs" />
         <Compile Include="ExternalSourceGetSymbolInfoUser.cs" />

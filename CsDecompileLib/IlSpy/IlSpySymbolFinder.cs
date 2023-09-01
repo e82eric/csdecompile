@@ -372,17 +372,15 @@ public class IlSpySymbolFinder
     
     private static IProperty FindProperty(IType type, string methodName)
     {
-        var properties = type.GetProperties().Where(m =>
+        foreach (var property in type.GetProperties())
         {
-            if (m.FullName != methodName)
+            if (property.Name == methodName)
             {
-                return false;
+                return property;
             }
+        }
 
-            return true;
-        });
-
-        return properties.FirstOrDefault();
+        return null;
     }
     
     private static IEvent FindEvent(IType type, string eventName)
