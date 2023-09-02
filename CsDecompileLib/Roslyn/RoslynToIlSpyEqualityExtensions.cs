@@ -104,12 +104,16 @@ public static class RoslynToIlSpyEqualityExtensions
 
             for (int i = 0; i < roslynNamedType.TypeArguments.Length; i++)
             {
-                var areEqual = AreSameType(
-                    roslynNamedType.TypeArguments[i],
-                    ilSpySymbol.TypeArguments[i].GetDefinition());
-                if (!areEqual)
+                if (!(roslynNamedType.TypeArguments[i].TypeKind == TypeKind.TypeParameter &&
+                    ilSpySymbol.TypeArguments[i].Kind == ICSharpCode.Decompiler.TypeSystem.TypeKind.TypeParameter))
                 {
-                    return false;
+                    var areEqual = AreSameType(
+                        roslynNamedType.TypeArguments[i],
+                        ilSpySymbol.TypeArguments[i].GetDefinition());
+                    if (!areEqual)
+                    {
+                        return false;
+                    }
                 }
             }
         }

@@ -90,6 +90,8 @@
         <Compile Include="ExternalGotoDefinitionDefaultConstructorTarget.cs" />
         <Compile Include="ExternalGotoDefinitionEventTarget.cs" />
         <Compile Include="ExternalGotoDefinitionFieldTarget.cs" />
+        <Compile Include="ExternalGotoDefinitionGenericExtensionMethodTarget.cs" />
+        <Compile Include="ExternalGotoDefinitionGenericExtensionMethodTargetExtensions.cs" />
         <Compile Include="ExternalGotoDefinitionMethodOfGenericTypeUser.cs" />
         <Compile Include="ExternalGotoDefinitionMethodOfGenericTypeTarget.cs" />
         <Compile Include="ExternalGotoDefinitionMethodTarget.cs" />

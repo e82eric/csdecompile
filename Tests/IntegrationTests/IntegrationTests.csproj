@@ -150,6 +150,8 @@
         <Compile Include="ExternalSource\GotoDefinition\ExternalGotoDefinitionEventTests.cs" />
         <Compile Include="ExternalSource\GotoDefinition\ExternalGotoDefinitionFieldTests.cs" />
         <Compile Include="ExternalSource\GotoDefinition\ExternalGotoDefinitionFrameworkMethodWithOutParameterTests.cs" />
+        <Compile Include="ExternalSource\GotoDefinition\ExternalGotoDefinitionGenericExtensionMethodFromBclTests.cs" />
+        <Compile Include="ExternalSource\GotoDefinition\ExternalGotoDefinitionGenericExtensionMethodTests.cs" />
         <Compile Include="ExternalSource\GotoDefinition\ExternalGotoDefinitionMethodOfGenericTypeTests.cs" />
         <Compile Include="ExternalSource\GotoDefinition\ExternalGotoDefinitionMethodTests.cs" />
         <Compile Include="ExternalSource\GotoDefinition\ExternalGotoDefinitionMethodWithGenericInParameterTests.cs" />

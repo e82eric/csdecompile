@@ -83,6 +83,8 @@
         <Compile Include="ExternalGotoDefinitionEventCaller.cs" />
         <Compile Include="ExternalGotoDefinitionFieldCaller.cs" />
         <Compile Include="ExternalGotoDefinitionFrameworkMethodWithOutParameterUser.cs" />
+        <Compile Include="ExternalGotoDefinitionGenericExtensionMethodFromBclUser.cs" />
+        <Compile Include="ExternalGotoDefinitionGenericExtensionMethodUser.cs" />
         <Compile Include="ExternalGotoDefinitionMethodOfGenericTypeCaller.cs" />
         <Compile Include="ExternalGotoDefinitionMethodWithGenericInParameterUser.cs" />
         <Compile Include="ExternalGotoDefinitionMethodWithGenericOutParameterUser.cs" />
