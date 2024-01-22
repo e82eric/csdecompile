@@ -109,3 +109,6 @@ Or it is ocasionally helpful to download a package from nuget.org and navigate t
 - SearchNugetAndDecompileWithDependencies
 - SearchNugetFromLocation
 - ClearNugetDirectory
+
+![WindowsTerminal_Un7TD4y2hy](https://github.com/e82eric/csdecompile/assets/811029/20790a4a-fb94-4ff7-af3b-22cc2a746a71)
+
