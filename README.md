@@ -9,6 +9,7 @@ C# Code navigation for Neovim that decompiles through references using Roslyn an
 - SearchForMembers
 - GetAssemblies
 - DecompileAssembly
+- GetAllTypes
 
 ![WindowsTerminal_baEts9VkFL](https://github.com/e82eric/csdecompile/assets/811029/1cd89e48-ba26-42ca-863f-07b8abc27010)
 
@@ -98,4 +99,13 @@ vim.keymap.set("n", "<leader><leader>", function()
 end,
 { buffer=true }}
 ```
+Experimental Nuget Support:
+I find this useful when working in a c# microservices environment where the services are deployed via nuget packages.  When navigating code and I hit a service boundary it is really helpful to add the package for that service to the workspace and start navigating through its decompiled source alongside the original service.
 
+Or it is ocasionally helpful to download a package from nuget.org and navigate through it to get a understanding of its internals.
+- AddNugetSource
+- SearchNuget
+- SearchNugetAndDecompile
+- SearchNugetAndDecompileWithDependencies
+- SearchNugetFromLocation
+- ClearNugetDirectory
