@@ -10,7 +10,11 @@ C# Code navigation for Neovim that decompiles through references using Roslyn an
 - GetAssemblies
 - DecompileAssembly
 
+Navigating from solction source code to decompiled code
 ![WindowsTerminal_baEts9VkFL](https://github.com/e82eric/csdecompile/assets/811029/1cd89e48-ba26-42ca-863f-07b8abc27010)
+
+Navigating directly through solution assemblies
+![WindowsTerminal_fGBOmBoDf3](https://github.com/e82eric/csdecompile/assets/811029/39edb13e-4076-48be-8239-68c5e537eefe)
 
 Installation Steps
 1. Add plugin ex. Plug 'e82eric/csdecompile'
