@@ -21,16 +21,10 @@ Installation Steps
 2. Build .net navigation back end by running build.ps1
 
 Starting the back end.
-:StartDecompiler
-- This will start the decompiler using the solution file found in the current directory.  If multiple solution files are found a dialog to choose the correct solution will be shown
-:StartNoSolution
-- This will start the decompiler with no solution and no assemblies.  Usually you would run AddExternalAssemblyDirectory after to load a set of dlls to navigate through SearchForType or SearchForMembers
-
-Experimental Stuff:
-:SearchNugetAndDecompile/SearchNugetAndDecompileWithDependencies
-- using the provided search string this will display a list of packages found using configured nuget feed and load the containing dlls into the decompiler workspace
-:ParseStackTrace/FindMethodByFilePath/FindMethodByStackFrame
-- ParseStackTrace will format and syntax highlight a visually selected stack trace.  You can use FindMethodByFilePath and FindMethodByStackFrame to navigate to the location under the cursor (assuming that the project or dll is loaded into the workspace).
+- StartDecompiler
+  - This will start the decompiler using the solution file found in the current directory.  If multiple solution files are found a dialog to choose the correct solution will be shown
+- StartNoSolution
+  - This will start the decompiler with no solution and no assemblies.  Usually you would run AddExternalAssemblyDirectory after to load a set of dlls to navigate through SearchForType or SearchForMembers
 
 Configuration:
 
@@ -109,9 +103,17 @@ Or it is ocasionally helpful to download a package from nuget.org and navigate t
 - AddNugetSource
 - SearchNuget
 - SearchNugetAndDecompile
+- - using the provided search string this will display a list of packages found using configured nuget feed and load the containing dlls into the decompiler workspace
 - SearchNugetAndDecompileWithDependencies
 - SearchNugetFromLocation
 - ClearNugetDirectory
 
 ![WindowsTerminal_Un7TD4y2hy](https://github.com/e82eric/csdecompile/assets/811029/20790a4a-fb94-4ff7-af3b-22cc2a746a71)
 
+Stack Trace Helpers
+- ParseStackTrace
+  - ParseStackTrace will format and syntax highlight a visually selected stack trace
+- FindMethodByFilePath
+  - Does filepath navigation to the path under the cursor
+- FindMethodByStackFrame
+  - Navigate to the location under the cursor (assuming that the project or dll is loaded into the workspace)
