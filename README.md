@@ -9,7 +9,6 @@ C# Code navigation for Neovim that decompiles through references using Roslyn an
 - SearchForMembers
 - GetAssemblies
 - DecompileAssembly
-- GetAllTypes
 
 ![WindowsTerminal_baEts9VkFL](https://github.com/e82eric/csdecompile/assets/811029/1cd89e48-ba26-42ca-863f-07b8abc27010)
 
