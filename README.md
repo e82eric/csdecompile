@@ -31,7 +31,7 @@ Experimental Stuff:
 Configuration:
 
 This is what I am currently using to configure the plugin
-```
+```lua
 local function decompiler_status()
   return require('csdecompile').GetSolutionLoadingStatus()
 end
@@ -72,7 +72,7 @@ require('csdecompile').Setup({ logLevel = 'debug' })
 require('csdecompile.stacktrace').setup()
 ```
 These are the mappings that I am currently using in my cs.lua
-```
+```lua
 vim.keymap.set("n", "<leader>gd", function()
   require('csdecompile').StartDecompileGotoDefinition()
 end,
