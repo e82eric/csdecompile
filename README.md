@@ -26,7 +26,7 @@ Starting the back end.
 - StartNoSolution
   - This will start the decompiler with no solution and no assemblies.  Usually you would run AddExternalAssemblyDirectory after to load a set of dlls to navigate through SearchForType or SearchForMembers
 
-Configuration:
+### Configuration:
 
 This is what I am currently using to configure the plugin
 ```lua
@@ -96,21 +96,21 @@ vim.keymap.set("n", "<leader><leader>", function()
 end,
 { buffer=true }}
 ```
-Experimental Nuget Support:
+### Experimental Nuget Support
 I find this useful when working in a c# microservices environment where the services are deployed via nuget packages.  When navigating code and I hit a service boundary it is really helpful to add the package for that service to the workspace and start navigating through its decompiled source alongside the original service.
-
 Or it is ocasionally helpful to download a package from nuget.org and navigate through it to get a understanding of its internals.
+
 - AddNugetSource
 - SearchNuget
 - SearchNugetAndDecompile
-- - using the provided search string this will display a list of packages found using configured nuget feed and load the containing dlls into the decompiler workspace
+  - using the provided search string this will display a list of packages found using configured nuget feed and load the containing dlls into the decompiler workspace
 - SearchNugetAndDecompileWithDependencies
 - SearchNugetFromLocation
 - ClearNugetDirectory
 
 ![WindowsTerminal_Un7TD4y2hy](https://github.com/e82eric/csdecompile/assets/811029/20790a4a-fb94-4ff7-af3b-22cc2a746a71)
 
-Stack Trace Helpers
+### Stack Trace Helpers
 - ParseStackTrace
   - ParseStackTrace will format and syntax highlight a visually selected stack trace
 - FindMethodByFilePath
