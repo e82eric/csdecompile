@@ -20,6 +20,14 @@ public class
         CancellationToken cancellationToken = CancellationToken.None;
 
         SourceCacheContext cache = new SourceCacheContext();
+        var response = new GetNugetPackageVersionsResponse
+        {
+            NugetSources = request.NugetSources,
+            PackageId = request.PackageId,
+            ParentAssemblyMajorVersion = request.ParentAssemblyMajorVersion,
+            ParentAssemblyMinorVersion = request.ParentAssemblyMinorVersion,
+            ParentAssemblyBuildVersion = request.ParentAssemblyBuildVersion
+        };
 
         foreach (var nugetSource in request.NugetSources)
         {
@@ -42,14 +50,6 @@ public class
                 logger,
                 cancellationToken);
 
-            var response = new GetNugetPackageVersionsResponse
-            {
-                NugetSources = request.NugetSources,
-                PackageId = request.PackageId,
-                ParentAssemblyMajorVersion = request.ParentAssemblyMajorVersion,
-                ParentAssemblyMinorVersion = request.ParentAssemblyMinorVersion,
-                ParentAssemblyBuildVersion = request.ParentAssemblyBuildVersion
-            };
             foreach (NuGetVersion version in versions)
             {
                 response.Packages.Add(new Package
@@ -63,14 +63,12 @@ public class
                     Patch = version.Patch
                 });
             }
-
-            return new ResponsePacket<GetNugetPackageVersionsResponse>
-            {
-                Body = response,
-                Success = true
-            };
         }
 
-        throw new Exception("Nuget package not found in sources");
+        return new ResponsePacket<GetNugetPackageVersionsResponse>
+        {
+            Body = response,
+            Success = true
+        };
     }
 }

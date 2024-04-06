@@ -19,10 +19,10 @@ public class NugetSearcher
         response.NugetSources = nugetSources;
         SearchFilter searchFilter = new SearchFilter(includePrerelease: true);
         var itemsPerPage = 100;
-        var offset = 0;
 
         foreach (var nugetSource in nugetSources)
         {
+            var offset = 0;
             SourceRepository repository = Repository.Factory.GetCoreV3(nugetSource.Source);
             if (!string.IsNullOrEmpty(nugetSource.UserName))
             {
