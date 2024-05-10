@@ -6,5 +6,6 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Cake.Frosting" Version="2.2.0" />
+    <PackageReference Include="NuGet.Protocol" Version="6.9.1" />
   </ItemGroup>
 </Project>

@@ -13,6 +13,7 @@
         <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
         <FileAlignment>512</FileAlignment>
         <LangVersion>10</LangVersion>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
         <PlatformTarget>AnyCPU</PlatformTarget>
@@ -40,8 +41,8 @@
         <Reference Include="ICSharpCode.Decompiler, Version=8.0.0.7345, Culture=neutral, PublicKeyToken=d4bfe873e7598c49, processorArchitecture=MSIL">
           <HintPath>..\packages\ICSharpCode.Decompiler.8.0.0.7345\lib\netstandard2.0\ICSharpCode.Decompiler.dll</HintPath>
         </Reference>
-        <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-          <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.6.0.0\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
+        <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+          <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.7.0.0\lib\net462\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
         </Reference>
         <Reference Include="Microsoft.CodeAnalysis, Version=4.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
           <HintPath>..\packages\Microsoft.CodeAnalysis.Common.4.2.0-3.22169.1\lib\netstandard2.0\Microsoft.CodeAnalysis.dll</HintPath>
@@ -72,6 +73,12 @@
         </Reference>
         <Reference Include="Microsoft.CodeAnalysis.Workspaces, Version=4.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
           <HintPath>..\packages\Microsoft.CodeAnalysis.Workspaces.Common.4.2.0-3.22169.1\lib\netstandard2.0\Microsoft.CodeAnalysis.Workspaces.dll</HintPath>
+        </Reference>
+        <Reference Include="Microsoft.Diagnostics.NETCore.Client, Version=0.2.8.10101, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+          <HintPath>..\packages\Microsoft.Diagnostics.NETCore.Client.0.2.410101\lib\netstandard2.0\Microsoft.Diagnostics.NETCore.Client.dll</HintPath>
+        </Reference>
+        <Reference Include="Microsoft.Diagnostics.Runtime, Version=3.1.10.12801, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+          <HintPath>..\packages\Microsoft.Diagnostics.Runtime.3.1.512801\lib\netstandard2.0\Microsoft.Diagnostics.Runtime.dll</HintPath>
         </Reference>
         <Reference Include="Microsoft.DiaSymReader, Version=1.4.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
           <HintPath>..\packages\Microsoft.DiaSymReader.1.4.0\lib\net20\Microsoft.DiaSymReader.dll</HintPath>
@@ -126,25 +133,25 @@
         </Reference>
         <Reference Include="mscorlib" />
         <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-          <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+          <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
         </Reference>
-        <Reference Include="NuGet.Common, Version=6.6.0.62, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-          <HintPath>..\packages\NuGet.Common.6.6.0\lib\net472\NuGet.Common.dll</HintPath>
+        <Reference Include="NuGet.Common, Version=6.9.1.3, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+          <HintPath>..\packages\NuGet.Common.6.9.1\lib\net472\NuGet.Common.dll</HintPath>
         </Reference>
-        <Reference Include="NuGet.Configuration, Version=6.6.0.62, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-          <HintPath>..\packages\NuGet.Configuration.6.6.0\lib\net472\NuGet.Configuration.dll</HintPath>
+        <Reference Include="NuGet.Configuration, Version=6.9.1.3, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+          <HintPath>..\packages\NuGet.Configuration.6.9.1\lib\net472\NuGet.Configuration.dll</HintPath>
         </Reference>
-        <Reference Include="NuGet.Frameworks, Version=6.6.0.62, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-          <HintPath>..\packages\NuGet.Frameworks.6.6.0\lib\net472\NuGet.Frameworks.dll</HintPath>
+        <Reference Include="NuGet.Frameworks, Version=6.9.1.3, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+          <HintPath>..\packages\NuGet.Frameworks.6.9.1\lib\net472\NuGet.Frameworks.dll</HintPath>
         </Reference>
-        <Reference Include="NuGet.Packaging, Version=6.6.0.62, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-          <HintPath>..\packages\NuGet.Packaging.6.6.0\lib\net472\NuGet.Packaging.dll</HintPath>
+        <Reference Include="NuGet.Packaging, Version=6.9.1.3, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+          <HintPath>..\packages\NuGet.Packaging.6.9.1\lib\net472\NuGet.Packaging.dll</HintPath>
         </Reference>
-        <Reference Include="NuGet.Protocol, Version=6.6.0.62, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-          <HintPath>..\packages\NuGet.Protocol.6.6.0\lib\net472\NuGet.Protocol.dll</HintPath>
+        <Reference Include="NuGet.Protocol, Version=6.9.1.3, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+          <HintPath>..\packages\NuGet.Protocol.6.9.1\lib\net472\NuGet.Protocol.dll</HintPath>
         </Reference>
-        <Reference Include="NuGet.Versioning, Version=6.6.0.62, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-          <HintPath>..\packages\NuGet.Versioning.6.6.0\lib\net472\NuGet.Versioning.dll</HintPath>
+        <Reference Include="NuGet.Versioning, Version=6.9.1.3, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+          <HintPath>..\packages\NuGet.Versioning.6.9.1\lib\net472\NuGet.Versioning.dll</HintPath>
         </Reference>
         <Reference Include="System" />
         <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
@@ -185,8 +192,8 @@
         <Reference Include="System.IO.Pipelines, Version=6.0.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
           <HintPath>..\packages\System.IO.Pipelines.6.0.1\lib\net461\System.IO.Pipelines.dll</HintPath>
         </Reference>
-        <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-          <HintPath>..\packages\System.Memory.4.5.4\lib\net461\System.Memory.dll</HintPath>
+        <Reference Include="System.Memory, Version=4.0.1.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+          <HintPath>..\packages\System.Memory.4.5.5\lib\net461\System.Memory.dll</HintPath>
         </Reference>
         <Reference Include="System.Net.Http" />
         <Reference Include="System.Net.Http.WebRequest" />
@@ -220,11 +227,11 @@
         <Reference Include="System.Text.Encoding.CodePages, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
           <HintPath>..\packages\System.Text.Encoding.CodePages.6.0.0\lib\net461\System.Text.Encoding.CodePages.dll</HintPath>
         </Reference>
-        <Reference Include="System.Text.Encodings.Web, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-          <HintPath>..\packages\System.Text.Encodings.Web.6.0.0\lib\net461\System.Text.Encodings.Web.dll</HintPath>
+        <Reference Include="System.Text.Encodings.Web, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+          <HintPath>..\packages\System.Text.Encodings.Web.7.0.0\lib\net462\System.Text.Encodings.Web.dll</HintPath>
         </Reference>
-        <Reference Include="System.Text.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-          <HintPath>..\packages\System.Text.Json.6.0.0\lib\net461\System.Text.Json.dll</HintPath>
+        <Reference Include="System.Text.Json, Version=7.0.0.3, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+          <HintPath>..\packages\System.Text.Json.7.0.3\lib\net462\System.Text.Json.dll</HintPath>
         </Reference>
         <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
           <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
@@ -237,6 +244,10 @@
     </ItemGroup>
     <ItemGroup>
         <Compile Include="CachedStringBuilder.cs" />
+        <Compile Include="DebugClientAssemblySource\AddMemoryDumpAssembliesHandler.cs" />
+        <Compile Include="DebugClientAssemblySource\AddMemoryDumpAssembliesRequest.cs" />
+        <Compile Include="DebugClientAssemblySource\AddMemoryDumpAssembliesResponse.cs" />
+        <Compile Include="DebugClientAssemblySource\ClrMdDllExtractor.cs" />
         <Compile Include="DecompileAssemblyInfo.cs" />
         <Compile Include="DecompileInfo.cs" />
         <Compile Include="DecompileWorkspace.cs" />
@@ -420,11 +431,9 @@
       <Error Condition="!Exists('..\packages\Microsoft.CodeAnalysis.Analyzers.3.3.3\build\Microsoft.CodeAnalysis.Analyzers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeAnalysis.Analyzers.3.3.3\build\Microsoft.CodeAnalysis.Analyzers.props'))" />
       <Error Condition="!Exists('..\packages\Microsoft.CodeAnalysis.Analyzers.3.3.3\build\Microsoft.CodeAnalysis.Analyzers.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeAnalysis.Analyzers.3.3.3\build\Microsoft.CodeAnalysis.Analyzers.targets'))" />
       <Error Condition="!Exists('..\packages\Microsoft.Extensions.Logging.Abstractions.6.0.0\build\Microsoft.Extensions.Logging.Abstractions.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Extensions.Logging.Abstractions.6.0.0\build\Microsoft.Extensions.Logging.Abstractions.targets'))" />
-      <Error Condition="!Exists('..\packages\System.Text.Json.6.0.0\build\System.Text.Json.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\System.Text.Json.6.0.0\build\System.Text.Json.targets'))" />
     </Target>
     <Import Project="..\packages\Microsoft.CodeAnalysis.Analyzers.3.3.3\build\Microsoft.CodeAnalysis.Analyzers.targets" Condition="Exists('..\packages\Microsoft.CodeAnalysis.Analyzers.3.3.3\build\Microsoft.CodeAnalysis.Analyzers.targets')" />
     <Import Project="..\packages\Microsoft.Extensions.Logging.Abstractions.6.0.0\build\Microsoft.Extensions.Logging.Abstractions.targets" Condition="Exists('..\packages\Microsoft.Extensions.Logging.Abstractions.6.0.0\build\Microsoft.Extensions.Logging.Abstractions.targets')" />
-    <Import Project="..\packages\System.Text.Json.6.0.0\build\System.Text.Json.targets" Condition="Exists('..\packages\System.Text.Json.6.0.0\build\System.Text.Json.targets')" />
     <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
          Other similar extension points exist, see Microsoft.Common.targets.
     <Target Name="BeforeBuild">

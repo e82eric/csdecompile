@@ -7,6 +7,7 @@ namespace CsDecompileLib.IlSpy;
 
 public interface IDecompileWorkspace
 {
+    public void AddPeFile(PEFile peFile);
     PEFile GetAssembly(string filePath);
     PEFile[] GetAssemblies();
     IReadOnlyList<Compilation> GetProjectCompilations();

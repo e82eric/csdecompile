@@ -6,6 +6,7 @@ using ICSharpCode.Decompiler.TypeSystem;
 using StdIoHost.ProjectSystemExtraction;
 using StdIoHost.SimpleProjectSystem;
 using CsDecompileLib;
+using CsDecompileLib.DebugClientAssemblySource;
 using CsDecompileLib.ExternalAssemblies;
 using CsDecompileLib.FindImplementations;
 using CsDecompileLib.FindUsages;
@@ -385,6 +386,7 @@ internal static class HandlerFactory
         var getTypesHandlers = CreateGetTypesHandlers();
         var getTypeMembersHandler = CreateGetTypeMembersHandler();
         var addExternalAssemblyDirectoryHandler = CreateAddExternalAssemblyDirectoryHandler();
+        var addMemoryDumpAssembliesHandler = CreateAddMemoryDumpAssembliesHandler();
         var getAssemblyTypesHandler = GetAssemblyTypesHandler();
         var getAssembliesHandler = GetAssembliesHandler();
         var getSymbolInfoHandler = CreateGetSymbolInfoHandler();
@@ -410,6 +412,7 @@ internal static class HandlerFactory
             { Endpoints.GetTypes, getTypesHandlers },
             { Endpoints.GetTypeMembers, getTypeMembersHandler },
             { Endpoints.AddExternalAssemblyDirectory, addExternalAssemblyDirectoryHandler },
+            { Endpoints.AddMemoryDumpAssemblies, addMemoryDumpAssembliesHandler },
             { Endpoints.GetAssemblies, getAssembliesHandler },
             { Endpoints.SymbolInfo, getSymbolInfoHandler },
             { Endpoints.DecompileAssembly, decompileAssemblyHandler },
@@ -454,6 +457,12 @@ internal static class HandlerFactory
     public static AddExternalAssemblyDirectoryHandler CreateAddExternalAssemblyDirectoryHandler()
     {
         var result = new AddExternalAssemblyDirectoryHandler(_decompileWorkspace);
+        return result;
+    }
+
+    public static AddMemoryDumpAssembliesHandler CreateAddMemoryDumpAssembliesHandler()
+    {
+        var result =  new AddMemoryDumpAssembliesHandler(_decompileWorkspace, new ClrMdDllExtractor());
         return result;
     }
 }

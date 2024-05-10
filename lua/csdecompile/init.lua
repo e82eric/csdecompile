@@ -406,6 +406,22 @@ end
 M.HandleAddExternalDirectory = function(response)
 end
 
+M.StartAddMemoryDumpAssemblies = function(memoryDumpFilePath)
+  if M._checkNotRunning() then
+    return
+  end
+	local request = {
+		Command = "/addmemorydumpassemblies",
+		Arguments = {
+			MemoryDumpFilePath = memoryDumpFilePath
+		}
+	}
+	M._sendStdIoRequest(request, M.HandleAddMemoryDumpAssemblies);
+end
+
+M.HandleAddMemoryDumpAssemblies = function(response)
+end
+
 M.StartGetAssemblies = function()
   if M._checkNotRunning() then
     return
@@ -1500,6 +1516,13 @@ M.Setup = function(config)
         M.StartAddExternalDirectory(opts.args)
       end,
       { nargs = '?', complete='dir' }
+  )
+  vim.api.nvim_create_user_command(
+      'AddMemoryDumpAssemblies',
+      function(opts)
+        M.StartAddMemoryDumpAssemblies(opts.args)
+      end,
+      { nargs = '?', complete='file' }
   )
   vim.api.nvim_create_user_command(
       'SearchForType',

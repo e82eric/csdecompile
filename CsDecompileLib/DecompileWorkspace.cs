@@ -19,6 +19,11 @@ namespace CsDecompileLib.IlSpy
             _workspace = workspace;
             _peFileCache = peFileCache;
         }
+        
+        public void AddPeFile(PEFile peFile)
+        {
+            _peFileCache.Add(peFile);
+        }
 
         public int LoadDlls()
         {

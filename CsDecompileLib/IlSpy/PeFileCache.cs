@@ -23,6 +23,17 @@ public class PeFileCache
     {
         return _peFileCache.Count;
     }
+
+    public void Add(PEFile peFile)
+    {
+        var targetFrameworkId = peFile.DetectTargetFrameworkId2();
+        var uniqueness = peFile.FullName + '|' + targetFrameworkId;
+        if (!_byFileName.ContainsKey(peFile.FileName) && !_peFileCache.ContainsKey(uniqueness))
+        {
+            _byFileName.TryAdd(peFile.FileName, uniqueness);
+            _peFileCache.TryAdd(uniqueness, peFile);
+        }
+    }
     
     public bool TryGetByNameAndFrameworkId(string fullName, string targetFrameworkId, out PEFile peFile)
     {

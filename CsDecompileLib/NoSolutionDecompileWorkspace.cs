@@ -24,6 +24,11 @@ public class NoSolutionDecompileWorkspace : IDecompileWorkspace
         return result;
     }
 
+    public void AddPeFile(PEFile peFile)
+    {
+        _peFileCache.Add(peFile);
+    }
+
     public void LoadDllsInDirectory(DirectoryInfo directory)
     {
         var binDirDlls = directory.GetFiles("*.*", SearchOption.AllDirectories)
