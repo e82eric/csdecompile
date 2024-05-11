@@ -14,6 +14,10 @@ namespace StdIoHost
             {
                 HandlerFactory.InitNoSolution(Console.Out, Console.In).GetAwaiter().GetResult();
             }
+            else if (solutionPath == "--memorydump")
+            {
+                HandlerFactory.InitFromMemoryDump(Console.Out, Console.In, args[1]).GetAwaiter().GetResult();
+            }
             else
             {
                 HandlerFactory.Init(Console.Out, Console.In, solutionPath).GetAwaiter().GetResult();

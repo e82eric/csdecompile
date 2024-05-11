@@ -314,6 +314,26 @@ M.StartNoSolution = function ()
 	M._state["job"] = job
 end
 
+M.StartFromMemoryDump = function (memoryDumpPath)
+	local pluginRootDir = vim.fn.fnamemodify(debug.getinfo(1).source:sub(2), ":h:h:h")
+	M._state['StartSent'] = true
+	local job = Job:new({
+		command = pluginRootDir .. '\\StdIoHost\\bin\\Debug\\csdecompile.exe',
+		args = { "--memorydump", memoryDumpPath },
+		cwd = '.',
+		on_stdout = on_output,
+		on_exit = function(j, return_val)
+		end,
+	})
+	M._state.SolutionLoadingState = 'loading'
+
+	job:start()
+	M._state.SolutionName = 'Started (memory dump)'
+	M._state.SolutionLoadingState = 'done'
+
+	M._state["job"] = job
+end
+
 M._sendStdIoRequest = function(request, callback, callbackData)
   if M._state.Requests[M._state.NextSequence + 1] then
     M._state.Requests[M._state.NextSequence + 1] = nil
@@ -1544,6 +1564,13 @@ M.Setup = function(config)
         M.StartDecompiler()
       end,
       {}
+  )
+  vim.api.nvim_create_user_command(
+      'StartDecompilerFromMemoryDump',
+      function(opts)
+        M.StartFromMemoryDump(opts.args)
+      end,
+      { nargs = '?', complete='file'}
   )
   vim.api.nvim_create_user_command(
       'StartDecompilerNoSolution',

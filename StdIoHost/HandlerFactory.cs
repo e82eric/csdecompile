@@ -94,6 +94,19 @@ internal static class HandlerFactory
         return Task.FromResult(0);
     }
 
+    public static async Task InitFromMemoryDump(TextWriter stdOut, TextReader stdIn, string memoryDumpPath)
+    {
+        await InitNoSolution(stdOut, stdIn);
+        var memoryDumpLoader = GetMemoryDumpLoader();
+        memoryDumpLoader.LoadDllsFromMemoryDump(memoryDumpPath);
+    }
+
+    public static MemoryDumpLoader GetMemoryDumpLoader()
+    {
+        var result = new MemoryDumpLoader(_decompileWorkspace, new ClrMdDllExtractor());
+        return result;
+    }
+
     private static ICsDecompileWorkspace GetWorkspace(StdioEventEmitter eventEmitter)
     {
         var result = new SimpleDecompileWorkspace(eventEmitter);
@@ -462,7 +475,8 @@ internal static class HandlerFactory
 
     public static AddMemoryDumpAssembliesHandler CreateAddMemoryDumpAssembliesHandler()
     {
-        var result =  new AddMemoryDumpAssembliesHandler(_decompileWorkspace, new ClrMdDllExtractor());
+        var memoryDumpLoader = GetMemoryDumpLoader();
+        var result =  new AddMemoryDumpAssembliesHandler(memoryDumpLoader);
         return result;
     }
 }
