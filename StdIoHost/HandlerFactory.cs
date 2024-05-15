@@ -100,6 +100,13 @@ internal static class HandlerFactory
         var memoryDumpLoader = GetMemoryDumpLoader();
         memoryDumpLoader.LoadDllsFromMemoryDump(memoryDumpPath);
     }
+    
+    public static async Task InitFromProcess(TextWriter stdOut, TextReader stdIn, int processId)
+    {
+        await InitNoSolution(stdOut, stdIn);
+        var memoryDumpLoader = GetMemoryDumpLoader();
+        memoryDumpLoader.LoadAssembliesFromProcess(processId, true);
+    }
 
     public static MemoryDumpLoader GetMemoryDumpLoader()
     {
@@ -400,6 +407,7 @@ internal static class HandlerFactory
         var getTypeMembersHandler = CreateGetTypeMembersHandler();
         var addExternalAssemblyDirectoryHandler = CreateAddExternalAssemblyDirectoryHandler();
         var addMemoryDumpAssembliesHandler = CreateAddMemoryDumpAssembliesHandler();
+        var addProcessAssembliesHandler = CreateAddProcessAssembliesHandler();
         var getAssemblyTypesHandler = GetAssemblyTypesHandler();
         var getAssembliesHandler = GetAssembliesHandler();
         var getSymbolInfoHandler = CreateGetSymbolInfoHandler();
@@ -426,6 +434,7 @@ internal static class HandlerFactory
             { Endpoints.GetTypeMembers, getTypeMembersHandler },
             { Endpoints.AddExternalAssemblyDirectory, addExternalAssemblyDirectoryHandler },
             { Endpoints.AddMemoryDumpAssemblies, addMemoryDumpAssembliesHandler },
+            { Endpoints.AddProcessAssemblies, addProcessAssembliesHandler },
             { Endpoints.GetAssemblies, getAssembliesHandler },
             { Endpoints.SymbolInfo, getSymbolInfoHandler },
             { Endpoints.DecompileAssembly, decompileAssemblyHandler },
@@ -477,6 +486,13 @@ internal static class HandlerFactory
     {
         var memoryDumpLoader = GetMemoryDumpLoader();
         var result =  new AddMemoryDumpAssembliesHandler(memoryDumpLoader);
+        return result;
+    }
+    
+    public static AddProcessAssembliesHandler CreateAddProcessAssembliesHandler()
+    {
+        var memoryDumpLoader = GetMemoryDumpLoader();
+        var result =  new AddProcessAssembliesHandler(memoryDumpLoader);
         return result;
     }
 }

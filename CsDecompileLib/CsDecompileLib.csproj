@@ -247,6 +247,8 @@
         <Compile Include="DebugClientAssemblySource\AddMemoryDumpAssembliesHandler.cs" />
         <Compile Include="DebugClientAssemblySource\AddMemoryDumpAssembliesRequest.cs" />
         <Compile Include="DebugClientAssemblySource\AddMemoryDumpAssembliesResponse.cs" />
+        <Compile Include="DebugClientAssemblySource\AddProcessAssembliesHandler.cs" />
+        <Compile Include="DebugClientAssemblySource\AddProcessAssembliesRequest.cs" />
         <Compile Include="DebugClientAssemblySource\ClrMdDllExtractor.cs" />
         <Compile Include="DebugClientAssemblySource\MemoryDumpLoader.cs" />
         <Compile Include="DecompileAssemblyInfo.cs" />

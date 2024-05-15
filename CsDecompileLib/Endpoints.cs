@@ -11,6 +11,7 @@ namespace CsDecompileLib
         public const string GetTypeMembers = "/gettypemembers";
         public const string AddExternalAssemblyDirectory = "/addexternalassemblydirectory";
         public const string AddMemoryDumpAssemblies = "/addmemorydumpassemblies";
+        public const string AddProcessAssemblies = "/addprocessassemblies";
         public const string GetAssemblies = "/getassemblies";
         public const string GetAssemblyTypes = "/getassemblytypes";
         public const string DecompileAssembly = "/decompileassembly";

@@ -18,6 +18,13 @@ namespace StdIoHost
             {
                 HandlerFactory.InitFromMemoryDump(Console.Out, Console.In, args[1]).GetAwaiter().GetResult();
             }
+            else if (solutionPath == "--process")
+            {
+                if (int.TryParse(args[1], out var processId))
+                {
+                    HandlerFactory.InitFromProcess(Console.Out, Console.In, processId).GetAwaiter().GetResult();
+                }
+            }
             else
             {
                 HandlerFactory.Init(Console.Out, Console.In, solutionPath).GetAwaiter().GetResult();
