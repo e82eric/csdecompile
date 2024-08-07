@@ -1,10 +1,13 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using System.Reflection.Metadata;
 using ICSharpCode.Decompiler;
 using ICSharpCode.Decompiler.CSharp;
 using ICSharpCode.Decompiler.CSharp.OutputVisitor;
 using ICSharpCode.Decompiler.CSharp.Syntax;
+using ICSharpCode.Decompiler.IL;
 using ICSharpCode.Decompiler.TypeSystem;
+using SequencePoint = ICSharpCode.Decompiler.DebugInfo.SequencePoint;
 
 namespace CsDecompileLib.IlSpy;
 
@@ -22,6 +25,12 @@ public class Decompiler
             ShowXmlDocumentation = false
         };
         _decompiler = new CSharpDecompiler(decompilerTypeSystem, _decompilerSettings);
+    }
+
+    public Dictionary<ILFunction, List<SequencePoint>> CreateSequencePoints(SyntaxTree syntaxTree)
+    {
+        var result = _decompiler.CreateSequencePoints(syntaxTree);
+        return result;
     }
     
     public (SyntaxTree, string) Run(ITypeDefinition rooTypeDefinition)
@@ -61,5 +70,10 @@ public class Decompiler
         syntaxTree.AcceptVisitor(new CSharpOutputVisitor(tokenWriter, _decompilerSettings.CSharpFormattingOptions));
         var result = stringWriter.ToString();
         return (syntaxTree, result);
+    }
+
+    public IDecompilerTypeSystem TypeSystem
+    {
+        get { return _decompiler.TypeSystem; }
     }
 }

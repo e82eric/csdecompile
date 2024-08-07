@@ -13,27 +13,28 @@ public class MemoryDumpLoader
 {
     private readonly IDecompileWorkspace _decompileWorkspace;
     private readonly ClrMdDllExtractor _dllExtractor;
+    private readonly DataTargetProvider _dataTargetProvider;
 
-    public MemoryDumpLoader(IDecompileWorkspace decompileWorkspace, ClrMdDllExtractor dllExtractor)
+    public MemoryDumpLoader(
+        IDecompileWorkspace decompileWorkspace,
+        ClrMdDllExtractor dllExtractor,
+        DataTargetProvider dataTargetProvider)
     {
         _decompileWorkspace = decompileWorkspace;
         _dllExtractor = dllExtractor;
+        _dataTargetProvider = dataTargetProvider;
     }
 
     public void LoadAssembliesFromProcess(int processId, bool suspend)
     {
-        using (var dataTarget = DataTarget.AttachToProcess(processId, suspend))
-        {
-            Load(dataTarget);
-        }
+        _dataTargetProvider.SetFromProcess(processId, suspend);
+        Load(_dataTargetProvider.Get());
     }
 
     public void LoadDllsFromMemoryDump(string filePath)
     {
-        using (DataTarget dataTarget = DataTarget.LoadDump(filePath))
-        {
-            Load(dataTarget);
-        }
+        _dataTargetProvider.SetFromMemoryDump(filePath);
+        Load(_dataTargetProvider.Get());
     }
 
     private void Load(DataTarget dataTarget)

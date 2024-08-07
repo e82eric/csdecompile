@@ -14,27 +14,9 @@ public class IlSpyToSourceInfoBase
         {
             SourceText = line,
         };
-        FillFromAstNode(metadataSource, usage);
-        FillFromContainingType(metadataSource, typeToSearch);
+        metadataSource.FillFromAstNode(usage);
+        metadataSource.FillFromContainingType(typeToSearch);
         return metadataSource;
-    }
-    
-    protected void FillFromAstNode(DecompileInfo target, AstNode usage)
-    {
-        target.Column = usage.StartLocation.Column;
-        target.Line = usage.StartLocation.Line;
-        target.StartColumn = usage.StartLocation.Column;
-        target.EndColumn = usage.EndLocation.Column;
-    }
-
-    protected void FillFromContainingType(DecompileInfo target, ITypeDefinition containingType)
-    {
-        target.AssemblyName = containingType.ParentModule.AssemblyName;
-        target.ContainingTypeFullName = containingType.ReflectionName;
-        target.ContainingTypeShortName = containingType.Name;
-        target.AssemblyFilePath = containingType.Compilation.MainModule.PEFile.FileName;
-        target.NamespaceName = containingType.Namespace;
-        target.ParentAssemblyFilePath = containingType.ParentModule.PEFile.FileName;
     }
 
     protected void MapToSourceInfos(

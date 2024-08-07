@@ -30,6 +30,7 @@ internal static class HandlerFactory
     private static IDecompileWorkspace _decompileWorkspace;
     private static TextReader _stdIn;
     private static SharedTextWriter _sharedTextWriter;
+    private static DataTargetProvider _dataTargetProvider;
 
     public static async Task Init(TextWriter stdOut, TextReader stdIn, string solutionPath)
     {
@@ -91,6 +92,7 @@ internal static class HandlerFactory
         var resolverFactory = new AssemblyResolverFactory(_peFileCache);
         _decompilerTypeSystemFactory = new IlSpyTypeSystemFactory(resolverFactory, _peFileCache);
         _decompileWorkspace = new NoSolutionDecompileWorkspace(_peFileCache, _decompilerTypeSystemFactory);
+        _dataTargetProvider = new DataTargetProvider();
         return Task.FromResult(0);
     }
 
@@ -110,7 +112,7 @@ internal static class HandlerFactory
 
     public static MemoryDumpLoader GetMemoryDumpLoader()
     {
-        var result = new MemoryDumpLoader(_decompileWorkspace, new ClrMdDllExtractor());
+        var result = new MemoryDumpLoader(_decompileWorkspace, new ClrMdDllExtractor(), _dataTargetProvider);
         return result;
     }
 
@@ -408,6 +410,8 @@ internal static class HandlerFactory
         var addExternalAssemblyDirectoryHandler = CreateAddExternalAssemblyDirectoryHandler();
         var addMemoryDumpAssembliesHandler = CreateAddMemoryDumpAssembliesHandler();
         var addProcessAssembliesHandler = CreateAddProcessAssembliesHandler();
+        var uniqClrStackHandler = CreateUniqCallStackHandler();
+        var decompileFrame = DecompileFrameHandler();
         var getAssemblyTypesHandler = GetAssemblyTypesHandler();
         var getAssembliesHandler = GetAssembliesHandler();
         var getSymbolInfoHandler = CreateGetSymbolInfoHandler();
@@ -435,6 +439,8 @@ internal static class HandlerFactory
             { Endpoints.AddExternalAssemblyDirectory, addExternalAssemblyDirectoryHandler },
             { Endpoints.AddMemoryDumpAssemblies, addMemoryDumpAssembliesHandler },
             { Endpoints.AddProcessAssemblies, addProcessAssembliesHandler },
+            { Endpoints.UniqCallStack, uniqClrStackHandler},
+            { Endpoints.DecompileFrame, decompileFrame},
             { Endpoints.GetAssemblies, getAssembliesHandler },
             { Endpoints.SymbolInfo, getSymbolInfoHandler },
             { Endpoints.DecompileAssembly, decompileAssemblyHandler },
@@ -486,6 +492,23 @@ internal static class HandlerFactory
     {
         var memoryDumpLoader = GetMemoryDumpLoader();
         var result =  new AddMemoryDumpAssembliesHandler(memoryDumpLoader);
+        return result;
+    }
+
+    public static UniqCallStackHandler CreateUniqCallStackHandler()
+    {
+        var result = new UniqCallStackHandler(new UniqCallStackProvider(_dataTargetProvider));
+        return result;
+    }
+    
+    public static DecompileFrameHandler DecompileFrameHandler()
+    {
+        var decompilerFactory = new DecompilerFactory(_decompilerTypeSystemFactory);
+        var result = new DecompileFrameHandler(new FrameDecompiler(
+            _dataTargetProvider,
+            decompilerFactory,
+            new ClrMdDllExtractor(),
+            new MethodNodeInTypeAstFinder()));
         return result;
     }
     

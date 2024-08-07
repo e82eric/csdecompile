@@ -446,6 +446,47 @@ end
 M.HandleAddExternalDirectory = function(response)
 end
 
+M.StartUniqCallStacks = function()
+  if M._checkNotRunning() then
+    return
+  end
+	local request = {
+		Command = "/uniqCallStacks",
+		Arguments = { Stub = true }
+	}
+	M._sendStdIoRequest(request, M.HandleUniqCallStacks);
+end
+
+M.HandleUniqCallStacks = function(response)
+  local threads = {}
+  for _, item in ipairs(response.Body.Result) do
+    local frames = {}
+    local result = ""
+    for _, thread in ipairs(item.Threads) do
+        result = result .. string.format("OsId: 0x%x ManagedId: 0x%x,", thread.OSId, thread.ManagedId)
+    end
+    for _, frame in ipairs(item.Frames) do
+      table.insert(frames, { str = string.format("0x%x 0x%x 0x%x %s.%s", frame.StackPointer, frame.InstructionPointer, frame.MetadataToken, frame.TypeName, frame.MethodName), obj = frame })
+    end
+    -- Remove the trailing comma
+    result = result:sub(1, -2)
+    table.insert(threads, { threadsStr = result, threads = item.Threads, frames = frames })
+  end
+
+  M._openTelescope(threads, M._createUniqCallStackDisplayer, M._uniqCallStackPreviewer, function(selection)
+    local captureFrames = selection.frames
+    M._openTelescope(selection.threads, M._createUniqCallStackThreadDisplayer, nil, function(selection)
+      local captureThread = selection
+      M._openTelescope(captureFrames, M._createUniqCallStackThreadFramesDisplayer, nil, function(selection)
+        M.StartDecompileFrame(selection.obj.StackPointer, { Entry = value, BufferNumber = 0, WindowId = 0, })
+      end,
+      'Uniq Call Stack Frames')
+    end,
+    'Uniq Call Stack Threads')
+  end,
+  'Uniq Call Stacks')
+end
+
 M.StartAddMemoryDumpAssemblies = function(memoryDumpFilePath)
   if M._checkNotRunning() then
     return
@@ -950,6 +991,18 @@ M.StartRefreshBuffer = function()
 	M._sendStdIoRequest(request, M.HandleDecompiledSource, { Entry = nil, BufferNumber = bufnr, WindowId = winid, })
 end
 
+M.StartDecompileFrame = function(stackPointer, callbackData)
+	local request = {
+		Command = "/decompileframe",
+		Arguments = {
+      StackPointer = stackPointer,
+		},
+		Seq = M._state.NextSequence,
+	}
+
+	M._sendStdIoRequest(request, M.HandleDecompiledSource, callbackData)
+end
+
 M.StartGetDecompiledSource = function(
   parentAssemblyFilePath,
 	assemblyFilePath,
@@ -1191,6 +1244,79 @@ M._createGetAllTypesDisplayer = function(widths)
 	return resultFunc
 end
 
+M._createUniqCallStackDisplayer = function(widths)
+	local resultFunc = function(entry)
+		local displayer = entry_display.create {
+			separator = "  ",
+			items = {
+				{ remaining = true },
+			},
+		}
+
+		local make_display = function(entry)
+			return displayer {
+				{ M._blankIfNil(entry.value.threadsStr), "TelescopeResultsClass" },
+			}
+		end
+
+		return {
+			value = entry,
+			display = make_display,
+			ordinal = entry.threadsStr
+		}
+	end
+	return resultFunc
+end
+
+M._createUniqCallStackThreadFramesDisplayer = function(widths)
+	local resultFunc = function(entry)
+		local displayer = entry_display.create {
+			separator = "  ",
+			items = {
+				{ remaining = true },
+			},
+		}
+
+		local make_display = function(entry)
+			return displayer {
+				{ M._blankIfNil(entry.value.str), "TelescopeResultsClass" },
+			}
+		end
+
+    print(vim.inspect(entry))
+		return {
+			value = entry,
+			display = make_display,
+			ordinal = tostring(entry.obj.Ordinal)
+		}
+	end
+	return resultFunc
+end
+
+M._createUniqCallStackThreadDisplayer = function(widths)
+	local resultFunc = function(entry)
+		local displayer = entry_display.create {
+			separator = "  ",
+			items = {
+				{ remaining = true },
+			},
+		}
+
+		local make_display = function(entry)
+			return displayer {
+				{ M._blankIfNil(string.format("OsId: 0x%x ManagedId: 0x%x", entry.value.OSId, entry.value.ManagedId)), "TelescopeResultsClass" },
+			}
+		end
+
+		return {
+			value = entry,
+			display = make_display,
+			ordinal = string.format("%s", entry.OSId)
+		}
+	end
+	return resultFunc
+end
+
 M._createSearchNugetDisplayer = function(widths)
 	local resultFunc = function(entry)
 		local displayer = entry_display.create {
@@ -1392,6 +1518,25 @@ M._navigationFloatingWin = function(data)
 	)
 end
 
+M._uniqCallStackPreviewer = previewers.new_buffer_previewer {
+  dyn_title = function (_, entry)
+    local titleResult = 'stub'
+    return titleResult
+  end,
+  get_buffer_by_name = function(_, entry)
+    return entry.value
+  end,
+
+  define_preview = function(self, entry)
+    local strArray = {}
+    for _, item in ipairs(entry.value.frames) do
+      table.insert(strArray, item.str)
+    end
+    vim.api.nvim_buf_set_option(self.state.bufnr, "syntax", "cs")
+    vim.api.nvim_buf_set_lines(self.state.bufnr, 0, -1, false, strArray)
+  end
+}
+
 M._sourcePreviewer = previewers.new_buffer_previewer {
   dyn_title = function (_, entry)
     local titleResult = ''
@@ -1443,7 +1588,6 @@ M._sourcePreviewer = previewers.new_buffer_previewer {
 }
 
 M._openTelescope = function(data, displayFunc, previewer, onSelection, promptTitle, prompt)
-  print(prompt)
 	local widths = {
 		ContainingTypeFullName = 0,
 		ContainingTypeShortName = 0,
@@ -1563,6 +1707,13 @@ M.Setup = function(config)
         M.StartAddMemoryDumpAssemblies(opts.args)
       end,
       { nargs = '?', complete='file' }
+  )
+  vim.api.nvim_create_user_command(
+      'UniqCallStacks',
+      function(opts)
+        M.StartUniqCallStacks()
+      end,
+      {}
   )
   vim.api.nvim_create_user_command(
       'SearchForType',
