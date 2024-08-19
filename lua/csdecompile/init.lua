@@ -465,14 +465,14 @@ M.HandleTaskUniqCallStacks = function(response)
     local numberOfTasks = 0
     for _, task in ipairs(item.Tasks) do
       numberOfTasks = numberOfTasks + 1
-      result = result .. string.format("Task: 0x%x", task)
+      result = result .. string.format("0x%x,", task)
     end
-    result = string.format("NumberOfTasks:%d ", numberOfTasks) .. result
+    result = string.format("NumberOfTasks:%d Tasks: ", numberOfTasks) .. result
+    result = result:sub(1, -2)
     for _, frame in ipairs(item.Frames) do
       table.insert(frames, { str = string.format("0x%x 0x%x %s", frame.InstructionPointer, frame.MethodTable, frame.StateMachineTypeName), obj = frame })
     end
     -- Remove the trailing comma
-    result = result:sub(1, -2)
     table.insert(tasks, { tasksStr = result, tasks = item.tasks, frames = frames })
   end
 
