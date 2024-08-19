@@ -477,7 +477,7 @@ M.HandleTaskUniqCallStacks = function(response)
   end
 
   M._openTelescope(tasks, M._createUniqTaskCallStackDisplayer, M._uniqCallStackPreviewer, function(selection)
-    M._openTelescope(selection.frames, M._createUniqCallStackThreadFramesDisplayer, nil, function(innerSelection)
+    M._openTelescope(selection.frames, M._createUniqCallStackThreadFramesDisplayer, M._instructionPointerSourcePreviewer, function(innerSelection)
       M.StartDecompileTaskFrame(innerSelection.obj.InstructionPointer, { Entry = value, BufferNumber = 0, WindowId = 0, })
     end,
     'Uniq Task Call Stack Frames')
@@ -1608,6 +1608,26 @@ M._uniqCallStackPreviewer = previewers.new_buffer_previewer {
     end
     vim.api.nvim_buf_set_option(self.state.bufnr, "syntax", "cs")
     vim.api.nvim_buf_set_lines(self.state.bufnr, 0, -1, false, strArray)
+  end
+}
+
+M._instructionPointerSourcePreviewer = previewers.new_buffer_previewer {
+  dyn_title = function (_, entry)
+    local titleResult =  entry.value.obj.StateMachineTypeName
+    return titleResult
+  end,
+  get_buffer_by_name = function(_, entry)
+    return entry.value
+  end,
+  define_preview = function(self, entry)
+    local bufnr = self.state.bufnr
+    local winid = self.state.winid
+
+    M.StartDecompileTaskFrame(entry.value.obj.InstructionPointer, { Entry = entry.value, BufferNumber = bufnr, WindowId = winid, })
+
+    print(vim.inspect(entry))
+    vim.api.nvim_buf_set_option(self.state.bufnr, "syntax", "cs")
+    vim.api.nvim_buf_set_lines(self.state.bufnr, 0, -1, false, { 'Decompiling ' .. entry.value.obj.StateMachineTypeName .. '...'})
   end
 }
 
