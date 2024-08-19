@@ -462,9 +462,12 @@ M.HandleTaskUniqCallStacks = function(response)
   for _, item in ipairs(response.Body.Result) do
     local frames = {}
     local result = ""
+    local numberOfTasks = 0
     for _, task in ipairs(item.Tasks) do
+      numberOfTasks = numberOfTasks + 1
       result = result .. string.format("Task: 0x%x", task)
     end
+    result = string.format("NumberOfTasks:%d ", numberOfTasks) .. result
     for _, frame in ipairs(item.Frames) do
       table.insert(frames, { str = string.format("0x%x 0x%x %s", frame.InstructionPointer, frame.MethodTable, frame.StateMachineTypeName), obj = frame })
     end
@@ -475,7 +478,6 @@ M.HandleTaskUniqCallStacks = function(response)
 
   M._openTelescope(tasks, M._createUniqTaskCallStackDisplayer, M._uniqCallStackPreviewer, function(selection)
     M._openTelescope(selection.frames, M._createUniqCallStackThreadFramesDisplayer, nil, function(innerSelection)
-      print(vim.inspect(innerSelection))
       M.StartDecompileTaskFrame(innerSelection.obj.InstructionPointer, { Entry = value, BufferNumber = 0, WindowId = 0, })
     end,
     'Uniq Task Call Stack Frames')
@@ -1359,7 +1361,7 @@ M._createUniqCallStackThreadFramesDisplayer = function(widths)
 		return {
 			value = entry,
 			display = make_display,
-			ordinal = tostring(entry.obj.Ordinal)
+			ordinal = entry.str
 		}
 	end
 	return resultFunc
