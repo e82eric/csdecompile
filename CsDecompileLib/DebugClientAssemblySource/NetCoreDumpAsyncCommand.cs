@@ -235,7 +235,7 @@ public sealed class NetCoreDumpAsyncCommand
             // Find every top-level object (ones that nothing else has as a continuation) and output
             // a stack starting from each.
             int stackId = 1;
-            var result2 = new List<UniqTaskStackItem>();
+            var result = new List<UniqTaskStackItem>();
             foreach (KeyValuePair<ClrObject, AsyncObject> entry in objects)
             {
                 //Console.CancellationToken.ThrowIfCancellationRequested();
@@ -370,7 +370,7 @@ public sealed class NetCoreDumpAsyncCommand
                 {
                     (AsyncObject frame, depth) = stack.Pop();
 
-                    sb.Append($"{frame.StateMachine.Type.MethodTable:x8} {frame.NativeCode:x8}".PadRight(25));
+                    sb.Append($"{frame.StateMachine?.Type?.MethodTable:x8} {frame.NativeCode:x8}".PadRight(25));
                     sb.Append($" {(frame.IsStateMachine ? $"{frame.AwaitState}" : $"{DescribeTaskFlags(frame.TaskStateFlags)}"), 5}");
                     sb.Append($"{Tabs(depth)}");
                     //WriteAddress(frame.Object.Address, asyncObject: true);
@@ -383,12 +383,15 @@ public sealed class NetCoreDumpAsyncCommand
                     {
                         Depth = depth,
                         InstructionPointer = frame.NativeCode,
-                        MethodTable = frame.StateMachine.Type.MethodTable,
                         Ordinal = ordinal,
                         //This doesn't do the describe task flag stuff
                         State = frame.IsStateMachine ? frame.AwaitState : 0,
                         StateMachineTypeName = Describe(frame.Object)
                     };
+                    if (frame.StateMachine?.Type != null)
+                    {
+                        modelFrame.MethodTable = frame.StateMachine.Type.MethodTable;
+                    }
                     frames.Add(modelFrame);
                     ordinal++;
 
@@ -429,12 +432,13 @@ public sealed class NetCoreDumpAsyncCommand
                     }
                 }
                 
-                result2.AddIfUniq(frames, top.Object.Address);
+                result.AddIfUniq(frames, top.Object.Address);
 
                 sb.Append("\n");
             }
 
-            return result2;
+            result.SortBy(u => u.Tasks.Count);
+            return result;
         }
 
         // <summary>Determine whether the stack rooted in this object should be rendered.</summary>
