@@ -1154,14 +1154,16 @@ M._openSourceFileOrDecompile = function(value)
 end
 
 M.HandleDecompiledSource = function(response, data)
-	local body = response.Body
-	local location = body.Location
-	local bufnr = data.BufferNumber
-	local winid = data.WindowId
+  local body = response.Body
+  if body ~= nil then
+    local location = body.Location
+    local bufnr = data.BufferNumber
+    local winid = data.WindowId
 
-	if response.Request_seq == M._state.CurrentSeq then
-		M._setBufferTextFromDecompiledSource(location, body.SourceText, bufnr, winid)
-	end
+    if response.Request_seq == M._state.CurrentSeq then
+      M._setBufferTextFromDecompiledSource(location, body.SourceText, bufnr, winid)
+    end
+  end
 end
 
 M.HandleDecompileGotoDefinitionResponse = function(response)
