@@ -49,6 +49,10 @@ public class ClassLevelVariableCommandProvider<TCommandType> : IVariableCommandP
 
         var decompiler = _decompilerFactory.Get(containingTypeDefinition.ParentModule.PEFile.FileName);
         (SyntaxTree syntaxTree, string source) = decompiler.Run(containingTypeDefinition);
+        if (source == string.Empty)
+        {
+            (syntaxTree, source) = decompiler.Run(containingTypeDefinition.MetadataToken);
+        }
         
         var node = _symbolFinder.GetNodeAt(syntaxTree, request.Line, request.Column);
 

@@ -33,6 +33,19 @@ public class Decompiler
         return result;
     }
     
+    public (SyntaxTree, string) Run(EntityHandle typeHandle)
+    {
+        var stringWriter = new StringWriter();
+        var tokenWriter = TokenWriter.CreateWriterThatSetsLocationsInAST(stringWriter, "  ");
+
+        var syntaxTree = _decompiler.Decompile(typeHandle);
+        syntaxTree.AcceptVisitor(new CSharpOutputVisitor(tokenWriter, _decompilerSettings.CSharpFormattingOptions));
+
+        var source = stringWriter.ToString();
+
+        return (syntaxTree, source);
+    }
+    
     public (SyntaxTree, string) Run(ITypeDefinition rooTypeDefinition)
     {
         var rootTypeDefinitionHandle = rooTypeDefinition.MetadataToken;

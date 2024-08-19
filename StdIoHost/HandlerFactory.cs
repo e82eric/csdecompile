@@ -411,7 +411,9 @@ internal static class HandlerFactory
         var addMemoryDumpAssembliesHandler = CreateAddMemoryDumpAssembliesHandler();
         var addProcessAssembliesHandler = CreateAddProcessAssembliesHandler();
         var uniqClrStackHandler = CreateUniqCallStackHandler();
+        var uniqTaskClrStackHandler = CreateUniqTaskCallStackHandler();
         var decompileFrame = DecompileFrameHandler();
+        var decompileTaskFrame = DecompileTaskFrameHandler();
         var getAssemblyTypesHandler = GetAssemblyTypesHandler();
         var getAssembliesHandler = GetAssembliesHandler();
         var getSymbolInfoHandler = CreateGetSymbolInfoHandler();
@@ -440,7 +442,9 @@ internal static class HandlerFactory
             { Endpoints.AddMemoryDumpAssemblies, addMemoryDumpAssembliesHandler },
             { Endpoints.AddProcessAssemblies, addProcessAssembliesHandler },
             { Endpoints.UniqCallStack, uniqClrStackHandler},
+            { Endpoints.UniqTaskCallStack, uniqTaskClrStackHandler},
             { Endpoints.DecompileFrame, decompileFrame},
+            { Endpoints.DecompileTaskFrame, decompileTaskFrame},
             { Endpoints.GetAssemblies, getAssembliesHandler },
             { Endpoints.SymbolInfo, getSymbolInfoHandler },
             { Endpoints.DecompileAssembly, decompileAssemblyHandler },
@@ -500,11 +504,27 @@ internal static class HandlerFactory
         var result = new UniqCallStackHandler(new UniqCallStackProvider(_dataTargetProvider));
         return result;
     }
+    public static UniqTaskCallStackHandler CreateUniqTaskCallStackHandler()
+    {
+        var result = new UniqTaskCallStackHandler(new UniqTaskCallStackProvider(_dataTargetProvider));
+        return result;
+    }
     
     public static DecompileFrameHandler DecompileFrameHandler()
     {
         var decompilerFactory = new DecompilerFactory(_decompilerTypeSystemFactory);
         var result = new DecompileFrameHandler(new FrameDecompiler(
+            _dataTargetProvider,
+            decompilerFactory,
+            new ClrMdDllExtractor(),
+            new MethodNodeInTypeAstFinder()));
+        return result;
+    }
+    
+    public static DecompileTaskFrameHandler DecompileTaskFrameHandler()
+    {
+        var decompilerFactory = new DecompilerFactory(_decompilerTypeSystemFactory);
+        var result = new DecompileTaskFrameHandler(new TaskFrameDecompiler(
             _dataTargetProvider,
             decompilerFactory,
             new ClrMdDllExtractor(),

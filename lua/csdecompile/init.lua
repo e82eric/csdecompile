@@ -446,6 +446,43 @@ end
 M.HandleAddExternalDirectory = function(response)
 end
 
+M.StartTaskUniqCallStacks = function()
+  if M._checkNotRunning() then
+    return
+  end
+	local request = {
+		Command = "/uniqTaskCallStacks",
+		Arguments = { Stub = true }
+	}
+	M._sendStdIoRequest(request, M.HandleTaskUniqCallStacks);
+end
+
+M.HandleTaskUniqCallStacks = function(response)
+  local tasks = {}
+  for _, item in ipairs(response.Body.Result) do
+    local frames = {}
+    local result = ""
+    for _, task in ipairs(item.Tasks) do
+      result = result .. string.format("Task: 0x%x", task)
+    end
+    for _, frame in ipairs(item.Frames) do
+      table.insert(frames, { str = string.format("0x%x 0x%x %s", frame.InstructionPointer, frame.MethodTable, frame.StateMachineTypeName), obj = frame })
+    end
+    -- Remove the trailing comma
+    result = result:sub(1, -2)
+    table.insert(tasks, { tasksStr = result, tasks = item.tasks, frames = frames })
+  end
+
+  M._openTelescope(tasks, M._createUniqTaskCallStackDisplayer, M._uniqCallStackPreviewer, function(selection)
+    M._openTelescope(selection.frames, M._createUniqCallStackThreadFramesDisplayer, nil, function(innerSelection)
+      print(vim.inspect(innerSelection))
+      M.StartDecompileTaskFrame(innerSelection.obj.InstructionPointer, { Entry = value, BufferNumber = 0, WindowId = 0, })
+    end,
+    'Uniq Task Call Stack Frames')
+  end,
+  'Uniq Task Call Stack')
+end
+
 M.StartUniqCallStacks = function()
   if M._checkNotRunning() then
     return
@@ -1003,6 +1040,18 @@ M.StartDecompileFrame = function(stackPointer, callbackData)
 	M._sendStdIoRequest(request, M.HandleDecompiledSource, callbackData)
 end
 
+M.StartDecompileTaskFrame = function(instructionPointer, callbackData)
+	local request = {
+		Command = "/decompiletaskframe",
+		Arguments = {
+      InstructionPointer = instructionPointer,
+		},
+		Seq = M._state.NextSequence,
+	}
+
+	M._sendStdIoRequest(request, M.HandleDecompiledSource, callbackData)
+end
+
 M.StartGetDecompiledSource = function(
   parentAssemblyFilePath,
 	assemblyFilePath,
@@ -1244,6 +1293,30 @@ M._createGetAllTypesDisplayer = function(widths)
 	return resultFunc
 end
 
+M._createUniqTaskCallStackDisplayer = function(widths)
+	local resultFunc = function(entry)
+		local displayer = entry_display.create {
+			separator = "  ",
+			items = {
+				{ remaining = true },
+			},
+		}
+
+		local make_display = function(entry)
+			return displayer {
+				{ M._blankIfNil(entry.value.tasksStr), "TelescopeResultsClass" },
+			}
+		end
+
+		return {
+			value = entry,
+			display = make_display,
+			ordinal = entry.tasksStr
+		}
+	end
+	return resultFunc
+end
+
 M._createUniqCallStackDisplayer = function(widths)
 	local resultFunc = function(entry)
 		local displayer = entry_display.create {
@@ -1283,7 +1356,6 @@ M._createUniqCallStackThreadFramesDisplayer = function(widths)
 			}
 		end
 
-    print(vim.inspect(entry))
 		return {
 			value = entry,
 			display = make_display,
@@ -1520,7 +1592,7 @@ end
 
 M._uniqCallStackPreviewer = previewers.new_buffer_previewer {
   dyn_title = function (_, entry)
-    local titleResult = 'stub'
+    local titleResult = ''
     return titleResult
   end,
   get_buffer_by_name = function(_, entry)
@@ -1707,6 +1779,13 @@ M.Setup = function(config)
         M.StartAddMemoryDumpAssemblies(opts.args)
       end,
       { nargs = '?', complete='file' }
+  )
+  vim.api.nvim_create_user_command(
+      'UniqTaskCallStacks',
+      function(opts)
+        M.StartTaskUniqCallStacks()
+      end,
+      {}
   )
   vim.api.nvim_create_user_command(
       'UniqCallStacks',

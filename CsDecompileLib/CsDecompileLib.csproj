@@ -252,7 +252,12 @@
         <Compile Include="DebugClientAssemblySource\ClrMdDllExtractor.cs" />
         <Compile Include="DebugClientAssemblySource\DecompileFrameHandler.cs" />
         <Compile Include="DebugClientAssemblySource\DecompileFrameRequest.cs" />
+        <Compile Include="DebugClientAssemblySource\DecompileTaskFrameHandler.cs" />
+        <Compile Include="DebugClientAssemblySource\DecompileTaskFrameRequest.cs" />
+        <Compile Include="DebugClientAssemblySource\DumpAsyncCommand.cs" />
         <Compile Include="DebugClientAssemblySource\FrameDecompiler.cs" />
+        <Compile Include="DebugClientAssemblySource\NetCoreDumpAsyncCommand.cs" />
+        <Compile Include="DebugClientAssemblySource\TaskFrameDecompiler.cs" />
         <Compile Include="DebugClientAssemblySource\UniqCallStackItem.cs" />
         <Compile Include="DebugClientAssemblySource\UniqCallStackProvider.cs" />
         <Compile Include="DebugClientAssemblySource\DataTargetProvider.cs" />
@@ -262,6 +267,13 @@
         <Compile Include="DebugClientAssemblySource\UniqCallStackResponse.cs" />
         <Compile Include="DebugClientAssemblySource\UniqCallStacksRequest.cs" />
         <Compile Include="DebugClientAssemblySource\UniqCallStackThread.cs" />
+        <Compile Include="DebugClientAssemblySource\UniqTaskCallStackHandler.cs" />
+        <Compile Include="DebugClientAssemblySource\UniqTaskCallStackProvider.cs" />
+        <Compile Include="DebugClientAssemblySource\UniqTaskStackExtensions.cs" />
+        <Compile Include="DebugClientAssemblySource\UniqTaskStackFrame.cs" />
+        <Compile Include="DebugClientAssemblySource\UniqTaskStackItem.cs" />
+        <Compile Include="DebugClientAssemblySource\UniqTaskStackResponse.cs" />
+        <Compile Include="DebugClientAssemblySource\UniqTaskStacksRequest.cs" />
         <Compile Include="DecompileAssemblyInfo.cs" />
         <Compile Include="DecompileInfo.cs" />
         <Compile Include="DecompileInfoExtensions.cs" />
