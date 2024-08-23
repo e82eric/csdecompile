@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.IO;
@@ -21,13 +20,13 @@ public class FrameDecompiler
     private readonly DataTargetProvider _targetProvider;
     private readonly DecompilerFactory _decompilerFactory;
     private readonly ClrMdDllExtractor _dllExtractor;
-    private readonly MethodNodeInTypeAstFinder _methodNodeInTypeAstFinder;
+    private readonly MemberNodeInTypeAstFinder _methodNodeInTypeAstFinder;
 
     public FrameDecompiler(
         DataTargetProvider targetProvider,
         DecompilerFactory decompilerFactory,
         ClrMdDllExtractor dllExtractor,
-        MethodNodeInTypeAstFinder methodNodeInTypeAstFinder)
+        MemberNodeInTypeAstFinder methodNodeInTypeAstFinder)
     {
         _targetProvider = targetProvider;
         _decompilerFactory = decompilerFactory;
@@ -40,7 +39,7 @@ public class FrameDecompiler
         var response = new DecompiledSourceResponse();
         var dataTarget = _targetProvider.Get();
         var runtime = dataTarget.ClrVersions.Single().CreateRuntime();
-        ClrStackFrame? currentFrame = null;
+        ClrStackFrame currentFrame = null;
         foreach (var clrThread in runtime.Threads)
         {
             foreach (var frame in clrThread.EnumerateStackTrace())
@@ -70,6 +69,7 @@ public class FrameDecompiler
             if (typeDefinition != null)
             {
                 var (syntaxTree, str) = decompiler.Run(typeDefinition);
+                
                 var methodToken = MetadataTokenHelpers.EntityHandleOrNil(clrMethod.MetadataToken);
                 var methodSymbol = typeDefinition.Methods.Where(m => m.MetadataToken == methodToken);
                 if (methodSymbol.Count() == 1)
@@ -77,7 +77,17 @@ public class FrameDecompiler
                     var methodNode = _methodNodeInTypeAstFinder.Find(methodSymbol.Single(), syntaxTree);
                     var location = new DecompileInfo();
                     location.FillFromContainingType(typeDefinition);
-                    location.FillFromAstNode( methodNode);
+                    if (methodNode != null)
+                    {
+                        location.FillFromAstNode(methodNode);
+                    }
+                    else
+                    {
+                        location.Column = 1;
+                        location.Line = 1;
+                        location.StartColumn = 1;
+                        location.EndColumn = 1;
+                    }
                     response.Location = location;
                     response.SourceText = str;
                     var sequencePoints = decompiler.CreateSequencePoints(syntaxTree);
@@ -90,7 +100,10 @@ public class FrameDecompiler
                             var sp = FindSeqPointByOffset(offset, sps.First());
                             if (sp != null)
                             {
-                                location.Line = sp.StartLine;
+                                if (!sp.IsHidden)
+                                {
+                                    location.Line = sp.StartLine;
+                                }
                             }
                         }
                     }

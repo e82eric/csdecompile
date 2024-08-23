@@ -501,12 +501,15 @@ M.HandleUniqCallStacks = function(response)
   for _, item in ipairs(response.Body.Result) do
     local frames = {}
     local result = ""
+    local numberOfThreads = 0
     for _, thread in ipairs(item.Threads) do
-        result = result .. string.format("OsId: 0x%x ManagedId: 0x%x,", thread.OSId, thread.ManagedId)
+        result = result .. string.format("0x%x ", thread.OSId)
+        numberOfThreads = numberOfThreads + 1
     end
     for _, frame in ipairs(item.Frames) do
       table.insert(frames, { str = string.format("0x%x 0x%x 0x%x %s.%s", frame.StackPointer, frame.InstructionPointer, frame.MetadataToken, frame.TypeName, frame.MethodName), obj = frame })
     end
+    result = string.format("NumberOfThreads:%d Threads: ", numberOfThreads) .. result
     -- Remove the trailing comma
     result = result:sub(1, -2)
     table.insert(threads, { threadsStr = result, threads = item.Threads, frames = frames })
@@ -516,7 +519,7 @@ M.HandleUniqCallStacks = function(response)
     local captureFrames = selection.frames
     M._openTelescope(selection.threads, M._createUniqCallStackThreadDisplayer, nil, function(selection)
       local captureThread = selection
-      M._openTelescope(captureFrames, M._createUniqCallStackThreadFramesDisplayer, nil, function(selection)
+      M._openTelescope(captureFrames, M._createUniqCallStackThreadFramesDisplayer, M._stackPointerSourcePreviewer, function(selection)
         M.StartDecompileFrame(selection.obj.StackPointer, { Entry = value, BufferNumber = 0, WindowId = 0, })
       end,
       'Uniq Call Stack Frames')
@@ -1155,7 +1158,7 @@ end
 
 M.HandleDecompiledSource = function(response, data)
   local body = response.Body
-  if body ~= nil then
+  if body ~= vim.NIL then
     local location = body.Location
     local bufnr = data.BufferNumber
     local winid = data.WindowId
@@ -1613,10 +1616,13 @@ M._uniqCallStackPreviewer = previewers.new_buffer_previewer {
   end
 }
 
-M._instructionPointerSourcePreviewer = previewers.new_buffer_previewer {
+M._stackPointerSourcePreviewer = previewers.new_buffer_previewer {
   dyn_title = function (_, entry)
-    local titleResult =  entry.value.obj.StateMachineTypeName
-    return titleResult
+    if entry.value.obj.TypeName ~= vim.NIL then
+      local titleResult =  entry.value.obj.TypeName
+      return titleResult
+    end
+    return ''
   end,
   get_buffer_by_name = function(_, entry)
     return entry.value
@@ -1625,9 +1631,35 @@ M._instructionPointerSourcePreviewer = previewers.new_buffer_previewer {
     local bufnr = self.state.bufnr
     local winid = self.state.winid
 
+    M.StartDecompileFrame(entry.value.obj.StackPointer, { Entry = entry.value, BufferNumber = bufnr, WindowId = winid, })
+
+    vim.api.nvim_buf_set_option(self.state.bufnr, "syntax", "cs")
+    if entry.value.obj.TypeName ~= vim.NIL then
+      vim.api.nvim_buf_set_lines(self.state.bufnr, 0, -1, false, { 'Decompiling ' .. entry.value.obj.TypeName .. '...'})
+    end
+  end
+}
+
+M._instructionPointerSourcePreviewer = previewers.new_buffer_previewer {
+  dyn_title = function (_, entry)
+    if entry.value.obj.HasInstructionPointer ~= true then
+      return ''
+    end
+    local titleResult =  entry.value.obj.StateMachineTypeName
+    return titleResult
+  end,
+  get_buffer_by_name = function(_, entry)
+    return entry.value
+  end,
+  define_preview = function(self, entry)
+    if entry.value.obj.HasInstructionPointer ~= true then
+      return
+    end
+    local bufnr = self.state.bufnr
+    local winid = self.state.winid
+
     M.StartDecompileTaskFrame(entry.value.obj.InstructionPointer, { Entry = entry.value, BufferNumber = bufnr, WindowId = winid, })
 
-    print(vim.inspect(entry))
     vim.api.nvim_buf_set_option(self.state.bufnr, "syntax", "cs")
     vim.api.nvim_buf_set_lines(self.state.bufnr, 0, -1, false, { 'Decompiling ' .. entry.value.obj.StateMachineTypeName .. '...'})
   end

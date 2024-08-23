@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.Linq;
 using System.Reflection.Metadata;
@@ -17,13 +18,13 @@ public class TaskFrameDecompiler
     private readonly DataTargetProvider _targetProvider;
     private readonly DecompilerFactory _decompilerFactory;
     private readonly ClrMdDllExtractor _dllExtractor;
-    private readonly MethodNodeInTypeAstFinder _methodNodeInTypeAstFinder;
+    private readonly MemberNodeInTypeAstFinder _methodNodeInTypeAstFinder;
     
     public TaskFrameDecompiler(
         DataTargetProvider targetProvider,
         DecompilerFactory decompilerFactory,
         ClrMdDllExtractor dllExtractor,
-        MethodNodeInTypeAstFinder methodNodeInTypeAstFinder)
+        MemberNodeInTypeAstFinder methodNodeInTypeAstFinder)
     {
         _targetProvider = targetProvider;
         _decompilerFactory = decompilerFactory;
@@ -37,34 +38,61 @@ public class TaskFrameDecompiler
         var dataTarget = _targetProvider.Get();
         var runtime = dataTarget.ClrVersions.Single().CreateRuntime();
         var method = runtime.GetMethodByInstructionPointer(instructionPointer);
-        var clrMethod = method;
-        var peFile = GetPEFile(runtime.DataTarget, clrMethod.Type.Module);
-        var decompiler = _decompilerFactory.Get(peFile.FileName);
-        //Deal with nil better
-        var (syntaxTree, str) = decompiler.Run(MetadataTokenHelpers.EntityHandleOrNil(method.Type.MetadataToken));
-        var methodToken = MetadataTokenHelpers.EntityHandleOrNil(clrMethod.MetadataToken);
-        
-        var typeDefinition = decompiler.TypeSystem.MainModule.Compilation.GetAllTypeDefinitions()
-            .FirstOrDefault(t => t.MetadataToken.GetHashCode() == clrMethod.Type.MetadataToken);
-        var methodSymbol = typeDefinition.Methods.Where(m => m.MetadataToken == methodToken);
-        if (methodSymbol.Count() == 1)
+        if (method != null)
         {
-            var methodNode = _methodNodeInTypeAstFinder.Find(methodSymbol.Single(), syntaxTree);
-            var location = new DecompileInfo();
-            location.FillFromContainingType(typeDefinition);
-            if (methodNode == null)
+            var peFile = GetPEFile(runtime.DataTarget, method.Type.Module);
+            var decompiler = _decompilerFactory.Get(peFile.FileName);
+            var stateMachineTypeDefinition = decompiler.TypeSystem.MainModule.Compilation
+                .GetAllTypeDefinitions()
+                .FirstOrDefault(t => t.MetadataToken.GetHashCode() == method.Type.MetadataToken);
+            
+            if (stateMachineTypeDefinition != null)
             {
-                location.Column = 1;
-                location.Line = 1;
+                var realTypeDefinition = stateMachineTypeDefinition.DeclaringTypeDefinition;
+
+                IMember realMember = null;
+                if (realTypeDefinition != null)
+                {
+                    foreach (var member in realTypeDefinition.Members)
+                    {
+                        var stateMachineAttribute = member.GetAttribute(KnownAttribute.AsyncStateMachine);
+                        if (stateMachineAttribute != null)
+                        {
+                            var typeArgument = stateMachineAttribute.FixedArguments
+                                .FirstOrDefault(a => a.Type.IsKnownType(KnownTypeCode.Type));
+                            
+                            if (typeArgument.Value is IType stateMachineType &&
+                                stateMachineType.FullName == stateMachineTypeDefinition.FullName)
+                            {
+                                realMember = member;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (realMember != null)
+                    {
+                        var (syntaxTree, str) = decompiler.Run(realTypeDefinition);
+                        var memberNode = _methodNodeInTypeAstFinder.Find(realMember, syntaxTree);
+                        var location = new DecompileInfo();
+                        location.FillFromContainingType(realTypeDefinition);
+                        if (memberNode == null)
+                        {
+                            location.Column = 1;
+                            location.Line = 1;
+                        }
+                        else
+                        {
+                            location.FillFromAstNode(memberNode);
+                        }
+
+                        response.Location = location;
+                        response.SourceText = str;
+
+                        return response;
+                    }
+                }
             }
-            else
-            {
-                location.FillFromAstNode( methodNode);
-            }
-            response.Location = location;
-            response.SourceText = str;
-                    
-            return response;
         }
 
         return null;

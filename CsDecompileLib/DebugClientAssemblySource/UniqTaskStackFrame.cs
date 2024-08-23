@@ -4,6 +4,7 @@ public class UniqTaskStackFrame
 {
     public uint Ordinal { get; set; }
     public ulong InstructionPointer { get; set; }
+    public bool HasInstructionPointer { get; set; }
     public string StateMachineTypeName { get; set; }
     public ulong MethodTable { get; set; }
     public int State { get; set; }

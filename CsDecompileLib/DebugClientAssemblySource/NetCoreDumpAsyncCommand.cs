@@ -383,6 +383,7 @@ public sealed class NetCoreDumpAsyncCommand
                     {
                         Depth = depth,
                         InstructionPointer = frame.NativeCode,
+                        HasInstructionPointer = true,
                         Ordinal = ordinal,
                         //This doesn't do the describe task flag stuff
                         State = frame.IsStateMachine ? frame.AwaitState : 0,
@@ -420,6 +421,7 @@ public sealed class NetCoreDumpAsyncCommand
                             {
                                 Depth = 0,
                                 //InstructionPointer = continuation.NativeCode,
+                                HasInstructionPointer = false,
                                 MethodTable = frame.StateMachine.Type.MethodTable,
                                 Ordinal = ordinal,
                                 //This is wrong

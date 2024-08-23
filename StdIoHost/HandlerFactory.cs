@@ -528,7 +528,7 @@ internal static class HandlerFactory
             _dataTargetProvider,
             decompilerFactory,
             new ClrMdDllExtractor(),
-            new MethodNodeInTypeAstFinder()));
+            new MemberNodeInTypeAstFinder()));
         return result;
     }
     
