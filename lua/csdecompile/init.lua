@@ -280,7 +280,7 @@ M.Start = function (solutionPath)
 		solutionPath = vim.fn.expand('%:p')
 	end
 	local job = Job:new({
-		command = pluginRootDir .. '\\StdIoHost\\bin\\Debug\\csdecompile.exe',
+		command = pluginRootDir .. '\\StdIoHost\\bin\\Debug\\net8.0-windows\\csdecompile.exe',
 		args = {  solutionPath },
 		cwd = '.',
 		on_stdout = on_output,

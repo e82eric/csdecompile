@@ -21,6 +21,8 @@ bld/
 [Oo]bj/
 .idea/
 Tools/
+.vs
+MigrationBackup
 
 # Roslyn cache directories
 *.ide/

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Runtime.Loader;
 using System.Threading.Tasks;
 using ICSharpCode.Decompiler.TypeSystem;
 using StdIoHost.ProjectSystemExtraction;

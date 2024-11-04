@@ -18,6 +18,6 @@ public class ExternalFindUsagesFrameworkInterfaceTests : ExternalFindUsagesTestB
             "(?<token>IComparable),",
             column: 13,
             line: 9,
-            29);
+            37);
     }
 }
