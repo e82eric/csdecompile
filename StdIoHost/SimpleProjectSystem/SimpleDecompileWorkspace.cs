@@ -19,10 +19,10 @@ internal class SimpleDecompileWorkspace : ICsDecompileWorkspace
 
     public SimpleDecompileWorkspace(StdioEventEmitter eventEmitter)
     {
-        var msbuildLocation = ConfigurationManager.AppSettings["MsBuildLocation"];
         _eventEmitter = eventEmitter;
 
-        MSBuildLocator.RegisterMSBuildPath(msbuildLocation);
+        MSBuildLocator.RegisterDefaults();
+
         _workspace = MSBuildWorkspace.Create();
         
         _workspace.WorkspaceFailed += (sender, args) =>
