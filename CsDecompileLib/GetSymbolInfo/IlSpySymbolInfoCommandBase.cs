@@ -11,8 +11,8 @@ public class IlSpySymbolInfoCommandBase
     {
         result.ParentAssemblyFullName = symbol.ParentModule.FullAssemblyName;
         result.ParentAssemblyName = symbol.ParentModule.Name;
-        result.TargetFramework = symbol.ParentModule.PEFile?.DetectTargetFrameworkId2();
-        result.FilePath = symbol.ParentModule.PEFile?.FileName;
+        result.TargetFramework = symbol.ParentModule.MetadataFile?.DetectTargetFrameworkId();
+        result.FilePath = symbol.ParentModule.MetadataFile?.FileName;
         // AddIlSpyEntityCommonHeaderProperties(result, symbol);
         // AddIlSpyEntityCommonHeaderProperties(result, (ISymbol)symbol);
         AddNameAndKind(result, symbol.Name, symbol.SymbolKind.ToString());
@@ -42,7 +42,7 @@ public class IlSpySymbolInfoCommandBase
 
     protected void AddNamespaceAndAssemblyPath(SymbolInfo result, IEntity symbol)
     {
-        result.HeaderProperties.Add("AssemblyPath", symbol.ParentModule.PEFile.FileName);
+        result.HeaderProperties.Add("AssemblyPath", symbol.ParentModule.MetadataFile.FileName);
         result.HeaderProperties.Add("Namespace", symbol.Namespace);
     }
 }

@@ -61,9 +61,14 @@ public class Decompiler
         return (syntaxTree, source);
     }
 
-    public SyntaxTree Run(string rootTypeFullName)
+    public SyntaxTree? Run(string rootTypeFullName)
     {
         var rootType = _decompilerTypeSystem.FindType(new FullTypeName(rootTypeFullName)) as ITypeDefinition;
+        if (rootType == null)
+        {
+            return null;
+        }
+
         var rootTypeDefinitionHandle = rootType.MetadataToken;
 
         var stringWriter = new StringWriter();

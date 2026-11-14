@@ -47,7 +47,7 @@ public class ClassLevelVariableCommandProvider<TCommandType> : IVariableCommandP
                 request.ContainingTypeFullName);
         }
 
-        var decompiler = _decompilerFactory.Get(containingTypeDefinition.ParentModule.PEFile.FileName);
+        var decompiler = _decompilerFactory.Get(containingTypeDefinition.ParentModule.MetadataFile.FileName);
         (SyntaxTree syntaxTree, string source) = decompiler.Run(containingTypeDefinition);
         if (source == string.Empty)
         {

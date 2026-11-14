@@ -21,7 +21,7 @@ namespace CsDecompileLib.IlSpy
             _peFileCache = peFileCache;
         }
 
-        public PEFile Resolve(IAssemblyReference reference)
+        public MetadataFile Resolve(IAssemblyReference reference)
         {
             // return _universalAssemblyResolver.Resolve(reference);
             PEFile result = null;
@@ -47,7 +47,7 @@ namespace CsDecompileLib.IlSpy
             return null;
         }
 
-        public PEFile ResolveModule(PEFile mainModule, string moduleName)
+        public MetadataFile ResolveModule(MetadataFile mainModule, string moduleName)
         {
             // return _universalAssemblyResolver.ResolveModule(mainModule, moduleName);
             PEFile result = null;
@@ -80,13 +80,13 @@ namespace CsDecompileLib.IlSpy
             return null;
         }
         
-        public Task<PEFile> ResolveAsync(IAssemblyReference reference)
+        public Task<MetadataFile> ResolveAsync(IAssemblyReference reference)
         {
             var result = Task.Run(() => Resolve(reference));
             return result;
         }
 
-        public Task<PEFile> ResolveModuleAsync(PEFile mainModule, string moduleName)
+        public Task<MetadataFile> ResolveModuleAsync(MetadataFile mainModule, string moduleName)
         {
             var result = Task.Run(() => ResolveModule(mainModule, moduleName));
             return result;

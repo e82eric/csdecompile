@@ -21,7 +21,7 @@ namespace CsDecompileLib.IlSpy
             _assemblyResolverFactory = assemblyResolverFactory;
         }
 
-        private IEnumerable<PEFile> GetModulesInScope(IEntity entity)
+        private IEnumerable<MetadataFile> GetModulesInScope(IEntity entity)
         {
             Accessibility effectiveAccessibility;
             ITypeDefinition typeScope;
@@ -39,20 +39,20 @@ namespace CsDecompileLib.IlSpy
             var isLocal = effectiveAccessibility.LessThanOrEqual(Accessibility.Private);
             
             if (isLocal)
-                return new[] { typeScope.ParentModule.PEFile };
+                return new[] { typeScope.ParentModule.MetadataFile };
 
             if (effectiveAccessibility.LessThanOrEqual(Accessibility.Internal))
                 return GetModuleAndAnyFriends(typeScope);
 
-            var result = GetReferencingModules(typeScope.ParentModule.PEFile, typeScope);
+            var result = GetReferencingModules(typeScope.ParentModule.MetadataFile, typeScope);
             return result;
         }
         
         private void GetReferencingModules(
-            PEFile pefile,
+            MetadataFile pefile,
             string typeScopeNamespace,
             string reflectionTypeScopeName,
-            List<PEFile> result,
+            List<MetadataFile> result,
             HashSet<string> alreadyChecked,
             IAssemblyResolver assemblyResolver)
         {
@@ -90,7 +90,7 @@ namespace CsDecompileLib.IlSpy
             }
         }
 
-        private static string GetPeFileUniqueness(PEFile resolved)
+        private static string GetPeFileUniqueness(MetadataFile resolved)
         {
             var uniqueness = resolved.FullName + "|" + resolved.Metadata.MetadataVersion;
             return uniqueness;
@@ -169,9 +169,9 @@ namespace CsDecompileLib.IlSpy
             return accessibility;
         }
 
-        private IEnumerable<PEFile> GetReferencingModules(PEFile self, ITypeDefinition typeScope)
+        private IEnumerable<MetadataFile> GetReferencingModules(MetadataFile self, ITypeDefinition typeScope)
         {
-            var result = new List<PEFile>();
+            var result = new List<MetadataFile>();
             var alreadyChecked = new HashSet<string>();
             //This feels like a hack but we already know that we are going to want to search the assembly that the type belongs to
             result.Add(self);
@@ -198,11 +198,11 @@ namespace CsDecompileLib.IlSpy
             return result;
         }
 
-        private IEnumerable<PEFile> GetModuleAndAnyFriends(ITypeDefinition typeScope)
+        private IEnumerable<MetadataFile> GetModuleAndAnyFriends(ITypeDefinition typeScope)
         {
-            var result = new List<PEFile>();
+            var result = new List<MetadataFile>();
             
-            var self = typeScope.ParentModule.PEFile;
+            var self = typeScope.ParentModule.MetadataFile;
             result.Add(self);
 
             var typeProvider = MetadataExtensions.MinimalAttributeTypeProvider;

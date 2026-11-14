@@ -20,16 +20,16 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="ICSharpCode.Decompiler">
-      <Version>8.0.0.7345</Version>
+      <Version>9.1.0.7988</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Build" ExcludeAssets="runtime">
-      <Version>17.11.4</Version>
+      <Version>18.0.2</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Build.Locator">
       <Version>1.7.8</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Build.Utilities.Core" ExcludeAssets="runtime">
-      <Version>17.12.6</Version>
+      <Version>18.0.2</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.CodeAnalysis.Analyzers">
       <Version>3.11.0</Version>
@@ -60,7 +60,7 @@
     <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
     <PackageReference Include="System.ComponentModel.Composition" Version="8.0.0" />
     <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
-    <PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.1" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="10.0.0" />
     <PackageReference Include="System.ServiceModel.Primitives" Version="8.0.0" />
     <PackageReference Include="System.ServiceModel.Http" Version="8.0.0" />
     <PackageReference Include="System.ServiceModel.Duplex" Version="6.0.0" />

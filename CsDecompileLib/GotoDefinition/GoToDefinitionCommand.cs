@@ -25,7 +25,7 @@ public class GoToDefinitionCommand<T> : INavigationCommand<LocationsResponse> wh
             _typeDefinition);
             
         ilSpyMetadataSource.AssemblyFilePath = _assemblyFilePath;
-        ilSpyMetadataSource.ParentAssemblyFilePath = _typeDefinition.ParentModule.PEFile.FileName;
+        ilSpyMetadataSource.ParentAssemblyFilePath = _typeDefinition.ParentModule.MetadataFile.FileName;
             
         var result = new LocationsResponse
         {

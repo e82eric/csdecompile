@@ -262,8 +262,13 @@ public class IlSpySymbolFinder
         while (symbolAtLocation == null && node.Parent != null)
         {
             node = node.Parent;
-            symbolAtLocation = node?.GetSymbol();
-            var resolveResult = node?.GetResolveResult();
+            if (node == null)
+            {
+                break;
+            }
+
+            symbolAtLocation = node.GetSymbol();
+            var resolveResult = node.GetResolveResult();
             if (symbolAtLocation == null && resolveResult is TypeResolveResult typeResolveResult)
             {
                 symbolAtLocation = new FakeType(typeResolveResult);
@@ -320,6 +325,11 @@ public class IlSpySymbolFinder
     
     private IMethod FindMethod(ITypeDefinition type, IMethodSymbol roslynMethod)
     {
+        if (roslynMethod == null)
+        {
+            return null;
+        }
+
         foreach (var member in type.Members)
         {
             if (member is IMethod ilSpyMethod)
@@ -329,12 +339,9 @@ public class IlSpySymbolFinder
                     return ilSpyMethod;
                 }
 
-                if (roslynMethod != null)
+                if (RoslynToIlSpyEqualityExtensions.AreSameMethod(roslynMethod.OriginalDefinition, ilSpyMethod))
                 {
-                    if (RoslynToIlSpyEqualityExtensions.AreSameMethod(roslynMethod.OriginalDefinition, ilSpyMethod))
-                    {
-                        return ilSpyMethod;
-                    }
+                    return ilSpyMethod;
                 }
                 //Fallback for checking extension methods.  Roslyn seems to add a higher level method symbol without
                 //The this parameter

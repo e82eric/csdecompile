@@ -20,7 +20,7 @@ namespace CsDecompileLib.GetSource
             var symbol = _ilSpySymbolFinder.FindTypeDefinition(
                 request.ParentAssemblyFilePath,
                 request.ContainingTypeFullName);
-            var decompiler = _decompilerFactory.Get(symbol.ParentModule.PEFile.FileName);
+            var decompiler = _decompilerFactory.Get(symbol.ParentModule.MetadataFile.FileName);
             
             (_, string source) = decompiler.Run(symbol);
 

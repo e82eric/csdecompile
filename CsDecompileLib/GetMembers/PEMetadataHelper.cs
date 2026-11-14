@@ -8,7 +8,7 @@ public static class PEMetadataHelper
 {
     public static DecompileInfo MapTypeDefinitionToDecompileInfo(
         TypeDefinitionHandle typeDefinitionHandle,
-        PEFile peFile)
+        MetadataFile peFile)
     {
         var typeDef = peFile.Metadata.GetTypeDefinition(typeDefinitionHandle);
         var foundTypeName = peFile.Metadata.GetString(typeDef.Name);

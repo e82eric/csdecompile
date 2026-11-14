@@ -56,7 +56,7 @@ public class IlSpyUsagesFinderBase<T>: IlSpyToSourceInfoBase
 
     protected (SyntaxTree, string) DecompileTypeDefinition(ITypeDefinition typeDefinition)
     {
-        var fileName = typeDefinition.Compilation.MainModule.PEFile.FileName;
+        var fileName = typeDefinition.Compilation.MainModule.MetadataFile.FileName;
         var cachingDecompiler = _decompilerFactory.Get(fileName);
 
         var (syntaxTree, sourceText) = cachingDecompiler.Run(typeDefinition);

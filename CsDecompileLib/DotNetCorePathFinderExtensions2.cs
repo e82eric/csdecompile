@@ -69,7 +69,7 @@ namespace ICSharpCode.Decompiler.Metadata
  				}
  			}
 
- 			if (metadata.IsAssembly)
+ 			if (assemblyPath != null && metadata.IsAssembly)
  			{
  				AssemblyDefinition assemblyDefinition = metadata.GetAssemblyDefinition();
  				switch (metadata.GetString(assemblyDefinition.Name))

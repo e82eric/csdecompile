@@ -8,13 +8,16 @@ public static class IlSpyMethodExtensions
 {
     public static MethodBodyBlock GetMethodBody(this IMethod method)
     {
-        if (!method.HasBody || method.MetadataToken.IsNil)
+        if (method.ParentModule == null || method.ParentModule.MetadataFile == null || !method.HasBody || method.MetadataToken.IsNil)
+        {
             return null;
-        var module = method.ParentModule.PEFile;
+        }
+
+        var module = method.ParentModule.MetadataFile;
         var md = module.Metadata.GetMethodDefinition((MethodDefinitionHandle)method.MetadataToken);
         try
         {
-            return module.Reader.GetMethodBody(md.RelativeVirtualAddress);
+            return module.GetMethodBody(md.RelativeVirtualAddress);
         }
         catch (BadImageFormatException)
         {

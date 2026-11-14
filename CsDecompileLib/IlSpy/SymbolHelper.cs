@@ -24,6 +24,7 @@ public static class SymbolHelper
         var result = sameAssembly && sameToken;
         return result;
     }
+    
     public static ITypeDefinition FindContainingType(IEntity symbol)
     {
         if (symbol.DeclaringType == null)

@@ -38,14 +38,14 @@ public class AllTypesRepositoryByName
         return result;
     }
 
-    private string GetPeFileUniqueness(PEFile peFile)
+    private string GetPeFileUniqueness(MetadataFile peFile)
     {
         var uniqueness = peFile.FullName + "|" + peFile.Metadata.MetadataVersion;
         return uniqueness;
     }
 
     private void SearchReferencingModules(
-        PEFile pefile,
+        MetadataFile pefile,
         HashSet<string> alreadyChecked,
         IAssemblyResolver assemblyResolver,
         string namespaceName,
@@ -77,7 +77,7 @@ public class AllTypesRepositoryByName
         }
     }
 
-    private void AddTypeDefinitions(PEFile peFile, string namespaceName, string typeName, HashSet<string> alreadyAdded,
+    private void AddTypeDefinitions(MetadataFile peFile, string namespaceName, string typeName, HashSet<string> alreadyAdded,
         IList<DecompileInfo> result)
     {
         var typeDefinitions = peFile.Metadata.TypeDefinitions;

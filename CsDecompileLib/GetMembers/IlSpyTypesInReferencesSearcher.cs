@@ -41,14 +41,14 @@ public class IlSpyTypesInReferencesSearcher
         return Task.FromResult<IEnumerable<ResponseLocation>>(result);
     }
 
-    private string GetPeFileUniqueness(PEFile peFile)
+    private string GetPeFileUniqueness(MetadataFile peFile)
     {
         var uniqueness = peFile.FullName + "|" + peFile.Metadata.MetadataVersion;
         return uniqueness;
     }
 
     private void SearchReferencingModules(
-        PEFile pefile,
+        MetadataFile pefile,
         HashSet<string> alreadyChecked,
         IAssemblyResolver assemblyResolver,
         HashSet<string> alreadyAddedTypes,
@@ -79,7 +79,7 @@ public class IlSpyTypesInReferencesSearcher
     }
 
     private void AddTypeDefinitions(
-        PEFile peFile,
+        MetadataFile peFile,
         HashSet<string> alreadyAdded,
         IList<ResponseLocation> result,
         Predicate<DecompileInfo> resultFilter)
