@@ -337,7 +337,11 @@ public class IlSpySymbolFinder
             var resolveResult = node.GetResolveResult();
             if (symbolAtLocation == null && resolveResult is TypeResolveResult typeResolveResult)
             {
-                symbolAtLocation = new FakeType(typeResolveResult);
+                // A type parameter (T) has no definition of its own: go to the method or type
+                // that declares it
+                symbolAtLocation = typeResolveResult.Type is ITypeParameter typeParameter
+                    ? typeParameter.Owner
+                    : new FakeType(typeResolveResult);
             }
         }
 

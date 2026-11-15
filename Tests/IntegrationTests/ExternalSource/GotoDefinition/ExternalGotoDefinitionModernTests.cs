@@ -100,6 +100,8 @@ public class ExternalGotoDefinitionModernTests : ExternalGotoDefinitionTestBase
     [TestCase("ModernPrimary(1)", "class ModernPrimary\\(", "\\(int (?<token>seed)\\)", "public class ModernPrimary(int seed)", "ModernLibrary.ModernPrimary")]
     [TestCase("ModernPerson(\"a\"", "record ModernPerson\\(", "\\(string (?<token>Name),", "public record ModernPerson(string Name, int Age);", "ModernLibrary.ModernPerson")]
     [TestCase("Thrice()", "extension\\(string s\\)", "extension\\((?<token>string) s\\)", "public sealed class String", "System.String")]
+    [TestCase("Take(1)", "public void Take\\(T item\\)", "Take\\((?<token>T) item\\)", "public class ModernGeneric<T>", "ModernLibrary.ModernGeneric`1")]
+    [TestCase("GenericParam(new List<int>", "GenericParam<T>\\(List<T> items\\)", "List<(?<token>T)> items", "public static void GenericParam<T>(List<T> items)", "ModernLibrary.ModernApi")]
     public void FromDecompiledCode(string textToFind, string lineToFind, string tokenToRequest, string expectedLineContains, string expectedType)
     {
         var start = CreateRequest(External, textToFind, 0).Arguments;
