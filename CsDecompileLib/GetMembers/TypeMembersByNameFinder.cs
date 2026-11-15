@@ -31,7 +31,7 @@ public class TypeMembersByNameFinder : ITypeMembersFinder
     
     private void FindUsages(AstNode node, IList<AstNode> found)
     {
-        if (node.NodeType == NodeType.Member)
+        if (node.IsMemberNode())
         {
             //This recurses through the entire class and finds any nodes that reference the members token
             var symbol = node.GetSymbol();

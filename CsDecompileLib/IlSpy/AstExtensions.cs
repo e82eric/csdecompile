@@ -6,6 +6,17 @@ namespace CsDecompileLib.IlSpy;
 
 public static class AstExtensions
 {
+    // ILSpy 11 removed AstNode.NodeType; these mirror the old NodeType.TypeDeclaration / NodeType.Member values.
+    public static bool IsTypeDeclarationNode(this AstNode node)
+    {
+        return node is TypeDeclaration or DelegateDeclaration;
+    }
+
+    public static bool IsMemberNode(this AstNode node)
+    {
+        return node is EntityDeclaration and not (TypeDeclaration or DelegateDeclaration or Accessor);
+    }
+
     public static AstNode FindChildType(this AstNode node, IEntity entityHandle)
     {
         var symbol = node.GetSymbol();
@@ -13,7 +24,7 @@ public static class AstExtensions
         {
             if (entity.AreSameUsingToken(entityHandle))
             {
-                if (node.NodeType == NodeType.TypeDeclaration)
+                if (node.IsTypeDeclarationNode())
                 {
                     return node;
                 }
@@ -39,7 +50,7 @@ public static class AstExtensions
 
     public static AstNode FindParentMemberNode(this AstNode node)
     {
-        if (node.NodeType == NodeType.Member)
+        if (node.IsMemberNode())
         {
             return node;
         }

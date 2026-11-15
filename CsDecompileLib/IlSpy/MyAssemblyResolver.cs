@@ -80,6 +80,11 @@ namespace CsDecompileLib.IlSpy
             return null;
         }
         
+        public System.IDisposable BeginSnapshot()
+        {
+            return _universalAssemblyResolver.BeginSnapshot();
+        }
+
         public Task<MetadataFile> ResolveAsync(IAssemblyReference reference)
         {
             var result = Task.Run(() => Resolve(reference));

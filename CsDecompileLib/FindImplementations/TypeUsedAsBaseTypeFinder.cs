@@ -26,9 +26,9 @@ public class TypeUsedAsBaseTypeFinder : IEntityUsedInTypeFinder<ITypeDefinition>
     
     private void FindUsages(AstNode node, IEntity entityHandleToSearchFor, IList<AstNode> found)
     {
-        if (node.Role != Roles.TypeMemberRole)
+        if (node.Slot != TypeDeclaration.MembersSlot)
         {
-            if (node.Role == Roles.BaseType)
+            if (node.Slot == TypeDeclaration.BaseTypesSlot)
             {
                 //This should basically recurse through the entire class and find any nodes that reference the types token
                 var symbol = node.GetSymbol();

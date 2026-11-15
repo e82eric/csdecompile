@@ -4,7 +4,6 @@ using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.Build.Locator;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.MSBuild;
 using StdIoHost.ProjectSystemExtraction;
@@ -20,8 +19,6 @@ internal class SimpleDecompileWorkspace : ICsDecompileWorkspace
     public SimpleDecompileWorkspace(StdioEventEmitter eventEmitter)
     {
         _eventEmitter = eventEmitter;
-
-        MSBuildLocator.RegisterDefaults();
 
         _workspace = MSBuildWorkspace.Create();
         
@@ -77,16 +74,30 @@ internal class SimpleDecompileWorkspace : ICsDecompileWorkspace
         return CurrentSolution.GetDocument(documentId);
     }
     
+    // Editors can send forward slashes (Neovim with shellslash); Roslyn stores the paths MSBuild produced.
+    private static string NormalizePath(string filePath)
+    {
+        if (string.IsNullOrWhiteSpace(filePath)) return filePath;
+        try
+        {
+            return Path.GetFullPath(filePath);
+        }
+        catch (Exception)
+        {
+            return filePath;
+        }
+    }
+
     public DocumentId GetDocumentId(string filePath)
     {
-        var documentIds = CurrentSolution.GetDocumentIdsWithFilePath(filePath);
+        var documentIds = CurrentSolution.GetDocumentIdsWithFilePath(NormalizePath(filePath));
         return documentIds.FirstOrDefault();
     }
 
     public IEnumerable<Document> GetDocuments(string filePath)
     {
         var result = CurrentSolution
-            .GetDocumentIdsWithFilePath(filePath)
+            .GetDocumentIdsWithFilePath(NormalizePath(filePath))
             .Select(id => CurrentSolution.GetDocument(id))
             .OfType<Document>();
         return result;

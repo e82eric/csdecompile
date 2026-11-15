@@ -25,7 +25,7 @@ public class TypeNodeInTypeAstFinder : IDefinitionInDecompiledSyntaxTreeFinder<I
         {
             if(symbol is IEntity entity)
             {
-                if ( entity.AreSameUsingToken(handleToSearchFor) && node.NodeType == NodeType.TypeDeclaration)
+                if ( entity.AreSameUsingToken(handleToSearchFor) && node.IsTypeDeclarationNode())
                 {
                     var identifier = node.Children.Where(n =>
                     {

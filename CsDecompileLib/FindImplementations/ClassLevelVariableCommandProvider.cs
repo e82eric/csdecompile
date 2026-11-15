@@ -1,5 +1,6 @@
 ﻿using CsDecompileLib.IlSpy;
 using ICSharpCode.Decompiler.CSharp;
+using ICSharpCode.Decompiler.Semantics;
 using ICSharpCode.Decompiler.CSharp.Syntax;
 using ICSharpCode.Decompiler.TypeSystem;
 

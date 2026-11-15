@@ -44,6 +44,8 @@ public class FakeType : ITypeDefinition
     }
 
     public EntityHandle MetadataToken => throw new NotImplementedException();
+    public bool HasExtensions => false;
+    public ExtensionInfo ExtensionInfo => null;
 
     public string Name => _resolveResult.Type.Name;
 
@@ -284,7 +286,7 @@ public class IlSpySymbolFinder
         {
             return null;
         }
-        if (node.NodeType == NodeType.TypeDeclaration)
+        if (node.IsTypeDeclarationNode())
         {
             var symbol = node.GetSymbol();
             var result = symbol as ITypeDefinition;

@@ -27,7 +27,7 @@ public class MemberOverrideInTypeFinder : IEntityUsedInTypeFinder<IMember>
     private void FindUsages(AstNode node, IMember entityHandleToSearchFor, IList<AstNode> found)
     {
         //We are also going to stop recursion here since we don't need to check in parameters and method body
-        if (node.Role == Roles.TypeMemberRole)
+        if (node.Slot == TypeDeclaration.MembersSlot)
         {
             var symbol = node.GetSymbol();
             if (symbol is IMember entity)

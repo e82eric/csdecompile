@@ -23,7 +23,7 @@ public class MemberNodeInTypeAstFinder : IDefinitionInDecompiledSyntaxTreeFinder
         {
             if(symbol is IEntity entity)
             {
-                if (entity.AreSameUsingToken(handleToSearchFor) && node.NodeType == NodeType.Member)
+                if (entity.AreSameUsingToken(handleToSearchFor) && node.IsMemberNode())
                 {
                     return node;
                 }

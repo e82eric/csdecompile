@@ -32,13 +32,13 @@ public class ExternalFindUsagesMethodWithGenericInParameterTests : ExternalFindU
                     "public bool TryRun(T val, in T2 result)",
                     "ExternalFindUsagesMethodWithGenericInParameterExternalImplementation",
                     "LibraryThatJustReferencesFramework.ExternalFindUsagesMethodWithGenericInParameterExternalImplementation`2"),
-                //Not sure why but ilspy seems to add this explicit implementation
+                //ILSpy inlines the temporaries that were passed with "in"
                 new ExpectedImplementation(LocationType.Decompiled,
-                    "externalFindUsagesMethodWithGenericInParameterTarget.TryRun(default(T1), in result);",
+                    "externalFindUsagesMethodWithGenericInParameterTarget.TryRun(default, default(T2));",
                     "ExternalFindUsagesMethodWithGenericInParameterExternalUser",
                     "LibraryThatJustReferencesFramework.ExternalFindUsagesMethodWithGenericInParameterExternalUser"),
                 new ExpectedImplementation(LocationType.Decompiled,
-                    "externalFindUsagesMethodWithGenericInParameterTarget2.TryRun(\"test\", in result2);",
+                    "externalFindUsagesMethodWithGenericInParameterTarget2.TryRun(\"test\", new object());",
                     "ExternalFindUsagesMethodWithGenericInParameterExternalUser",
                     "LibraryThatJustReferencesFramework.ExternalFindUsagesMethodWithGenericInParameterExternalUser"),
                 new ExpectedImplementation(LocationType.Decompiled,

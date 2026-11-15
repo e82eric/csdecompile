@@ -18,7 +18,7 @@ public class ExternalGotoDefinitionOfLambdaParameterTests : ExternalGotoDefiniti
             line:9,
             lineToFind:"int num = i \\+ 1;",
             tokenToRequest:"num = (?<token>i) +",
-            expected:"Run(delegate(int i)",
+            expected:"Run((int i) =>",
             containingTypeFullName:"LibraryThatJustReferencesFramework.ExternalGotoDefinitionOfLambdaParameterTarget");
     }
 }

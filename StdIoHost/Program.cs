@@ -10,10 +10,6 @@ namespace StdIoHost
     {
         public static void Main(string[] args)
         {
-            //There has to be a better way to load this??
-            var customPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"BuildHost-netcore");
-            AssemblyLoadContext.Default.LoadFromAssemblyPath($"{customPath}\\Microsoft.Build.Locator.dll");
-            
             Environment.SetEnvironmentVariable("Platform", "");
             var solutionPath = args[0];
             var cancellation = new CancellationTokenSource();

@@ -32,7 +32,7 @@ namespace CsDecompileLib
             }
             else
             {
-                if(node.Parent != null && node.Parent.Role.ToString() == "Import" || node.Parent.Role.ToString() == "Target")
+                if(node.Parent?.Slot?.Name is "Import" or "Target")
                 {
                     var namespaceString = node.Parent.ToString();
                     var currentNode = node.Parent;

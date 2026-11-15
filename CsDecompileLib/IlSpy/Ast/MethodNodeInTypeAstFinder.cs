@@ -25,7 +25,7 @@ public class MethodNodeInTypeAstFinder : IDefinitionInDecompiledSyntaxTreeFinder
         {
             if(symbol is IEntity entity)
             {
-                if (entity.AreSameUsingToken(handleToSearchFor) && node.NodeType == NodeType.Member)
+                if (entity.AreSameUsingToken(handleToSearchFor) && node.IsMemberNode())
                 {
                     var identifier = node.Children.Where(n =>
                     {
