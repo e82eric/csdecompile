@@ -8,6 +8,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.MSBuild;
 using StdIoHost.ProjectSystemExtraction;
 using CsDecompileLib.IlSpy;
+using CsDecompileLib.Roslyn;
 
 namespace StdIoHost.SimpleProjectSystem;
 
@@ -68,10 +69,38 @@ internal class SimpleDecompileWorkspace : ICsDecompileWorkspace
         var documentId = GetDocumentId(fileName);
         if (documentId == null)
         {
-            return null;
+            return GetSourceGeneratedDocument(fileName);
         }
 
         return CurrentSolution.GetDocument(documentId);
+    }
+
+    // A request coming from a file that GeneratedSourceFiles wrote for a source generated document
+    private Document GetSourceGeneratedDocument(string fileName)
+    {
+        if (!GeneratedSourceFiles.IsWrittenFile(fileName))
+        {
+            return null;
+        }
+
+        var writtenFilePath = NormalizePath(fileName);
+        foreach (var project in CurrentSolution.Projects)
+        {
+            var generatedDocuments = project.GetSourceGeneratedDocumentsAsync().AsTask().GetAwaiter().GetResult();
+            foreach (var generatedDocument in generatedDocuments)
+            {
+                if (generatedDocument.FilePath != null &&
+                    string.Equals(
+                        GeneratedSourceFiles.GetWrittenFilePath(generatedDocument.FilePath),
+                        writtenFilePath,
+                        StringComparison.OrdinalIgnoreCase))
+                {
+                    return generatedDocument;
+                }
+            }
+        }
+
+        return null;
     }
     
     // Editors can send forward slashes (Neovim with shellslash); Roslyn stores the paths MSBuild produced.

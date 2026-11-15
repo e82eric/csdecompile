@@ -186,11 +186,18 @@ internal static class RoslynSymbolHelpers
         var sourceText = GetSourceText(location, documents, lineSpan.HasMappedPath);
         var text = GetLineText(location, sourceText, lineSpan.StartLinePosition.Line).Trim();
 
+        var fileName = lineSpan.Path;
+        if (!lineSpan.HasMappedPath && location.SourceTree != null && !System.IO.File.Exists(fileName))
+        {
+            // A source generated document: it only exists in memory
+            fileName = GeneratedSourceFiles.Write(fileName, location.SourceTree.GetText());
+        }
+
         var sourceLineInfo = new SourceFileInfo
         {
             Line = lineSpan.StartLinePosition.Line + 1,
             Column = lineSpan.StartLinePosition.Character + 1,
-            FileName = lineSpan.Path,
+            FileName = fileName,
             SourceText = text.Trim()
         };
 

@@ -120,8 +120,44 @@ public class ExternalGotoDefinitionModernTests : ExternalGotoDefinitionTestBase
         Assert.AreEqual(expectedType, sourceResponse.Body.Location.ContainingTypeFullName);
     }
 
+    // The implementation of a [GeneratedRegex] method is written by a source generator and only exists
+    // in memory. The location has to be a file the editor can open.
     [Test]
-    public void SourceGeneratedPartialMethodGoesToSource()
+    public void SourceGeneratedPartialMethodGoesToAFileThatExists()
+    {
+        var generated = GoToGeneratedRegexImplementation();
+
+        Assert.True(File.Exists(generated.FileName), $"{generated.FileName} does not exist");
+        var lines = File.ReadAllLines(generated.FileName);
+        StringAssert.Contains("Regex MyRegex()", lines[generated.Line - 1]);
+        StringAssert.Contains("Regex MyRegex()", generated.SourceText);
+    }
+
+    [Test]
+    public void GoToDefinitionWorksFromInsideSourceGeneratedFile()
+    {
+        var generated = GoToGeneratedRegexImplementation();
+        var line = File.ReadAllLines(generated.FileName)[generated.Line - 1];
+
+        var request = new CommandPacket<DecompiledLocationRequest>
+        {
+            Command = Endpoints.DecompileGotoDefinition,
+            Arguments = new DecompiledLocationRequest
+            {
+                FileName = generated.FileName,
+                Type = LocationType.SourceCode,
+                Line = generated.Line,
+                Column = line.IndexOf("Regex MyRegex()", StringComparison.Ordinal)
+            }
+        };
+
+        var response = IoClient.ExecuteCommand<DecompiledLocationRequest, LocationsResponse>(request);
+
+        Assert.True(response.Success, response.Message);
+        Assert.AreEqual("System.Text.RegularExpressions.Regex", response.Body.Locations.First().ContainingTypeFullName);
+    }
+
+    private SourceFileInfo GoToGeneratedRegexImplementation()
     {
         var response = IoClient.ExecuteCommand<DecompiledLocationRequest, LocationsResponse>(
             CreateRequest(Bcl, "MyRegex().IsMatch", 0));
@@ -129,6 +165,7 @@ public class ExternalGotoDefinitionModernTests : ExternalGotoDefinitionTestBase
         Assert.True(response.Success, response.Message);
         Assert.AreEqual(1, response.Body.Locations.Count);
         Assert.AreEqual(LocationType.SourceCode, response.Body.Locations.First().Type);
+        return (SourceFileInfo)response.Body.Locations.First();
     }
 
     // A tuple element name that comes from another assembly (Math.DivRem returns
