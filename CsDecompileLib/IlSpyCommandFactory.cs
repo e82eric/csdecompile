@@ -53,6 +53,15 @@ namespace CsDecompileLib
                         currentNode = currentNode.Parent;
                     }
                 }
+
+                // namespace Some.Name; at the top of the decompiled file. The decompiler attaches
+                // no symbol to it.
+                var declaredNamespace = GetDeclaredNamespace(node);
+                if (declaredNamespace != null)
+                {
+                    return _commandFactory.GetForNamespace(declaredNamespace);
+                }
+
                 var symbolAtLocation = _symbolFinder.FindSymbolFromNode(node);
                 switch (symbolAtLocation)
                 {
@@ -71,10 +80,35 @@ namespace CsDecompileLib
                     case IField field:
                         result = _commandFactory.GetForField(field, request.AssemblyFilePath);
                         break;
+                    // Nothing that can be navigated to (a literal, a symbol kind that isn't handled)
+                    default:
+                        result = _commandFactory.SymbolNotFoundAtLocation(
+                            request.FileName ?? request.ContainingTypeFullName,
+                            request.Line,
+                            request.Column);
+                        break;
                 }
             }
 
             return result;
+        }
+
+        // The namespace named by the node when it is part of the name of a namespace declaration:
+        // in "namespace Some.Name;" that is Some for the first part and Some.Name for the second.
+        private static string GetDeclaredNamespace(AstNode node)
+        {
+            if (node.Parent is not AstType namePart)
+            {
+                return null;
+            }
+
+            AstNode current = namePart;
+            while (current is AstType)
+            {
+                current = current.Parent;
+            }
+
+            return current is NamespaceDeclaration ? namePart.ToString() : null;
         }
     }
 }

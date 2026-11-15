@@ -123,6 +123,32 @@ public class ExternalGotoDefinitionModernTests : ExternalGotoDefinitionTestBase
         Assert.AreEqual(expectedType, sourceResponse.Body.Location.ContainingTypeFullName);
     }
 
+    // "namespace ModernLibrary;" at the top of a decompiled file lists the types of the namespace,
+    // like a using directive does
+    [Test]
+    public void NamespaceDeclarationInDecompiledCodeListsItsTypes()
+    {
+        var start = CreateRequest(External, "ModernPrimary(1)", 0).Arguments;
+        var requestArguments = GotoDefinitionAndCreateRequestForToken(
+            start.FileName,
+            start.Column,
+            start.Line,
+            "namespace ModernLibrary",
+            "namespace (?<token>ModernLibrary)");
+
+        var response = IoClient.ExecuteCommand<DecompiledLocationRequest, LocationsResponse>(
+            new CommandPacket<DecompiledLocationRequest>
+            {
+                Command = Endpoints.DecompileGotoDefinition,
+                Arguments = requestArguments
+            });
+
+        Assert.True(response.Success, response.Message);
+        var types = response.Body.Locations.Select(location => location.ContainingTypeFullName).ToList();
+        CollectionAssert.Contains(types, "ModernLibrary.ModernPrimary");
+        CollectionAssert.Contains(types, "ModernLibrary.ModernPerson");
+    }
+
     // A position in decompiled code where no syntax node starts
     [Test]
     public void PositionWithoutASymbolInDecompiledCodeIsReported()
