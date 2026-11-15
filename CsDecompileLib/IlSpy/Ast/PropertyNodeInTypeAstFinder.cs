@@ -25,13 +25,14 @@ public class PropertyNodeInTypeAstFinder : IDefinitionInDecompiledSyntaxTreeFind
 
         if (symbol != null)
         {
-            if (symbol is IProperty entity)
+            // Only the declaration: the same property is also the symbol of every place that reads or writes it
+            if (symbol is IProperty entity && node.IsMemberNode())
             {
                 if (entity.Setter != null && setterEntityHandle != null)
                 {
                     if (entity.Setter.AreSameUsingToken(setterEntityHandle))
                     {
-                        return node;
+                        return node.FindNameIdentifier(symbol.Name);
                     }
                 }
 
@@ -39,7 +40,7 @@ public class PropertyNodeInTypeAstFinder : IDefinitionInDecompiledSyntaxTreeFind
                 {
                     if (entity.Getter.AreSameUsingToken(getterEntityHandle))
                     {
-                        return node;
+                        return node.FindNameIdentifier(symbol.Name);
                     }
                 }
             }

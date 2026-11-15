@@ -22,11 +22,12 @@ public class EventNodeInTypeAstFinder : IDefinitionInDecompiledSyntaxTreeFinder<
 
         if (symbol != null)
         {
-            if (symbol is IEvent entity)
+            // Only the declaration: the same event is also the symbol of every place that subscribes to it
+            if (symbol is IEvent entity && node.IsMemberNode())
             {
                 if (entity.AreSameUsingToken(eventEntityHandle))
                 {
-                    return node;
+                    return node.FindNameIdentifier(symbol.Name);
                 }
             }
         }

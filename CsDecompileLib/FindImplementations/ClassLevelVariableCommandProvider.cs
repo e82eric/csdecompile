@@ -61,7 +61,7 @@ public class ClassLevelVariableCommandProvider<TCommandType> : IVariableCommandP
 
         if (parentResolveResult is ILVariableResolveResult variableResolveResult)
         {
-            var methodNode = node.FindParentMemberNode();
+            var methodNode = node.FindVariableScopeNode();
             commandType = _commandCommandFactory.GetForVariable(
                 variableResolveResult.Variable,
                 containingTypeDefinition,

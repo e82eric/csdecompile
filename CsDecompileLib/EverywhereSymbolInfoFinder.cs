@@ -59,6 +59,13 @@ public class EverywhereSymbolInfoFinder<TCommandResponseType>
             return roslynCommand;
         }
             
+        // Roslyn knows the symbol. If it can't be matched in the decompiled assembly that is
+        // reported by name instead of failing later on a missing symbol.
+        var memberNotFound = _commandFactory.GetForMemberNotFound(
+            roslynSymbol is INamedTypeSymbol || roslynSymbol.ContainingType == null
+                ? (roslynSymbol is INamedTypeSymbol ? roslynSymbol.GetSymbolName() : roslynSymbol.ToDisplayString())
+                : $"{roslynSymbol.GetSymbolName()}.{roslynSymbol.MetadataName}");
+
         INavigationCommand<TCommandResponseType> ilSpyCommand = default;
         switch (roslynSymbol.Kind)
         {
@@ -66,24 +73,35 @@ public class EverywhereSymbolInfoFinder<TCommandResponseType>
                 var ilSpyTypeDefinition = _ilSpySymbolFinder.FindTypeDefinition(
                     assemblyFilePath,
                     roslynSymbol.GetSymbolName());
-                    
+                if (ilSpyTypeDefinition == null)
+                {
+                    return memberNotFound;
+                }
+
                 ilSpyCommand = _commandFactory.GetForType(ilSpyTypeDefinition, projectOutputFilePath);
                 break;
             case SymbolKind.Property:
                 var property = (IPropertySymbol)roslynSymbol;
                 var ilspyProperty = _ilSpySymbolFinder.FindProperty(
-                    assemblyFilePath,
-                    property.ContainingType.GetSymbolName(),
-                    property.Name);
+                        assemblyFilePath,
+                        property);
+                if (ilspyProperty == null)
+                {
+                    return memberNotFound;
+                }
+
                 ilSpyCommand = _commandFactory.GetForProperty(ilspyProperty, projectOutputFilePath);
                 break;
             case SymbolKind.Event:
                 var @event = (IEventSymbol)roslynSymbol;
-                var eventName = $"{@event.ContainingType.GetSymbolName()}.{@event.Name}";
                 var ilspyEvent = _ilSpySymbolFinder.FindEvent(
-                    assemblyFilePath,
-                    @event.ContainingType.GetSymbolName(),
-                    eventName);
+                        assemblyFilePath,
+                        @event);
+                if (ilspyEvent == null)
+                {
+                    return memberNotFound;
+                }
+
                 ilSpyCommand = _commandFactory.GetForEvent(ilspyEvent, projectOutputFilePath);
                 break;
             case SymbolKind.Field:
@@ -91,6 +109,11 @@ public class EverywhereSymbolInfoFinder<TCommandResponseType>
                 var ilspyField = _ilSpySymbolFinder.FindField(
                     assemblyFilePath,
                     fieldSymbol);
+                if (ilspyField == null)
+                {
+                    return memberNotFound;
+                }
+
                 if (ilspyField.DeclaringType.Kind == TypeKind.Enum)
                 {
                     ilSpyCommand = _commandFactory.GetForEnumField(ilspyField, projectOutputFilePath);
@@ -122,11 +145,15 @@ public class EverywhereSymbolInfoFinder<TCommandResponseType>
                 var ilSpyMethod = _ilSpySymbolFinder.FindMethod(
                     assemblyFilePath,
                     method);
+                if (ilSpyMethod == null)
+                {
+                    return memberNotFound;
+                }
 
                 ilSpyCommand = _commandFactory.GetForMethod(ilSpyMethod, projectOutputFilePath);
                 break;
             default:
-                throw new Exception();
+                return memberNotFound;
         }
 
         var result = new EverywhereImplementationsCommand<TCommandResponseType>(roslynCommand, ilSpyCommand);

@@ -45,6 +45,11 @@ public class FindUsagesCommandFactory : ExternalAssembliesFindUsagesCommandFacto
         return result;
     }
 
+    public INavigationCommand<LocationsResponse> GetForMemberNotFound(string memberName)
+    {
+        return new MemberNotFoundCommand<LocationsResponse>(memberName);
+    }
+
     public INavigationCommand<LocationsResponse> SymbolNotFoundAtLocation(string filePath, int line, int column)
     {
         var result = new SymbolNotFoundAtLocationCommand<LocationsResponse>(filePath, line, column);

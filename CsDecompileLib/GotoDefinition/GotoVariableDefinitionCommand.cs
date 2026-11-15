@@ -38,6 +38,15 @@ class GotoVariableDefinitionCommand : INavigationCommand<LocationsResponse>
             _methodNode,
             _variable,
             _containingTypeSourceText);
+
+        if (definition == null)
+        {
+            return Task.FromResult(new ResponsePacket<LocationsResponse>
+            {
+                Success = false,
+                Message = $"VARIABLE_DEFINITION_NOT_FOUND {_variable.Name}"
+            });
+        }
             
         definition.AssemblyFilePath = _assemblyFileInfo;
                 

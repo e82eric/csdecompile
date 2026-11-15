@@ -55,6 +55,11 @@ namespace CsDecompileLib.GotoDefinition
             return new RoslynGotoDefinitionCommand(roslynSymbol, _workspace);
         }
 
+        public INavigationCommand<LocationsResponse> GetForMemberNotFound(string memberName)
+        {
+            return new MemberNotFoundCommand<LocationsResponse>(memberName);
+        }
+
         public INavigationCommand<LocationsResponse> GetForEvent(IEvent eventSymbol, string projectAssemblyFilePath)
         {
             var result = new GoToDefinitionCommand<IEvent>(eventSymbol, _eventFinder, projectAssemblyFilePath);

@@ -80,10 +80,30 @@ internal static class RoslynSymbolHelpers
             s_cachedBuilder.Release(builder);
         }
     }
+    // The name ILSpy can look the type up by: the symbol itself when it is a type, otherwise the type
+    // that declares it. Nested types keep their outer types (Namespace.Outer`1+Inner).
     public static string GetSymbolName(this ISymbol symbol)
     {
-        var topLevelSymbol = symbol.GetTopLevelContainingNamedType();
-        return GetTypeDisplayString(topLevelSymbol);
+        var type = symbol as INamedTypeSymbol ?? symbol.ContainingType;
+        return type.OriginalDefinition.GetReflectionName();
+    }
+
+    public static string GetReflectionName(this INamedTypeSymbol type)
+    {
+        var names = new Stack<string>();
+        for (var current = type; current != null; current = current.ContainingType)
+        {
+            names.Push(current.MetadataName);
+        }
+
+        var typeName = string.Join("+", names);
+        var containingNamespace = type.ContainingNamespace;
+        if (containingNamespace == null || containingNamespace.IsGlobalNamespace)
+        {
+            return typeName;
+        }
+
+        return $"{containingNamespace.ToDisplayString()}.{typeName}";
     }
 
     private static INamedTypeSymbol GetTopLevelContainingNamedType(this ISymbol symbol)

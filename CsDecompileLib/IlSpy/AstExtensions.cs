@@ -12,6 +12,33 @@ public static class AstExtensions
         return node is TypeDeclaration or DelegateDeclaration;
     }
 
+    // The identifier that names a declaration, so the location is the name and not an attribute or
+    // modifier in front of it. Falls back to the declaration itself.
+    public static AstNode FindNameIdentifier(this AstNode declaration, string name)
+    {
+        foreach (var child in declaration.Children)
+        {
+            if (child is Identifier identifier && identifier.Name == name)
+            {
+                return identifier;
+            }
+
+            // event EventHandler Changed; keeps the name inside a variable initializer
+            if (child is VariableInitializer)
+            {
+                foreach (var grandChild in child.Children)
+                {
+                    if (grandChild is Identifier variableName && variableName.Name == name)
+                    {
+                        return variableName;
+                    }
+                }
+            }
+        }
+
+        return declaration;
+    }
+
     public static bool IsMemberNode(this AstNode node)
     {
         return node is EntityDeclaration and not (TypeDeclaration or DelegateDeclaration or Accessor);
@@ -48,8 +75,34 @@ public static class AstExtensions
         return null;
     }
 
+    // The declaration a variable at this node belongs to: the enclosing member, or the type when
+    // the node is in a primary constructor's parameter list.
+    public static AstNode FindVariableScopeNode(this AstNode node)
+    {
+        var member = node.FindParentMemberNode();
+        if (member != null)
+        {
+            return member;
+        }
+
+        for (var ancestor = node; ancestor != null; ancestor = ancestor.Parent)
+        {
+            if (ancestor is TypeDeclaration)
+            {
+                return ancestor;
+            }
+        }
+
+        return null;
+    }
+
     public static AstNode FindParentMemberNode(this AstNode node)
     {
+        if (node == null)
+        {
+            return null;
+        }
+
         if (node.IsMemberNode())
         {
             return node;

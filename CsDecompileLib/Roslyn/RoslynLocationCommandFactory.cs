@@ -55,10 +55,27 @@ namespace CsDecompileLib.Roslyn
 
             TCommandType result = default;
 
-            if (roslynSymbol.Locations.First().IsInSource)
+            if (roslynSymbol.Locations.Any(location => location.IsInSource))
             {
                 result = _gotoDefinitionCommandFactory.GetForInSource(roslynSymbol);
                 return result;
+            }
+
+            // Roslyn knows the symbol. If it can't be matched in the decompiled assembly that is
+            // reported by name rather than jumping somewhere nearby.
+            var memberNotFound = _gotoDefinitionCommandFactory.GetForMemberNotFound(DescribeSymbol(roslynSymbol));
+
+            if (roslynSymbol.ContainingType is { IsExtension: true })
+            {
+                var extensionMember = _ilSpySymbolFinder.FindExtensionMember(assemblyFilePath, roslynSymbol);
+                return extensionMember switch
+                {
+                    ICSharpCode.Decompiler.TypeSystem.IProperty extensionProperty =>
+                        _gotoDefinitionCommandFactory.GetForProperty(extensionProperty, projectOutputFilePath),
+                    ICSharpCode.Decompiler.TypeSystem.IMethod extensionMethod =>
+                        _gotoDefinitionCommandFactory.GetForMethod(extensionMethod, projectOutputFilePath),
+                    _ => memberNotFound
+                };
             }
 
             switch (roslynSymbol.Kind)
@@ -68,24 +85,35 @@ namespace CsDecompileLib.Roslyn
                         assemblyFilePath,
                         roslynSymbol.GetSymbolName());
 
+                    if (ilSpyTypeDefinition == null)
+                    {
+                        return memberNotFound;
+                    }
+
                     result = _gotoDefinitionCommandFactory.GetForType(ilSpyTypeDefinition, projectOutputFilePath);
                     break;
                 case SymbolKind.Property:
                     var property = (IPropertySymbol)roslynSymbol;
-                    var propertyName = $"{property.ContainingType.GetSymbolName()}.{property.Name}";
                     var ilspyProperty = _ilSpySymbolFinder.FindProperty(
                         assemblyFilePath,
-                        property.ContainingType.GetSymbolName(),
-                        property.Name);
+                        property);
+                    if (ilspyProperty == null)
+                    {
+                        return memberNotFound;
+                    }
+
                     result = _gotoDefinitionCommandFactory.GetForProperty(ilspyProperty, projectOutputFilePath);
                     break;
                 case SymbolKind.Event:
                     var eventSymbol = (IEventSymbol)roslynSymbol;
-                    var eventName = $"{eventSymbol.ContainingType.GetSymbolName()}.{eventSymbol.Name}";
                     var ilspyEvent = _ilSpySymbolFinder.FindEvent(
                         assemblyFilePath,
-                        eventSymbol.ContainingType.GetSymbolName(),
-                        eventName);
+                        eventSymbol);
+                    if (ilspyEvent == null)
+                    {
+                        return memberNotFound;
+                    }
+
                     result = _gotoDefinitionCommandFactory.GetForEvent(ilspyEvent, projectOutputFilePath);
                     break;
                 case SymbolKind.Method:
@@ -95,7 +123,21 @@ namespace CsDecompileLib.Roslyn
                         assemblyFilePath,
                         method);
 
-                    result = _gotoDefinitionCommandFactory.GetForMethod(ilSpyMethod, projectOutputFilePath);
+                    if (ilSpyMethod == null)
+                    {
+                        return memberNotFound;
+                    }
+
+                    // A direct call to the static method behind an extension block member
+                    // (Extensions.get_Twice(text)) goes to the member in the block
+                    result = _ilSpySymbolFinder.MapToExtensionMember(ilSpyMethod) switch
+                    {
+                        ICSharpCode.Decompiler.TypeSystem.IProperty extensionProperty =>
+                            _gotoDefinitionCommandFactory.GetForProperty(extensionProperty, projectOutputFilePath),
+                        ICSharpCode.Decompiler.TypeSystem.IMethod mappedMethod =>
+                            _gotoDefinitionCommandFactory.GetForMethod(mappedMethod, projectOutputFilePath),
+                        _ => _gotoDefinitionCommandFactory.GetForMethod(ilSpyMethod, projectOutputFilePath)
+                    };
                     break;
                 case SymbolKind.Field:
                     //I guess the field could be defined in a base class defined in a base assembly
@@ -104,13 +146,61 @@ namespace CsDecompileLib.Roslyn
                         assemblyFilePath,
                         field);
 
+                    if (ilSpyField == null)
+                    {
+                        return memberNotFound;
+                    }
+
                     result = _gotoDefinitionCommandFactory.GetForField(ilSpyField, projectOutputFilePath);
                     break;
                 default:
-                    throw new Exception();
+                    return memberNotFound;
             }
 
             return result;
+        }
+
+        // Namespace.Outer+Inner.Member, the same form ILSpy uses for the type
+        private static string DescribeSymbol(ISymbol symbol)
+        {
+            if (symbol is INamedTypeSymbol)
+            {
+                return symbol.GetSymbolName();
+            }
+
+            return symbol.ContainingType == null
+                ? symbol.ToDisplayString()
+                : $"{symbol.GetSymbolName()}.{symbol.MetadataName}";
+        }
+
+        // Some symbols have no declaration of their own to go to. Use the nearest one that does.
+        private static ISymbol GetNavigableSymbol(ISymbol symbol)
+        {
+            while (true)
+            {
+                switch (symbol)
+                {
+                    // var x = new int[3]: go to int
+                    case IArrayTypeSymbol arrayType:
+                        symbol = arrayType.ElementType;
+                        continue;
+                    case IPointerTypeSymbol pointerType:
+                        symbol = pointerType.PointedAtType;
+                        continue;
+                    // tuple.Item1 on a tuple literal: go to ValueTuple.Item1 instead of the literal
+                    case IFieldSymbol { IsExplicitlyNamedTupleElement: false, ContainingType.IsTupleType: true } tupleElement
+                        when !SymbolEqualityComparer.Default.Equals(
+                            (tupleElement.CorrespondingTupleField ?? tupleElement).OriginalDefinition, symbol):
+                        symbol = (tupleElement.CorrespondingTupleField ?? tupleElement).OriginalDefinition;
+                        continue;
+                    // A named argument of a method from another assembly: go to the method
+                    case IParameterSymbol parameter when !parameter.Locations.Any(location => location.IsInSource):
+                        symbol = parameter.ContainingSymbol;
+                        continue;
+                    default:
+                        return symbol;
+                }
+            }
         }
 
         internal async Task<ISymbol> GetDefinitionSymbol(Document document, int line, int column)
@@ -119,11 +209,13 @@ namespace CsDecompileLib.Roslyn
             var position = GetPositionFromLineAndOffset(sourceText, line - 1, column);
             var symbol = await SymbolFinder.FindSymbolAtPositionAsync(document, position, CancellationToken.None);
 
+            symbol = GetNavigableSymbol(symbol);
+
             return symbol switch
             {
                 INamespaceSymbol => symbol,
                 // Always prefer the partial implementation over the definition
-                IMethodSymbol { IsPartialDefinition: true, PartialImplementationPart: var impl } => impl,
+                IMethodSymbol { IsPartialDefinition: true, PartialImplementationPart: var impl } => impl ?? symbol,
                 // Don't return property getters/settings/initers
                 IMethodSymbol { AssociatedSymbol: IPropertySymbol } => null,
                 _ => symbol

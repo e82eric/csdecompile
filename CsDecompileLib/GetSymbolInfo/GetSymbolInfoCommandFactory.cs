@@ -21,6 +21,11 @@ public class GetSymbolInfoCommandFactory : ICommandFactory<INavigationCommand<Sy
         return result;
     }
         
+    public INavigationCommand<SymbolInfo> GetForMemberNotFound(string memberName)
+    {
+        return new MemberNotFoundCommand<SymbolInfo>(memberName);
+    }
+
     public INavigationCommand<SymbolInfo> SymbolNotFoundAtLocation(string filePath, int line, int column)
     {
         var result = new SymbolNotFoundAtLocationCommand<SymbolInfo>(filePath, line, column);

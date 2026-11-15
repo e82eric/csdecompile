@@ -10,9 +10,36 @@ public class VariableNodeInTypeAstFinder
         ILVariable variableIdentifier,
         AstNode methodNode)
     {
-        var usage = Find(methodNode, variableIdentifier);
+        if (methodNode == null)
+        {
+            return null;
+        }
 
-        return usage;
+        // Starting on the type itself means a primary constructor parameter: don't wander into the
+        // members, they can declare variables with the same name.
+        var usage = methodNode is TypeDeclaration ? null : Find(methodNode, variableIdentifier);
+        if (usage != null)
+        {
+            return usage;
+        }
+
+        // class C(int seed) { int Next() => seed + 1; } declares the parameter on the type
+        for (var ancestor = methodNode; ancestor != null; ancestor = ancestor.Parent)
+        {
+            if (ancestor is TypeDeclaration typeDeclaration)
+            {
+                foreach (var parameter in typeDeclaration.PrimaryConstructorParameters)
+                {
+                    usage = Find(parameter, variableIdentifier);
+                    if (usage != null)
+                    {
+                        return usage;
+                    }
+                }
+            }
+        }
+
+        return null;
     }
 
     private AstNode Find(AstNode node, ILVariable variable)

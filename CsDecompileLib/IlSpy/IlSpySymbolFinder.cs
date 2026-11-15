@@ -235,6 +235,44 @@ public class IlSpySymbolFinder
         return method;
     }
     
+    // Members declared in a C# 14 extension block. In metadata each one is a static method on the
+    // enclosing class (the implementation) plus a declaration inside a compiler generated nested type.
+    // ILSpy shows the declaration, so find the implementation and map it back.
+    public IMember FindExtensionMember(string projectAssemblyFilePath, Microsoft.CodeAnalysis.ISymbol roslynMember)
+    {
+        var implementation = roslynMember switch
+        {
+            IMethodSymbol method => method.OriginalDefinition.AssociatedExtensionImplementation,
+            IPropertySymbol property =>
+                (property.OriginalDefinition.GetMethod ?? property.OriginalDefinition.SetMethod)?.AssociatedExtensionImplementation,
+            _ => null
+        };
+
+        if (implementation == null)
+        {
+            return null;
+        }
+
+        var ilSpyImplementation = FindMethod(projectAssemblyFilePath, implementation);
+        return MapToExtensionMember(ilSpyImplementation);
+    }
+
+    // Given the static implementation method of an extension block member, the member as it is
+    // declared in the block (a method, or the property an accessor belongs to). Any other method is
+    // returned unchanged.
+    public IMember MapToExtensionMember(IMethod method)
+    {
+        var extensionInfo = method?.DeclaringTypeDefinition?.ExtensionInfo;
+        var memberInfo = extensionInfo?.InfoOfImplementationMember(method);
+        if (memberInfo == null)
+        {
+            return method;
+        }
+
+        var extensionMember = memberInfo.Value.ExtensionMember;
+        return extensionMember.AccessorOwner ?? extensionMember;
+    }
+
     public IField FindField(string projectAssemblyFilePath, IFieldSymbol roslynMethod)
     {
         var typeFullName = roslynMethod.ContainingType.GetSymbolName();
@@ -243,18 +281,44 @@ public class IlSpySymbolFinder
         return result;
     }
     
-    public IProperty FindProperty(string projectAssemblyFilePath, string typeName, string propertyName)
+    public IProperty FindProperty(string projectAssemblyFilePath, IPropertySymbol roslynProperty)
     {
-        var typeDefinitionSymbol = FindTypeDefinition(projectAssemblyFilePath, typeName);
-        var property = FindProperty(typeDefinitionSymbol, propertyName);
-        return property;
+        var typeFullName = roslynProperty.ContainingType.GetSymbolName();
+        var typeDefinitionSymbol = FindTypeDefinition(projectAssemblyFilePath, typeFullName);
+        if (typeDefinitionSymbol == null)
+        {
+            return null;
+        }
+
+        foreach (var property in typeDefinitionSymbol.GetProperties())
+        {
+            if (RoslynToIlSpyEqualityExtensions.AreSameProperty(roslynProperty, property))
+            {
+                return property;
+            }
+        }
+
+        return null;
     }
     
-    public IEvent FindEvent(string projectAssemblyFilePath, string typeName, string eventName)
+    public IEvent FindEvent(string projectAssemblyFilePath, IEventSymbol roslynEvent)
     {
-        var typeDefinitionSymbol = FindTypeDefinition(projectAssemblyFilePath, typeName);
-        var eventSymbol = FindEvent(typeDefinitionSymbol, eventName);
-        return eventSymbol;
+        var typeFullName = roslynEvent.ContainingType.GetSymbolName();
+        var typeDefinitionSymbol = FindTypeDefinition(projectAssemblyFilePath, typeFullName);
+        if (typeDefinitionSymbol == null)
+        {
+            return null;
+        }
+
+        foreach (var @event in typeDefinitionSymbol.GetEvents())
+        {
+            if (RoslynToIlSpyEqualityExtensions.AreMemberSymbol(roslynEvent, @event))
+            {
+                return @event;
+            }
+        }
+
+        return null;
     }
     
     public ISymbol FindSymbolFromNode(AstNode node)
@@ -327,7 +391,7 @@ public class IlSpySymbolFinder
     
     private IMethod FindMethod(ITypeDefinition type, IMethodSymbol roslynMethod)
     {
-        if (roslynMethod == null)
+        if (roslynMethod == null || type == null)
         {
             return null;
         }
@@ -340,23 +404,6 @@ public class IlSpySymbolFinder
                 {
                     return ilSpyMethod;
                 }
-
-                if (RoslynToIlSpyEqualityExtensions.AreSameMethod(roslynMethod.OriginalDefinition, ilSpyMethod))
-                {
-                    return ilSpyMethod;
-                }
-                //Fallback for checking extension methods.  Roslyn seems to add a higher level method symbol without
-                //The this parameter
-                if (roslynMethod.IsExtensionMethod)
-                {
-                    if (roslynMethod.ReducedFrom != null)
-                    {
-                        if (RoslynToIlSpyEqualityExtensions.AreSameMethod(roslynMethod.ReducedFrom, ilSpyMethod))
-                        {
-                            return ilSpyMethod;
-                        }
-                    }
-                }
             }
         }
 
@@ -365,6 +412,11 @@ public class IlSpySymbolFinder
     
     private IField FindField(ITypeDefinition type, IFieldSymbol roslynField)
     {
+        if (type == null)
+        {
+            return null;
+        }
+
         foreach (var member in type.Members)
         {
             if (member is IField ilSpySymbol)
@@ -377,33 +429,5 @@ public class IlSpySymbolFinder
         }
 
         return null;
-    }
-    
-    private static IProperty FindProperty(IType type, string methodName)
-    {
-        foreach (var property in type.GetProperties())
-        {
-            if (property.Name == methodName)
-            {
-                return property;
-            }
-        }
-
-        return null;
-    }
-    
-    private static IEvent FindEvent(IType type, string eventName)
-    {
-        var properties = type.GetEvents().Where(m =>
-        {
-            if (m.FullName != eventName)
-            {
-                return false;
-            }
-
-            return true;
-        });
-
-        return properties.FirstOrDefault();
     }
 }

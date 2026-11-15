@@ -37,7 +37,7 @@ public class AssemblyLevelVariableCommandProvider<TCommandType> : IVariableComma
 
         if (parentResolveResult is ILVariableResolveResult variableResolveResult)
         {
-            var methodNodeFromAssembly = node.FindParentMemberNode();
+            var methodNodeFromAssembly = node.FindVariableScopeNode();
             var memberSymbol = methodNodeFromAssembly.GetSymbol() as IMember;
             var containingTypeDefinition = _symbolFinder.FindParentType(methodNodeFromAssembly);
             var (syntaxTree1, sourceText) = decompiler.Run(containingTypeDefinition);

@@ -12,6 +12,7 @@ public interface ICommandFactory<T> : IDecompilerCommandFactory<T>
     T GetForInSource(Microsoft.CodeAnalysis.ISymbol roslynSymbol);
     T GetForFileNotFound(string filePath);
     T SymbolNotFoundAtLocation(string filePath, int line, int column);
+    T GetForMemberNotFound(string memberName);
     T GetForVariable(
         ILVariable variable,
         ITypeDefinition typeDefinition,

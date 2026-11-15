@@ -135,6 +135,11 @@ public class EveryWhereFindImplementationsCommandFactory<TResponseType>
         throw new NotImplementedException();
     }
 
+    public INavigationCommand<TResponseType> GetForMemberNotFound(string memberName)
+    {
+        return new MemberNotFoundCommand<TResponseType>(memberName);
+    }
+
     public INavigationCommand<TResponseType> SymbolNotFoundAtLocation(string filePath, int line, int column)
     {
         throw new NotImplementedException();

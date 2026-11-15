@@ -20,6 +20,10 @@ public class IlSpyVariableDefinitionFinder : IlSpyToSourceInfoBase
     public DecompileInfo Run(ITypeDefinition containgTypeDefinition, AstNode methodNode, ILVariable variable, string sourceText)
     {
         var foundNode = _variableNodeInMethodBodyAstFinder.Find(variable, methodNode);
+        if (foundNode == null)
+        {
+            return null;
+        }
 
         var lines = sourceText.Split(new []{"\r\n"}, StringSplitOptions.None);
         var result = MapToSourceInfo(lines, foundNode, containgTypeDefinition);

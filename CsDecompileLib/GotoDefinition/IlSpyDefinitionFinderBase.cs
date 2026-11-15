@@ -35,7 +35,14 @@ public class IlSpyDefinitionFinderBase<T> : IlSpyToSourceInfoBase where T : IEnt
         //This most common cause would be a default constructor
         if (foundUse == null)
         {
-            foundUse = _typeDefinitionFinder.Find(rootType, decompiled.syntaxTree);
+            // Prefer the type that declares the member: for a nested type that is not the root type
+            var declaringType = eventSymbol as ITypeDefinition ?? eventSymbol.DeclaringTypeDefinition;
+            if (declaringType != null)
+            {
+                foundUse = _typeDefinitionFinder.Find(declaringType, decompiled.syntaxTree);
+            }
+
+            foundUse ??= _typeDefinitionFinder.Find(rootType, decompiled.syntaxTree);
         }
             
         var lines = decompiled.sourceText.Split(new []{"\r\n"}, StringSplitOptions.None);
