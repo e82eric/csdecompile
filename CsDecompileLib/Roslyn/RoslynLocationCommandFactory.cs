@@ -180,6 +180,10 @@ namespace CsDecompileLib.Roslyn
             {
                 switch (symbol)
                 {
+                    // using Alias = Some.Type: go to the type (or namespace) the alias stands for
+                    case IAliasSymbol alias:
+                        symbol = alias.Target;
+                        continue;
                     // var x = new int[3]: go to int
                     case IArrayTypeSymbol arrayType:
                         symbol = arrayType.ElementType;

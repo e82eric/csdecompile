@@ -38,8 +38,9 @@ public class RoslynGotoDefinitionCommand : INavigationCommand<LocationsResponse>
         }
 
         var sourceLineInfo = location.GetSourceLineInfo(_workspace);
-        sourceLineInfo.ContainingTypeShortName = containingType.Name;
-        sourceLineInfo.ContainingTypeFullName = containingType.GetMetadataName();
+        // Not every symbol is declared inside a type (a using alias, for example)
+        sourceLineInfo.ContainingTypeShortName = containingType?.Name;
+        sourceLineInfo.ContainingTypeFullName = containingType?.GetMetadataName();
 
         var result = new LocationsResponse
         {

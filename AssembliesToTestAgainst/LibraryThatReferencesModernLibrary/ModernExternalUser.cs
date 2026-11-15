@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using ModernLibrary;
+using ModernAlias = ModernLibrary.ModernPerson;
 
 namespace LibraryThatReferencesModernLibrary;
 
@@ -48,5 +49,6 @@ public class ModernExternalUser
         var twice = text.Twice;
         var thrice = text.Thrice();
         var direct = ModernExtensions.get_Twice(text);
+        var aliased = new ModernAlias("b", 2);
     }
 }

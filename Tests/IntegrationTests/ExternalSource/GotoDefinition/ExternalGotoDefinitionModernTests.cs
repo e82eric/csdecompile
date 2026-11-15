@@ -56,6 +56,7 @@ public class ExternalGotoDefinitionModernTests : ExternalGotoDefinitionTestBase
     [TestCase("text.Twice", 5, "public int Twice => s.Length * 2;", "ModernLibrary.ModernExtensions")]
     [TestCase("Thrice()", 0, "public int Thrice()", "ModernLibrary.ModernExtensions")]
     [TestCase("get_Twice(text)", 0, "public int Twice => s.Length * 2;", "ModernLibrary.ModernExtensions")]
+    [TestCase("ModernAlias(\"b\"", 0, "public record ModernPerson(string Name, int Age);", "ModernLibrary.ModernPerson")]
     public void ExternalLibrary(string textToFind, int offset, string expectedLine, string expectedType)
     {
         var (line, sourceResponse) = GoToDefinition(External, textToFind, offset);
