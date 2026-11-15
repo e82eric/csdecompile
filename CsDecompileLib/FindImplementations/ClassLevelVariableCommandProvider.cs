@@ -57,6 +57,12 @@ public class ClassLevelVariableCommandProvider<TCommandType> : IVariableCommandP
         
         var node = _symbolFinder.GetNodeAt(syntaxTree, request.Line, request.Column);
 
+        // No syntax node starts at the requested position. The caller reports that.
+        if (node?.Parent == null)
+        {
+            return (false, commandType, node);
+        }
+
         var parentResolveResult = node.Parent.GetResolveResult();
 
         if (parentResolveResult is ILVariableResolveResult variableResolveResult)

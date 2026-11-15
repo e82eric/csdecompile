@@ -33,6 +33,12 @@ public class AssemblyLevelVariableCommandProvider<TCommandType> : IVariableComma
         var node = _symbolFinder.GetNodeAt(syntaxTree, request.Line, request.Column);
         TCommandType commandType = default;
         bool found = false;
+        // No syntax node starts at the requested position. The caller reports that.
+        if (node?.Parent == null)
+        {
+            return (false, commandType, node);
+        }
+
         ResolveResult parentResolveResult = node.Parent.GetResolveResult();
 
         if (parentResolveResult is ILVariableResolveResult variableResolveResult)

@@ -30,6 +30,13 @@ namespace CsDecompileLib
             {
                 result = variableCommand;
             }
+            else if (node == null)
+            {
+                result = _commandFactory.SymbolNotFoundAtLocation(
+                    request.FileName ?? request.ContainingTypeFullName,
+                    request.Line,
+                    request.Column);
+            }
             else
             {
                 if(node.Parent?.Slot?.Name is "Import" or "Target")

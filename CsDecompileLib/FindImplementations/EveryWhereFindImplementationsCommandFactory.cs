@@ -142,7 +142,7 @@ public class EveryWhereFindImplementationsCommandFactory<TResponseType>
 
     public INavigationCommand<TResponseType> SymbolNotFoundAtLocation(string filePath, int line, int column)
     {
-        throw new NotImplementedException();
+        return new SymbolNotFoundAtLocationCommand<TResponseType>(filePath, line, column);
     }
 
     public INavigationCommand<TResponseType> GetForVariable(ILVariable variable, ITypeDefinition typeDefinition, AstNode methodNode,

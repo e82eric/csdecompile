@@ -121,6 +121,32 @@ public class ExternalGotoDefinitionModernTests : ExternalGotoDefinitionTestBase
         Assert.AreEqual(expectedType, sourceResponse.Body.Location.ContainingTypeFullName);
     }
 
+    // A position in decompiled code where no syntax node starts
+    [Test]
+    public void PositionWithoutASymbolInDecompiledCodeIsReported()
+    {
+        var start = CreateRequest(External, "ModernPrimary(1)", 0).Arguments;
+        var requestArguments = GotoDefinitionAndCreateRequestForToken(
+            start.FileName,
+            start.Column,
+            start.Line,
+            "return seed \\+ 1;",
+            "return (?<token>seed) \\+ 1;");
+        requestArguments.Column = 500;
+
+        var response = IoClient.ExecuteCommand<DecompiledLocationRequest, LocationsResponse>(
+            new CommandPacket<DecompiledLocationRequest>
+            {
+                Command = Endpoints.DecompileGotoDefinition,
+                Arguments = requestArguments
+            });
+
+        Assert.False(response.Success);
+        Assert.AreEqual(
+            $"SYMBOL_NOT_FOUND_AT_LOCATION ModernLibrary.ModernPrimary:{requestArguments.Line}:500",
+            response.Message);
+    }
+
     // The implementation of a [GeneratedRegex] method is written by a source generator and only exists
     // in memory. The location has to be a file the editor can open.
     [Test]
