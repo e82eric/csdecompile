@@ -52,5 +52,10 @@ public class ModernExternalUser
         var aliased = new ModernAlias("b", 2);
         var summed = new ModernLocals().Sum(new List<string>());
         var described = new ModernCtor(1).Describe("p");
+        var attributed = new ModernAttributed(1);
+        var attributedField = attributed.MarkedField;
+        var attributedIndex = attributed[2];
+        var attributedSum = attributed + attributed;
+        attributed.MarkedMethod();
     }
 }

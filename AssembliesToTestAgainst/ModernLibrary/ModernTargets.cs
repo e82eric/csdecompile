@@ -113,3 +113,22 @@ public class ModernCtor
         return made.A;
     }
 }
+
+// Every member has an attribute, which the decompiler prints on its own line above the member
+public class ModernAttributed
+{
+    [System.ComponentModel.Description("field")]
+    public int MarkedField;
+
+    [System.ComponentModel.Description("constructor")]
+    public ModernAttributed(int a) { MarkedField = a; }
+
+    [System.ComponentModel.Description("indexer")]
+    public int this[int i] => i;
+
+    [System.ComponentModel.Description("operator")]
+    public static ModernAttributed operator +(ModernAttributed a, ModernAttributed b) => a;
+
+    [System.ComponentModel.Description("method")]
+    public void MarkedMethod() { }
+}

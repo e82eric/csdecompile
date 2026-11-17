@@ -27,28 +27,7 @@ public class MethodNodeInTypeAstFinder : IDefinitionInDecompiledSyntaxTreeFinder
             {
                 if (entity.AreSameUsingToken(handleToSearchFor) && node.IsMemberNode())
                 {
-                    var identifier = node.Children.Where(n =>
-                    {
-                        var entity = n as Identifier;
-                        if (entity != null)
-                        {
-                            if (entity.Name == symbol.Name)
-                            {
-                                return true;
-                            }
-                        }
-
-                        return false;
-                    }).FirstOrDefault();
-
-                    if (identifier != null)
-                    {
-                        return identifier;
-                    }
-                    else
-                    {
-                        return node;
-                    }
+                    return node.FindNameIdentifier(symbol.Name);
                 }
             }
         }

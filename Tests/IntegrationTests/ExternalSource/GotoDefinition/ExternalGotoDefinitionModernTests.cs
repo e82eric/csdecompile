@@ -57,6 +57,11 @@ public class ExternalGotoDefinitionModernTests : ExternalGotoDefinitionTestBase
     [TestCase("Thrice()", 0, "public int Thrice()", "ModernLibrary.ModernExtensions")]
     [TestCase("get_Twice(text)", 0, "public int Twice => s.Length * 2;", "ModernLibrary.ModernExtensions")]
     [TestCase("ModernAlias(\"b\"", 0, "public record ModernPerson(string Name, int Age);", "ModernLibrary.ModernPerson")]
+    [TestCase("ModernAttributed(1)", 0, "public ModernAttributed(int a)", "ModernLibrary.ModernAttributed")]
+    [TestCase("attributed.MarkedField", 11, "public int MarkedField;", "ModernLibrary.ModernAttributed")]
+    [TestCase("attributed[2]", 10, "public int this[int i] => i;", "ModernLibrary.ModernAttributed")]
+    [TestCase("attributed + attributed", 11, "public static ModernAttributed operator +(ModernAttributed a, ModernAttributed b)", "ModernLibrary.ModernAttributed")]
+    [TestCase("MarkedMethod()", 0, "public void MarkedMethod()", "ModernLibrary.ModernAttributed")]
     public void ExternalLibrary(string textToFind, int offset, string expectedLine, string expectedType)
     {
         var (line, sourceResponse) = GoToDefinition(External, textToFind, offset);

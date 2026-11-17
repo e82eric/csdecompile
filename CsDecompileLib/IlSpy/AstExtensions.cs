@@ -13,7 +13,8 @@ public static class AstExtensions
     }
 
     // The identifier that names a declaration, so the location is the name and not an attribute or
-    // modifier in front of it. Falls back to the declaration itself.
+    // modifier in front of it. A constructor is named after its type, and an indexer or operator
+    // has no name at all: those use the first thing after the attributes.
     public static AstNode FindNameIdentifier(this AstNode declaration, string name)
     {
         foreach (var child in declaration.Children)
@@ -33,6 +34,22 @@ public static class AstExtensions
                         return variableName;
                     }
                 }
+            }
+        }
+
+        foreach (var child in declaration.Children)
+        {
+            if (child is Identifier)
+            {
+                return child;
+            }
+        }
+
+        foreach (var child in declaration.Children)
+        {
+            if (child is not AttributeSection)
+            {
+                return child;
             }
         }
 
