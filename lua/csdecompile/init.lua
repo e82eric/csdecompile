@@ -375,30 +375,20 @@ M._sendStdIoRequest = function(request, callback, callbackData)
 	M._state.CurrentSeq = nextSequence
 end
 
-M._getStartOfCurrentWord = function()
- local curLine = vim.api.nvim_get_current_line()
- local currentCol = vim.api.nvim_win_get_cursor(0)[2]
-
- local result = 0
- while(currentCol > 0)
- do
-   local curChar = string.sub(curLine, currentCol + 1 , currentCol + 1)
-   if string.match(curChar, "[%w_@]") then
-     currentCol = currentCol - 1
-     result = currentCol + 2
-   else
-     break
-   end
- end
-
- return result
+-- The column of the cursor in the form the host expects. The host resolves any position inside a
+-- symbol, so the real cursor position is sent: an operator or an indexer bracket can be a target too.
+-- Source files (type 1) are 0-based, decompiled text is 1-based.
+M._getRequestColumn = function(locationType)
+	local cursorColumn = vim.api.nvim_win_get_cursor(0)[2]
+	if locationType == 1 then
+		return cursorColumn
+	end
+	return cursorColumn + 1
 end
 
 M._createDecompileRequest = function(url, callback, callbackData)
 	local cursorPos = vim.api.nvim_win_get_cursor(0)
 	local line = cursorPos[1]
-	local column = cursorPos[2] + 1
-  column = M._getStartOfCurrentWord()
 	local assemblyFilePath = vim.b.AssemblyFilePath
 	local parentAssemblyFilePath = vim.b.parentAssemblyFilePath
 	local assemblyName = vim.b.AssemblyName
@@ -408,6 +398,7 @@ M._createDecompileRequest = function(url, callback, callbackData)
 	if locationType == nil then
 		locationType = 1
 	end
+	local column = M._getRequestColumn(locationType)
 
 	local request = {
 		Command = url,

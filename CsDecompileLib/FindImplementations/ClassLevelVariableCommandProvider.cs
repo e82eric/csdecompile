@@ -55,7 +55,7 @@ public class ClassLevelVariableCommandProvider<TCommandType> : IVariableCommandP
             (syntaxTree, source) = decompiler.Run(containingTypeDefinition.MetadataToken);
         }
         
-        var node = _symbolFinder.GetNodeAt(syntaxTree, request.Line, request.Column);
+        var node = _symbolFinder.GetNodeAt(syntaxTree, request.Line, request.Column, source);
 
         // No syntax node starts at the requested position. The caller reports that.
         if (node?.Parent == null)

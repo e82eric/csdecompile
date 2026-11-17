@@ -29,8 +29,8 @@ public class AssemblyLevelVariableCommandProvider<TCommandType> : IVariableComma
     public (bool, TCommandType, AstNode) GetNodeInformation(DecompiledLocationRequest request)
     {
         var decompiler = _decompilerFactory.Get(request.AssemblyFilePath);
-        var (syntaxTree, _) = decompiler.DecompileWholeModule();
-        var node = _symbolFinder.GetNodeAt(syntaxTree, request.Line, request.Column);
+        var (syntaxTree, moduleSourceText) = decompiler.DecompileWholeModule();
+        var node = _symbolFinder.GetNodeAt(syntaxTree, request.Line, request.Column, moduleSourceText);
         TCommandType commandType = default;
         bool found = false;
         // No syntax node starts at the requested position. The caller reports that.

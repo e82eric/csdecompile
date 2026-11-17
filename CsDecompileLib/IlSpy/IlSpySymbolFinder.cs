@@ -388,31 +388,41 @@ public class IlSpySymbolFinder
         return fromChild;
     }
 
-    public AstNode GetNodeAt(AstNode node, int startLine, int startColumn)
+    // The node at a position in decompiled text, or null when the position is on whitespace or
+    // outside the text. Line and column are 1-based.
+    public AstNode GetNodeAt(AstNode node, int line, int column, string sourceText)
     {
+        var lines = sourceText.Split('\n');
+        if (line < 1 || line > lines.Length)
+        {
+            return null;
+        }
+
+        var lineText = lines[line - 1].TrimEnd('\r');
+        if (column < 1 || column > lineText.Length || char.IsWhiteSpace(lineText[column - 1]))
+        {
+            return null;
+        }
+
+        return GetNodeAt(node, line, column);
+    }
+
+    // The innermost node that contains the position. The position can be anywhere inside an
+    // identifier. On a keyword, operator or bracket it is the node they belong to: the binary
+    // expression for "+", the indexer expression for "[", the statement for "return".
+    public AstNode GetNodeAt(AstNode node, int line, int column)
+    {
+        var position = new TextLocation(line, column);
         foreach (var child in node.Children)
         {
-            if (child.StartLocation.Line == startLine && child.StartLocation.Column == startColumn)
+            if (child.StartLocation.IsEmpty || position < child.StartLocation || position >= child.EndLocation)
             {
-                //We need to keep going down the tree to see if there is a more specific symbol, this could be an expression and we want the specific symbol
-                //Ideally start sending end location line and column
-                //This is inefficent we can stop recursing the rest of the tree here.  Just haven't figured that out yet
-                if (!child.Children.Any(c =>
-                        c.StartLocation.Line == startLine && c.StartLocation.Column == startColumn))
-                {
-                    return child;
-                }
+                continue;
             }
 
-            if (child.HasChildren)
-            {
-                var result = GetNodeAt(child, startLine, startColumn);
-                if (result != null)
-                {
-                    return result;
-                }
-            }
+            return GetNodeAt(child, line, column) ?? child;
         }
+
         return null;
     }
     

@@ -131,4 +131,7 @@ public class ModernAttributed
 
     [System.ComponentModel.Description("method")]
     public void MarkedMethod() { }
+
+    public ModernAttributed Doubled() { return this + this; }
+    public int First() { return this[0]; }
 }

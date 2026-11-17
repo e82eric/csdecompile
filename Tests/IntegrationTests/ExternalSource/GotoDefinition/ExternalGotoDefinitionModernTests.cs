@@ -113,6 +113,13 @@ public class ExternalGotoDefinitionModernTests : ExternalGotoDefinitionTestBase
     [TestCase("Describe(\"p\")", "new ModernCtor\\(", "new (?<token>ModernCtor)\\(", "public ModernCtor(int a)", "ModernLibrary.ModernCtor")]
     [TestCase("OuterEvent +=", "OuterEvent\\?\\.Invoke\\(this", "Invoke\\((?<token>this),", "public class ModernOuter", "ModernLibrary.ModernOuter")]
     [TestCase("OuterEvent +=", "InnerEvent\\?\\.Invoke\\(this", "Invoke\\((?<token>this),", "public class Inner", "ModernLibrary.ModernOuter")]
+    // The position does not have to be the start of the symbol
+    [TestCase("ModernPrimary(1)", "return seed \\+ 1;", "return se(?<token>ed) \\+ 1;", "public class ModernPrimary(int seed)", "ModernLibrary.ModernPrimary")]
+    [TestCase("MarkedMethod()", "void MarkedMethod\\(", "void Marked(?<token>Method)\\(", "public void MarkedMethod()", "ModernLibrary.ModernAttributed")]
+    [TestCase("MarkedMethod()", "ModernAttributed Doubled\\(", "Modern(?<token>Attributed) Doubled", "public class ModernAttributed", "ModernLibrary.ModernAttributed")]
+    // An operator and an indexer bracket belong to the expression they are part of
+    [TestCase("MarkedMethod()", "this \\+ this", "this (?<token>\\+) this", "operator +(ModernAttributed a, ModernAttributed b)", "ModernLibrary.ModernAttributed")]
+    [TestCase("MarkedMethod()", "this\\[0\\]", "this(?<token>\\[)0\\]", "public int this[int i]", "ModernLibrary.ModernAttributed")]
     public void FromDecompiledCode(string textToFind, string lineToFind, string tokenToRequest, string expectedLineContains, string expectedType)
     {
         var start = CreateRequest(External, textToFind, 0).Arguments;
@@ -183,7 +190,30 @@ public class ExternalGotoDefinitionModernTests : ExternalGotoDefinitionTestBase
         StringAssert.StartsWith("SYMBOL_NOT_FOUND_AT_LOCATION ModernLibrary.ModernCtor:", response.Message);
     }
 
-    // A position in decompiled code where no syntax node starts
+    // Whitespace between two tokens is not a symbol
+    [Test]
+    public void WhitespaceInDecompiledCodeIsReported()
+    {
+        var start = CreateRequest(External, "ModernPrimary(1)", 0).Arguments;
+        var requestArguments = GotoDefinitionAndCreateRequestForToken(
+            start.FileName,
+            start.Column,
+            start.Line,
+            "return seed \\+ 1;",
+            "return(?<token> )seed \\+ 1;");
+
+        var response = IoClient.ExecuteCommand<DecompiledLocationRequest, LocationsResponse>(
+            new CommandPacket<DecompiledLocationRequest>
+            {
+                Command = Endpoints.DecompileGotoDefinition,
+                Arguments = requestArguments
+            });
+
+        Assert.False(response.Success);
+        StringAssert.StartsWith("SYMBOL_NOT_FOUND_AT_LOCATION ModernLibrary.ModernPrimary:", response.Message);
+    }
+
+    // A position in decompiled code that is past the end of the line
     [Test]
     public void PositionWithoutASymbolInDecompiledCodeIsReported()
     {
