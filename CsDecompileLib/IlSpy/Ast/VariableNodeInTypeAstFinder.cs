@@ -65,6 +65,22 @@ public class VariableNodeInTypeAstFinder
                 return node;
             }
         }
+        // foreach (var item in items), patterns (x is string text) and deconstruction
+        if (node is SingleVariableDesignation designation)
+        {
+            if (designation.Identifier == variable.Name)
+            {
+                return node;
+            }
+        }
+        // catch (Exception ex)
+        if (node is CatchClause catchClause)
+        {
+            if (catchClause.VariableName == variable.Name)
+            {
+                return catchClause.VariableNameToken;
+            }
+        }
 
         foreach (var child in node.Children)
         {

@@ -77,3 +77,26 @@ public static class ModernExtensions
 
     public static int Old(this string s) => 1;
 }
+
+public class ModernLocals
+{
+    public int Sum(List<string> items)
+    {
+        var total = 0;
+        foreach (var item in items)
+        {
+            total += item.Length;
+        }
+
+        try
+        {
+            total += int.Parse(items[0]);
+        }
+        catch (FormatException error)
+        {
+            total += error.Message.Length;
+        }
+
+        return total;
+    }
+}

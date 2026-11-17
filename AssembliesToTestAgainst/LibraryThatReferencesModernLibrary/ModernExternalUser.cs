@@ -50,5 +50,6 @@ public class ModernExternalUser
         var thrice = text.Thrice();
         var direct = ModernExtensions.get_Twice(text);
         var aliased = new ModernAlias("b", 2);
+        var summed = new ModernLocals().Sum(new List<string>());
     }
 }
