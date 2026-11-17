@@ -100,3 +100,16 @@ public class ModernLocals
         return total;
     }
 }
+
+public class ModernCtor
+{
+    public ModernCtor(int a) { A = a; }
+    public ModernCtor(string a) { A = a.Length; }
+    public int A;
+
+    public int Describe(string prefix)
+    {
+        var made = new ModernCtor(prefix.Length);
+        return made.A;
+    }
+}

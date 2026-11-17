@@ -65,7 +65,9 @@ public class ClassLevelVariableCommandProvider<TCommandType> : IVariableCommandP
 
         var parentResolveResult = node.Parent.GetResolveResult();
 
-        if (parentResolveResult is ILVariableResolveResult variableResolveResult)
+        // A type keyword in "string text" is a direct child of the parameter declaration too, but it
+        // names the type, not the variable.
+        if (node is not AstType && parentResolveResult is ILVariableResolveResult variableResolveResult)
         {
             var methodNode = node.FindVariableScopeNode();
             commandType = _commandCommandFactory.GetForVariable(

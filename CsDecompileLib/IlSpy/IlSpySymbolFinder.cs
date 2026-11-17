@@ -323,6 +323,29 @@ public class IlSpySymbolFinder
     
     public ISymbol FindSymbolFromNode(AstNode node)
     {
+        // this and base stand for the type itself, not for whatever expression they are part of
+        if (node is ThisReferenceExpression or BaseReferenceExpression)
+        {
+            return node.GetResolveResult()?.Type?.GetDefinition();
+        }
+
+        // The node at a statement keyword (return, if, foreach) is the statement itself, and there
+        // is nothing to go to. Without this the search below walks up to the enclosing method.
+        if (node is Statement)
+        {
+            return null;
+        }
+
+        // new Foo(1): the type name goes to the constructor that is called, as it does from source
+        if (node is Identifier &&
+            node.Parent is AstType createdType &&
+            createdType.Parent is ObjectCreateExpression objectCreate &&
+            objectCreate.Type == createdType &&
+            objectCreate.GetSymbol() is IMethod constructor)
+        {
+            return constructor;
+        }
+
         var symbolAtLocation = node.GetSymbol();
 
         while (symbolAtLocation == null && node.Parent != null)

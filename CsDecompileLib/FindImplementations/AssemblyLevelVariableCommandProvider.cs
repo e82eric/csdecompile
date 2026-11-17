@@ -41,7 +41,9 @@ public class AssemblyLevelVariableCommandProvider<TCommandType> : IVariableComma
 
         ResolveResult parentResolveResult = node.Parent.GetResolveResult();
 
-        if (parentResolveResult is ILVariableResolveResult variableResolveResult)
+        // A type keyword in "string text" is a direct child of the parameter declaration too, but it
+        // names the type, not the variable.
+        if (node is not AstType && parentResolveResult is ILVariableResolveResult variableResolveResult)
         {
             var methodNodeFromAssembly = node.FindVariableScopeNode();
             var memberSymbol = methodNodeFromAssembly.GetSymbol() as IMember;

@@ -51,5 +51,6 @@ public class ModernExternalUser
         var direct = ModernExtensions.get_Twice(text);
         var aliased = new ModernAlias("b", 2);
         var summed = new ModernLocals().Sum(new List<string>());
+        var described = new ModernCtor(1).Describe("p");
     }
 }

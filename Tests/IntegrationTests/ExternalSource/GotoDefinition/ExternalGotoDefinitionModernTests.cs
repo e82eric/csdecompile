@@ -104,6 +104,10 @@ public class ExternalGotoDefinitionModernTests : ExternalGotoDefinitionTestBase
     [TestCase("GenericParam(new List<int>", "GenericParam<T>\\(List<T> items\\)", "List<(?<token>T)> items", "public static void GenericParam<T>(List<T> items)", "ModernLibrary.ModernApi")]
     [TestCase("Sum(new List<string>", "\\+= item\\.Length", "(?<token>item)\\.Length", "foreach (string item in items)", "ModernLibrary.ModernLocals")]
     [TestCase("Sum(new List<string>", "ex\\.Message", "(?<token>ex)\\.Message", "catch (FormatException ex)", "ModernLibrary.ModernLocals")]
+    [TestCase("Describe(\"p\")", "public int Describe\\(string prefix\\)", "\\((?<token>string) prefix", "public sealed class String", "System.String")]
+    [TestCase("Describe(\"p\")", "new ModernCtor\\(", "new (?<token>ModernCtor)\\(", "public ModernCtor(int a)", "ModernLibrary.ModernCtor")]
+    [TestCase("OuterEvent +=", "OuterEvent\\?\\.Invoke\\(this", "Invoke\\((?<token>this),", "public class ModernOuter", "ModernLibrary.ModernOuter")]
+    [TestCase("OuterEvent +=", "InnerEvent\\?\\.Invoke\\(this", "Invoke\\((?<token>this),", "public class Inner", "ModernLibrary.ModernOuter")]
     public void FromDecompiledCode(string textToFind, string lineToFind, string tokenToRequest, string expectedLineContains, string expectedType)
     {
         var start = CreateRequest(External, textToFind, 0).Arguments;
@@ -149,6 +153,29 @@ public class ExternalGotoDefinitionModernTests : ExternalGotoDefinitionTestBase
         var types = response.Body.Locations.Select(location => location.ContainingTypeFullName).ToList();
         CollectionAssert.Contains(types, "ModernLibrary.ModernPrimary");
         CollectionAssert.Contains(types, "ModernLibrary.ModernPerson");
+    }
+
+    // A statement keyword has nothing to go to
+    [Test]
+    public void StatementKeywordInDecompiledCodeIsReported()
+    {
+        var start = CreateRequest(External, "Describe(\"p\")", 0).Arguments;
+        var requestArguments = GotoDefinitionAndCreateRequestForToken(
+            start.FileName,
+            start.Column,
+            start.Line,
+            "return ",
+            "(?<token>return) ");
+
+        var response = IoClient.ExecuteCommand<DecompiledLocationRequest, LocationsResponse>(
+            new CommandPacket<DecompiledLocationRequest>
+            {
+                Command = Endpoints.DecompileGotoDefinition,
+                Arguments = requestArguments
+            });
+
+        Assert.False(response.Success);
+        StringAssert.StartsWith("SYMBOL_NOT_FOUND_AT_LOCATION ModernLibrary.ModernCtor:", response.Message);
     }
 
     // A position in decompiled code where no syntax node starts
