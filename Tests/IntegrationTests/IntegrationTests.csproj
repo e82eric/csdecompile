@@ -181,6 +181,7 @@
         <Compile Include="InSource\FindUsages\InSourceFindUsagesFileDoesntExistTests.cs" />
         <Compile Include="InSource\FindUsages\InSourceFindUsagesMethodWithGenericOutParametersTests.cs" />
         <Compile Include="InSource\FindUsages\InSourceFindUsagesSymbolNotFoundAtLocationTests.cs" />
+        <Compile Include="ExternalSource\FindUsages\ExternalFindUsagesModernTests.cs" />
         <Compile Include="InSource\FindUsages\InSourceFindUsagesFirstLineTests.cs" />
         <Compile Include="InSource\FindUsages\InSourceNestedClassFindUsagesTests.cs" />
         <Compile Include="InSource\GetSymbolInfo\InSourceGetSymbolInfoTests.cs" />

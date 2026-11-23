@@ -178,9 +178,7 @@ namespace CsDecompileLib.IlSpy
             var selfUniqueness = GetPeFileUniqueness(self);
             alreadyChecked.Add(selfUniqueness);
             
-            string reflectionTypeScopeName = typeScope.Name;
-            if (typeScope.TypeParameterCount > 0)
-                reflectionTypeScopeName += "`" + typeScope.TypeParameterCount;
+            var topLevelType = GetTopLevelType(typeScope);
 
             var projectPeFiles = _workspace.GetAssemblies();
             foreach (var projectAssembly in projectPeFiles)
@@ -188,8 +186,8 @@ namespace CsDecompileLib.IlSpy
                 var resolver = _assemblyResolverFactory.GetAssemblyResolver(projectAssembly);
                 GetReferencingModules(
                     projectAssembly,
-                    typeScope.Namespace,
-                    reflectionTypeScopeName,
+                    topLevelType.Namespace,
+                    topLevelType.MetadataName,
                     result,
                     alreadyChecked,
                     resolver);
@@ -218,19 +216,32 @@ namespace CsDecompileLib.IlSpy
 
             if (friendAssemblies.Count > 0)
             {
+                var topLevelType = GetTopLevelType(typeScope);
                 IEnumerable<PEFile> modules = _workspace.GetAssemblies();
 
                 foreach (var module in modules)
                 {
                     if (friendAssemblies.Contains(module.Name))
                     {
-                        if (ModuleReferencesScopeType(module.Metadata, typeScope.Name, typeScope.Namespace))
+                        if (ModuleReferencesScopeType(module.Metadata, topLevelType.MetadataName, topLevelType.Namespace))
                             result.Add(module);
                     }
                 }
             }
 
             return result;
+        }
+
+        //A reference to a nested type has no namespace of its own; it hangs off a reference to its outermost type,
+        //so that is the reference every module using the type (or one of its members) is guaranteed to have.
+        private static ITypeDefinition GetTopLevelType(ITypeDefinition type)
+        {
+            while (type.DeclaringTypeDefinition != null)
+            {
+                type = type.DeclaringTypeDefinition;
+            }
+
+            return type;
         }
 
         bool ModuleReferencesScopeType(MetadataReader metadata, string typeScopeName, string typeScopeNamespace)

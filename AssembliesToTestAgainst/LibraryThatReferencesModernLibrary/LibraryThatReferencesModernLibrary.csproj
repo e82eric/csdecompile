@@ -9,6 +9,9 @@
       <Reference Include="ModernLibrary">
         <HintPath>..\ModernLibrary\bin\Debug\net10.0\ModernLibrary.dll</HintPath>
       </Reference>
+      <Reference Include="ModernLibraryUser">
+        <HintPath>..\ModernLibraryUser\bin\Debug\net10.0\ModernLibraryUser.dll</HintPath>
+      </Reference>
     </ItemGroup>
 
 </Project>
