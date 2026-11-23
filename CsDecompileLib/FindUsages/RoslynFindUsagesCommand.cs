@@ -77,14 +77,15 @@ public class RoslynFindUsagesCommand : INavigationCommand<LocationsResponse>
 
     private async Task FillContainingTypeNames(ReferenceLocation location, SourceFileInfo toFill)
     {
-        var lineSpan = location.Location.GetLineSpan();
-        var enclosingSymbol = await GetDefinitionSymbol(location.Document, lineSpan.StartLinePosition.Line,
-            lineSpan.StartLinePosition.Character);
+        var semanticModel = await location.Document.GetSemanticModelAsync();
+        var enclosingSymbol = semanticModel.GetEnclosingSymbol(location.Location.SourceSpan.Start);
 
-        if (enclosingSymbol.ContainingType != null)
+        //A usage outside of any member (a base list, an attribute on a type) is enclosed by the type itself
+        var enclosingType = enclosingSymbol as INamedTypeSymbol ?? enclosingSymbol?.ContainingType;
+        if (enclosingType != null)
         {
-            toFill.ContainingTypeShortName = enclosingSymbol.ContainingType.Name;
-            toFill.ContainingTypeFullName = enclosingSymbol.ContainingType?.GetMetadataName();
+            toFill.ContainingTypeShortName = enclosingType.Name;
+            toFill.ContainingTypeFullName = enclosingType.GetMetadataName();
         }
         else
         {
@@ -94,7 +95,7 @@ public class RoslynFindUsagesCommand : INavigationCommand<LocationsResponse>
                 toFill.ContainingTypeShortName = fallbackParentClassSymbol.Name;
                 toFill.ContainingTypeFullName = fallbackParentClassSymbol.GetMetadataName();
             }
-            else
+            else if (enclosingSymbol != null)
             {
                 toFill.ContainingTypeShortName = enclosingSymbol.Name;
                 toFill.ContainingTypeFullName = enclosingSymbol.GetMetadataName();
@@ -131,16 +132,4 @@ public class RoslynFindUsagesCommand : INavigationCommand<LocationsResponse>
 
         return null;
     }
-
-    internal async Task<ISymbol> GetDefinitionSymbol(Document document, int line, int column)
-    {
-        var sourceText = await document.GetTextAsync(CancellationToken.None);
-        var position = GetPositionFromLineAndOffset(sourceText, line - 1, column);
-        var symanticModel = await document.GetSemanticModelAsync();
-        var enclosingSymbol = symanticModel.GetEnclosingSymbol(position);
-        return enclosingSymbol;
-    }
-
-    private static int GetPositionFromLineAndOffset(SourceText text, int lineNumber, int offset)
-        => text.Lines[lineNumber].Start + offset;
 }

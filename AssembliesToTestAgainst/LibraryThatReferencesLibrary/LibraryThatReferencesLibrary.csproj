@@ -133,6 +133,8 @@
         <Compile Include="InSourceGotoDefinitionPropertyTarget.cs" />
         <Compile Include="InSourceGotoDefinitionSymbolNotFoundAtLocationTarget.cs" />
         <Compile Include="InSourceGotoDefinitionVariableTarget.cs" />
+        <Compile Include="InSourceFindUsagesFirstLineTarget.cs" />
+        <Compile Include="InSourceFindUsagesFirstLineUser.cs" />
         <Compile Include="InSourceNestedClassFindUsagesTarget.cs" />
         <Compile Include="InSourceNestedClassFindUsagesUser.cs" />
         <Compile Include="InSourceNestedClassGotoDefinitionTarget.cs" />
