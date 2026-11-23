@@ -30,7 +30,7 @@ public class EveryWhereFindImplementationsCommandFactory<TResponseType>
             type,
             projectAssemblyFilePath);
         
-        var symbol = GetTypeSymbol(type.FullName);
+        var symbol = GetTypeSymbol(type.ReflectionName);
         if (symbol != null)
         {
             var roslynCommand = _commandCommandFactory.GetForInSource(symbol);
@@ -169,7 +169,9 @@ public class EveryWhereFindImplementationsCommandFactory<TResponseType>
     
     private TRoslyn GetRoslynMemberSymbol<TRoslyn>(IMember ilSpySymbol, Predicate<TRoslyn> areSame)
     {
-        var declaringTypeFullName = ilSpySymbol?.DeclaringType?.FullName;
+        //The reflection name of the definition carries the arity and the nesting (Outer`1+Inner),
+        //which is what Roslyn looks a type up by
+        var declaringTypeFullName = ilSpySymbol?.DeclaringTypeDefinition?.ReflectionName;
         if (declaringTypeFullName == null)
         {
             return default;
@@ -195,13 +197,13 @@ public class EveryWhereFindImplementationsCommandFactory<TResponseType>
         return default;
     }
 
-    private INamedTypeSymbol GetTypeSymbol(string fullName)
+    private INamedTypeSymbol GetTypeSymbol(string metadataName)
     {
         var compilations = _decompileWorkspace.GetProjectCompilations();
         INamedTypeSymbol symbol = null;
         foreach (var compilation in compilations)
         {
-            symbol = compilation.GetTypeByMetadataName(fullName);
+            symbol = compilation.GetTypeByMetadataName(metadataName);
             if (symbol != null)
             {
                 break;
